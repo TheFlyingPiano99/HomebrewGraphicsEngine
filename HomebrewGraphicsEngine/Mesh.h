@@ -1,0 +1,27 @@
+#pragma once
+
+#include <string>
+#include "Material.h"
+#include "Geometry.h"
+#include "Camera.h"
+#include "Light.h"
+
+class Mesh
+{
+
+public:
+
+	// Initializes the mesh
+	Mesh(Material* material, Geometry* geometry);
+
+	// Draws the mesh
+	void Bind() const;
+	void Bind(const Camera& camera, const std::vector<Light*>& lights) const;
+	void Draw() const;
+	Material* getMaterial() const;
+	Geometry* getGeometry() const;
+
+private:
+	Material* material;
+	Geometry* geometry;
+};
