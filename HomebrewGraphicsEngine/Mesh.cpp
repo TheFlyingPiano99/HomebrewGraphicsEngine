@@ -7,11 +7,35 @@ Mesh::Mesh(Material* material, Geometry* geometry) : material(material), geometr
 void Mesh::Bind() const
 {
 	material->Bind();
+	if (depthTest) {
+		glEnable(GL_DEPTH_TEST);
+	}
+	else {
+		glDisable(GL_DEPTH_TEST);
+	}
+	if (stencilTest) {
+		glEnable(GL_STENCIL_TEST);
+	}
+	else {
+		glDisable(GL_STENCIL_TEST);
+	}
 }
 
 void Mesh::Bind(const Camera& camera, const std::vector<Light*>& lights) const
 {
 	material->Bind(camera, lights);
+	if (depthTest) {
+		glEnable(GL_DEPTH_TEST);
+	}
+	else {
+		glDisable(GL_DEPTH_TEST);
+	}
+	if (stencilTest) {
+		glEnable(GL_STENCIL_TEST);
+	}
+	else {
+		glDisable(GL_STENCIL_TEST);
+	}
 }
 
 void Mesh::Draw() const
@@ -26,4 +50,14 @@ Material* Mesh::getMaterial() const {
 Geometry* Mesh::getGeometry() const
 {
 	return geometry;
+}
+
+void Mesh::setDepthTest(bool test)
+{
+	depthTest = test;
+}
+
+void Mesh::setStencilTest(bool test)
+{
+	stencilTest = test;
 }

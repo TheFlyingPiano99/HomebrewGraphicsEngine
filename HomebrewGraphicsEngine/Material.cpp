@@ -32,6 +32,14 @@ void Material::Bind(const Camera& camera, const std::vector<Light*>& lights) con
 	glUniform3f(glGetUniformLocation(program->ID, "material.specularColor"), specularColor.r, specularColor.g, specularColor.b);
 	glUniform3f(glGetUniformLocation(program->ID, "material.ambientColor"), ambientColor.r, ambientColor.g, ambientColor.b);
 	glUniform1f(glGetUniformLocation(program->ID, "material.shininess"), shininess);
+	glUniform1f(glGetUniformLocation(program->ID, "material.reflectiveness"), reflectiveness);
+
+	if (alphaBlend) {
+		glEnable(GL_BLEND);
+	}
+	else {
+		glDisable(GL_BLEND);
+	}
 }
 
 void Material::addTexture(Texture* texture) { textures.push_back(texture); }
@@ -49,4 +57,8 @@ ShaderProgram* Material::getShaderProgram() const
 const std::vector<Texture*>& Material::getTextures() const
 {
 	return textures;
+}
+
+void Material::setAlphaBlend(bool blend) {
+	alphaBlend = blend;
 }

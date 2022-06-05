@@ -18,7 +18,6 @@ void Callbacks::setCallbacks(GLFWwindow* window) {
 	glfwSetScrollCallback(window, Callbacks::onMouseScroll);
 	glfwSetMouseButtonCallback(window, Callbacks::onMouseClick);
 	glfwSetWindowSizeCallback(window, Callbacks::onWindowSize);
-
 }
 
 void Callbacks::onWindowInit(GLFWwindow* window)
@@ -51,7 +50,12 @@ void Callbacks::onWindowRefresh(GLFWwindow* window)
 
 void Callbacks::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	ControlActionManager::getInstance()->onKey(key, scancode, action, mods);
+	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+		ControlActionManager::getInstance()->onPress(key, scancode, mods);
+	}
+	else if (action == GLFW_RELEASE) {
+		ControlActionManager::getInstance()->onRelease(key, scancode, mods);
+	}
 }
 
 

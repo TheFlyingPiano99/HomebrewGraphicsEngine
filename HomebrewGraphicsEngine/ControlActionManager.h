@@ -1,59 +1,48 @@
 #pragma once
 
 #include "ControlAction.h"
+#include <map>
+#include <iostream>
+
 class ControlActionManager
 {
-	static ControlActionManager* instance;
-	std::vector<ControlAction*> registeredActions;
-	std::queue<ControlAction*> queuedActions;
-	ControlActionManager() {
-	}
-
-	~ControlActionManager() {
-		clearQueue();
-		for (auto act : registeredActions) {
-			delete act;
-		}
-		registeredActions.clear();
-	}
-
-	/*
-	* Get next action for execution
-	*/
-	ControlAction* popNextQueuedAction();
-
 public:
 
-	static ControlActionManager* getInstance() {
-		if (nullptr == instance) {
-			instance = new ControlActionManager();
-		}
-		return instance;
-	}
+	static ControlActionManager* getInstance();
 
-	static void destroyInstance() {
-		if (nullptr != instance) {
-			delete instance;
-			instance = nullptr;
-		}
-	}
+	static void destroyInstance();
 
 	/*
 	* Process key event
 	*/
-	void onKey(int _key, int _scancode, int _action, int _mods);
+	void onPress(const int _key, const int _scancode, const int _mods);
+
+	/*
+	* Process key event
+	*/
+	void onRelease(const int _key, const int _scancode, const int _mods);
+
 	/*
 	* Register new controlAction
 	*/
 	void registerAction(ControlAction* toRegister);
+
 	/*
 	* Deregister controlAction
 	*/
 	void deregisterAction(ControlAction* toDeregister);
+
 	/*
 	* Remove all queued actions
 	*/
 	void clearQueue();
+
+	/*
+	* Push on the execution queue the currently triggering control actions.
+	* Should be called from main loop.
+	*/
+	void queueTriggeringActions();
+
 
 	/*
 	* Execute queued actions
@@ -71,5 +60,24 @@ public:
 	*/
 	void registerDefault();
 
+private:
+	static ControlActionManager* instance;
+	std::map<const int, ControlAction*> registeredActions;
+	std::queue<ControlAction*> queuedActions;
+
+	ControlActionManager() = default;
+
+	~ControlActionManager() {
+		clearQueue();
+		for (auto& act : registeredActions) {
+			delete act.second;
+		}
+		registeredActions.clear();
+	}
+
+	/*
+	* Get next action for execution
+	*/
+	ControlAction* popNextQueuedAction();
 };
 

@@ -20,6 +20,9 @@ bool Camera::update()
 	viewProjMatrix = projection * view;
 	invViewProjMatrix = glm::inverse(viewProjMatrix);
 	rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye));
+	lookDir = normalize(center - eye);
+	right = normalize(cross(lookDir, prefUp));
+	up = normalize(cross(right, lookDir));
 
 	bool prevMooved = moved;
 	moved = false;
@@ -28,7 +31,7 @@ bool Camera::update()
 
 void Camera::updateOrientation(glm::vec3 newPrefUp)
 {
-	glm::vec3 right = glm::cross(normalize(center - eye), newPrefUp);
+	right = glm::cross(normalize(center - eye), newPrefUp);
 	center = eye + glm::cross(newPrefUp, right);
 	prefUp = newPrefUp;
 }
@@ -50,11 +53,8 @@ void Camera::exportData(ShaderProgram& shader, const std::string& uniformName) c
 	glUniform3f(glGetUniformLocation(shader.ID, copy.append(".position").c_str()), eye.x, eye.y, eye.z);
 	copy = uniformName;
 	glUniform3f(glGetUniformLocation(shader.ID, copy.append(".center").c_str()), center.x, center.y, center.z);
-	glm::vec3 lookDir = normalize(center - eye);
-	glm::vec3 right = normalize(cross(lookDir, prefUp));
 	copy = uniformName;
 	glUniform3f(glGetUniformLocation(shader.ID, copy.append(".right").c_str()), right.x, right.y, right.z);
-	glm::vec3 up = normalize(cross(right, lookDir));
 	copy = uniformName;
 	glUniform3f(glGetUniformLocation(shader.ID, copy.append(".up").c_str()), up.x, up.y, up.z);
 	copy = uniformName;
@@ -68,10 +68,7 @@ void Camera::exportPostprocessDataAsLightCamera(ShaderProgram& shader)
 {
 	glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.eye"), eye.x, eye.y, eye.z);
 	glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.center"), center.x, center.y, center.z);
-	glm::vec3 lookDir = normalize(center - eye);
-	glm::vec3 right = normalize(cross(lookDir, prefUp));
 	glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.right"), right.x, right.y, right.z);
-	glm::vec3 up = normalize(cross(right, lookDir));
 	glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.up"), up.x, up.y, up.z);
 	glUniform1f(glGetUniformLocation(shader.ID, "lightCamera.FOVrad"), glm::radians(FOVdeg));
 	glUniform1f(glGetUniformLocation(shader.ID, "lightCamera.aspectRatio"), width / (float)height);
@@ -168,42 +165,44 @@ void Camera::Inputs(GLFWwindow* window)
 	}
 }
 
-// Not used yet:
-
 void Camera::moveForward(float dt) {
-	glm::vec3 right = glm::normalize(glm::cross(normalize(center - eye), prefUp));
-	eye += dt * speed * glm::cross(prefUp, right);
+	eye += dt * speed * lookDir;
+	center += dt * speed * lookDir;
 	moved = true;
 }
 
 void Camera::moveBackward(float dt)
 {
-	glm::vec3 right = glm::normalize(glm::cross(normalize(center - eye), prefUp));
-	eye += dt * speed * -glm::cross(prefUp, right);
+	eye += dt * speed * -lookDir;
+	center += dt * speed * -lookDir;
 	moved = true;
 }
 
 void Camera::moveLeft(float dt)
 {
-	eye += dt * speed * -glm::normalize(glm::cross(normalize(center - eye), prefUp));
+	eye += dt * speed * -right;
+	center += dt * speed * -right;
 	moved = true;
 }
 
 void Camera::moveRight(float dt)
 {
-	eye += dt * speed * glm::normalize(glm::cross(normalize(center - eye), prefUp));
+	eye += dt * speed * right;
+	center += dt * speed * right;
 	moved = true;
 }
 
 void Camera::moveUp(float dt)
 {
-	eye += dt * speed * prefUp;
+	eye += dt * speed * up;
+	center += dt * speed * up;
 	moved = true;
 }
 
 void Camera::moveDown(float dt)
 {
-	eye += dt * speed * -prefUp;
+	eye += dt * speed * -up;
+	center += dt * speed * -up;
 	moved = true;
 }
 

@@ -9,17 +9,19 @@ Scene* Scene::instance = nullptr;
 
 void Scene::initCameraAndLights()
 {
-	camera = new Camera(contextWidth, contextHeight, glm::vec3(500.0f, 400.0f, -500.0f), glm::vec3(0, 256 / 2.0f, 0));
-	lights.push_back(new Light(glm::vec4(10.0f, 10.0f, 10.0f, 1.0f), glm::vec3(1000.0f, 1000.0f, 1000.0f)));
+	camera = new Camera(contextWidth, contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+	lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(0.8f, 0.8f, 0.8f)));	// Directional light
+	lights.push_back(new Light(glm::vec4(10.0f, 5.0f, 20.0f, 1.0f), glm::vec3(100.0f, 100.0f, 100.0f)));
 }
 
 void Scene::initSceneObjects()
 {
-	initSkyBox();
-	initCube();
+	Texture* cubeMap = nullptr;
+	initSkyBox(&cubeMap);
+	initCube(&cubeMap);
 }
 
-void Scene::initSkyBox()
+void Scene::initSkyBox(Texture** cubeMap)
 {
 	ShaderProgram* skyboxShader = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
@@ -32,21 +34,25 @@ void Scene::initSkyBox()
 	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
 	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
 	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
-	auto* cubeMap = new TextureCube(images, 0);
+	*cubeMap = new TextureCube(images, 5);
 	auto* skyBoxMaterial = new Material(skyboxShader);
-	skyBoxMaterial->addTexture(cubeMap);
+	skyBoxMaterial->addTexture(*cubeMap);
 	Geometry* fullscreenQuad = GeometryFactory::FullScreenQuad::getInstance();
 	auto* skyBoxMesh = new Mesh(skyBoxMaterial, fullscreenQuad);
+	skyBoxMesh->setDepthTest(false);
+	skyBoxMesh->setStencilTest(false);
 	addSceneObject(new SceneObject(skyBoxMesh));
 }
 
-void Scene::initCube()
+void Scene::initCube(Texture** cubeMap)
 {
 	ShaderProgram* cubeShader = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.frag")
 	);
 	auto* cubeMaterial = new Material(cubeShader);
+	cubeMaterial->addTexture(*cubeMap);
+	cubeMaterial->setReflectiveness(0.3f);
 	Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 	auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
 	auto* obj = new SceneObject(cubeMesh);
@@ -162,13 +168,11 @@ void Scene::draw()
 	}
 	glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 	glClearDepth(1);
+	glDepthFunc(GL_LESS);
+	glFrontFace(GL_CCW);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glStencilMask(0x00);
-	glDisable(GL_DEPTH_TEST);
-	glDepthFunc(GL_ALWAYS);
-	glDisable(GL_CULL_FACE);
-	glDisable(GL_STENCIL_TEST);
 
 	for (auto& obj : sceneObjects) {
 		obj->draw(*camera, lights);

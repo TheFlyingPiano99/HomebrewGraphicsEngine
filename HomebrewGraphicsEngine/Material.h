@@ -36,6 +36,12 @@ public:
 		this->shininess = _shininess;
 	}
 
+	void setReflectiveness(float _reflectiveness) {
+		this->reflectiveness = _reflectiveness;
+	}
+
+	void setAlphaBlend(bool blend);
+
 private:
 	ShaderProgram* program;
 	std::vector <Texture*> textures;
@@ -43,6 +49,9 @@ private:
 	glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	glm::vec3 ambientColor = glm::vec3(0.0f, 0.0f, 0.0f);
 	float shininess = 30.0f;
+	float reflectiveness = 0.0f;
+
+	bool alphaBlend = false;
 
 	class ShaderProgramIsNullptr : public std::exception {};
 };

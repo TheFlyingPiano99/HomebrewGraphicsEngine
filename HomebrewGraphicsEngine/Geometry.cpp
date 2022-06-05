@@ -21,5 +21,17 @@ Geometry::Geometry(std::vector<Vertex>& vertices, std::vector<GLint>& indices) :
 void Geometry::Draw()
 {
 	VAO.Bind();
+	if (faceCulling) {
+		glEnable(GL_CULL_FACE);
+	}
+	else {
+		glDisable(GL_CULL_FACE);
+	}
+
 	glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
+}
+
+void Geometry::setFaceCulling(bool cull)
+{
+	faceCulling = cull;
 }

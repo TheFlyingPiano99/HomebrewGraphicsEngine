@@ -5,6 +5,7 @@
 #include "GlobalInclude.h"
 #include "GUI.h"
 #include <iostream>
+#include "ControlActionManager.h"
 
 #define PROJECT_NAME "HomebrewGraphicsEngine"
 
@@ -108,6 +109,7 @@ int main()
 				dt = realDelta;
 				realDelta = 0.0;
 			}
+			ControlActionManager::getInstance()->queueTriggeringActions();
 			Scene::getInstance()->control(dt);
 			Scene::getInstance()->animate(dt);
 		}

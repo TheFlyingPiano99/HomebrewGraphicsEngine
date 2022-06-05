@@ -1,15 +1,8 @@
 #include "ControlAction.h"
 #include "Callbacks.h"
 #include "GUI.h"
+#include <iostream>
 
-bool ControlAction::isThisAction(int key, int scancode, int action)
-{
-	return (this->key == key
-		&& (
-			(enableRepeat && (action == GLFW_PRESS || action == GLFW_REPEAT))
-		|| (!enableRepeat && action == GLFW_PRESS)
-			));
-}
 
 //---------------------------------------------------------------------------
 
@@ -26,6 +19,38 @@ void MoveCameraBackward::execute(Scene* scene, float dt)
 	Camera* camera = scene->getCamera();
 	if (nullptr != camera) {
 		camera->moveBackward(dt);
+	}
+}
+
+void MoveCameraRight::execute(Scene* scene, float dt)
+{
+	Camera* camera = scene->getCamera();
+	if (nullptr != camera) {
+		camera->moveRight(dt);
+	}
+}
+
+void MoveCameraLeft::execute(Scene* scene, float dt)
+{
+	Camera* camera = scene->getCamera();
+	if (nullptr != camera) {
+		camera->moveLeft(dt);
+	}
+}
+
+void MoveCameraUp::execute(Scene* scene, float dt)
+{
+	Camera* camera = scene->getCamera();
+	if (nullptr != camera) {
+		camera->moveUp(dt);
+	}
+}
+
+void MoveCameraDown::execute(Scene* scene, float dt)
+{
+	Camera* camera = scene->getCamera();
+	if (nullptr != camera) {
+		camera->moveDown(dt);
 	}
 }
 
@@ -52,4 +77,41 @@ void TogglePause::execute(Scene* scene, float dt)
 void ToggleFullScreenMode::execute(Scene* scene, float dt)
 {
 	Callbacks::toggleFullScreen();
+}
+
+int ControlAction::getKey() const
+{
+	return key;
+}
+
+void ControlAction::onPress(int _key, int _scancode, int _mods)
+{
+	pressed = true;
+}
+
+void ControlAction::onRelease(int _key, int _scancode, int _mods)
+{
+	pressed = false;
+}
+
+bool ControlAction::isTriggering()
+{
+	bool trigger;
+	switch (triggerType)
+	{
+	case TriggerType::triggerOnPress:
+		trigger = pressed && !pressedPreviously;
+		break;
+	case TriggerType::triggerContinuosly:
+		trigger = pressed;
+		break;
+	case TriggerType::triggerOnRelease:
+		trigger = !pressed && pressedPreviously;
+		break;
+	default:
+		trigger = false;
+		break;
+	}
+	pressedPreviously = pressed;
+	return trigger;
 }

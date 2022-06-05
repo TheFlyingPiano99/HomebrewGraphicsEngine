@@ -70,8 +70,8 @@ private:
 
 	void initCameraAndLights();
 	void initSceneObjects();
-	void initSkyBox();
-	void initCube();
+	void initSkyBox(Texture** cubeMap);
+	void initCube(Texture** cubeMap);
 	void initPostProcessStages();
 
 	class SceneNotInstanciatedException : public std::exception {

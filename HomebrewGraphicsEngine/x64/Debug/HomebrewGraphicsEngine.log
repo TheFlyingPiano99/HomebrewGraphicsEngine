@@ -1,2 +1,17 @@
-﻿  Geometry.cpp
+﻿  Application.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(22,2): warning C4091: 'static ': ignored on left of 'GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Application.cpp(113,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Application.cpp(114,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Callbacks.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(22,2): warning C4091: 'static ': ignored on left of 'GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Callbacks.cpp(102,52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  ControlAction.cpp
+  ControlActionManager.cpp
+  GUI.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(22,2): warning C4091: 'static ': ignored on left of 'GlobalVariables' when no variable is declared
+  Light.cpp
+  Scene.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(22,2): warning C4091: 'static ': ignored on left of 'GlobalVariables' when no variable is declared
+  SingletonManager.cpp
+  Generating Code...
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

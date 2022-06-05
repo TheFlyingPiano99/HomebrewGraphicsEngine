@@ -11,9 +11,13 @@ public:
 	// Bind the VAO to the currently active GPU program
 	void Draw();
 
+	void setFaceCulling(bool cull);
+
 private:
 	std::vector <Vertex> vertices;
 	std::vector <GLint> indices;
 	VAO VAO;
+
+	bool faceCulling = true;
 };
 

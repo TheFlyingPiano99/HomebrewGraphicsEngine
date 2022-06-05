@@ -21,7 +21,12 @@ public:
 	Material* getMaterial() const;
 	Geometry* getGeometry() const;
 
+	void setDepthTest(bool test);
+	void setStencilTest(bool test);
+
 private:
 	Material* material;
 	Geometry* geometry;
+	bool depthTest = true;
+	bool stencilTest = false;
 };

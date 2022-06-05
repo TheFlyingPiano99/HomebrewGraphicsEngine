@@ -3,12 +3,21 @@
 
 ControlActionManager* ControlActionManager::instance = nullptr;
 
-void ControlActionManager::onKey(int _key, int _scancode, int _action, int _mods)
+void ControlActionManager::onPress(const int _key, const int _scancode, const int _mods)
 {
-	for (auto contrAct : registeredActions) {
-		if (contrAct->isThisAction(_key, _scancode, _action)) {
-			queuedActions.push(contrAct);
-		}
+	auto iter = registeredActions.find(_key);
+	if (iter != registeredActions.end()) {
+		bool trigger = false;
+		iter->second->onPress(_key, _scancode, _mods);
+	}
+}
+
+void ControlActionManager::onRelease(const int _key, const int _scancode, const int _mods)
+{
+	auto iter = registeredActions.find(_key);
+	if (iter != registeredActions.end()) {
+		bool trigger = false;
+		iter->second->onRelease(_key, _scancode, _mods);
 	}
 }
 
@@ -19,10 +28,23 @@ void ControlActionManager::clearQueue()
 	}
 }
 
+void ControlActionManager::queueTriggeringActions()
+{
+	for (auto& pair : registeredActions) {
+		if (pair.second->isTriggering()) {
+			queuedActions.push(pair.second);
+		}
+	}
+}
+
 void ControlActionManager::registerDefault()
 {
 	registerAction(new MoveCameraForward());
 	registerAction(new MoveCameraBackward());
+	registerAction(new MoveCameraRight());
+	registerAction(new MoveCameraLeft());
+	registerAction(new MoveCameraUp());
+	registerAction(new MoveCameraDown());
 	registerAction(new ToggleGUI());
 	registerAction(new FastForward());
 	registerAction(new Rewind());
@@ -32,12 +54,12 @@ void ControlActionManager::registerDefault()
 
 void ControlActionManager::registerAction(ControlAction* toRegister)
 {
-	registeredActions.push_back(toRegister);
+	registeredActions.emplace(toRegister->getKey(), toRegister);
 }
 
 void ControlActionManager::deregisterAction(ControlAction* toDeregister)
 {
-	registeredActions.erase(std::find(registeredActions.begin(), registeredActions.end(), toDeregister));
+	registeredActions.erase(toDeregister->getKey());
 }
 
 ControlAction* ControlActionManager::popNextQueuedAction()
@@ -48,4 +70,18 @@ ControlAction* ControlActionManager::popNextQueuedAction()
 		return toReturn;
 	}
 	return nullptr;
+}
+
+ControlActionManager* ControlActionManager::getInstance() {
+	if (nullptr == instance) {
+		instance = new ControlActionManager();
+	}
+	return instance;
+}
+
+void ControlActionManager::destroyInstance() {
+	if (nullptr != instance) {
+		delete instance;
+		instance = nullptr;
+	}
 }
