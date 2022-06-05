@@ -4,6 +4,8 @@
 #include "AssetFolderPathManager.h"
 #include "TextureCube.h"
 #include "GeometryFactories.h"
+#include "AudioSource.h"
+#include "Listener.h"
 
 Scene* Scene::instance = nullptr;
 

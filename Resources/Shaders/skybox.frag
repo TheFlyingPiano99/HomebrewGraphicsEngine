@@ -4,7 +4,7 @@ out vec4 FragColor;
 in vec2 texCoords;
 in vec4 rayDir;
 
-uniform samplerCube skybox;
+layout (binding = 5) uniform samplerCube skybox;
 
 void main()
 {   

@@ -11,8 +11,6 @@ in vec3 color;
 // Imports the texture coordinates from the Vertex Shader
 in vec2 texCoord;
 
-uniform bool useTexture;
-
 struct Light {
 	vec4 position;
 	vec3 powerDensity;
@@ -21,13 +19,16 @@ struct Light {
 uniform Light lights[64];
 uniform unsigned int lightCount;
 
-layout (binding=0) uniform sampler2D colorTexture;
-layout (binding=1) uniform	sampler2D specularTexture;
+layout (binding = 0) uniform sampler2D colorTexture;
+layout (binding = 1) uniform sampler2D specularTexture;
 layout (binding = 5) uniform samplerCube skybox;
 
 struct Material {
-	float shininess;
+	vec3 diffuseColor;
 	vec3 specularColor;
+	vec3 ambientColor;
+	float shininess;
+	float reflectiveness;
 };
 uniform Material material;
 
@@ -51,30 +52,14 @@ vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir)
 	// diffuse lighting
 	vec3 lightDir = normalize(lightDiff);
 	float diffuseCos = max(dot(normal, lightDir), 0.0);
-	vec3 diffuse = diffuseCos * light.powerDensity * attenuation;
-	if (useTexture) {
-		diffuse *= texture(colorTexture, texCoord).xyz;
-	}
-	else {
-		diffuse *= color;
-	}
+	vec3 diffuse = diffuseCos * light.powerDensity * attenuation * material.diffuseColor;
 
 	// specular lighting
 	vec3 halfway = normalize(lightDir + viewDir);
 	float specularCos = pow(max(dot(halfway, normal), 0.0), material.shininess);
-	vec3 specular = specularCos * light.powerDensity * attenuation;
-	if (useTexture) {
-		specular *= texture(specularTexture, texCoord).r;
-	}
-	else {
-		specular *= material.specularColor;
-	}
+	vec3 specular = specularCos * light.powerDensity * attenuation * material.specularColor;
 
-	vec3 l = diffuse + specular;
-	if (length(l) > 0.0 && length(l) < 100000.0) {
-		return l;
-	}
-	return vec3(0.0);
+	return diffuse + specular;
 }
 
 void main()
@@ -85,8 +70,10 @@ void main()
 	for (int i = 0; i < lightCount; i++) {
 		lightSum += calculateLight(lights[i], worldPos.xyz, n, viewDir);
 	}
+	lightSum += material.ambientColor;
 	vec3 reflectDir = reflect(-viewDir, n);
-	lightSum += 0.6 * texture(skybox, reflectDir).rgb * (1 - max(dot(viewDir, n), 0.0) * 0.5) * texture(specularTexture, texCoord).r;
+	float r = material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
+	lightSum = max(1.0 - r, 0.0) * lightSum + r * texture(skybox, reflectDir).rgb ;
 	FragColor = vec4(lightSum, 1.0f);
-	FragColor = vec4(1, 0, 0, 1);
+	//FragColor = vec4(n, 1);
 }

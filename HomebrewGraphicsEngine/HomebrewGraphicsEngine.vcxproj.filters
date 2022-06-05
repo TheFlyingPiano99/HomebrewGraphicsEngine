@@ -43,6 +43,9 @@
     <Filter Include="Resource Files\Geometry">
       <UniqueIdentifier>{28c9e2cc-320f-497a-b4d8-3c3310c65b97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\OpenALObjects">
+      <UniqueIdentifier>{b8022d03-d4fe-4f5b-8cd9-0a9305e3a83e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -175,6 +178,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PostProcessStage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -313,6 +322,12 @@
     </ClInclude>
     <ClInclude Include="PostProcessStage.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSource.h">
+      <Filter>Header Files\OpenALObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Listener.h">
+      <Filter>Header Files\OpenALObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
