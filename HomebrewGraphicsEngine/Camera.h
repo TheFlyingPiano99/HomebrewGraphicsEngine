@@ -1,7 +1,5 @@
 #pragma once
 
-#ifndef CAMERA_CLASS_H
-#define CAMERA_CLASS_HfirstC
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 #include<glm/glm.hpp>
@@ -68,5 +66,24 @@ public:
 	void rotate(float mouseX, float mouseY);
 	void rotateAroundBullseye(float mouseX, float mouseY, glm::vec3 bullseye);
 	void approachCenter(float delta);
+
+	const glm::mat4& getViewProjMatrix() const {
+		return viewProjMatrix;
+	}
+
+	const glm::mat4& getInvViewProjMatrix() const {
+		return invViewProjMatrix;
+	}
+
+	const glm::mat4& getRayDirMatrix() const {
+		return rayDirMatrix;
+	}
+
+	const glm::vec3& getLookDir() const {
+		return lookDir;
+	}
+
+	const glm::vec3& getEyePos() const {
+		return eye;
+	}
 };
-#endif

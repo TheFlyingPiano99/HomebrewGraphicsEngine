@@ -111,7 +111,7 @@ int main()
 			}
 			ControlActionManager::getInstance()->queueTriggeringActions();
 			Scene::getInstance()->control(dt);
-			Scene::getInstance()->animate(dt);
+			Scene::getInstance()->update(dt);
 		}
 		prevIterTime = crntTime;
 

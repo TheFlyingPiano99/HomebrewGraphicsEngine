@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "Stars.h"
 #include "PostProcessStage.h"
+#include "Physics.h"
+#include "Collider.h"
 
 /*
 * Singleton object
@@ -19,7 +21,7 @@ public:
 	static void destroyInstance();
 
 	void control(float dt);
-	void animate(float dt);
+	void update(float dt);
 	void draw();
 
 	void addSceneObject(SceneObject* object);
@@ -39,6 +41,11 @@ public:
 		destroy();
 	}
 
+	void pokeObject(const glm::vec2& ndcCoords);
+
+	Physics* getCubePhysics() const {
+		return cubePhysics;
+	}
 
 private:
 	static Scene* instance;
@@ -53,7 +60,10 @@ private:
 	std::vector<Material*> materials;
 	std::vector<Mesh*> meshes;
 	std::vector<SceneObject*> sceneObjects;
+	std::vector<Component*> components;
+	std::vector<Collider*> colliders;
 
+	Physics* cubePhysics;
 	bool pause = true;
 	unsigned int contextWidth;
 	unsigned int contextHeight;
@@ -73,7 +83,6 @@ private:
 	void initSkyBox(Texture** cubeMap);
 	void initCube(Texture** cubeMap);
 	void initPostProcessStages();
-
 	class SceneNotInstanciatedException : public std::exception {
 
 	};

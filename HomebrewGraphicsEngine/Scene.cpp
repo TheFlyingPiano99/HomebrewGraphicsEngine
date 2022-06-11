@@ -6,6 +6,7 @@
 #include "GeometryFactories.h"
 #include "AudioSource.h"
 #include "Listener.h"
+#include "Physics.h"
 
 Scene* Scene::instance = nullptr;
 
@@ -59,7 +60,20 @@ void Scene::initCube(Texture** cubeMap)
 	auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
 	auto* obj = new SceneObject(cubeMesh);
 	obj->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	obj->setScale(glm::vec3(10.0f, 0.5f, 10.0f));
+
+	auto* cubePhysics = new Physics(obj);
+	//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
+	cubePhysics->setWorldSpaceDrag(glm::vec3(0.0f, 0.0f, 0.0f));
+	cubePhysics->setModelSpaceDrag(glm::vec3(1000.0f, 0.0f, 1000.0f));
+	cubePhysics->setMass(10.0f);
+	//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
+	cubePhysics->setMomentOfInertia(glm::vec3(1.0f, 1.0f, 1.0f));
+	cubePhysics->setRotationalDrag(glm::vec3(1.0f, 1.0f, 1.0f));
+	this->cubePhysics = cubePhysics;
+	obj->addComponent(cubePhysics);
 	addSceneObject(obj);
+
 }
 
 void Scene::initPostProcessStages()
@@ -69,6 +83,12 @@ void Scene::initPostProcessStages()
 	postProcessStages.push_back(stage);
 }
 
+void Scene::pokeObject(const glm::vec2& ndcCoords)
+{
+	glm::vec4 wDir = camera->getRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
+	wDir /= wDir.w;
+	cubePhysics->applyImpulse(camera->getLookDir() * 2.0f, camera->getEyePos() + glm::vec3(wDir) * 10.0f);
+}
 
 Scene* Scene::getInstance()
 {
@@ -141,6 +161,16 @@ void Scene::destroy()
 		delete postProcStage;
 	}
 	postProcessStages.clear();
+
+	for (auto& component : components) {
+		delete component;
+	}
+	components.clear();
+
+	for (auto& collider : colliders) {
+		delete collider;
+	}
+	colliders.clear();
 }
 
 //-----------------------------------------------------------------------------
@@ -154,10 +184,10 @@ void Scene::control(float dt)
 	}
 }
 
-void Scene::animate(float dt)
+void Scene::update(float dt)
 {
 	for (auto& obj : sceneObjects) {
-		obj->animate(dt);
+		obj->update(dt);
 	}
 
 	camera->update();
@@ -200,6 +230,7 @@ void Scene::addSceneObject(SceneObject* object)
 	Geometry* geometry = mesh->getGeometry();
 	ShaderProgram* program = material->getShaderProgram();
 	const std::vector<Texture*>& _textures = material->getTextures();
+	auto objComponents = object->getComponents();
 
 	auto meshIter = std::find(meshes.begin(), meshes.end(), mesh);
 	if (meshIter == meshes.end()) {	// If does not contain
@@ -224,6 +255,14 @@ void Scene::addSceneObject(SceneObject* object)
 			this->textures.push_back(texture);
 		}
 	}
+
+	for (auto* comp : objComponents) {
+		auto compIter = std::find(this->components.begin(), this->components.end(), comp);
+		if (compIter == this->components.end()) { // If does not contain
+			this->components.push_back(comp);
+		}
+	}
+
 	sceneObjects.push_back(object);
 }
 

@@ -99,7 +99,7 @@ void Callbacks::onMouseMove(GLFWwindow* window, double xpos, double ypos)
 
 void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
 {
-	Scene::getInstance()->getCamera()->approachCenter(yoffset);
+	Scene::getInstance()->getCamera()->moveForward(yoffset * 10.0f);
 }
 
 void Callbacks::onMouseClick(GLFWwindow* window, int button, int action, int mods)
@@ -108,9 +108,10 @@ void Callbacks::onMouseClick(GLFWwindow* window, int button, int action, int mod
 	{
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-		xpos = xpos / GlobalVariables::windowWidth * 2.0 - 1.0;
-		ypos = 1.0 - ypos / GlobalVariables::windowHeight * 2.0;
-		//TODO
+		glm::vec2 ndcCoords;
+		ndcCoords.x = xpos / GlobalVariables::windowWidth * 2.0 - 1.0;
+		ndcCoords.y = 1.0 - ypos / GlobalVariables::windowHeight * 2.0;
+		Scene::getInstance()->pokeObject(ndcCoords);
 	}
 }
 

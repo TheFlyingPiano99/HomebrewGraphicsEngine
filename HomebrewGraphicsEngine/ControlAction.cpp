@@ -61,12 +61,12 @@ void ToggleGUI::execute(Scene* scene, float dt)
 
 void FastForward::execute(Scene* scene, float dt)
 {
-	scene->animate(dt * 100.0f);
+	scene->update(dt * 100.0f);
 }
 
 void Rewind::execute(Scene* scene, float dt)
 {
-	scene->animate(dt * -100.0f);
+	scene->update(dt * -100.0f);
 }
 
 void TogglePause::execute(Scene* scene, float dt)
