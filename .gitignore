@@ -4,6 +4,7 @@
 # Visual Studio
 .vs/
 x64/
+HomebrewGraphicsEngine/x64/
 
 # Compiled Object files
 *.slo
