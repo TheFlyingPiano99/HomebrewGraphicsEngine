@@ -81,7 +81,7 @@ private:
 	void initCameraAndLights();
 	void initSceneObjects();
 	void initSkyBox(Texture** cubeMap);
-	void initCube(Texture** cubeMap);
+	void initCube(Texture** cubeMap, glm::vec3 pos);
 	void initPostProcessStages();
 	class SceneNotInstanciatedException : public std::exception {
 

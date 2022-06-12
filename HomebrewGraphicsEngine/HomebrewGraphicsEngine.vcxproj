@@ -159,6 +159,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControlAction.cpp" />
     <ClCompile Include="ControlActionManager.cpp" />
+    <ClCompile Include="CuboidCollider.cpp" />
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="FBO.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControlAction.h" />
     <ClInclude Include="ControlActionManager.h" />
+    <ClInclude Include="CuboidCollider.h" />
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
     <ClInclude Include="FBO.h" />

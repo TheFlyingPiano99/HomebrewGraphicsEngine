@@ -7,6 +7,7 @@
 #include "AudioSource.h"
 #include "Listener.h"
 #include "Physics.h"
+#include "SphericalCollider.h"
 
 Scene* Scene::instance = nullptr;
 
@@ -21,7 +22,8 @@ void Scene::initSceneObjects()
 {
 	Texture* cubeMap = nullptr;
 	initSkyBox(&cubeMap);
-	initCube(&cubeMap);
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f));
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f));
 }
 
 void Scene::initSkyBox(Texture** cubeMap)
@@ -47,7 +49,7 @@ void Scene::initSkyBox(Texture** cubeMap)
 	addSceneObject(new SceneObject(skyBoxMesh));
 }
 
-void Scene::initCube(Texture** cubeMap)
+void Scene::initCube(Texture** cubeMap, glm::vec3 pos)
 {
 	ShaderProgram* cubeShader = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
@@ -59,21 +61,24 @@ void Scene::initCube(Texture** cubeMap)
 	Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 	auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
 	auto* obj = new SceneObject(cubeMesh);
-	obj->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	obj->setPosition(pos);
 	obj->setScale(glm::vec3(10.0f, 0.5f, 10.0f));
 
 	auto* cubePhysics = new Physics(obj);
 	//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 	cubePhysics->setWorldSpaceDrag(glm::vec3(0.0f, 0.0f, 0.0f));
-	cubePhysics->setModelSpaceDrag(glm::vec3(1000.0f, 0.0f, 1000.0f));
-	cubePhysics->setMass(10.0f);
+	cubePhysics->setModelSpaceDrag(glm::vec3(1.0f, 1.0f, 1.0f));
+	cubePhysics->setMass(1.0f);
 	//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
-	cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
+	//cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
 	cubePhysics->setRotationalDrag(glm::vec3(2.0f, 1.0f, 2.0f));
 	this->cubePhysics = cubePhysics;
 	obj->addComponent(cubePhysics);
+	auto* cubeCollider = new SphericalCollider(cubePhysics);
+	cubeCollider->setRadius(10.0f);
+	obj->addComponent(cubeCollider);
+	colliders.push_back(cubeCollider);
 	addSceneObject(obj);
-
 }
 
 void Scene::initPostProcessStages()
@@ -87,7 +92,7 @@ void Scene::pokeObject(const glm::vec2& ndcCoords)
 {
 	glm::vec4 wDir = camera->getRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
 	wDir /= wDir.w;
-	cubePhysics->applyImpulse(camera->getLookDir() * 10.0f, camera->getEyePos() + glm::vec3(wDir) * 10.0f);
+	cubePhysics->applyImpulse(glm::normalize(cubePhysics->getOwnerPosition() - camera->getEyePos()) * 10.0f, camera->getEyePos() + glm::vec3(wDir) * 10.0f);
 }
 
 Scene* Scene::getInstance()
@@ -167,10 +172,7 @@ void Scene::destroy()
 	}
 	components.clear();
 
-	for (auto& collider : colliders) {
-		delete collider;
-	}
-	colliders.clear();
+	colliders.clear(); // The colliders have been deleted as componenets!!!
 }
 
 //-----------------------------------------------------------------------------
@@ -179,14 +181,14 @@ void Scene::control(float dt)
 {
     ControlActionManager::getInstance()->executeQueue(this, dt);
 
-	for (int i = 0; i < colliders.size() - 1; i++) {
-		for (int j = i + 1; j < colliders.size(); j++) {
-			colliders[i]->testCollision(*colliders[j]);
-		}
-	}
-
 	for (auto& obj : sceneObjects) {
 		obj->control(dt);
+	}
+
+	for (int i = 0; i < colliders.size() - 1; i++) {
+		for (int j = i + 1; j < colliders.size(); j++) {
+			colliders[i]->collide(*colliders[j]);
+		}
 	}
 }
 

@@ -147,6 +147,14 @@ public:
 		return owner->getPosition();
 	}
 
+	glm::vec3 getOwnerScale() const {
+		return owner->getScale();
+	}
+
+	glm::quat getOwnerOrientation() const {
+		return owner->getOrientation();
+	}
+
 	static glm::vec3 getMomentOfInertiaOfCuboid(float mass, glm::vec3 scale) {
 		return glm::vec3(
 			mass / 12.0f * (scale.y * scale.y + scale.z * scale.z),
@@ -182,18 +190,19 @@ public:
 			);
 	}
 
-	static float calculateImpulseOfCollision(const Physics& a, const Physics& b, const glm::vec3& point, const glm::vec3& normal) {
-		glm::vec3 va = a.getVelocity();
+	void collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float elasticity) {
+		glm::vec3 va = this->getVelocity();
 		glm::vec3 vb = b.getVelocity();
 		float vRel = glm::dot(normal, va - vb);
-		glm::vec3 ka = point - a.getOwnerPosition();
+		glm::vec3 ka = point - this->getOwnerPosition();
 		glm::vec3 kb = point - b.getOwnerPosition();
-		return vRel
-			/ (a.getInvMass() 
+		float j = -(1.0f + elasticity) * vRel / (this->getInvMass()
 				+ b.getInvMass() 
-				+ glm::dot(normal, a.getInvInertiaTensor() * glm::cross(glm::cross(ka, normal), ka))
+				+ glm::dot(normal, this->getInvInertiaTensor() * glm::cross(glm::cross(ka, normal), ka))
 				+ glm::dot(normal, b.getInvInertiaTensor() * glm::cross( glm::cross(kb, normal), kb))
 				);
+		this->applyImpulse(j * normal, ka);
+		b.applyImpulse(j * -normal, kb);
 	}
 
 private:

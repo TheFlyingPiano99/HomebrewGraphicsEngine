@@ -201,6 +201,9 @@
     <ClCompile Include="SphericalCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CuboidCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SingletonManager.h">
@@ -357,6 +360,9 @@
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="SphericalCollider.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CuboidCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
