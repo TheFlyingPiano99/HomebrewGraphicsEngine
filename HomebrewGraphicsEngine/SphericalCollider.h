@@ -1,20 +1,17 @@
 #pragma once
 #include "Collider.h"
-#include "Physics.h"
 
 class SphericalCollider :
     public Collider
 {
 public:
-    explicit SphericalCollider(Physics* physics) : Collider(), physics(physics) {}
+    explicit SphericalCollider(Physics* physics) : Collider(physics) {}
     ~SphericalCollider() = default;
 
     // Inherited via Collider
-    bool testRayIntersection(Ray& ray, glm::vec3& wIntersectionPoint) override;
+    bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint) override;
 
-    bool testCollision(Collider& collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) override;
+    bool testCollision(const Collider& collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) override;
 
-protected:
-    Physics* physics;
 };
 

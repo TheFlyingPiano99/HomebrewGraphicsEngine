@@ -68,8 +68,8 @@ void Scene::initCube(Texture** cubeMap)
 	cubePhysics->setModelSpaceDrag(glm::vec3(1000.0f, 0.0f, 1000.0f));
 	cubePhysics->setMass(10.0f);
 	//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
-	cubePhysics->setMomentOfInertia(glm::vec3(1.0f, 1.0f, 1.0f));
-	cubePhysics->setRotationalDrag(glm::vec3(1.0f, 1.0f, 1.0f));
+	cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
+	cubePhysics->setRotationalDrag(glm::vec3(2.0f, 1.0f, 2.0f));
 	this->cubePhysics = cubePhysics;
 	obj->addComponent(cubePhysics);
 	addSceneObject(obj);
@@ -87,7 +87,7 @@ void Scene::pokeObject(const glm::vec2& ndcCoords)
 {
 	glm::vec4 wDir = camera->getRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
 	wDir /= wDir.w;
-	cubePhysics->applyImpulse(camera->getLookDir() * 2.0f, camera->getEyePos() + glm::vec3(wDir) * 10.0f);
+	cubePhysics->applyImpulse(camera->getLookDir() * 10.0f, camera->getEyePos() + glm::vec3(wDir) * 10.0f);
 }
 
 Scene* Scene::getInstance()
@@ -179,7 +179,13 @@ void Scene::control(float dt)
 {
     ControlActionManager::getInstance()->executeQueue(this, dt);
 
-	for (auto obj : sceneObjects) {
+	for (int i = 0; i < colliders.size() - 1; i++) {
+		for (int j = i + 1; j < colliders.size(); j++) {
+			colliders[i]->testCollision(*colliders[j]);
+		}
+	}
+
+	for (auto& obj : sceneObjects) {
 		obj->control(dt);
 	}
 }

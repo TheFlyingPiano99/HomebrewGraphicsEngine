@@ -75,6 +75,13 @@ public:
 	}
 
 	/*
+	* get inverse of mass in 1/kg
+	*/
+	float getInvMass() const {
+		return invMass;
+	}
+
+	/*
 	* set mass in kg
 	*/
 	void setMass(const float m) {
@@ -136,7 +143,58 @@ public:
 		rotationalDrag = rDrag;
 	}
 
+	const glm::vec3& getOwnerPosition() const {
+		return owner->getPosition();
+	}
 
+	static glm::vec3 getMomentOfInertiaOfCuboid(float mass, glm::vec3 scale) {
+		return glm::vec3(
+			mass / 12.0f * (scale.y * scale.y + scale.z * scale.z),
+			mass / 12.0f * (scale.x * scale.x + scale.z * scale.z),
+			mass / 12.0f * (scale.x * scale.x + scale.y * scale.y)
+		);
+	}
+
+	static glm::vec3 getMomentOfInertiaOfSolidSphere(float mass, float radius) {
+		return glm::vec3(
+			mass * 2.0f / 5.0f * radius * radius,
+			mass * 2.0f / 5.0f * radius * radius,
+			mass * 2.0f / 5.0f * radius * radius
+		);
+	}
+
+	static glm::vec3 getMomentOfInertiaOfHollowSphere(float mass, float radius) {
+		return glm::vec3(
+			mass * 2.0f / 3.0f * radius * radius,
+			mass * 2.0f / 3.0f * radius * radius,
+			mass * 2.0f / 3.0f * radius * radius
+		);
+	}
+
+	/*
+	* The height is along y axis
+	*/
+	static glm::vec3 getMomentOfInertiaOfSolidCylinder(float mass, float radius, float height) {
+		return glm::vec3(
+			mass / 12.0f * (3.0f * radius * radius + height * height),
+			mass / 2.0f * radius * radius,
+			mass / 12.0f * (3.0f * radius * radius + height * height)
+			);
+	}
+
+	static float calculateImpulseOfCollision(const Physics& a, const Physics& b, const glm::vec3& point, const glm::vec3& normal) {
+		glm::vec3 va = a.getVelocity();
+		glm::vec3 vb = b.getVelocity();
+		float vRel = glm::dot(normal, va - vb);
+		glm::vec3 ka = point - a.getOwnerPosition();
+		glm::vec3 kb = point - b.getOwnerPosition();
+		return vRel
+			/ (a.getInvMass() 
+				+ b.getInvMass() 
+				+ glm::dot(normal, a.getInvInertiaTensor() * glm::cross(glm::cross(ka, normal), ka))
+				+ glm::dot(normal, b.getInvInertiaTensor() * glm::cross( glm::cross(kb, normal), kb))
+				);
+	}
 
 private:
 	SceneObject* owner;
