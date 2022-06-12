@@ -3,8 +3,8 @@
 
 # Visual Studio
 .vs/
-x64/
-HomebrewGraphicsEngine/x64/
+x64/*
+HomebrewGraphicsEngine/x64/*
 
 # Compiled Object files
 *.slo
@@ -39,7 +39,6 @@ HomebrewGraphicsEngine/x64/
 *.ilk
 *.idb
 *.pdb
-*.idb
 *.tlog
 *.ipch
 *.opendb
@@ -50,7 +49,3 @@ HomebrewGraphicsEngine/x64/
 *.db-shm
 *.db-wal
 *.bin
-*.tlog
-*.pdb
-*.idb
-*.tlog
