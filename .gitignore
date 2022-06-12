@@ -5,6 +5,7 @@
 .vs/
 x64/*
 HomebrewGraphicsEngine/x64/*
+*.1.tlog
 
 # Compiled Object files
 *.slo
