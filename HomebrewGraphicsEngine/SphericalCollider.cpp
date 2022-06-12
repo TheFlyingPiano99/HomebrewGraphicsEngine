@@ -1,8 +1,22 @@
 #include "SphericalCollider.h"
 
-bool SphericalCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint)
+bool SphericalCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal)
 {
-    return false;
+	glm::vec3 a = ray.getPosition() - position;
+	float b = glm::dot(a, ray.getDirection());
+	float disc = b * b - (glm::dot(a, a) - radius * radius);
+	if (0.0f <= disc) {
+		float t = -b - sqrtf(disc);
+		if (t < 0.0f) {	// Ray start might be inside the sphere
+			t = -b + sqrtf(disc);
+		}
+		if (t < 0.0f) {	// Sphere behind the ray start
+			return false;
+		}
+		wIntersectionPoint = ray.getPosition() + ray.getDirection() * t;
+		return true;
+	}
+	return false;
 }
 
 bool SphericalCollider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)

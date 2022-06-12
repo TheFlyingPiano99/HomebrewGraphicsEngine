@@ -43,10 +43,6 @@ public:
 
 	void pokeObject(const glm::vec2& ndcCoords);
 
-	Physics* getCubePhysics() const {
-		return cubePhysics;
-	}
-
 private:
 	static Scene* instance;
 
@@ -63,7 +59,6 @@ private:
 	std::vector<Component*> components;
 	std::vector<Collider*> colliders;
 
-	Physics* cubePhysics;
 	bool pause = true;
 	unsigned int contextWidth;
 	unsigned int contextHeight;

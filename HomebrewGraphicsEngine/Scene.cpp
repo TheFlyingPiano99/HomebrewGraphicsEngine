@@ -67,12 +67,11 @@ void Scene::initCube(Texture** cubeMap, glm::vec3 pos)
 	auto* cubePhysics = new Physics(obj);
 	//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 	cubePhysics->setWorldSpaceDrag(glm::vec3(0.0f, 0.0f, 0.0f));
-	cubePhysics->setModelSpaceDrag(glm::vec3(1.0f, 1.0f, 1.0f));
+	cubePhysics->setModelSpaceDrag(glm::vec3(0.2f, 1.0f, 0.2f));
 	cubePhysics->setMass(1.0f);
 	//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
-	//cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
-	cubePhysics->setRotationalDrag(glm::vec3(2.0f, 1.0f, 2.0f));
-	this->cubePhysics = cubePhysics;
+	cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
+	cubePhysics->setRotationalDrag(glm::vec3(1.0f, 1.0f, 2.0f));
 	obj->addComponent(cubePhysics);
 	auto* cubeCollider = new SphericalCollider(cubePhysics);
 	cubeCollider->setRadius(10.0f);
@@ -92,7 +91,17 @@ void Scene::pokeObject(const glm::vec2& ndcCoords)
 {
 	glm::vec4 wDir = camera->getRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
 	wDir /= wDir.w;
-	cubePhysics->applyImpulse(glm::normalize(cubePhysics->getOwnerPosition() - camera->getEyePos()) * 10.0f, camera->getEyePos() + glm::vec3(wDir) * 10.0f);
+	glm::vec3 dir = glm::normalize(glm::vec3(wDir));
+	glm::vec3 intersectionPoint;
+	glm::vec3 intersectionNormal;
+	Ray ray;
+	ray.setPosition(camera->getEyePos());
+	ray.setDirection(dir);
+	for (auto* collider : colliders) {
+		if (collider->testRayIntersection(ray, intersectionPoint, intersectionNormal)) {
+			collider->getPhysics()->applyImpulse(dir * 10.0f, intersectionPoint - collider->getPhysics()->getOwnerPosition());
+		}
+	}
 }
 
 Scene* Scene::getInstance()

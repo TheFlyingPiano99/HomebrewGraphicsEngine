@@ -5,7 +5,7 @@ bool CuboidCollider::testCollision(const Collider* collider, glm::vec3& wCollisi
     return false;
 }
 
-bool CuboidCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint)
+bool CuboidCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal)
 {
     return false;
 }
