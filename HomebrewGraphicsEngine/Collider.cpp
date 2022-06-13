@@ -1,17 +1,71 @@
 #include "Collider.h"
+#include "SceneEventManager.h"
+#include "SceneEventImplementation.h"
 
 void Collider::collide(const Collider& collider)
 {
-    glm::vec3 collisionPoint;
-    glm::vec3 collisionNormal;
-    bool isCollision = testCollision(&collider, collisionPoint, collisionNormal);
-    if (isCollision && nullptr != physics && nullptr != collider.getPhysics()) {
-        physics->collide(*collider.getPhysics(), collisionPoint, collisionNormal, elasticity * collider.getElasticity());
+    bool isCollision = false;
+    if (nullptr != physics) {
+        glm::vec3 collisionPoint;
+        glm::vec3 collisionNormal;
+        isCollision = testCollision(&collider, collisionPoint, collisionNormal);
+        if (isCollision && nullptr != physics && nullptr != collider.getPhysics()
+            && !isnan(collisionPoint.x) && !isnan(collisionPoint.y) && !isnan(collisionPoint.z)
+            && !isnan(collisionNormal.x) && !isnan(collisionNormal.y) && !isnan(collisionNormal.z)) {
+            physics->collide(*collider.getPhysics(), collisionPoint, collisionNormal, elasticity * collider.getElasticity());
+        }
     }
+    else {
+        isCollision = testCollision(&collider);
+    }
+    if (isCollision) {
+        SceneEventManager::getInstance()->pushEvent(new CollisionEvent((const Collider*)this, &collider));
+    }
+
 }
 
 Physics* Collider::getPhysics() const {
     return physics;
+}
+
+bool Collider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
+{
+    bool isCollision = false;
+    switch (collider->type)
+    {
+    case ColliderType::sphericalColliderType:
+        isCollision = collideWithSpherical(collider, wCollisionPoint, wCollisionNormal);
+        break;
+    case ColliderType::AABBColliderType:
+        isCollision = collideWithAABB(collider, wCollisionPoint, wCollisionNormal);
+        break;
+    case ColliderType::cuboidColliderType:
+        isCollision = collideWithCuboid(collider, wCollisionPoint, wCollisionNormal);
+        break;
+    default:
+        break;
+    }
+    return isCollision;
+}
+
+bool Collider::testCollision(const Collider* collider)
+{
+    bool isCollision = false;
+    switch (collider->type)
+    {
+    case ColliderType::sphericalColliderType:
+        isCollision = collideWithSpherical(collider);
+        break;
+    case ColliderType::AABBColliderType:
+        isCollision = collideWithAABB(collider);
+        break;
+    case ColliderType::cuboidColliderType:
+        isCollision = collideWithCuboid(collider);
+        break;
+    default:
+        break;
+    }
+    return isCollision;
 }
 
 void Collider::control(float dt)

@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "AssetFolderPathManager.h"
 #include "GUI.h"
+#include "SceneEventManager.h"
 
 /*
 * Needs to be called before closing program!
@@ -13,4 +14,5 @@ void Singleton::destroyAllInstances() {
 	Scene::destroyInstance();
 	AssetFolderPathManager::destroyInstance();
 	GUI::destroyInstance();
+	SceneEventManager::destroyInstance();
 }

@@ -46,6 +46,9 @@
     <Filter Include="Header Files\OpenALObjects">
       <UniqueIdentifier>{b8022d03-d4fe-4f5b-8cd9-0a9305e3a83e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Model\Collision">
+      <UniqueIdentifier>{abbda47a-d2d7-47fd-ae16-c97a0c3d86e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -204,6 +207,21 @@
     <ClCompile Include="CuboidCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AABBCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionEventListener.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneEventImplementation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SingletonManager.h">
@@ -356,13 +374,28 @@
     <ClInclude Include="Ray.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="AABBCollider.h">
+      <Filter>Header Files\Model\Collision</Filter>
+    </ClInclude>
     <ClInclude Include="Collider.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
     <ClInclude Include="SphericalCollider.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
     <ClInclude Include="CuboidCollider.h">
+      <Filter>Header Files\Model\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEventListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEventManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEventImplementation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

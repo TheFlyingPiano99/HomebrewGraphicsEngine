@@ -8,6 +8,8 @@
 #include "Listener.h"
 #include "Physics.h"
 #include "SphericalCollider.h"
+#include "AABBCollider.h"
+#include "SceneEventManager.h"
 
 Scene* Scene::instance = nullptr;
 
@@ -22,8 +24,11 @@ void Scene::initSceneObjects()
 {
 	Texture* cubeMap = nullptr;
 	initSkyBox(&cubeMap);
-	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f));
-	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f));
+	AABBCollider* col1 = new AABBCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f), col1);
+	SphericalCollider* col2 = new SphericalCollider();
+	col2->setRadius(10.0f);
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f), col2);
 }
 
 void Scene::initSkyBox(Texture** cubeMap)
@@ -32,14 +37,14 @@ void Scene::initSkyBox(Texture** cubeMap)
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("skybox.frag")
 	);
-	std::vector<std::string> images;
-	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
-	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("left.jpg").c_str());
-	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("top.jpg").c_str());
-	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
-	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
-	images.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
-	*cubeMap = new TextureCube(images, 5);
+	std::vector<std::string> imagePaths;
+	imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
+	imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("left.jpg").c_str());
+	imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("top.jpg").c_str());
+	imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
+	imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
+	imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
+	*cubeMap = new TextureCube(imagePaths, 5);
 	auto* skyBoxMaterial = new Material(skyboxShader);
 	skyBoxMaterial->addTexture(*cubeMap);
 	Geometry* fullscreenQuad = GeometryFactory::FullScreenQuad::getInstance();
@@ -49,7 +54,7 @@ void Scene::initSkyBox(Texture** cubeMap)
 	addSceneObject(new SceneObject(skyBoxMesh));
 }
 
-void Scene::initCube(Texture** cubeMap, glm::vec3 pos)
+void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider)
 {
 	ShaderProgram* cubeShader = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
@@ -73,10 +78,9 @@ void Scene::initCube(Texture** cubeMap, glm::vec3 pos)
 	cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
 	cubePhysics->setRotationalDrag(glm::vec3(1.0f, 1.0f, 2.0f));
 	obj->addComponent(cubePhysics);
-	auto* cubeCollider = new SphericalCollider(cubePhysics);
-	cubeCollider->setRadius(10.0f);
-	obj->addComponent(cubeCollider);
-	colliders.push_back(cubeCollider);
+	collider->setPhysics(cubePhysics);
+	obj->addComponent(collider);
+	colliders.push_back(collider);
 	addSceneObject(obj);
 }
 
@@ -97,10 +101,19 @@ void Scene::pokeObject(const glm::vec2& ndcCoords)
 	Ray ray;
 	ray.setPosition(camera->getEyePos());
 	ray.setDirection(dir);
+	float minT = -1.0f;
+	Collider* selected = nullptr;
 	for (auto* collider : colliders) {
 		if (collider->testRayIntersection(ray, intersectionPoint, intersectionNormal)) {
-			collider->getPhysics()->applyImpulse(dir * 10.0f, intersectionPoint - collider->getPhysics()->getOwnerPosition());
+			float t = glm::length(intersectionPoint - ray.getPosition());
+			if (t < minT || minT < 0.0f) {
+				selected = collider;
+				minT = t;
+			}
 		}
+	}
+	if (nullptr != selected) {
+		selected->getPhysics()->applyImpulse(dir * 10.0f, intersectionPoint - selected->getPhysics()->getOwnerPosition());
 	}
 }
 
@@ -189,7 +202,7 @@ void Scene::destroy()
 void Scene::control(float dt)
 {
     ControlActionManager::getInstance()->executeQueue(this, dt);
-
+	SceneEventManager::getInstance()->executeQueue(dt);
 	for (auto& obj : sceneObjects) {
 		obj->control(dt);
 	}

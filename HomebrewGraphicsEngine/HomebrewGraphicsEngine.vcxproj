@@ -150,12 +150,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AABBCollider.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AssetFolderPathManager.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="Callbacks.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionEventListener.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ControlAction.cpp" />
     <ClCompile Include="ControlActionManager.cpp" />
@@ -186,6 +188,9 @@
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneEvent.cpp" />
+    <ClCompile Include="SceneEventImplementation.cpp" />
+    <ClCompile Include="SceneEventManager.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="SingletonManager.cpp" />
@@ -204,12 +209,14 @@
     <ClCompile Include="VBO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AABBCollider.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AssetFolderPathManager.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionEventListener.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ControlAction.h" />
     <ClInclude Include="ControlActionManager.h" />
@@ -241,6 +248,9 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RBO.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneEvent.h" />
+    <ClInclude Include="SceneEventImplementation.h" />
+    <ClInclude Include="SceneEventManager.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="SingletonManager.h" />

@@ -1,19 +1,49 @@
 #include "CuboidCollider.h"
 
-bool CuboidCollider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
-{
-    return false;
-}
-
 bool CuboidCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal)
 {
+    //TODO
     return false;
 }
 
-void CuboidCollider::control(float dt)
+bool CuboidCollider::testPointInside(const glm::vec3& point)
 {
+    //TODO
+    return false;
 }
 
-void CuboidCollider::update(float dt)
+bool CuboidCollider::collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
 {
+    //TODO
+    return false;
+}
+
+bool CuboidCollider::collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
+{
+    //TODO
+    return false;
+}
+
+bool CuboidCollider::collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
+{
+    //TODO
+    return false;
+}
+
+bool CuboidCollider::collideWithSpherical(const Collider* collider)
+{
+    //TODO
+    return false;
+}
+
+bool CuboidCollider::collideWithAABB(const Collider* collider)
+{
+    //TODO
+    return false;
+}
+
+bool CuboidCollider::collideWithCuboid(const Collider* collider)
+{
+    //TODO
+    return false;
 }

@@ -1,11 +1,14 @@
 #pragma once
 #include "Collider.h"
 
+/*
+* Simple and cheap sphere shaped collider object.
+*/
 class SphericalCollider :
     public Collider
 {
 public:
-    explicit SphericalCollider(Physics* physics) : Collider(physics) {
+    explicit SphericalCollider(Physics* physics = nullptr) : Collider(physics) {
         type = ColliderType::sphericalColliderType;
     }
     ~SphericalCollider() = default;
@@ -13,7 +16,7 @@ public:
     // Inherited via Collider
     bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) override;
 
-    bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) override;
+    bool testPointInside(const glm::vec3& point) override;
 
     float getRadius() const {
         return radius;
@@ -26,6 +29,12 @@ public:
 private:
     float radius;
 
-    bool colliderWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal);
+    bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) override;
+    bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) override;
+    bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) override;
+
+    bool collideWithSpherical(const Collider* collider) override;
+    bool collideWithAABB(const Collider* collider) override;
+    bool collideWithCuboid(const Collider* collider) override;
 };
 

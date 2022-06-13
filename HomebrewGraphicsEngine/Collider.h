@@ -1,7 +1,11 @@
 #pragma once
 #include "Ray.h"
 #include "Physics.h"
+#include "CollisionEventListener.h"
 
+/*
+* Virtual base class of all colliders.
+*/
 class Collider : public Component
 {
 public:
@@ -27,21 +31,29 @@ public:
 		elasticity = e;
 	}
 
-	virtual bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) = 0;
+	bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal);
 	
+	/*
+	* Cheaper version, without collision point and normal calculation t/f output
+	*/
+	bool testCollision(const Collider* collider);	
+
 	virtual bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) = 0;
+
+	virtual bool testPointInside(const glm::vec3& point) = 0;
 
 	enum class ColliderType {
 		sphericalColliderType,
+		AABBColliderType,
 		cuboidColliderType,
 		undefinedColliderType
 	};
 	ColliderType type = ColliderType::undefinedColliderType;
 
 	// Inherited via Component
-	void control(float dt) override;
+	virtual void control(float dt) override;
 
-	void update(float dt) override;
+	virtual void update(float dt) override;
 
 	const glm::vec3& getPosition() const {
 		return position;
@@ -74,5 +86,14 @@ protected:
 	glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 	glm::quat orientation = angleAxis(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::vec3 position = glm::vec3(0.0f);
+
+	virtual bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) = 0;
+	virtual bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) = 0;
+	virtual bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) = 0;
+
+	virtual bool collideWithSpherical(const Collider* collider) = 0;
+	virtual bool collideWithAABB(const Collider* collider) = 0;
+	virtual bool collideWithCuboid(const Collider* collider) = 0;
+
 };
 
