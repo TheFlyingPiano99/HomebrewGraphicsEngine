@@ -1,6 +1,7 @@
 #include "Collider.h"
 #include "SceneEventManager.h"
 #include "SceneEventImplementation.h"
+#include <iostream>
 
 void Collider::collide(const Collider& collider)
 {
@@ -8,11 +9,12 @@ void Collider::collide(const Collider& collider)
     if (nullptr != physics) {
         glm::vec3 collisionPoint;
         glm::vec3 collisionNormal;
-        isCollision = testCollision(&collider, collisionPoint, collisionNormal);
+        float overlapAlongNormal;
+        isCollision = testCollision(&collider, collisionPoint, collisionNormal, overlapAlongNormal);
         if (isCollision && nullptr != physics && nullptr != collider.getPhysics()
             && !isnan(collisionPoint.x) && !isnan(collisionPoint.y) && !isnan(collisionPoint.z)
             && !isnan(collisionNormal.x) && !isnan(collisionNormal.y) && !isnan(collisionNormal.z)) {
-            physics->collide(*collider.getPhysics(), collisionPoint, collisionNormal, elasticity * collider.getElasticity());
+            physics->collide(*collider.getPhysics(), collisionPoint, collisionNormal, overlapAlongNormal, elasticity * collider.getElasticity());
         }
     }
     else {
@@ -28,19 +30,19 @@ Physics* Collider::getPhysics() const {
     return physics;
 }
 
-bool Collider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
+bool Collider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)
 {
     bool isCollision = false;
     switch (collider->type)
     {
     case ColliderType::sphericalColliderType:
-        isCollision = collideWithSpherical(collider, wCollisionPoint, wCollisionNormal);
+        isCollision = collideWithSpherical(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
         break;
     case ColliderType::AABBColliderType:
-        isCollision = collideWithAABB(collider, wCollisionPoint, wCollisionNormal);
+        isCollision = collideWithAABB(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
         break;
     case ColliderType::cuboidColliderType:
-        isCollision = collideWithCuboid(collider, wCollisionPoint, wCollisionNormal);
+        isCollision = collideWithCuboid(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
         break;
     default:
         break;

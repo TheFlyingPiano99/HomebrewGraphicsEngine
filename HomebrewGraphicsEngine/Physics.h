@@ -39,6 +39,10 @@ public:
 		impulseAsIntegratedTorque += glm::cross(momentArm, _impulse);
 	}
 
+	void applyTransientForce(const glm::vec3& force) {
+		appliedTransientForce += force;
+	}
+
 	/*
 	* get momentum [kg * m / s]
 	*/
@@ -190,25 +194,31 @@ public:
 			);
 	}
 
-	void collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float elasticity) {
-		glm::vec3 va = this->getVelocity();
-		glm::vec3 vb = b.getVelocity();
-		float vRel = glm::dot(normal, va - vb);
-		glm::vec3 ka = point - this->getOwnerPosition();
-		glm::vec3 kb = point - b.getOwnerPosition();
-		float j = -(1.0f + elasticity) * vRel / (this->getInvMass()
-				+ b.getInvMass() 
-				+ glm::dot(normal, this->getInvInertiaTensor() * glm::cross(glm::cross(ka, normal), ka))
-				+ glm::dot(normal, b.getInvInertiaTensor() * glm::cross( glm::cross(kb, normal), kb))
-				);
-		this->applyImpulse(j * normal, ka);
-		b.applyImpulse(j * -normal, kb);
+	void collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal, float elasticity);
+
+	void forcePositionOffset(const glm::vec3& offset) {
+		forcedPositionOffsets.push_back(new glm::vec3(offset));
+	}
+
+	/*
+	* [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
+	*/
+	float getPositionForcingLevel() const {
+		return positionForcingLevel;
+	}
+
+	/*
+	* [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
+	*/
+	void setPositionForcingLevel(float level) {
+		positionForcingLevel = level;
 	}
 
 private:
 	SceneObject* owner;
 
 	glm::vec3 appliedForce = glm::vec3(0.0f);
+	glm::vec3 appliedTransientForce = glm::vec3(0.0f);
 	glm::vec3 impulse = glm::vec3(0.0f);
 	glm::vec3 momentum = glm::vec3(0.0f);
 	float invMass = 0.0f;
@@ -220,5 +230,8 @@ private:
 	glm::vec3 angularMomentum = glm::vec3(0.0f);
 	glm::mat3 invModelSpaceInertiaTensor = glm::mat3(0.0f);
 	glm::vec3 rotationalDrag = glm::vec3(0.0f);
+
+	std::vector<glm::vec3*> forcedPositionOffsets;
+	float positionForcingLevel = 0; // [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
 };
 

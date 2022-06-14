@@ -9,9 +9,20 @@ void Physics::control(float dt)
 
 void Physics::update(float dtMil)
 {
+	if (!forcedPositionOffsets.empty()) {
+		glm::vec3 sumOffset = glm::vec3(0.0f);	// Position offset constraints
+		float n = (float)forcedPositionOffsets.size();
+		for (auto& offset : forcedPositionOffsets) {
+			sumOffset += *offset;
+			delete offset;
+		}
+		forcedPositionOffsets.clear();
+		owner->setPosition(owner->getPosition() + sumOffset / n);
+	}
+
 	float dtSec = dtMil * 0.001f;
 	//Movement:
-	momentum += appliedForce * dtSec + impulse;
+	momentum += (appliedForce + appliedTransientForce) * dtSec + impulse;
 	glm::quat orientation = owner->getOrientation();
 	glm::vec3 rotatedModelSpaceDrag = abs(orientation * modelSpaceDrag);
 	glm::vec3 drag = worldSpaceDrag + rotatedModelSpaceDrag;
@@ -39,7 +50,32 @@ void Physics::update(float dtMil)
 		owner->setOrientation(orientation);
 	}
 
-	// Clear impulse:
-	impulse = glm::vec3(0.0f);
-	impulseAsIntegratedTorque = glm::vec3(0.0f);
+	// Clear transient:
+	appliedTransientForce = glm::vec3(0.0f, 0.0f, 0.0f);
+	impulse = glm::vec3(0.0f, 0.0f, 0.0f);
+	impulseAsIntegratedTorque = glm::vec3(0.0f, 0.0f, 0.0f);
+}
+
+void Physics::collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal, float elasticity) {
+	glm::vec3 va = this->getVelocity();
+	glm::vec3 vb = b.getVelocity();
+	float vRel = glm::dot(normal, va - vb);
+	glm::vec3 ka = point - this->getOwnerPosition();
+	glm::vec3 kb = point - b.getOwnerPosition();
+	float j = -(1.0f + elasticity) * vRel / (this->getInvMass()
+		+ b.getInvMass()
+		+ glm::dot(normal, this->getInvInertiaTensor() * glm::cross(glm::cross(ka, normal), ka))
+		+ glm::dot(normal, b.getInvInertiaTensor() * glm::cross(glm::cross(kb, normal), kb))
+		);
+	j = std::min(j, 0.0f);
+	this->applyImpulse(j * normal, ka);
+	b.applyImpulse(j * -normal, kb);
+	
+	float pfl0 = positionForcingLevel;
+	float pfl1 = b.getPositionForcingLevel();
+	float sumPFL = pfl0 + pfl1;
+	if (sumPFL > 0.0f) {
+		forcePositionOffset(pfl0 / sumPFL * overlapAlongNormal * -normal);
+		b.forcePositionOffset(pfl1 / sumPFL * overlapAlongNormal * normal);
+	}
 }

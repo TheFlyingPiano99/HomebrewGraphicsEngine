@@ -50,6 +50,7 @@ public:
 		while (!empty()) {
 			SceneEvent* event = popNextEvent();
 			event->execute(dt);
+			delete event;
 		}
 	}
 };

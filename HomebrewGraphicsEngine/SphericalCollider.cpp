@@ -21,7 +21,7 @@ bool SphericalCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersec
 	return false;
 }
 
-bool SphericalCollider::collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
+bool SphericalCollider::collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)
 {
 	const auto* sphericalCollider = (const SphericalCollider*)collider;
 	glm::vec3 betweenCenters = sphericalCollider->getPosition() - position;
@@ -34,7 +34,7 @@ bool SphericalCollider::collideWithSpherical(const Collider* collider, glm::vec3
 	return isCollision;
 }
 
-bool SphericalCollider::collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
+bool SphericalCollider::collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)
 {
 	const auto* aabb = (const AABBCollider*)collider;
 	glm::vec3 pos;
@@ -49,7 +49,7 @@ bool SphericalCollider::collideWithAABB(const Collider* collider, glm::vec3& wCo
 	return isCollision;
 }
 
-bool SphericalCollider::collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal)
+bool SphericalCollider::collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)
 {
 	//TODO
 	return false;

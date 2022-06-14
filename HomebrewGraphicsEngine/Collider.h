@@ -31,7 +31,7 @@ public:
 		elasticity = e;
 	}
 
-	bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal);
+	bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal);
 	
 	/*
 	* Cheaper version, without collision point and normal calculation t/f output
@@ -87,9 +87,9 @@ protected:
 	glm::quat orientation = angleAxis(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::vec3 position = glm::vec3(0.0f);
 
-	virtual bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) = 0;
-	virtual bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) = 0;
-	virtual bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal) = 0;
+	virtual bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) = 0;
+	virtual bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) = 0;
+	virtual bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) = 0;
 
 	virtual bool collideWithSpherical(const Collider* collider) = 0;
 	virtual bool collideWithAABB(const Collider* collider) = 0;

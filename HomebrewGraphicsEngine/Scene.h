@@ -5,10 +5,10 @@
 #include "SceneObject.h"
 #include "Light.h"
 #include "Camera.h"
-#include "Stars.h"
 #include "PostProcessStage.h"
 #include "Physics.h"
 #include "Collider.h"
+#include "ForceField.h"
 
 /*
 * Singleton object
@@ -76,7 +76,9 @@ private:
 	void initCameraAndLights();
 	void initSceneObjects();
 	void initSkyBox(Texture** cubeMap);
-	void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider);
+	void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
+	void initGroud();
+	ForceField* initGravitation();
 	void initPostProcessStages();
 	class SceneNotInstanciatedException : public std::exception {
 

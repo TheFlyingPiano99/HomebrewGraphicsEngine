@@ -10,6 +10,7 @@
 #include "SphericalCollider.h"
 #include "AABBCollider.h"
 #include "SceneEventManager.h"
+#include "ForceField.h"
 
 Scene* Scene::instance = nullptr;
 
@@ -24,11 +25,20 @@ void Scene::initSceneObjects()
 {
 	Texture* cubeMap = nullptr;
 	initSkyBox(&cubeMap);
+	ForceField* field = initGravitation();
+	initGroud();
 	AABBCollider* col1 = new AABBCollider();
-	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f), col1);
-	SphericalCollider* col2 = new SphericalCollider();
-	col2->setRadius(10.0f);
-	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f), col2);
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f), col1, field);
+	AABBCollider* col2 = new AABBCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f), col2, field);
+	col2 = new AABBCollider();
+	initCube(&cubeMap, glm::vec3(30.0f, 0.0f, 0.0f), col2, field);
+	col2 = new AABBCollider();
+	initCube(&cubeMap, glm::vec3(-30.0f, 0.0f, 30.0f), col2, field);
+	col2 = new AABBCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, -30.0f), col2, field);
+	col2 = new AABBCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, -30.0f, 0.0f), col2, field);
 }
 
 void Scene::initSkyBox(Texture** cubeMap)
@@ -54,7 +64,7 @@ void Scene::initSkyBox(Texture** cubeMap)
 	addSceneObject(new SceneObject(skyBoxMesh));
 }
 
-void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider)
+void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* field)
 {
 	ShaderProgram* cubeShader = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
@@ -71,17 +81,58 @@ void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider)
 
 	auto* cubePhysics = new Physics(obj);
 	//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
-	cubePhysics->setWorldSpaceDrag(glm::vec3(0.0f, 0.0f, 0.0f));
-	cubePhysics->setModelSpaceDrag(glm::vec3(0.2f, 1.0f, 0.2f));
-	cubePhysics->setMass(1.0f);
+	cubePhysics->setWorldSpaceDrag(glm::vec3(0.5f, 0.5f, 0.5f));
+	cubePhysics->setModelSpaceDrag(glm::vec3(0.1f, 0.3f, 0.1f));
+	cubePhysics->setMass(100.0f);
 	//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
 	cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
-	cubePhysics->setRotationalDrag(glm::vec3(1.0f, 1.0f, 2.0f));
+	cubePhysics->setRotationalDrag(glm::vec3(3.0f, 1.0f, 3.0f));
+	cubePhysics->setPositionForcingLevel(1.0f);
+	if (field != nullptr) {
+		field->addListener(cubePhysics);
+	}
+	collider->setElasticity(1.0f);
 	obj->addComponent(cubePhysics);
 	collider->setPhysics(cubePhysics);
 	obj->addComponent(collider);
 	colliders.push_back(collider);
 	addSceneObject(obj);
+}
+
+void Scene::initGroud()
+{
+	ShaderProgram* cubeShader = new ShaderProgram(
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.frag")
+	);
+	auto* cubeMaterial = new Material(cubeShader);
+	cubeMaterial->setReflectiveness(0.0f);
+	Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
+	auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
+	auto* obj = new SceneObject(cubeMesh);
+	obj->setPosition(glm::vec3(0.0f, -50.0f, 0.0f));
+	obj->setScale(glm::vec3(100.0f, 1.0f, 100.0f));
+
+	auto* cubePhysics = new Physics(obj);
+	cubePhysics->setPositionForcingLevel(0.0f);
+	AABBCollider* collider = new AABBCollider();
+	collider->setElasticity(0.2f);
+	obj->addComponent(cubePhysics);
+	collider->setPhysics(cubePhysics);
+	obj->addComponent(collider);
+	colliders.push_back(collider);
+	addSceneObject(obj);
+}
+
+ForceField* Scene::initGravitation()
+{
+	SceneObject* obj = new SceneObject();
+	auto* field = new HomogeneForceField();
+	field->setStrength(9.8f);
+
+	obj->addComponent(field);
+	addSceneObject(obj);
+	return field;
 }
 
 void Scene::initPostProcessStages()
@@ -256,35 +307,38 @@ void Scene::addSceneObject(SceneObject* object)
 	}
 
 	Mesh* mesh = object->getMesh();
-	Material* material = mesh->getMaterial();
-	Geometry* geometry = mesh->getGeometry();
-	ShaderProgram* program = material->getShaderProgram();
-	const std::vector<Texture*>& _textures = material->getTextures();
-	auto objComponents = object->getComponents();
+	Material* material = nullptr;
+	Geometry* geometry = nullptr;
+	if (mesh != nullptr) {
+		material = mesh->getMaterial();
+		geometry = mesh->getGeometry();
+		ShaderProgram* program = material->getShaderProgram();
+		const std::vector<Texture*>& _textures = material->getTextures();
 
-	auto meshIter = std::find(meshes.begin(), meshes.end(), mesh);
-	if (meshIter == meshes.end()) {	// If does not contain
-		meshes.push_back(mesh);
-	}
+		auto meshIter = std::find(meshes.begin(), meshes.end(), mesh);
+		if (meshIter == meshes.end()) {	// If does not contain
+			meshes.push_back(mesh);
+		}
 
-	if (auto materialIter = std::find(materials.begin(), materials.end(), material); materialIter == materials.end()) { // If does not contain
-		materials.push_back(material);
-	}
+		if (auto materialIter = std::find(materials.begin(), materials.end(), material); materialIter == materials.end()) { // If does not contain
+			materials.push_back(material);
+		}
 
-	if (auto geometryIter = std::find(geometries.begin(), geometries.end(), geometry); geometryIter == geometries.end()) { // If does not contain
-		geometries.push_back(geometry);
-	}
+		if (auto geometryIter = std::find(geometries.begin(), geometries.end(), geometry); geometryIter == geometries.end()) { // If does not contain
+			geometries.push_back(geometry);
+		}
+		if (auto programIter = std::find(shaders.begin(), shaders.end(), program); programIter == shaders.end()) { // If does not contain
+			shaders.push_back(program);
+		}
 
-	if (auto programIter = std::find(shaders.begin(), shaders.end(), program); programIter == shaders.end()) { // If does not contain
-		shaders.push_back(program);
-	}
-
-	for (auto* texture : _textures) {
-		auto textureIter = std::find(this->textures.begin(), this->textures.end(), texture);
-		if (textureIter == this->textures.end()) { // If does not contain
-			this->textures.push_back(texture);
+		for (auto* texture : _textures) {
+			auto textureIter = std::find(this->textures.begin(), this->textures.end(), texture);
+			if (textureIter == this->textures.end()) { // If does not contain
+				this->textures.push_back(texture);
+			}
 		}
 	}
+	auto objComponents = object->getComponents();
 
 	for (auto* comp : objComponents) {
 		auto compIter = std::find(this->components.begin(), this->components.end(), comp);
