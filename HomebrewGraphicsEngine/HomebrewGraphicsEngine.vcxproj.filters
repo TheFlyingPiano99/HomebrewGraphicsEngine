@@ -114,13 +114,7 @@
     <ClCompile Include="SkyBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stars.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stb.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Texture1D.cpp">
@@ -133,9 +127,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureCube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TransferFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VAO.cpp">
@@ -222,20 +213,14 @@
     <ClCompile Include="SceneEventImplementation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ForceField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CompositeCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SingletonManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stars.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TransferFunction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vectorOperations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -386,17 +371,26 @@
     <ClInclude Include="CuboidCollider.h">
       <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="ForceField.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
     <ClInclude Include="CollisionEventListener.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Controler</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonManager.h">
+      <Filter>Header Files\Controler</Filter>
     </ClInclude>
     <ClInclude Include="SceneEventManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneEvent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Controler</Filter>
     </ClInclude>
     <ClInclude Include="SceneEventImplementation.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Controler</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneEvent.h">
+      <Filter>Header Files\Controler</Filter>
+    </ClInclude>
+    <ClInclude Include="CompositeCollider.h">
+      <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

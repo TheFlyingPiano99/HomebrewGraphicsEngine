@@ -11,6 +11,7 @@
 #include "AABBCollider.h"
 #include "SceneEventManager.h"
 #include "ForceField.h"
+#include "CompositeCollider.h"
 
 Scene* Scene::instance = nullptr;
 
@@ -27,18 +28,20 @@ void Scene::initSceneObjects()
 	initSkyBox(&cubeMap);
 	ForceField* field = initGravitation();
 	initGroud();
-	AABBCollider* col1 = new AABBCollider();
-	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f), col1, field);
+
+	auto* col = initCompositeCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f), col, field);
 	AABBCollider* col2 = new AABBCollider();
-	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f), col2, field);
-	col2 = new AABBCollider();
-	initCube(&cubeMap, glm::vec3(30.0f, 0.0f, 0.0f), col2, field);
-	col2 = new AABBCollider();
-	initCube(&cubeMap, glm::vec3(-30.0f, 0.0f, 30.0f), col2, field);
-	col2 = new AABBCollider();
-	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, -30.0f), col2, field);
-	col2 = new AABBCollider();
-	initCube(&cubeMap, glm::vec3(0.0f, -30.0f, 0.0f), col2, field);
+	col = initCompositeCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f), col, field);
+	col = initCompositeCollider();
+	initCube(&cubeMap, glm::vec3(30.0f, 0.0f, 0.0f), col, field);
+	col = initCompositeCollider();
+	initCube(&cubeMap, glm::vec3(-30.0f, 0.0f, 30.0f), col, field);
+	col = initCompositeCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, 0.0f, -30.0f), col, field);
+	col = initCompositeCollider();
+	initCube(&cubeMap, glm::vec3(0.0f, -30.0f, 0.0f), col, field);
 }
 
 void Scene::initSkyBox(Texture** cubeMap)
@@ -86,14 +89,14 @@ void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, Force
 	cubePhysics->setMass(100.0f);
 	//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
 	cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
-	cubePhysics->setRotationalDrag(glm::vec3(3.0f, 1.0f, 3.0f));
+	cubePhysics->setRotationalDrag(glm::vec3(2000.0f, 1000.0f, 2000.0f));
 	cubePhysics->setPositionForcingLevel(1.0f);
 	if (field != nullptr) {
 		field->addListener(cubePhysics);
 	}
-	collider->setElasticity(1.0f);
 	obj->addComponent(cubePhysics);
 	collider->setPhysics(cubePhysics);
+	collider->setElasticity(1.0f);
 	obj->addComponent(collider);
 	colliders.push_back(collider);
 	addSceneObject(obj);
@@ -119,9 +122,89 @@ void Scene::initGroud()
 	collider->setElasticity(0.2f);
 	obj->addComponent(cubePhysics);
 	collider->setPhysics(cubePhysics);
+	collider->setMinInOrigo(glm::vec3(-100.0f, -1.0f, -100.0f));
+	collider->setMaxInOrigo(glm::vec3(100.0f, 1.0f, 100.0f));
 	obj->addComponent(collider);
 	colliders.push_back(collider);
 	addSceneObject(obj);
+}
+
+CompositeCollider* Scene::initCompositeCollider()
+{
+	// 1, 1 quarter
+	CompositeCollider* col = new CompositeCollider();
+	auto* subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, 5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, 5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, 10.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, 10.0f));
+
+	// -1, 1 quarter
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, 5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, 5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, 10.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, 10.0f));
+
+	// 1, -1 quarter
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, -5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, -5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, -10.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, -10.0f));
+
+	// -1, -1 quarter
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, -5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, -5.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, -10.0f));
+	subCol = new AABBCollider();
+	subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
+	subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+	col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, -10.0f));
+
+	return col;
 }
 
 ForceField* Scene::initGravitation()
@@ -164,7 +247,7 @@ void Scene::pokeObject(const glm::vec2& ndcCoords)
 		}
 	}
 	if (nullptr != selected) {
-		selected->getPhysics()->applyImpulse(dir * 10.0f, intersectionPoint - selected->getPhysics()->getOwnerPosition());
+		selected->getPhysics()->applyImpulse(dir * 100.0f, intersectionPoint - selected->getPhysics()->getOwnerPosition());
 	}
 }
 

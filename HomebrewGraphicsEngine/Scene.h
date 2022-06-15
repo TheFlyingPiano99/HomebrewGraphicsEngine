@@ -9,6 +9,7 @@
 #include "Physics.h"
 #include "Collider.h"
 #include "ForceField.h"
+#include "CompositeCollider.h"
 
 /*
 * Singleton object
@@ -78,6 +79,7 @@ private:
 	void initSkyBox(Texture** cubeMap);
 	void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
 	void initGroud();
+	CompositeCollider* initCompositeCollider();
 	ForceField* initGravitation();
 	void initPostProcessStages();
 	class SceneNotInstanciatedException : public std::exception {

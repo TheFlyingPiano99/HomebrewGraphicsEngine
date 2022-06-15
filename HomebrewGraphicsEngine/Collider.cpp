@@ -3,7 +3,7 @@
 #include "SceneEventImplementation.h"
 #include <iostream>
 
-void Collider::collide(const Collider& collider)
+void Collider::collide(const Collider& collider) const
 {
     bool isCollision = false;
     if (nullptr != physics) {
@@ -30,7 +30,7 @@ Physics* Collider::getPhysics() const {
     return physics;
 }
 
-bool Collider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)
+bool Collider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
 {
     bool isCollision = false;
     switch (collider->type)
@@ -44,13 +44,16 @@ bool Collider::testCollision(const Collider* collider, glm::vec3& wCollisionPoin
     case ColliderType::cuboidColliderType:
         isCollision = collideWithCuboid(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
         break;
+    case ColliderType::compositeColliderType:
+        isCollision = collideWithComposite(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+        break;
     default:
         break;
     }
     return isCollision;
 }
 
-bool Collider::testCollision(const Collider* collider)
+bool Collider::testCollision(const Collider* collider) const
 {
     bool isCollision = false;
     switch (collider->type)

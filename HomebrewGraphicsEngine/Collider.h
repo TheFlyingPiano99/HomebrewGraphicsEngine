@@ -15,7 +15,7 @@ public:
 	/*
 	* Called from scene.
 	*/
-	void collide(const Collider& collider);
+	void collide(const Collider& collider) const;
 	
 	Physics* getPhysics() const;
 
@@ -31,21 +31,22 @@ public:
 		elasticity = e;
 	}
 
-	bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal);
+	bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const;
 	
 	/*
 	* Cheaper version, without collision point and normal calculation t/f output
 	*/
-	bool testCollision(const Collider* collider);	
+	bool testCollision(const Collider* collider) const;	
 
-	virtual bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) = 0;
+	virtual bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const = 0;
 
-	virtual bool testPointInside(const glm::vec3& point) = 0;
+	virtual bool testPointInside(const glm::vec3& point) const = 0;
 
 	enum class ColliderType {
 		sphericalColliderType,
 		AABBColliderType,
 		cuboidColliderType,
+		compositeColliderType,
 		undefinedColliderType
 	};
 	ColliderType type = ColliderType::undefinedColliderType;
@@ -79,6 +80,16 @@ public:
 		orientation = o;
 	}
 
+	virtual bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+	virtual bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+	virtual bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+	virtual bool collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+
+	virtual bool collideWithSpherical(const Collider* collider) const = 0;
+	virtual bool collideWithAABB(const Collider* collider) const = 0;
+	virtual bool collideWithCuboid(const Collider* collider) const = 0;
+	virtual bool collideWithComposite(const Collider* collider) const = 0;
+
 protected:
 
 	Physics* physics = nullptr;
@@ -86,14 +97,5 @@ protected:
 	glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 	glm::quat orientation = angleAxis(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	glm::vec3 position = glm::vec3(0.0f);
-
-	virtual bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) = 0;
-	virtual bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) = 0;
-	virtual bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) = 0;
-
-	virtual bool collideWithSpherical(const Collider* collider) = 0;
-	virtual bool collideWithAABB(const Collider* collider) = 0;
-	virtual bool collideWithCuboid(const Collider* collider) = 0;
-
 };
 
