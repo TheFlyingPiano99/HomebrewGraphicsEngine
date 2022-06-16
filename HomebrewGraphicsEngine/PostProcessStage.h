@@ -2,37 +2,40 @@
 #include "FBO.h"
 #include "Mesh.h"
 #include "AssetFolderPathManager.h"
-#include "GeometryFactories.h"
+#include "GeometryFactory.h"
 
-class PostProcessStage
-{
-public:
-	PostProcessStage(std::string& fragmentShaderPath, int contextWidth, int contextHeight);
+namespace hograengine {
 
-	~PostProcessStage() {
-		fbo.Delete();
-		delete mesh;
-		delete colorTexture;
-		delete depthTexture;
-		delete program;
-		delete material;
-	}
+	class PostProcessStage
+	{
+	public:
+		PostProcessStage(std::string& fragmentShaderPath, int contextWidth, int contextHeight);
 
-	void Bind() const;
-	void Draw(const FBO& fbo) const;
-	const FBO& getFBO() const;
+		~PostProcessStage() {
+			fbo.Delete();
+			delete mesh;
+			delete colorTexture;
+			delete depthTexture;
+			delete program;
+			delete material;
+		}
 
-	void resize(int contextWidth, int contextHeight);
+		void Bind() const;
+		void Draw(const FBO& fbo) const;
+		const FBO& getFBO() const;
 
-	void setActive(bool _active);
+		void resize(int contextWidth, int contextHeight);
 
-private:
-	FBO fbo;
-	Mesh* mesh;
-	Texture2D* colorTexture;
-	Texture2D* depthTexture;
-	ShaderProgram* program;
-	Material* material;
-	bool active = true;
-};
+		void setActive(bool _active);
 
+	private:
+		FBO fbo;
+		Mesh* mesh;
+		Texture2D* colorTexture;
+		Texture2D* depthTexture;
+		ShaderProgram* program;
+		Material* material;
+		bool active = true;
+	};
+
+}

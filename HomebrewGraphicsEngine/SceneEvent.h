@@ -1,11 +1,14 @@
 #pragma once
-class SceneEvent
-{
-public:
-	virtual ~SceneEvent() = default;
 
-	virtual void execute(float dt) = 0;
+namespace hograengine {
 
-};
+	class SceneEvent
+	{
+	public:
+		virtual ~SceneEvent() = default;
 
+		virtual void execute(float dt) = 0;
+
+	};
+}
 

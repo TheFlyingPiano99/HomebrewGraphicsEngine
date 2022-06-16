@@ -1,64 +1,66 @@
 #include "Material.h"
+namespace hograengine {
 
-void Material::Bind() const
-{
-	if (nullptr == program) {
-		throw new ShaderProgramIsNullptr();
-	}
-	program->Activate();
-	for (auto& texture : textures)
+	void Material::Bind() const
 	{
-		texture->Bind();
+		if (nullptr == program) {
+			throw new ShaderProgramIsNullptr();
+		}
+		program->Activate();
+		for (auto& texture : textures)
+		{
+			texture->Bind();
+		}
 	}
-}
 
-void Material::Bind(const Camera& camera, const std::vector<Light*>& lights) const
-{
-	if (nullptr == program) {
-		throw new ShaderProgramIsNullptr();
-	}
-	program->Activate();
-	camera.exportData(*program);
-	for (int i = 0; i < lights.size(); i++) {
-		lights[i]->exportData(*program, i);
-	}
-	glUniform1ui(glGetUniformLocation(program->ID, "lightCount"), (GLuint)lights.size());
-
-	for (auto& texture : textures)
+	void Material::Bind(const Camera& camera, const std::vector<Light*>& lights) const
 	{
-		texture->Bind();
+		if (nullptr == program) {
+			throw new ShaderProgramIsNullptr();
+		}
+		program->Activate();
+		camera.exportData(*program);
+		for (int i = 0; i < lights.size(); i++) {
+			lights[i]->exportData(*program, i);
+		}
+		glUniform1ui(glGetUniformLocation(program->ID, "lightCount"), (GLuint)lights.size());
+
+		for (auto& texture : textures)
+		{
+			texture->Bind();
+		}
+		glUniform3f(glGetUniformLocation(program->ID, "material.diffuseColor"), diffuseColor.r, diffuseColor.g, diffuseColor.b);
+		glUniform3f(glGetUniformLocation(program->ID, "material.specularColor"), specularColor.r, specularColor.g, specularColor.b);
+		glUniform3f(glGetUniformLocation(program->ID, "material.ambientColor"), ambientColor.r, ambientColor.g, ambientColor.b);
+		glUniform1f(glGetUniformLocation(program->ID, "material.shininess"), shininess);
+		glUniform1f(glGetUniformLocation(program->ID, "material.reflectiveness"), reflectiveness);
+
+		if (alphaBlend) {
+			glEnable(GL_BLEND);
+		}
+		else {
+			glDisable(GL_BLEND);
+		}
 	}
-	glUniform3f(glGetUniformLocation(program->ID, "material.diffuseColor"), diffuseColor.r, diffuseColor.g, diffuseColor.b);
-	glUniform3f(glGetUniformLocation(program->ID, "material.specularColor"), specularColor.r, specularColor.g, specularColor.b);
-	glUniform3f(glGetUniformLocation(program->ID, "material.ambientColor"), ambientColor.r, ambientColor.g, ambientColor.b);
-	glUniform1f(glGetUniformLocation(program->ID, "material.shininess"), shininess);
-	glUniform1f(glGetUniformLocation(program->ID, "material.reflectiveness"), reflectiveness);
 
-	if (alphaBlend) {
-		glEnable(GL_BLEND);
+	void Material::addTexture(Texture* texture) { textures.push_back(texture); }
+
+	void Material::clearTextures()
+	{
+		textures.clear();
 	}
-	else {
-		glDisable(GL_BLEND);
+
+	ShaderProgram* Material::getShaderProgram() const
+	{
+		return program;
 	}
-}
 
-void Material::addTexture(Texture* texture) { textures.push_back(texture); }
+	const std::vector<Texture*>& Material::getTextures() const
+	{
+		return textures;
+	}
 
-void Material::clearTextures()
-{
-	textures.clear();
-}
-
-ShaderProgram* Material::getShaderProgram() const
-{
-	return program;
-}
-
-const std::vector<Texture*>& Material::getTextures() const
-{
-	return textures;
-}
-
-void Material::setAlphaBlend(bool blend) {
-	alphaBlend = blend;
+	void Material::setAlphaBlend(bool blend) {
+		alphaBlend = blend;
+	}
 }

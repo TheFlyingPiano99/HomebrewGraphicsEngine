@@ -1,11 +1,15 @@
 #pragma once
-class Component
-{
-public:
-	virtual ~Component() = default;
 
-	virtual void control(float dt) = 0;
+namespace hograengine {
 
-	virtual void update(float dt) = 0;
-};
+	class Component
+	{
+	public:
+		virtual ~Component() = default;
 
+		virtual void control(float dt) = 0;
+
+		virtual void update(float dt) = 0;
+	};
+
+}

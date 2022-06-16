@@ -219,11 +219,11 @@
     <ClCompile Include="CompositeCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HoGraEngineApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="vectorOperations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
       <Filter>imgui</Filter>
     </ClInclude>
@@ -338,7 +338,7 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files\OpenGLObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GeometryFactories.h">
+    <ClInclude Include="GeometryFactory.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="PostProcessStage.h">
@@ -391,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="CompositeCollider.h">
       <Filter>Header Files\Model\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="HoGraEngineApplication.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

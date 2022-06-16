@@ -1,13 +1,15 @@
 #pragma once
 
 #include "openAL/al.h"
+namespace hograengine {
 
-class AudioSource
-{
-public:
+	class AudioSource
+	{
+	public:
 
 
-private:
+	private:
 
-};
+	};
 
+}

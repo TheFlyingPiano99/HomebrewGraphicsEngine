@@ -2,53 +2,55 @@
 
 #include "imgui_impl_glfw.h"
 #include "Scene.h"
+namespace hograengine {
 
-/*
-* Singleton object
-*/
-class GUI
-{
-	static GUI* instance;
-	ImGuiIO io;
+	/*
+	* Singleton object
+	*/
+	class GUI
+	{
+		static GUI* instance;
+		ImGuiIO io;
 
-	GUI() {
-	}
-
-	bool visible = false;
-
-public:
-
-	static GUI* getInstance() {
-		if (instance == nullptr) {
-			instance = new GUI();
+		GUI() {
 		}
-		return instance;
-	}
 
-	static void destroyInstance() {
-		if (instance != nullptr) {
-			delete instance;
-			instance = nullptr;
+		bool visible = false;
+
+	public:
+
+		static GUI* getInstance() {
+			if (instance == nullptr) {
+				instance = new GUI();
+			}
+			return instance;
 		}
-	}
 
-	void initGUI(GLFWwindow* window);
+		static void destroyInstance() {
+			if (instance != nullptr) {
+				delete instance;
+				instance = nullptr;
+			}
+		}
 
-	void destroyGUI();
+		void initGUI(GLFWwindow* window);
 
-	void preDrawInit();
-	
-	void configToScene(Scene& scene);
+		void destroyGUI();
 
-	void draw();
+		void preDrawInit();
 
-	void setVisible(bool b) {
-		visible = b;
-	}
+		void configToScene(Scene& scene);
 
-	bool isVisible() {
-		return visible;
-	}
+		void draw();
 
-};
+		void setVisible(bool b) {
+			visible = b;
+		}
 
+		bool isVisible() {
+			return visible;
+		}
+
+	};
+
+}

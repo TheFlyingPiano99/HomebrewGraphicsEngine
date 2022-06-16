@@ -1,6 +1,10 @@
 #include "SceneEventImplementation.h"
 
-void CollisionEvent::execute(float dt)
-{
-	//TODO
+namespace hograengine {
+
+	void CollisionEvent::execute(float dt)
+	{
+		//TODO
+	}
+
 }

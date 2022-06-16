@@ -6,13 +6,16 @@
 #include "GUI.h"
 #include "SceneEventManager.h"
 
-/*
-* Needs to be called before closing program!
-*/
-void Singleton::destroyAllInstances() {
-	ControlActionManager::destroyInstance();
-	Scene::destroyInstance();
-	AssetFolderPathManager::destroyInstance();
-	GUI::destroyInstance();
-	SceneEventManager::destroyInstance();
+namespace hograengine {
+
+	/*
+	* Needs to be called before closing program!
+	*/
+	void Singleton::destroyAllInstances() {
+		ControlActionManager::destroyInstance();
+		Scene::destroyInstance();
+		AssetFolderPathManager::destroyInstance();
+		GUI::destroyInstance();
+		SceneEventManager::destroyInstance();
+	}
 }

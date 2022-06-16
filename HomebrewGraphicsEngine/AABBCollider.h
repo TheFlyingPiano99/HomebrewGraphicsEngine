@@ -1,90 +1,91 @@
 #pragma once
 #include "Collider.h"
+namespace hograengine {
 
-/*
-* Cheap axis alligned bounding box collider.
-*/
-class AABBCollider :
-    public Collider
-{
-public:
-    explicit AABBCollider(Physics* physics = nullptr) : Collider(physics) {
-        type = ColliderType::AABBColliderType;
-    }
-
-    // Inherited via Collider
-
-    virtual bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
-
-    virtual bool testPointInside(const glm::vec3& point) const override;
-
-    void control(float dt) override {
-        if (nullptr != physics) {
-            position = physics->getOwnerPosition();
-            scale = physics->getOwnerScale();
-            orientation = physics->getOwnerOrientation();
+    /*
+    * Cheap axis alligned bounding box collider.
+    */
+    class AABBCollider :
+        public Collider
+    {
+    public:
+        explicit AABBCollider(Physics* physics = nullptr) : Collider(physics) {
+            type = ColliderType::AABBColliderType;
         }
-        min = minInOrigo + position;
-        max = maxInOrigo + position;
-    }
 
-    void update(float dt) override {
-        if (nullptr != physics) {
-            position = physics->getOwnerPosition();
-            scale = physics->getOwnerScale();
-            orientation = physics->getOwnerOrientation();
+        // Inherited via Collider
+
+        virtual bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
+
+        virtual bool testPointInside(const glm::vec3& point) const override;
+
+        void control(float dt) override {
+            if (nullptr != physics) {
+                position = physics->getOwnerPosition();
+                scale = physics->getOwnerScale();
+                orientation = physics->getOwnerOrientation();
+            }
+            min = minInOrigo + position;
+            max = maxInOrigo + position;
         }
-        min = minInOrigo + position;
-        max = maxInOrigo + position;
-    }
 
-    const glm::vec3& getMin() const {
-        return min;
-    }
+        void update(float dt) override {
+            if (nullptr != physics) {
+                position = physics->getOwnerPosition();
+                scale = physics->getOwnerScale();
+                orientation = physics->getOwnerOrientation();
+            }
+            min = minInOrigo + position;
+            max = maxInOrigo + position;
+        }
 
-    void setMin(const glm::vec3& _min) {
-        min = _min;
-    }
+        const glm::vec3& getMin() const {
+            return min;
+        }
 
-    const glm::vec3& getMax() const {
-        return max;
-    }
+        void setMin(const glm::vec3& _min) {
+            min = _min;
+        }
 
-    void setMax(const glm::vec3& _max) {
-        max = _max;
-    }
+        const glm::vec3& getMax() const {
+            return max;
+        }
 
-    const glm::vec3& getMinInOrigo() const {
-        return minInOrigo;
-    }
+        void setMax(const glm::vec3& _max) {
+            max = _max;
+        }
 
-    void setMinInOrigo(const glm::vec3& _min) {
-        minInOrigo = _min;
-    }
+        const glm::vec3& getMinInOrigo() const {
+            return minInOrigo;
+        }
 
-    const glm::vec3& getMaxInOrigo() const {
-        return maxInOrigo;
-    }
+        void setMinInOrigo(const glm::vec3& _min) {
+            minInOrigo = _min;
+        }
 
-    void setMaxInOrigo(const glm::vec3& _max) {
-        maxInOrigo = _max;
-    }
+        const glm::vec3& getMaxInOrigo() const {
+            return maxInOrigo;
+        }
 
-private:
-    glm::vec3 min = glm::vec3();
-    glm::vec3 max = glm::vec3();
+        void setMaxInOrigo(const glm::vec3& _max) {
+            maxInOrigo = _max;
+        }
 
-    glm::vec3 minInOrigo = glm::vec3();
-    glm::vec3 maxInOrigo = glm::vec3();
+    private:
+        glm::vec3 min = glm::vec3();
+        glm::vec3 max = glm::vec3();
 
-    bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-    bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-    bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-    bool collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        glm::vec3 minInOrigo = glm::vec3();
+        glm::vec3 maxInOrigo = glm::vec3();
 
-    bool collideWithSpherical(const Collider* collider) const override;
-    bool collideWithAABB(const Collider* collider) const override;
-    bool collideWithCuboid(const Collider* collider) const override;
-    bool collideWithComposite(const Collider* collider) const override;
-};
+        bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
 
+        bool collideWithSpherical(const Collider* collider) const override;
+        bool collideWithAABB(const Collider* collider) const override;
+        bool collideWithCuboid(const Collider* collider) const override;
+        bool collideWithComposite(const Collider* collider) const override;
+    };
+}

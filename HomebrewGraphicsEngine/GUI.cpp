@@ -5,48 +5,51 @@
 #include "imgui_impl_opengl3.h"
 #include "GlobalInclude.h"
 
-GUI* GUI::instance = nullptr;
+namespace hograengine {
 
-void GUI::initGUI(GLFWwindow* window) {
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	io = ImGui::GetIO();
-	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(window, false);
-	ImGui_ImplOpenGL3_Init("#version 420");
-}
+	GUI* GUI::instance = nullptr;
 
-void GUI::destroyGUI() {
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
-}
-
-void GUI::preDrawInit()
-{
-	if (!visible) {
-		return;
+	void GUI::initGUI(GLFWwindow* window) {
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		io = ImGui::GetIO();
+		ImGui::StyleColorsDark();
+		ImGui_ImplGlfw_InitForOpenGL(window, false);
+		ImGui_ImplOpenGL3_Init("#version 420");
 	}
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
 
-}
+	void GUI::destroyGUI() {
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
+	}
 
-void GUI::configToScene(Scene& scene)
-{
-	if (!visible)
-		return;
-	char value_buf[64] = {};
-	ImGui::Begin("Settings");
-	//TODO
-	ImGui::End();
-}
+	void GUI::preDrawInit()
+	{
+		if (!visible) {
+			return;
+		}
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
-void GUI::draw()
-{
-	if (!visible)
-		return;
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void GUI::configToScene(Scene& scene)
+	{
+		if (!visible)
+			return;
+		char value_buf[64] = {};
+		ImGui::Begin("Settings");
+		//TODO
+		ImGui::End();
+	}
+
+	void GUI::draw()
+	{
+		if (!visible)
+			return;
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
 }

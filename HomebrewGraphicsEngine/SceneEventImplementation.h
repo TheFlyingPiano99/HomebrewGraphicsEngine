@@ -2,18 +2,20 @@
 #include "SceneEvent.h"
 
 #include "Collider.h"
+namespace hograengine {
 
-class CollisionEvent : public SceneEvent
-{
-public:
-	CollisionEvent(const Collider* _collider1, const Collider* _collider2) : collider1(_collider1), collider2(_collider2) {}
+	class CollisionEvent : public SceneEvent
+	{
+	public:
+		CollisionEvent(const Collider* _collider1, const Collider* _collider2) : collider1(_collider1), collider2(_collider2) {}
 
-	~CollisionEvent() override = default;
+		~CollisionEvent() override = default;
 
-	void execute(float dt) override;
+		void execute(float dt) override;
 
-private:
+	private:
 
-	const Collider* collider1;
-	const Collider* collider2;
-};
+		const Collider* collider1;
+		const Collider* collider2;
+	};
+}

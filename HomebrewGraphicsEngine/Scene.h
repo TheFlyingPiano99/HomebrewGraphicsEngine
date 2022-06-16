@@ -11,79 +11,82 @@
 #include "ForceField.h"
 #include "CompositeCollider.h"
 
-/*
-* Singleton object
-*/
-class Scene
-{
-public:
-	static Scene* init(int contextWidth, int contextHeight);
-	static Scene* getInstance();
-	static void destroyInstance();
+namespace hograengine {
 
-	void control(float dt);
-	void update(float dt);
-	void draw();
+	/*
+	* Singleton object
+	*/
+	class Scene
+	{
+	public:
+		static Scene* init(int contextWidth, int contextHeight);
+		static Scene* getInstance();
+		static void destroyInstance();
 
-	void addSceneObject(SceneObject* object);
+		void control(float dt);
+		void update(float dt);
+		void draw();
 
-	const glm::vec3& getPreferedUp() const;
+		void addSceneObject(SceneObject* object);
 
-	void togglePause();
+		const glm::vec3& getPreferedUp() const;
 
-	Camera* getCamera();
+		void togglePause();
 
-	void onContextResize(int contextWidth, int contextHeight);
-	
-	void serialize();
+		Camera* getCamera();
 
-	~Scene() {
-		serialize();
-		destroy();
-	}
+		void onContextResize(int contextWidth, int contextHeight);
 
-	void pokeObject(const glm::vec2& ndcCoords);
+		void serialize();
 
-private:
-	static Scene* instance;
+		~Scene() {
+			serialize();
+			destroy();
+		}
 
-	glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
+		void pokeObject(const glm::vec2& ndcCoords);
 
-	Camera* camera = nullptr;
-	std::vector<Light*> lights;
+	private:
+		static Scene* instance;
 
-	std::vector<ShaderProgram*> shaders;
-	std::vector<Geometry*> geometries;
-	std::vector<Material*> materials;
-	std::vector<Mesh*> meshes;
-	std::vector<SceneObject*> sceneObjects;
-	std::vector<Component*> components;
-	std::vector<Collider*> colliders;
+		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
 
-	bool pause = true;
-	unsigned int contextWidth;
-	unsigned int contextHeight;
+		Camera* camera = nullptr;
+		std::vector<Light*> lights;
 
-	glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
+		std::vector<ShaderProgram*> shaders;
+		std::vector<Geometry*> geometries;
+		std::vector<Material*> materials;
+		std::vector<Mesh*> meshes;
+		std::vector<SceneObject*> sceneObjects;
+		std::vector<Component*> components;
+		std::vector<Collider*> colliders;
 
-	std::vector<Texture*> textures;
-	std::vector<PostProcessStage*> postProcessStages;
+		bool pause = true;
+		unsigned int contextWidth;
+		unsigned int contextHeight;
 
-	Scene(unsigned int contextWidth, unsigned int contextHeight) : contextWidth(contextWidth), contextHeight(contextHeight) {
-	}
+		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	void destroy();
+		std::vector<Texture*> textures;
+		std::vector<PostProcessStage*> postProcessStages;
 
-	void initCameraAndLights();
-	void initSceneObjects();
-	void initSkyBox(Texture** cubeMap);
-	void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
-	void initGroud();
-	CompositeCollider* initCompositeCollider();
-	ForceField* initGravitation();
-	void initPostProcessStages();
-	class SceneNotInstanciatedException : public std::exception {
+		Scene(unsigned int contextWidth, unsigned int contextHeight) : contextWidth(contextWidth), contextHeight(contextHeight) {
+		}
 
+		void destroy();
+
+		void initCameraAndLights();
+		void initSceneObjects();
+		void initSkyBox(Texture** cubeMap);
+		void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
+		void initGroud();
+		CompositeCollider* initCompositeCollider();
+		ForceField* initGravitation();
+		void initPostProcessStages();
+		class SceneNotInstanciatedException : public std::exception {
+
+		};
 	};
-};
+}
 

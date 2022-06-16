@@ -172,6 +172,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="HoGraEngineApplication.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -225,10 +226,11 @@
     <ClInclude Include="EBO.h" />
     <ClInclude Include="FBO.h" />
     <ClInclude Include="ForceField.h" />
-    <ClInclude Include="GeometryFactories.h" />
+    <ClInclude Include="GeometryFactory.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="GlobalInclude.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="HoGraEngineApplication.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />
@@ -264,7 +266,6 @@
     <ClInclude Include="TextureCube.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
-    <ClInclude Include="vectorOperations.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\bounding.frag" />

@@ -1,9 +1,12 @@
 #pragma once
 
-namespace Singleton {
+namespace hograengine {
 
-	/*
-	* Needs to be called before closing program!
-	*/
-	void destroyAllInstances();
+	namespace Singleton {
+
+		/*
+		* Needs to be called before closing program!
+		*/
+		void destroyAllInstances();
+	}
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #define DEFAULT_WINDOW_WIDTH 1024
@@ -14,9 +15,11 @@
 
 #define MAX_LIGHT_COUNT 64
 
-static struct GlobalVariables {
-	static GLFWwindow* window;
-	static int windowWidth;
-	static int windowHeight;
-	static bool fullScreenMode;
-};
+namespace hograengine {
+	static struct GlobalVariables {
+		static GLFWwindow* window;
+		static int windowWidth;
+		static int windowHeight;
+		static bool fullScreenMode;
+	};
+}

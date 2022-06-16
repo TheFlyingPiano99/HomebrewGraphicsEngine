@@ -1,19 +1,22 @@
 #pragma once
 #include "glad/glad.h"
 
-class Texture
-{
-public:
-	GLuint ID;
-	GLuint unit;
+namespace hograengine {
 
-	virtual void Bind() const = 0;
+	class Texture
+	{
+	public:
+		GLuint ID;
+		GLuint unit;
 
-	virtual void Unbind() const = 0;
+		virtual void Bind() const = 0;
 
-	void Delete() const;
+		virtual void Unbind() const = 0;
 
-protected:
-	Texture() = default;
-};
+		void Delete() const;
 
+	protected:
+		Texture() = default;
+	};
+
+}

@@ -1,8 +1,12 @@
 #pragma once
-class CollisionEventListener
-{
-public:
-	CollisionEventListener() = default;
 
-};
+namespace hograengine {
+
+	class CollisionEventListener
+	{
+	public:
+		CollisionEventListener() = default;
+
+	};
+}
 

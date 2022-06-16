@@ -1,5 +1,7 @@
 #include "SceneEventManager.h"
 
-SceneEventManager* SceneEventManager::instance = nullptr;
+namespace hograengine {
 
+	SceneEventManager* SceneEventManager::instance = nullptr;
 
+}
