@@ -30,13 +30,22 @@ namespace hograengine {
 		invModelMatrix = glm::inverse(modelMatrix);
 	}
 
-	void SceneObject::draw(const Camera& camera, const std::vector<Light*>& lights)
+	void SceneObject::draw(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster)
 	{
 		if (nullptr == mesh) {
 			return;
 		}
-		mesh->Bind(camera, lights);
+		mesh->Bind(camera, lights, shadowCaster);
 		exportMatrices(*(mesh->getMaterial()->getShaderProgram()));
+		mesh->Draw();
+	}
+
+	void SceneObject::draw(const ShadowCaster& shadowCaster)
+	{
+		if (nullptr == mesh) {
+			return;
+		}
+		glUniformMatrix4fv(glGetUniformLocation(shadowCaster.getProgram().ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		mesh->Draw();
 	}
 

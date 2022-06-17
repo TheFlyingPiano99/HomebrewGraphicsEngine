@@ -5,8 +5,8 @@
 #include <stb/stb_image.h>
 #include <glm/glm.hpp>
 #include <vector>
-
 #include "ShaderProgram.h"
+
 namespace hograengine {
 
 	class Texture2D : public Texture
@@ -33,8 +33,8 @@ namespace hograengine {
 		glm::vec4& operator()(glm::vec2 normalisedPosition);
 
 		// Inherited via Texture
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		void Bind() const override;
+		void Unbind() const override;
 
 	private:
 		std::vector<glm::vec4> bytes;

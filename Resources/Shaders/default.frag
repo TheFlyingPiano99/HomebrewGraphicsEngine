@@ -4,6 +4,9 @@ layout (location = 0) out vec4 FragColor;
 
 // Imports the world position from the Vertex Shader
 in vec4 worldPos;
+
+in vec4 lightPos;
+
 // Imports the normal from the Vertex Shader
 in vec4 normal;
 // Imports the color from the Vertex Shader
@@ -14,13 +17,13 @@ in vec2 texCoord;
 struct Light {
 	vec4 position;
 	vec3 powerDensity;
-	mat4 viewProjMatrix;
 };
 uniform Light lights[64];
 uniform unsigned int lightCount;
 
 layout (binding = 0) uniform sampler2D colorTexture;
 layout (binding = 1) uniform sampler2D specularTexture;
+layout (binding = 4) uniform sampler2D shadowMap;
 layout (binding = 5) uniform samplerCube skybox;
 
 struct Material {
@@ -39,8 +42,15 @@ struct Camera {
 };
 uniform Camera camera;
 
+float calculateShadow() {
+	vec3 projCoords = lightPos.xyz / lightPos.w;
+	projCoords = projCoords * 0.5 + 0.5;
+	float closestDepth = texture(shadowMap, projCoords.xy).r;   
+	float currentDepth = projCoords.z;  
+	return currentDepth > closestDepth  ? 1.0 : 0.0;  
+}
 
-vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir)
+vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir, float shadow)
 {
 	// used in two variables so I calculate it here to not have to do it twice
 	vec3 lightDiff = light.position.xyz - fragPos * light.position.w;
@@ -59,7 +69,7 @@ vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir)
 	float specularCos = pow(max(dot(halfway, normal), 0.0), material.shininess);
 	vec3 specular = specularCos * light.powerDensity * attenuation * material.specularColor;
 
-	return diffuse + specular;
+	return (1.0 - shadow) * (diffuse + specular);
 }
 
 void main()
@@ -68,12 +78,15 @@ void main()
 	vec3 viewDir = normalize(camera.position - worldPos.xyz);
 	vec3 lightSum = vec3(0, 0, 0);
 	for (int i = 0; i < lightCount; i++) {
-		lightSum += calculateLight(lights[i], worldPos.xyz, n, viewDir);
+		lightSum += calculateLight(lights[i], worldPos.xyz, n, viewDir, calculateShadow());
 	}
 	lightSum += material.ambientColor;
 	vec3 reflectDir = reflect(-viewDir, n);
 	float r = material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
 	lightSum = max(1.0 - r, 0.0) * lightSum + r * texture(skybox, reflectDir).rgb ;
 	FragColor = vec4(lightSum, 1.0f);
-	//FragColor = vec4(n, 1);
+	vec3 projCoords = lightPos.xyz / lightPos.w;
+	projCoords = projCoords * 0.5 + 0.5;
+	float closestDepth = texture(shadowMap, projCoords.xy).r;  	
+	//FragColor = vec4(closestDepth, closestDepth, closestDepth, 1);
 }

@@ -34,9 +34,9 @@ namespace hograengine {
 
 
 		// Inherited via Texture
-		virtual void Bind() const override;
+		void Bind() const override;
 
-		virtual void Unbind() const override;
+		void Unbind() const override;
 
 	};
 }

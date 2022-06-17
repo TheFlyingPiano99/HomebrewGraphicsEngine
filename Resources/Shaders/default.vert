@@ -12,6 +12,9 @@ layout (location = 3) in vec2 aTex;
 
 // Outputs the current position for the Fragment Shader
 out vec4 worldPos;
+
+out vec4 lightPos;
+
 // Outputs the normal for the Fragment Shader
 out vec4 normal;
 // Outputs the color for the Fragment Shader
@@ -33,9 +36,15 @@ struct SceneObject {
 };
 uniform SceneObject sceneObject;
 
+struct ShadowCaster {
+	mat4 lightSpaceMatrix;
+};
+uniform ShadowCaster shadowCaster;
+
 void main()
 {
 	worldPos = sceneObject.modelMatrix * aPos;
+	lightPos = shadowCaster.lightSpaceMatrix * worldPos;
 	normal = vec4(aNormal, 0.0) * sceneObject.invModelMatrix;
 	color = aColor;
 	texCoord = aTex;

@@ -23,7 +23,7 @@ namespace hograengine {
 		glDeleteFramebuffers(1, &ID);
 	}
 
-	void FBO::LinkTexture(GLenum attachment, Texture2D& texture, GLint level = 0)
+	void FBO::LinkTexture(GLenum attachment, Texture2D& texture, GLint level)
 	{
 		glm::ivec2 dim = texture.getDimensions();
 		viewport = glm::vec4(0, 0, dim.x, dim.y);

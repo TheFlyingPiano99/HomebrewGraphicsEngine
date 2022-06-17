@@ -10,6 +10,7 @@
 #include "Collider.h"
 #include "ForceField.h"
 #include "CompositeCollider.h"
+#include "ShadowCaster.h"
 
 namespace hograengine {
 
@@ -68,8 +69,9 @@ namespace hograengine {
 
 		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		std::vector<Texture*> textures;
+		std::vector<const Texture*> textures;
 		std::vector<PostProcessStage*> postProcessStages;
+		ShadowCaster* shadowCaster = nullptr;
 
 		Scene(unsigned int contextWidth, unsigned int contextHeight) : contextWidth(contextWidth), contextHeight(contextHeight) {
 		}
@@ -77,6 +79,7 @@ namespace hograengine {
 		void destroy();
 
 		void initCameraAndLights();
+		void initShadowMap();
 		void initSceneObjects();
 		void initSkyBox(Texture** cubeMap);
 		void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);

@@ -24,6 +24,15 @@ namespace hograengine {
 		lights.push_back(new Light(glm::vec4(10.0f, 5.0f, 20.0f, 1.0f), glm::vec3(100.0f, 100.0f, 100.0f)));
 	}
 
+	void Scene::initShadowMap()
+	{
+		if (shadowCaster != nullptr) {
+			throw new std::exception("Shadowcaster already initialised! Only one allowed.");
+		}
+		shadowCaster = new ShadowCaster(glm::vec3(-50, -10, -50), glm::normalize(glm::vec3(1, -1, 1)));
+		textures.push_back(shadowCaster->getShadowMap());
+	}
+
 	void Scene::initSceneObjects()
 	{
 		Texture* cubeMap = nullptr;
@@ -59,7 +68,7 @@ namespace hograengine {
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
-		*cubeMap = new TextureCube(imagePaths, 5);
+		*cubeMap = new TextureCube(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = new Material(skyboxShader);
 		skyBoxMaterial->addTexture(*cubeMap);
 		Geometry* fullscreenQuad = GeometryFactory::FullScreenQuad::getInstance();
@@ -77,6 +86,7 @@ namespace hograengine {
 		);
 		auto* cubeMaterial = new Material(cubeShader);
 		cubeMaterial->addTexture(*cubeMap);
+		cubeMaterial->addTexture(shadowCaster->getShadowMap());
 		cubeMaterial->setReflectiveness(0.3f);
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 		auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
@@ -112,6 +122,7 @@ namespace hograengine {
 		);
 		auto* cubeMaterial = new Material(cubeShader);
 		cubeMaterial->setReflectiveness(0.0f);
+		cubeMaterial->addTexture(shadowCaster->getShadowMap());
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 		auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
@@ -274,6 +285,7 @@ namespace hograengine {
 	{
 		if (instance == nullptr) {
 			instance = new Scene(contextWidth, contextHeight);
+			instance->initShadowMap();
 			instance->initCameraAndLights();
 			instance->initSceneObjects();
 			instance->initPostProcessStages();
@@ -330,7 +342,11 @@ namespace hograengine {
 		}
 		components.clear();
 
-		colliders.clear(); // The colliders have been deleted as componenets!!!
+		colliders.clear(); // The colliders have been deleted as components!!!
+
+		if (shadowCaster != nullptr) {
+			delete shadowCaster;
+		}
 	}
 
 	//-----------------------------------------------------------------------------
@@ -361,6 +377,11 @@ namespace hograengine {
 
 	void Scene::draw()
 	{
+		shadowCaster->Bind();
+		for (auto& obj : sceneObjects) {
+			obj->draw(*shadowCaster);
+		}
+
 		if (postProcessStages.size() > 0) {
 			postProcessStages[0]->Bind();
 		}
@@ -373,7 +394,7 @@ namespace hograengine {
 		glStencilMask(0x00);
 
 		for (auto& obj : sceneObjects) {
-			obj->draw(*camera, lights);
+			obj->draw(*camera, lights, *shadowCaster);
 		}
 		for (int i = 0; i < postProcessStages.size(); i++) {
 			if (i < postProcessStages.size() - 1) {
@@ -398,7 +419,7 @@ namespace hograengine {
 			material = mesh->getMaterial();
 			geometry = mesh->getGeometry();
 			ShaderProgram* program = material->getShaderProgram();
-			const std::vector<Texture*>& _textures = material->getTextures();
+			auto _textures = material->getTextures();
 
 			auto meshIter = std::find(meshes.begin(), meshes.end(), mesh);
 			if (meshIter == meshes.end()) {	// If does not contain

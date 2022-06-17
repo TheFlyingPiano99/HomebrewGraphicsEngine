@@ -196,6 +196,7 @@
     <ClCompile Include="SceneEventManager.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="ShadowCaster.cpp" />
     <ClCompile Include="SingletonManager.cpp" />
     <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="SphericalCollider.cpp" />
@@ -256,6 +257,7 @@
     <ClInclude Include="SceneEventManager.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="ShadowCaster.h" />
     <ClInclude Include="SingletonManager.h" />
     <ClInclude Include="SkyBox.h" />
     <ClInclude Include="SphericalCollider.h" />
@@ -282,6 +284,8 @@
     <None Include="..\Resources\Shaders\quad-depth.frag" />
     <None Include="..\Resources\Shaders\quad.frag" />
     <None Include="..\Resources\Shaders\quad.vert" />
+    <None Include="..\Resources\Shaders\shadowCast.frag" />
+    <None Include="..\Resources\Shaders\shadowCast.vert" />
     <None Include="..\Resources\Shaders\skybox.frag" />
     <None Include="..\Resources\Shaders\fullscreenQuad.vert" />
     <None Include="..\Resources\Shaders\transfer.frag" />

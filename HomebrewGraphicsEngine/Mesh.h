@@ -5,6 +5,8 @@
 #include "Geometry.h"
 #include "Camera.h"
 #include "Light.h"
+#include "ShadowCaster.h"
+
 namespace hograengine {
 
 	class Mesh
@@ -17,7 +19,7 @@ namespace hograengine {
 
 		// Draws the mesh
 		void Bind() const;
-		void Bind(const Camera& camera, const std::vector<Light*>& lights) const;
+		void Bind(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster) const;
 		void Draw() const;
 		Material* getMaterial() const;
 		Geometry* getGeometry() const;

@@ -3,6 +3,8 @@
 #include "Texture2D.h"
 #include "Camera.h"
 #include "Light.h"
+#include <span>
+#include "ShadowCaster.h"
 namespace hograengine {
 
 	class Material
@@ -12,14 +14,14 @@ namespace hograengine {
 
 		void Bind() const;
 
-		void Bind(const Camera& camera, const std::vector<Light*>& lights) const;
+		void Bind(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster) const;
 
-		void addTexture(Texture* texture);
+		void addTexture(const Texture* texture);
 		void clearTextures();
 
 		ShaderProgram* getShaderProgram() const;
 
-		const std::vector<Texture*>& getTextures() const;
+		std::span<const Texture* const> getTextures() const;
 
 		void setDiffuseColor(glm::vec3 color) {
 			this->diffuseColor = color;
@@ -45,7 +47,7 @@ namespace hograengine {
 
 	private:
 		ShaderProgram* program;
-		std::vector <Texture*> textures;
+		std::vector <const Texture*> textures;
 		glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::vec3 ambientColor = glm::vec3(0.0f, 0.0f, 0.0f);

@@ -16,7 +16,7 @@ namespace hograengine {
 		void Unbind() const;
 		void Delete();
 
-		void LinkTexture(GLenum attachment, Texture2D& texture, GLint level);
+		void LinkTexture(GLenum attachment, Texture2D& texture, GLint level = 0);
 
 		void LinkRBO(GLenum attachment, RBO& rbo);
 

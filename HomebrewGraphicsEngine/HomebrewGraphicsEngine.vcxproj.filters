@@ -222,6 +222,9 @@
     <ClCompile Include="HoGraEngineApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShadowCaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -395,6 +398,9 @@
     <ClInclude Include="HoGraEngineApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowCaster.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -459,6 +465,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\edgeDetect.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\shadowCast.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\shadowCast.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

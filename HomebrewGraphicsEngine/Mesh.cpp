@@ -22,9 +22,9 @@ namespace hograengine {
 		}
 	}
 
-	void Mesh::Bind(const Camera& camera, const std::vector<Light*>& lights) const
+	void Mesh::Bind(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster) const
 	{
-		material->Bind(camera, lights);
+		material->Bind(camera, lights, shadowCaster);
 		if (depthTest) {
 			glEnable(GL_DEPTH_TEST);
 		}

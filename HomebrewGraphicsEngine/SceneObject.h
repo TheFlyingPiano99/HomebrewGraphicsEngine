@@ -10,6 +10,7 @@
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include <span>
+#include "ShadowCaster.h"
 
 namespace hograengine {
 
@@ -24,7 +25,9 @@ namespace hograengine {
 
 		void update(float dt);
 
-		void draw(const Camera& camera, const std::vector<Light*>& lights);
+		void draw(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster);
+
+		void draw(const ShadowCaster& shadowCaster);
 
 		Mesh* getMesh() const {
 			return mesh;

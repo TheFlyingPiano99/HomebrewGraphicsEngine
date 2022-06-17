@@ -17,21 +17,5 @@ namespace hograengine {
 		std::string powerDensityName(structName);
 		powerDensityName.append(".powerDensity");
 		glUniform3f(glGetUniformLocation(program.ID, powerDensityName.c_str()), powerDensity.r, powerDensity.g, powerDensity.b);
-
-		if (isShadowCaster) {
-			std::string viewProjName(structName);
-			viewProjName.append(".viewProjMatrix");
-			glUniformMatrix4fv(glGetUniformLocation(program.ID, viewProjName.c_str()), 1, GL_FALSE, glm::value_ptr(viewProjMatrix));
-		}
-	}
-
-	void Light::updateMatrix(glm::vec3 lookAt)
-	{
-		if (!isShadowCaster) {
-			return;
-		}
-		viewProjMatrix
-			= glm::perspective(FOVRad, 1.0f, nearPlane, farPlane)
-			* glm::lookAt(glm::vec3(position), lookAt, Scene::getInstance()->getPreferedUp());
 	}
 }

@@ -12,7 +12,7 @@ namespace hograengine {
 		virtual void Bind() const = 0;
 
 		virtual void Unbind() const = 0;
-
+		
 		void Delete() const;
 
 	protected:

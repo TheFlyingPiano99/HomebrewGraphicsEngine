@@ -13,13 +13,14 @@ namespace hograengine {
 		}
 	}
 
-	void Material::Bind(const Camera& camera, const std::vector<Light*>& lights) const
+	void Material::Bind(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster) const
 	{
 		if (nullptr == program) {
 			throw new ShaderProgramIsNullptr();
 		}
 		program->Activate();
 		camera.exportData(*program);
+		shadowCaster.exportData(*program);
 		for (int i = 0; i < lights.size(); i++) {
 			lights[i]->exportData(*program, i);
 		}
@@ -43,7 +44,7 @@ namespace hograengine {
 		}
 	}
 
-	void Material::addTexture(Texture* texture) { textures.push_back(texture); }
+	void Material::addTexture(const Texture* texture) { textures.push_back(texture); }
 
 	void Material::clearTextures()
 	{
@@ -55,7 +56,7 @@ namespace hograengine {
 		return program;
 	}
 
-	const std::vector<Texture*>& Material::getTextures() const
+	std::span<const Texture* const> Material::getTextures() const
 	{
 		return textures;
 	}
