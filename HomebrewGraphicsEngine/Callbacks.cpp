@@ -60,9 +60,26 @@ namespace hograengine {
 		}
 	}
 
+	int prevMouseX = 0;
+	int prevMouseY = 0;
+	bool firstMouse = true;
 
 	void Callbacks::onMouseMove(GLFWwindow* window, double xpos, double ypos)
 	{
+		// Stores the coordinates of the cursor
+		double mouseX;
+		double mouseY;
+		// Fetches the coordinates of the cursor
+		glfwGetCursorPos(window, &mouseX, &mouseY);
+		if (firstMouse) {
+			firstMouse = false;
+			prevMouseX = mouseX;
+			prevMouseY = mouseY;
+		}
+		int deltaX = mouseX - prevMouseX;
+		int deltaY = mouseY - prevMouseY;
+		prevMouseX = mouseX;
+		prevMouseY = mouseY;
 
 		// Handles mouse inputs
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
@@ -78,13 +95,12 @@ namespace hograengine {
 				firstClick = false;
 			}
 
-			// Stores the coordinates of the cursor
-			double mouseX;
-			double mouseY;
-			// Fetches the coordinates of the cursor
-			glfwGetCursorPos(window, &mouseX, &mouseY);
-
-			Scene::getInstance()->getCamera()->rotate((float)mouseX, (float)mouseY);
+			float ndcDeltaX = (float)mouseX / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
+			float ndcDeltaY = (float)mouseY / (float)GlobalVariables::windowHeight * 2.0f - 1.0f;
+			auto* avatarControl = Scene::getInstance()->getAvatarControl();
+			if (avatarControl != nullptr) {
+				avatarControl->rotate(-ndcDeltaX, -ndcDeltaY);
+			}
 
 			// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
 			glfwSetCursorPos(window, (GlobalVariables::windowWidth / 2), (GlobalVariables::windowHeight / 2));
@@ -96,7 +112,6 @@ namespace hograengine {
 			// Makes sure the next time the camera looks around it doesn't jump
 			firstClick = true;
 		}
-
 	}
 
 	void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)

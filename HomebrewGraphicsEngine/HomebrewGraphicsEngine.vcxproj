@@ -166,6 +166,7 @@
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="FBO.cpp" />
+    <ClCompile Include="FirstPersonControl.cpp" />
     <ClCompile Include="ForceField.cpp" />
     <ClCompile Include="GeometryFactories.cpp" />
     <ClCompile Include="Geometry.cpp" />
@@ -185,8 +186,10 @@
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="OrientationProvider.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="PositionProvider.cpp" />
     <ClCompile Include="PostProcessStage.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RBO.cpp" />
@@ -198,7 +201,6 @@
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShadowCaster.cpp" />
     <ClCompile Include="SingletonManager.cpp" />
-    <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="SphericalCollider.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -206,6 +208,7 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TextureCube.cpp" />
+    <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
   </ItemGroup>
@@ -226,6 +229,7 @@
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
     <ClInclude Include="FBO.h" />
+    <ClInclude Include="FirstPersonControl.h" />
     <ClInclude Include="ForceField.h" />
     <ClInclude Include="GeometryFactory.h" />
     <ClInclude Include="Geometry.h" />
@@ -246,8 +250,10 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="OrientationProvider.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="PositionProvider.h" />
     <ClInclude Include="PostProcessStage.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RBO.h" />
@@ -259,13 +265,13 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShadowCaster.h" />
     <ClInclude Include="SingletonManager.h" />
-    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="SphericalCollider.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Texture1D.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
+    <ClInclude Include="UserControl.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
   </ItemGroup>

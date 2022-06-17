@@ -35,50 +35,58 @@ namespace hograengine {
 		virtual void execute(Scene* scene, float dt) = 0;
 	};
 
-	class MoveCameraForward : public ControlAction {
+	class MoveAvatarForward : public ControlAction {
 	public:
-		MoveCameraForward() : ControlAction(GLFW_KEY_W, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarForward() : ControlAction(GLFW_KEY_W, ControlAction::TriggerType::triggerContinuosly) {
 
 		}
 
 		void execute(Scene* scene, float dt) override;
 	};
 
-	class MoveCameraBackward : public ControlAction {
+	class MoveAvatarBackward : public ControlAction {
 	public:
-		MoveCameraBackward() : ControlAction(GLFW_KEY_S, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarBackward() : ControlAction(GLFW_KEY_S, ControlAction::TriggerType::triggerContinuosly) {
 		}
 
 		void execute(Scene* scene, float dt) override;
 	};
 
-	class MoveCameraRight : public ControlAction {
+	class MoveAvatarRight : public ControlAction {
 	public:
-		MoveCameraRight() : ControlAction(GLFW_KEY_D, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarRight() : ControlAction(GLFW_KEY_D, ControlAction::TriggerType::triggerContinuosly) {
 		}
 
 		void execute(Scene* scene, float dt) override;
 	};
 
-	class MoveCameraLeft : public ControlAction {
+	class MoveAvatarLeft : public ControlAction {
 	public:
-		MoveCameraLeft() : ControlAction(GLFW_KEY_A, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarLeft() : ControlAction(GLFW_KEY_A, ControlAction::TriggerType::triggerContinuosly) {
 		}
 
 		void execute(Scene* scene, float dt) override;
 	};
 
-	class MoveCameraUp : public ControlAction {
+	class MoveAvatarUp : public ControlAction {
 	public:
-		MoveCameraUp() : ControlAction(GLFW_KEY_E, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarUp() : ControlAction(GLFW_KEY_E, ControlAction::TriggerType::triggerContinuosly) {
 		}
 
 		void execute(Scene* scene, float dt) override;
 	};
 
-	class MoveCameraDown : public ControlAction {
+	class MoveAvatarDown : public ControlAction {
 	public:
-		MoveCameraDown() : ControlAction(GLFW_KEY_Q, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarDown() : ControlAction(GLFW_KEY_Q, ControlAction::TriggerType::triggerContinuosly) {
+		}
+
+		void execute(Scene* scene, float dt) override;
+	};
+
+	class JumpAvatar : public ControlAction {
+	public:
+		JumpAvatar() : ControlAction(GLFW_KEY_SPACE, ControlAction::TriggerType::triggerOnPress) {
 		}
 
 		void execute(Scene* scene, float dt) override;

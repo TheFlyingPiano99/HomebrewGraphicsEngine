@@ -12,7 +12,7 @@ namespace hograengine {
 
 		// Inherited via Component
 		void control(float dt) override;
-		void update(float dtMil) override;
+		void update(float dtSec) override;
 
 		/*
 		* return force applied to center of mass in Newtons
@@ -42,6 +42,10 @@ namespace hograengine {
 
 		void applyTransientForce(const glm::vec3& force) {
 			appliedTransientForce += force;
+		}
+
+		void applyTransientTorque(const glm::vec3& torque) {
+			appliedTransientTorque += torque;
 		}
 
 		/*
@@ -201,6 +205,10 @@ namespace hograengine {
 			forcedPositionOffsets.push_back(new glm::vec3(offset));
 		}
 
+		void forceOrientationOffset(const glm::quat& offset) {
+			forcedOrientationOffsets.push_back(new glm::quat(offset));
+		}
+
 		/*
 		* [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
 		*/
@@ -227,12 +235,14 @@ namespace hograengine {
 		glm::vec3 worldSpaceDrag = glm::vec3(0.0f);
 
 		glm::vec3 appliedTorque = glm::vec3(0.0f);
+		glm::vec3 appliedTransientTorque = glm::vec3(0.0f);
 		glm::vec3 impulseAsIntegratedTorque = glm::vec3(0.0f);
 		glm::vec3 angularMomentum = glm::vec3(0.0f);
 		glm::mat3 invModelSpaceInertiaTensor = glm::mat3(0.0f);
 		glm::vec3 rotationalDrag = glm::vec3(0.0f);
 
 		std::vector<glm::vec3*> forcedPositionOffsets;
+		std::vector<glm::quat*> forcedOrientationOffsets;
 		float positionForcingLevel = 0; // [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
 	};
 

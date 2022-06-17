@@ -45,9 +45,18 @@ uniform Camera camera;
 float calculateShadow() {
 	vec3 projCoords = lightPos.xyz / lightPos.w;
 	projCoords = projCoords * 0.5 + 0.5;
-	float closestDepth = texture(shadowMap, projCoords.xy).r;   
-	float currentDepth = projCoords.z;  
-	return currentDepth > closestDepth  ? 1.0 : 0.0;  
+	float currentDepth = projCoords.z - 0.0015;
+	float shadow = 0.0;
+	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+	for(int x = -2; x <= 2; ++x)
+	{
+		for(int y = -2; y <= 2; ++y)
+		{
+			float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+			shadow += currentDepth > pcfDepth ? 1.0 : 0.0;        
+		}    
+	}
+	return shadow /= 25 * 1.5;
 }
 
 vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir, float shadow)

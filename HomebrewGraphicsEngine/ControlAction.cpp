@@ -2,54 +2,55 @@
 #include "Callbacks.h"
 #include "GUI.h"
 #include <iostream>
+#include "FirstPersonControl.h"
 
 namespace hograengine {
 
-	void MoveCameraForward::execute(Scene* scene, float dt)
+	void MoveAvatarForward::execute(Scene* scene, float dt)
 	{
-		Camera* camera = scene->getCamera();
-		if (nullptr != camera) {
-			camera->moveForward(dt);
+		auto* control = scene->getAvatarControl();
+		if (nullptr != control) {
+			control->moveForward(dt);
 		}
 	}
 
-	void MoveCameraBackward::execute(Scene* scene, float dt)
+	void MoveAvatarBackward::execute(Scene* scene, float dt)
 	{
-		Camera* camera = scene->getCamera();
-		if (nullptr != camera) {
-			camera->moveBackward(dt);
+		auto* control = scene->getAvatarControl();
+		if (nullptr != control) {
+			control->moveBackward(dt);
 		}
 	}
 
-	void MoveCameraRight::execute(Scene* scene, float dt)
+	void MoveAvatarRight::execute(Scene* scene, float dt)
 	{
-		Camera* camera = scene->getCamera();
-		if (nullptr != camera) {
-			camera->moveRight(dt);
+		auto* control = scene->getAvatarControl();
+		if (nullptr != control) {
+			control->moveRight(dt);
 		}
 	}
 
-	void MoveCameraLeft::execute(Scene* scene, float dt)
+	void MoveAvatarLeft::execute(Scene* scene, float dt)
 	{
-		Camera* camera = scene->getCamera();
-		if (nullptr != camera) {
-			camera->moveLeft(dt);
+		auto* control = scene->getAvatarControl();
+		if (nullptr != control) {
+			control->moveLeft(dt);
 		}
 	}
 
-	void MoveCameraUp::execute(Scene* scene, float dt)
+	void MoveAvatarUp::execute(Scene* scene, float dt)
 	{
-		Camera* camera = scene->getCamera();
-		if (nullptr != camera) {
-			camera->moveUp(dt);
+		auto* control = scene->getAvatarControl();
+		if (nullptr != control) {
+			control->moveUp(dt);
 		}
 	}
 
-	void MoveCameraDown::execute(Scene* scene, float dt)
+	void MoveAvatarDown::execute(Scene* scene, float dt)
 	{
-		Camera* camera = scene->getCamera();
-		if (nullptr != camera) {
-			camera->moveDown(dt);
+		auto* control = scene->getAvatarControl();
+		if (nullptr != control) {
+			control->moveDown(dt);
 		}
 	}
 
@@ -113,5 +114,12 @@ namespace hograengine {
 		}
 		pressedPreviously = pressed;
 		return trigger;
+	}
+	void JumpAvatar::execute(Scene* scene, float dt)
+	{
+		auto* control = (FirstPersonControl*)scene->getAvatarControl();
+		if (nullptr != control) {
+ 			control->jump();
+		}
 	}
 }

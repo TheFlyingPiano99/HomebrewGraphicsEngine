@@ -111,9 +111,6 @@
     <ClCompile Include="SingletonManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SkyBox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -225,6 +222,18 @@
     <ClCompile Include="ShadowCaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PositionProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrientationProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UserControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FirstPersonControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -332,9 +341,6 @@
     <ClInclude Include="Geometry.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="SkyBox.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
@@ -400,6 +406,18 @@
     </ClInclude>
     <ClInclude Include="ShadowCaster.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionProvider.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="OrientationProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UserControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstPersonControl.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

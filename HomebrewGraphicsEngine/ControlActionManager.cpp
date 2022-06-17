@@ -40,17 +40,18 @@ namespace hograengine {
 
 	void ControlActionManager::registerDefault()
 	{
-		registerAction(new MoveCameraForward());
-		registerAction(new MoveCameraBackward());
-		registerAction(new MoveCameraRight());
-		registerAction(new MoveCameraLeft());
-		registerAction(new MoveCameraUp());
-		registerAction(new MoveCameraDown());
+		registerAction(new MoveAvatarForward());
+		registerAction(new MoveAvatarBackward());
+		registerAction(new MoveAvatarRight());
+		registerAction(new MoveAvatarLeft());
+		registerAction(new MoveAvatarUp());
+		registerAction(new MoveAvatarDown());
 		registerAction(new ToggleGUI());
 		registerAction(new FastForward());
 		registerAction(new Rewind());
 		registerAction(new TogglePause());
 		registerAction(new ToggleFullScreenMode());
+		registerAction(new JumpAvatar());
 	}
 
 	void ControlActionManager::registerAction(ControlAction* toRegister)

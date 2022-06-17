@@ -3,12 +3,12 @@
 #include <iostream>
 namespace hograengine {
 
-	void Physics::control(float dt)
+	void Physics::control(float dtSec)
 	{
 
 	}
 
-	void Physics::update(float dtMil)
+	void Physics::update(float dtSec)
 	{
 		if (!forcedPositionOffsets.empty()) {
 			glm::vec3 sumOffset = glm::vec3(0.0f);	// Position offset constraints
@@ -20,8 +20,16 @@ namespace hograengine {
 			forcedPositionOffsets.clear();
 			owner->setPosition(owner->getPosition() + sumOffset / n);
 		}
-
-		float dtSec = dtMil * 0.001f;
+		if (!forcedOrientationOffsets.empty()) {
+			glm::quat cumOffset = angleAxis(0.0f, glm::vec3(0.0f, 0.0f, 0.0f));	// Orientation offset constraints
+			float n = (float)forcedOrientationOffsets.size();
+			for (auto& offset : forcedOrientationOffsets) {
+				cumOffset *= *offset;
+				delete offset;
+			}
+			forcedOrientationOffsets.clear();
+			owner->setOrientation(cumOffset * owner->getOrientation());
+		}
 		//Movement:
 		momentum += (appliedForce + appliedTransientForce) * dtSec + impulse;
 		glm::quat orientation = owner->getOrientation();
@@ -33,7 +41,7 @@ namespace hograengine {
 		owner->setPosition(pos);
 
 		//Rotation:
-		angularMomentum += appliedTorque * dtSec + impulseAsIntegratedTorque;
+		angularMomentum += (appliedTorque + appliedTransientTorque) * dtSec + impulseAsIntegratedTorque;
 		glm::mat3 rotationMatrix = owner->getRotationMatrix();
 		glm::vec3 modelSpaceRotationDrag = glm::vec3(
 			std::expf(-rotationalDrag.x * dtSec * invModelSpaceInertiaTensor[0][0]),
@@ -53,6 +61,7 @@ namespace hograengine {
 
 		// Clear transient:
 		appliedTransientForce = glm::vec3(0.0f, 0.0f, 0.0f);
+		appliedTransientTorque = glm::vec3(0.0f, 0.0f, 0.0f);
 		impulse = glm::vec3(0.0f, 0.0f, 0.0f);
 		impulseAsIntegratedTorque = glm::vec3(0.0f, 0.0f, 0.0f);
 	}

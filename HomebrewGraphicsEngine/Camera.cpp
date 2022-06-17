@@ -7,17 +7,26 @@
 
 namespace hograengine {
 
-	Camera::Camera(int width, int height, glm::vec3 eye, glm::vec3 center)
-		: width(width), height(height), eye(eye), center(center)
+	Camera::Camera(float aspectRatio, glm::vec3 eye, glm::vec3 center)
+		: aspectRatio(aspectRatio), eye(eye), center(center)
 	{
 	}
 
 	bool Camera::update()
 	{
+		if (nullptr != positionProvider) {
+			lookDir = center - eye;
+			eye = positionProvider->getPosition();
+			center = eye + lookDir;
+		}
+		if (nullptr != orientationProvider) {
+			lookDir = orientationProvider->getOrientation() * lookDirInProvidersSpace;
+			center = eye + lookDir;
+		}
 		// Makes camera look in the right direction from the right position
 		view = glm::lookAt(eye, center, prefUp);
 		// Adds perspective to the scene
-		projection = glm::perspective(glm::radians(FOVdeg), (float)width / height, nearPlane, farPlane);
+		projection = glm::perspective(glm::radians(FOVdeg), aspectRatio, nearPlane, farPlane);
 
 		viewProjMatrix = projection * view;
 		invViewProjMatrix = glm::inverse(viewProjMatrix);
@@ -62,7 +71,7 @@ namespace hograengine {
 		copy = uniformName;
 		glUniform1f(glGetUniformLocation(shader.ID, copy.append(".FOVrad").c_str()), glm::radians(FOVdeg));
 		copy = uniformName;
-		glUniform1f(glGetUniformLocation(shader.ID, copy.append(".aspectRatio").c_str()), width / (float)height);
+		glUniform1f(glGetUniformLocation(shader.ID, copy.append(".aspectRatio").c_str()), aspectRatio);
 		exportMatrices(shader, uniformName);
 	}
 
@@ -73,101 +82,15 @@ namespace hograengine {
 		glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.right"), right.x, right.y, right.z);
 		glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.up"), up.x, up.y, up.z);
 		glUniform1f(glGetUniformLocation(shader.ID, "lightCamera.FOVrad"), glm::radians(FOVdeg));
-		glUniform1f(glGetUniformLocation(shader.ID, "lightCamera.aspectRatio"), width / (float)height);
+		glUniform1f(glGetUniformLocation(shader.ID, "lightCamera.aspectRatio"), aspectRatio);
 		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "lightCamera.viewProjMatrix"), 1, GL_FALSE, glm::value_ptr(viewProjMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "lightCamera.invViewProjMatrix"), 1, GL_FALSE, glm::value_ptr(invViewProjMatrix));
 	}
 
-
-	void Camera::Inputs(GLFWwindow* window)
-	{
-		glm::vec3 lookDir = normalize(center - eye);
-		// Handles key inputs
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		{
-			eye += speed * lookDir;
-		}
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		{
-			eye += speed * -glm::normalize(glm::cross(lookDir, prefUp));
-		}
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		{
-			eye += speed * -lookDir;
-		}
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		{
-			eye += speed * glm::normalize(glm::cross(lookDir, prefUp));
-		}
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		{
-			eye += speed * prefUp;
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-		{
-			eye += speed * -prefUp;
-		}
-		if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		{
-			speed = 0.4f;
-		}
-		else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE)
-		{
-			speed = 0.1f;
-		}
-
-
-
-		// Handles mouse inputs
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-		{
-
-			// Hides mouse cursor
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
-			// Prevents camera from jumping on the first click
-			if (firstClick)
-			{
-				glfwSetCursorPos(window, (width / 2), (height / 2));
-				firstClick = false;
-			}
-
-			// Stores the coordinates of the cursor
-			double mouseX;
-			double mouseY;
-			// Fetches the coordinates of the cursor
-			glfwGetCursorPos(window, &mouseX, &mouseY);
-
-			// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-			// and then "transforms" them into degrees 
-			float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
-			float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
-
-			// Calculates upcoming vertical change in the Orientation
-			glm::vec3 newOrientation = glm::rotate(lookDir, glm::radians(-rotX), glm::normalize(glm::cross(lookDir, prefUp)));
-
-			// Decides whether or not the next vertical Orientation is legal or not
-			if (abs(glm::angle(newOrientation, prefUp) - glm::radians(90.0f)) <= glm::radians(85.0f))
-			{
-				lookDir = newOrientation;
-			}
-
-			// Rotates the Orientation left and right
-			lookDir = glm::rotate(lookDir, glm::radians(-rotY), prefUp);
-
-			// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-			glfwSetCursorPos(window, (width / 2), (height / 2));
-		}
-		else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
-		{
-			// Unhides cursor since camera is not looking around anymore
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			// Makes sure the next time the camera looks around it doesn't jump
-			firstClick = true;
-		}
-	}
-
 	void Camera::moveForward(float dt) {
+		if (nullptr != positionProvider) {
+			return;
+		}
 		eye += dt * speed * lookDir;
 		center += dt * speed * lookDir;
 		moved = true;
@@ -175,6 +98,9 @@ namespace hograengine {
 
 	void Camera::moveBackward(float dt)
 	{
+		if (nullptr != positionProvider) {
+			return;
+		}
 		eye += dt * speed * -lookDir;
 		center += dt * speed * -lookDir;
 		moved = true;
@@ -182,6 +108,9 @@ namespace hograengine {
 
 	void Camera::moveLeft(float dt)
 	{
+		if (nullptr != positionProvider) {
+			return;
+		}
 		eye += dt * speed * -right;
 		center += dt * speed * -right;
 		moved = true;
@@ -189,6 +118,9 @@ namespace hograengine {
 
 	void Camera::moveRight(float dt)
 	{
+		if (nullptr != positionProvider) {
+			return;
+		}
 		eye += dt * speed * right;
 		center += dt * speed * right;
 		moved = true;
@@ -196,6 +128,9 @@ namespace hograengine {
 
 	void Camera::moveUp(float dt)
 	{
+		if (nullptr != positionProvider) {
+			return;
+		}
 		eye += dt * speed * up;
 		center += dt * speed * up;
 		moved = true;
@@ -203,60 +138,31 @@ namespace hograengine {
 
 	void Camera::moveDown(float dt)
 	{
+		if (nullptr != positionProvider) {
+			return;
+		}
 		eye += dt * speed * -up;
 		center += dt * speed * -up;
 		moved = true;
 	}
 
-	void Camera::rotate(float mouseX, float mouseY)
+	void Camera::rotate(float rotX, float rotY)
 	{
-		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-		// and then "transforms" them into degrees 
-		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
-		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
-		glm::vec3 lookDir = normalize(center - eye);
-
-		// Calculates upcoming vertical change in the Orientation
-		glm::vec3 newOrientation = glm::rotate(lookDir, glm::radians(-rotX), glm::normalize(glm::cross(lookDir, prefUp)));
-
-		// Decides whether or not the next vertical Orientation is legal or not
-		if (abs(glm::angle(newOrientation, prefUp) - glm::radians(90.0f)) <= glm::radians(85.0f))
-		{
-			lookDir = newOrientation;
+		if (nullptr != orientationProvider) {
+			return;
 		}
+		glm::quat rotXQuat = angleAxis(rotY, right);
+		glm::quat rotYQuat = angleAxis(rotX, prefUp);
 
-		// Rotates the Orientation left and right
-		lookDir = glm::rotate(lookDir, glm::radians(-rotY), prefUp);
+		lookDir = normalize(rotYQuat * rotXQuat * lookDir);
 		center = eye + lookDir;
-		moved = true;
-	}
-
-	void Camera::rotateAroundBullseye(float mouseX, float mouseY, glm::vec3 bullseye)
-	{
-		// Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-	// and then "transforms" them into degrees 
-		float rotX = sensitivity * (float)(mouseY - (height / 2)) / height;
-		float rotY = sensitivity * (float)(mouseX - (width / 2)) / width;
-
-		glm::vec3 toBullseye = bullseye - eye;
-		glm::vec3 lookDir = normalize(center - eye);
-
-		// Calculates upcoming vertical change in the Orientation
-		glm::vec3 newTOBullseye = glm::rotate(toBullseye, glm::radians(-rotX), glm::normalize(glm::cross(lookDir, prefUp)));
-
-		// Decides whether or not the next vertical Orientation is legal or not
-		if (abs(glm::angle(normalize(newTOBullseye), prefUp) - glm::radians(90.0f)) <= glm::radians(85.0f))
-		{
-			toBullseye = newTOBullseye;
-		}
-		// Rotates the Orientation left and right
-		toBullseye = glm::rotate(toBullseye, glm::radians(-rotY), prefUp);
-		eye = bullseye - toBullseye;
-		moved = true;
 	}
 
 	void Camera::approachCenter(float delta)
 	{
+		if (nullptr != positionProvider) {
+			return;
+		}
 		float l = length(center - eye);
 		if (l > delta) {
 			eye += delta * normalize(center - eye) * approachCenterSpeed;

@@ -1,4 +1,5 @@
 #include "ForceField.h"
+
 namespace hograengine {
 
 	void HomogeneForceField::control(float dt)
@@ -6,7 +7,8 @@ namespace hograengine {
 		for (auto& listener : listeners) {
 			float m = listener->getMass();
 			if (!isnan(m)) {
-				listener->applyTransientForce(direction * strength * m);
+				glm::vec3 f = direction * strength * m;
+				listener->applyTransientForce(f);
 			}
 		}
 	}

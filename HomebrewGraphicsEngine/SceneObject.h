@@ -11,10 +11,12 @@
 #include "glm/gtc/quaternion.hpp"
 #include <span>
 #include "ShadowCaster.h"
+#include "PositionProvider.h"
+#include "OrientationProvider.h"
 
 namespace hograengine {
 
-	class SceneObject
+	class SceneObject : public PositionProvider, public OrientationProvider
 	{
 	public:
 		SceneObject(Mesh* _mesh = nullptr) : mesh(_mesh) {}
@@ -37,7 +39,7 @@ namespace hograengine {
 			mesh = _mesh;
 		}
 
-		const glm::vec3& getPosition() const {
+		const glm::vec3& getPosition() const override {
 			return position;
 		}
 
@@ -68,7 +70,7 @@ namespace hograengine {
 			useEulerAngles = b;
 		}
 
-		glm::quat getOrientation() const {
+		const glm::quat& getOrientation() const override {
 			return orientation;
 		}
 

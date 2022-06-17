@@ -10,7 +10,7 @@ namespace hograengine {
         glDisable(GL_BLEND);
         shader->Activate();
         glm::mat4 view = glm::mat4(glm::mat3(camera.view)); // Remove translation.
-        glm::mat4 viewProj = camera.projection * view;
+        glm::mat4 viewProj = camera.getProjectionMatrix() * view;
         glUniformMatrix4fv(glGetUniformLocation(shader->ID, "camera.viewProjMatrix"), 1, GL_FALSE, glm::value_ptr(viewProj));
         vao.Bind();
         texture.Bind();

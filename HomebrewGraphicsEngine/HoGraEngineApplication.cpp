@@ -64,7 +64,7 @@ namespace hograengine {
 		// Keeps track of the amount of frames in timeDiff
 		unsigned int frameCounter = 0;
 
-		const double dtLimit = 10.0;
+		const double dtLimit = 0.004;
 
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
@@ -90,7 +90,7 @@ namespace hograengine {
 			}
 
 			double dt = 0.0;
-			double realDelta = (crntTime - prevIterTime) * 1000.0;
+			double realDelta = crntTime - prevIterTime;
 			while (realDelta > 0.0) {
 				if (realDelta > dtLimit) {
 					dt = dtLimit;

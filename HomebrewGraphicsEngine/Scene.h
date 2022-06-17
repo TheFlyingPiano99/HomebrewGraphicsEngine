@@ -11,6 +11,7 @@
 #include "ForceField.h"
 #include "CompositeCollider.h"
 #include "ShadowCaster.h"
+#include "UserControl.h"
 
 namespace hograengine {
 
@@ -47,6 +48,10 @@ namespace hograengine {
 
 		void pokeObject(const glm::vec2& ndcCoords);
 
+		UserControl* getAvatarControl() {
+			return avatarControl;
+		}
+
 	private:
 		static Scene* instance;
 
@@ -62,6 +67,7 @@ namespace hograengine {
 		std::vector<SceneObject*> sceneObjects;
 		std::vector<Component*> components;
 		std::vector<Collider*> colliders;
+		UserControl* avatarControl = nullptr;
 
 		bool pause = true;
 		unsigned int contextWidth;
@@ -84,6 +90,7 @@ namespace hograengine {
 		void initSkyBox(Texture** cubeMap);
 		void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
 		void initGroud();
+		void initAvatar(ForceField* gravitation);
 		CompositeCollider* initCompositeCollider();
 		ForceField* initGravitation();
 		void initPostProcessStages();

@@ -12,6 +12,7 @@
 #include "SceneEventManager.h"
 #include "ForceField.h"
 #include "CompositeCollider.h"
+#include "FirstPersonControl.h"
 
 namespace hograengine {
 
@@ -19,7 +20,7 @@ namespace hograengine {
 
 	void Scene::initCameraAndLights()
 	{
-		camera = new Camera(contextWidth, contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		camera = new Camera((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(0.8f, 0.8f, 0.8f)));	// Directional light
 		lights.push_back(new Light(glm::vec4(10.0f, 5.0f, 20.0f, 1.0f), glm::vec3(100.0f, 100.0f, 100.0f)));
 	}
@@ -53,6 +54,7 @@ namespace hograengine {
 		initCube(&cubeMap, glm::vec3(0.0f, 0.0f, -30.0f), col, field);
 		col = initCompositeCollider();
 		initCube(&cubeMap, glm::vec3(0.0f, -30.0f, 0.0f), col, field);
+		initAvatar(field);
 	}
 
 	void Scene::initSkyBox(Texture** cubeMap)
@@ -98,7 +100,7 @@ namespace hograengine {
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 		cubePhysics->setWorldSpaceDrag(glm::vec3(0.5f, 0.5f, 0.5f));
 		cubePhysics->setModelSpaceDrag(glm::vec3(0.1f, 0.3f, 0.1f));
-		cubePhysics->setMass(100.0f);
+		cubePhysics->setMass(400.0f);
 		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
 		cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
 		cubePhysics->setRotationalDrag(glm::vec3(2000.0f, 1000.0f, 2000.0f));
@@ -140,6 +142,35 @@ namespace hograengine {
 		obj->addComponent(collider);
 		colliders.push_back(collider);
 		addSceneObject(obj);
+	}
+
+	void Scene::initAvatar(ForceField* gravitation)
+	{
+		auto* avatar = new SceneObject();
+		avatar->setPosition(glm::vec3(-60.0f, -20.0f, -60.0f));
+		camera->setPositionProvider(avatar);
+		camera->setPositionInProvidersSpace(glm::vec3(0.0f, 1.0f, 0.0f));
+		auto* collider = new AABBCollider();
+		collider->setMinInOrigo(glm::vec3(-0.25f, -1.0f, -0.25f));
+		collider->setMaxInOrigo(glm::vec3(0.25f, 1.0f, 0.25f));
+		auto* physics = new Physics(avatar);
+		physics->setMass(80.0f);
+		physics->setWorldSpaceDrag(glm::vec3(100.0f, 0.1f, 100.0f));
+		gravitation->addListener(physics);
+		collider->setPhysics(physics);
+		colliders.push_back(collider);
+		FirstPersonControl* control = new FirstPersonControl();
+		control->setPhysics(physics);
+		control->setCamera(camera);
+		control->setInitialDirection(glm::normalize(glm::vec3(1, 0, 1)));
+		control->setInitialUp(getPreferedUp());
+		control->setJumpImpulse(700.0f);
+		control->setPropellingForce(glm::vec3(500.0f, 0.0f, 500.0f));
+		avatarControl = control;
+		avatar->addComponent(avatarControl);
+		avatar->addComponent(physics);
+		avatar->addComponent(collider);
+		addSceneObject(avatar);
 	}
 
 	CompositeCollider* Scene::initCompositeCollider()
@@ -288,7 +319,7 @@ namespace hograengine {
 			instance->initShadowMap();
 			instance->initCameraAndLights();
 			instance->initSceneObjects();
-			instance->initPostProcessStages();
+			//instance->initPostProcessStages();
 		}
 		return instance;
 	}
@@ -385,6 +416,9 @@ namespace hograengine {
 		if (postProcessStages.size() > 0) {
 			postProcessStages[0]->Bind();
 		}
+		else {
+			FBO::BindDefault();
+		}
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 		glClearDepth(1);
 		glDepthFunc(GL_LESS);
@@ -474,13 +508,12 @@ namespace hograengine {
 		this->contextWidth = _contextWidth;
 		this->contextHeight = _contextHeight;
 		if (camera != nullptr) {
-			camera->width = _contextWidth;
-			camera->height = _contextHeight;
+			camera->setAspectRatio((float)_contextWidth / (float)_contextHeight);
 		}
 		for (auto& stage : postProcessStages) {
 			stage->resize(_contextWidth, _contextHeight);
 		}
-		camera->moved = true;
+		camera->setMoved(true);
 	}
 
 	void Scene::serialize()
