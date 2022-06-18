@@ -199,7 +199,7 @@ namespace hograengine {
 			);
 		}
 
-		void collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal, float elasticity);
+		void collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal);
 
 		void forcePositionOffset(const glm::vec3& offset) {
 			forcedPositionOffsets.push_back(new glm::vec3(offset));
@@ -223,6 +223,14 @@ namespace hograengine {
 			positionForcingLevel = level;
 		}
 
+		float getElasticity() const {
+			return elasticity;
+		}
+
+		void setElasticity(float e) {
+			elasticity = e;
+		}
+
 	private:
 		SceneObject* owner;
 
@@ -240,6 +248,7 @@ namespace hograengine {
 		glm::vec3 angularMomentum = glm::vec3(0.0f);
 		glm::mat3 invModelSpaceInertiaTensor = glm::mat3(0.0f);
 		glm::vec3 rotationalDrag = glm::vec3(0.0f);
+		float elasticity = 0.0f;	// From [0..1] interval: 1 ~ fully elastic; 0 ~ inelastic. 
 
 		std::vector<glm::vec3*> forcedPositionOffsets;
 		std::vector<glm::quat*> forcedOrientationOffsets;

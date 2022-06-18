@@ -60,26 +60,8 @@ namespace hograengine {
 		}
 	}
 
-	int prevMouseX = 0;
-	int prevMouseY = 0;
-	bool firstMouse = true;
-
 	void Callbacks::onMouseMove(GLFWwindow* window, double xpos, double ypos)
 	{
-		// Stores the coordinates of the cursor
-		double mouseX;
-		double mouseY;
-		// Fetches the coordinates of the cursor
-		glfwGetCursorPos(window, &mouseX, &mouseY);
-		if (firstMouse) {
-			firstMouse = false;
-			prevMouseX = mouseX;
-			prevMouseY = mouseY;
-		}
-		int deltaX = mouseX - prevMouseX;
-		int deltaY = mouseY - prevMouseY;
-		prevMouseX = mouseX;
-		prevMouseY = mouseY;
 
 		// Handles mouse inputs
 		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
@@ -94,6 +76,11 @@ namespace hograengine {
 				glfwSetCursorPos(window, (GlobalVariables::windowWidth / 2), (GlobalVariables::windowHeight / 2));
 				firstClick = false;
 			}
+			// Stores the coordinates of the cursor
+			double mouseX;
+			double mouseY;
+			// Fetches the coordinates of the cursor
+			glfwGetCursorPos(window, &mouseX, &mouseY);
 
 			float ndcDeltaX = (float)mouseX / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
 			float ndcDeltaY = (float)mouseY / (float)GlobalVariables::windowHeight * 2.0f - 1.0f;
@@ -126,8 +113,8 @@ namespace hograengine {
 			double xpos, ypos;
 			glfwGetCursorPos(window, &xpos, &ypos);
 			glm::vec2 ndcCoords;
-			ndcCoords.x = xpos / GlobalVariables::windowWidth * 2.0 - 1.0;
-			ndcCoords.y = 1.0 - ypos / GlobalVariables::windowHeight * 2.0;
+			ndcCoords.x = (float)xpos / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
+			ndcCoords.y = 1.0f - (float)ypos / (float)GlobalVariables::windowHeight * 2.0f;
 			Scene::getInstance()->pokeObject(ndcCoords);
 		}
 	}
@@ -154,7 +141,6 @@ namespace hograengine {
 		glfwGetWindowSize(GlobalVariables::window, &GlobalVariables::windowWidth, &GlobalVariables::windowHeight);
 		glViewport(0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 		std::cout << "Screen size: " << GlobalVariables::windowWidth << ", " << GlobalVariables::windowHeight << std::endl;
-		Scene::getInstance()->onContextResize(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 	}
 
 

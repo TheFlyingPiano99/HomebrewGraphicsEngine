@@ -15,7 +15,7 @@ namespace hograengine {
             if (isCollision && nullptr != physics && nullptr != collider.getPhysics()
                 && !isnan(collisionPoint.x) && !isnan(collisionPoint.y) && !isnan(collisionPoint.z)
                 && !isnan(collisionNormal.x) && !isnan(collisionNormal.y) && !isnan(collisionNormal.z)) {
-                physics->collide(*collider.getPhysics(), collisionPoint, collisionNormal, overlapAlongNormal, elasticity * collider.getElasticity());
+                physics->collide(*collider.getPhysics(), collisionPoint, collisionNormal, overlapAlongNormal);
             }
         }
         else {

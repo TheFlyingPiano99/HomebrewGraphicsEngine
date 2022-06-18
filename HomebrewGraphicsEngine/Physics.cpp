@@ -66,13 +66,13 @@ namespace hograengine {
 		impulseAsIntegratedTorque = glm::vec3(0.0f, 0.0f, 0.0f);
 	}
 
-	void Physics::collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal, float elasticity) {
+	void Physics::collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal) {
 		glm::vec3 va = this->getVelocity();
 		glm::vec3 vb = b.getVelocity();
 		float vRel = glm::dot(normal, va - vb);
 		glm::vec3 ka = point - this->getOwnerPosition();
 		glm::vec3 kb = point - b.getOwnerPosition();
-		float j = -(1.0f + elasticity) * vRel / (this->getInvMass()
+		float j = -(1.0f + elasticity * b.getElasticity()) * vRel / (this->getInvMass()
 			+ b.getInvMass()
 			+ glm::dot(normal, this->getInvInertiaTensor() * glm::cross(glm::cross(ka, normal), ka))
 			+ glm::dot(normal, b.getInvInertiaTensor() * glm::cross(glm::cross(kb, normal), kb))
@@ -85,8 +85,8 @@ namespace hograengine {
 		float pfl1 = b.getPositionForcingLevel();
 		float sumPFL = pfl0 + pfl1;
 		if (sumPFL > 0.0f) {
-			forcePositionOffset(pfl0 / sumPFL * overlapAlongNormal * -normal);
-			b.forcePositionOffset(pfl1 / sumPFL * overlapAlongNormal * normal);
+			forcePositionOffset(pfl0 / sumPFL * overlapAlongNormal * -normal * 1.001f);
+			b.forcePositionOffset(pfl1 / sumPFL * overlapAlongNormal * normal * 1.001f);
 		}
 	}
 }

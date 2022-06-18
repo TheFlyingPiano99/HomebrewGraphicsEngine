@@ -16,7 +16,7 @@ namespace hograengine {
 	{
 		if (nullptr != positionProvider) {
 			lookDir = center - eye;
-			eye = positionProvider->getPosition();
+			eye = positionProvider->getPosition() + positionInProvidersSpace;
 			center = eye + lookDir;
 		}
 		if (nullptr != orientationProvider) {

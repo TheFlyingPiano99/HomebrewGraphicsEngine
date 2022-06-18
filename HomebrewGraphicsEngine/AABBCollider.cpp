@@ -70,10 +70,12 @@ namespace hograengine {
         pos.x = std::max(min.x, std::min(spherical->getPosition().x, max.x));
         pos.y = std::max(min.y, std::min(spherical->getPosition().y, max.y));
         pos.z = std::max(min.z, std::min(spherical->getPosition().z, max.z));
-        bool isCollision = glm::length(pos - spherical->getPosition()) <= spherical->getRadius();
+        float l = glm::length(pos - spherical->getPosition());
+        bool isCollision = l <= spherical->getRadius();
         if (isCollision) {
             wCollisionPoint = pos;
             wCollisionNormal = glm::normalize(spherical->getPosition() - pos);
+            overlapAlongNormal = spherical->getRadius() - l;
         }
         return isCollision;
     }

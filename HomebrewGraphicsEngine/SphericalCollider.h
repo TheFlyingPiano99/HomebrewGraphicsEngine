@@ -29,7 +29,7 @@ namespace hograengine {
         }
 
     private:
-        float radius;
+        float radius = 1.0f;
 
         bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
         bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;

@@ -2,7 +2,7 @@
 
 namespace hograengine {
 
-	Texture2D::Texture2D(const char* image, const char* type, GLuint unit, GLenum format, GLenum pixelType) : type(type)
+	Texture2D::Texture2D(const std::string& path, GLuint unit, GLenum format, GLenum pixelType)
 	{
 
 		// Stores the width, height, and the number of color channels of the image
@@ -10,7 +10,7 @@ namespace hograengine {
 		// Flips the image so it appears right side up
 		stbi_set_flip_vertically_on_load(true);
 		// Reads the image from a file and stores it in bytes
-		unsigned char* imgBytes = stbi_load(image, &widthImg, &heightImg, &numColCh, 0);
+		unsigned char* imgBytes = stbi_load(path.c_str(), &widthImg, &heightImg, &numColCh, 0);
 
 		dimensions.x = widthImg;
 		dimensions.y = heightImg;
@@ -35,7 +35,7 @@ namespace hograengine {
 		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthImg, heightImg, 0, format, pixelType, imgBytes);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, dimensions.x, dimensions.y, 0, format, pixelType, imgBytes);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -92,7 +92,7 @@ namespace hograengine {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, internalformat, dimensions.x, dimensions.y, 0, format, pixelType, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalformat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
 
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 		glBindTexture(GL_TEXTURE_2D, 0);

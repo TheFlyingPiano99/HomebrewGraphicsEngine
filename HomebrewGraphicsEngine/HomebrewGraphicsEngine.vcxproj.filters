@@ -234,6 +234,12 @@
     <ClCompile Include="FirstPersonControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeometryLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -419,6 +425,9 @@
     <ClInclude Include="FirstPersonControl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeometryLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -489,6 +498,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\shadowCast.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\hdr.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

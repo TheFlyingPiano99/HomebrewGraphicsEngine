@@ -80,6 +80,13 @@ namespace hograengine {
 			return geom;
 		}
 
+		void FullScreenQuad::destroyInstance()
+		{
+			if (geometry != nullptr) {
+				delete geometry;
+			}
+		}
+
 		//---------------------------------------------------
 
 		Geometry* Cube::geometry = nullptr;
@@ -89,6 +96,13 @@ namespace hograengine {
 				geometry = create();
 			}
 			return geometry;
+		}
+
+		void Cube::destroyInstance()
+		{
+			if (geometry != nullptr) {
+				delete geometry;
+			}
 		}
 
 		Geometry* Cube::create()

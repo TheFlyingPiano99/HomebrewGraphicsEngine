@@ -25,14 +25,6 @@ namespace hograengine {
 			physics = p;
 		}
 
-		float getElasticity() const {
-			return elasticity;
-		}
-
-		void setElasticity(float e) {
-			elasticity = e;
-		}
-
 		bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const;
 
 		/*
@@ -95,7 +87,6 @@ namespace hograengine {
 	protected:
 
 		Physics* physics = nullptr;
-		float elasticity = 1.0f;	// From [0..1] interval: 1 ~ fully elastic; 0 ~ inelastic. 
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::quat orientation = angleAxis(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		glm::vec3 position = glm::vec3(0.0f);

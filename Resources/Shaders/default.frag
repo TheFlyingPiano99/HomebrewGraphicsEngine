@@ -23,6 +23,7 @@ uniform unsigned int lightCount;
 
 layout (binding = 0) uniform sampler2D colorTexture;
 layout (binding = 1) uniform sampler2D specularTexture;
+layout (binding = 2) uniform sampler2D normalTexture;
 layout (binding = 4) uniform sampler2D shadowMap;
 layout (binding = 5) uniform samplerCube skybox;
 
@@ -45,7 +46,7 @@ uniform Camera camera;
 float calculateShadow() {
 	vec3 projCoords = lightPos.xyz / lightPos.w;
 	projCoords = projCoords * 0.5 + 0.5;
-	float currentDepth = projCoords.z - 0.0015;
+	float currentDepth = projCoords.z - 0.0012;
 	float shadow = 0.0;
 	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
 	for(int x = -2; x <= 2; ++x)
@@ -59,7 +60,7 @@ float calculateShadow() {
 	return shadow /= 25 * 1.5;
 }
 
-vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir, float shadow)
+vec3 calculateLight(Light light, vec3 fragPos, vec3 diffuseColor, float ks, vec3 normal, vec3 viewDir, float shadow)
 {
 	// used in two variables so I calculate it here to not have to do it twice
 	vec3 lightDiff = light.position.xyz - fragPos * light.position.w;
@@ -71,12 +72,12 @@ vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir, float 
 	// diffuse lighting
 	vec3 lightDir = normalize(lightDiff);
 	float diffuseCos = max(dot(normal, lightDir), 0.0);
-	vec3 diffuse = diffuseCos * light.powerDensity * attenuation * material.diffuseColor;
+	vec3 diffuse = diffuseCos * light.powerDensity * attenuation * diffuseColor;
 
 	// specular lighting
 	vec3 halfway = normalize(lightDir + viewDir);
 	float specularCos = pow(max(dot(halfway, normal), 0.0), material.shininess);
-	vec3 specular = specularCos * light.powerDensity * attenuation * material.specularColor;
+	vec3 specular = specularCos * light.powerDensity * attenuation * material.specularColor * ks;
 
 	return (1.0 - shadow) * (diffuse + specular);
 }
@@ -84,14 +85,18 @@ vec3 calculateLight(Light light, vec3 fragPos, vec3 normal, vec3 viewDir, float 
 void main()
 {
 	vec3 n = normalize(normal.xyz);
-	vec3 viewDir = normalize(camera.position - worldPos.xyz);
+	vec3 wp = worldPos.xyz / worldPos.w;
+	vec3 viewDir = normalize(camera.position - wp);
 	vec3 lightSum = vec3(0, 0, 0);
+	vec3 diffColor = texture(colorTexture, texCoord).rgb;
+	float ks = texture(specularTexture, texCoord).r;
+	float shadow = calculateShadow();
 	for (int i = 0; i < lightCount; i++) {
-		lightSum += calculateLight(lights[i], worldPos.xyz, n, viewDir, calculateShadow());
+		lightSum += calculateLight(lights[i], wp, diffColor, ks, n, viewDir, shadow);
 	}
 	lightSum += material.ambientColor;
 	vec3 reflectDir = reflect(-viewDir, n);
-	float r = material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
+	float r = ks * material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
 	lightSum = max(1.0 - r, 0.0) * lightSum + r * texture(skybox, reflectDir).rgb ;
 	FragColor = vec4(lightSum, 1.0f);
 	vec3 projCoords = lightPos.xyz / lightPos.w;

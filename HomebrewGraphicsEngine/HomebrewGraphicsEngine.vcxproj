@@ -84,6 +84,10 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgConfiguration>Release</VcpkgConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>false</VcpkgEnableManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,7 +150,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;OpenAL32.lib;TinyTIFFShared_Release.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;OpenAL32.lib;TinyTIFFShared_Release.lib;assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -170,6 +174,8 @@
     <ClCompile Include="ForceField.cpp" />
     <ClCompile Include="GeometryFactories.cpp" />
     <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="GeometryFactory.cpp" />
+    <ClCompile Include="GeometryLoader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="GUI.cpp" />
@@ -233,6 +239,7 @@
     <ClInclude Include="ForceField.h" />
     <ClInclude Include="GeometryFactory.h" />
     <ClInclude Include="Geometry.h" />
+    <ClInclude Include="GeometryLoader.h" />
     <ClInclude Include="GlobalInclude.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="HoGraEngineApplication.h" />
@@ -282,6 +289,7 @@
     <None Include="..\Resources\Shaders\default.vert" />
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
     <None Include="..\Resources\Shaders\flatColor.frag" />
+    <None Include="..\Resources\Shaders\hdr.frag" />
     <None Include="..\Resources\Shaders\light.frag" />
     <None Include="..\Resources\Shaders\light.vert" />
     <None Include="..\Resources\Shaders\postprocess.frag" />

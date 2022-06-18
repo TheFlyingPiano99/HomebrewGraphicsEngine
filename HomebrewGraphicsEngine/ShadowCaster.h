@@ -18,6 +18,13 @@ namespace hograengine {
 			glDrawBuffer(GL_NONE);
 			glReadBuffer(GL_NONE);
 			shadowMap = new Texture2D(GL_DEPTH_COMPONENT, glm::ivec2(SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT), SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
+			shadowMap->Bind();
+			// Configures the way the texture repeats (if it does at all)
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+			float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+			shadowMap->Unbind();
 			program = new ShaderProgram(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.vert"),
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.frag")
@@ -48,8 +55,11 @@ namespace hograengine {
 		}
 
 		void update() {
-			float near_plane = 1.0f, far_plane = 1000.0f;
-			glm::mat4 lightProjection = glm::ortho(-500.0f, 500.0f, -500.0f, 500.0f, near_plane, far_plane);
+			if (nullptr != positionProvider) {
+				position = positionProvider->getPosition() + positionOffsetToProvider;
+			}
+			float near_plane = 1.0f, far_plane = 500.0f;
+			glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
 			glm::mat4 lightView = glm::lookAt(position,
 				position + direction,
 				glm::vec3(0.0f, 1.0f, 0.0f));
@@ -64,6 +74,14 @@ namespace hograengine {
 			glUniformMatrix4fv(glGetUniformLocation(_program.ID, "shadowCaster.lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 		}
 
+		void setPositionProvider(PositionProvider* provider) {
+			positionProvider = provider;
+		}
+
+		void setPositionOffsetToProvider(const glm::vec3& offset) {
+			positionOffsetToProvider = offset;
+		}
+
 	private:
 		glm::vec3 position;
 		glm::vec3 direction;
@@ -72,5 +90,7 @@ namespace hograengine {
 		Texture2D* shadowMap = nullptr;	// Do not delete in this object
 		ShaderProgram* program = nullptr;
 		glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
+		PositionProvider* positionProvider = nullptr;
+		glm::vec3 positionOffsetToProvider = glm::vec3(0.0f);
 	};
 }

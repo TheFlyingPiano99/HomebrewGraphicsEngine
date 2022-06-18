@@ -33,6 +33,7 @@ namespace hograengine {
 		if (isCollision) {
 			wCollisionPoint = position + betweenCenters / 2.0f;
 			wCollisionNormal = glm::normalize(betweenCenters);
+			overlapAlongNormal = radius + sphericalCollider->getRadius() - l;
 		}
 		return isCollision;
 	}
@@ -44,10 +45,12 @@ namespace hograengine {
 		pos.x = std::max(aabb->getMin().x, std::min(position.x, aabb->getMax().x));
 		pos.y = std::max(aabb->getMin().y, std::min(position.y, aabb->getMax().y));
 		pos.z = std::max(aabb->getMin().z, std::min(position.z, aabb->getMax().z));
-		bool isCollision = glm::length(pos - position) <= radius;
+		float l = glm::length(pos - position);
+		bool isCollision = l <= radius;
 		if (isCollision) {
 			wCollisionPoint = pos;
 			wCollisionNormal = glm::normalize(position - pos);
+			overlapAlongNormal = radius - l;
 		}
 		return isCollision;
 	}

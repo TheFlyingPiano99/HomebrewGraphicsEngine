@@ -20,8 +20,8 @@ namespace hograengine {
 
 	void Scene::initCameraAndLights()
 	{
-		camera = new Camera((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(0.8f, 0.8f, 0.8f)));	// Directional light
+		camera = new Camera((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(-9.0f, 10.0f, -9.0f));
+		lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(0.9f, 0.9f, 0.9f)));	// Directional light
 		lights.push_back(new Light(glm::vec4(10.0f, 5.0f, 20.0f, 1.0f), glm::vec3(100.0f, 100.0f, 100.0f)));
 	}
 
@@ -54,6 +54,10 @@ namespace hograengine {
 		initCube(&cubeMap, glm::vec3(0.0f, 0.0f, -30.0f), col, field);
 		col = initCompositeCollider();
 		initCube(&cubeMap, glm::vec3(0.0f, -30.0f, 0.0f), col, field);
+		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -20.0f), field);
+		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -10.0f), field);
+		initSphere(&cubeMap, glm::vec3(-30.0f, -30.0f, -10.0f), field);
+		initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f, -20.0f), field);
 		initAvatar(field);
 	}
 
@@ -89,6 +93,12 @@ namespace hograengine {
 		auto* cubeMaterial = new Material(cubeShader);
 		cubeMaterial->addTexture(*cubeMap);
 		cubeMaterial->addTexture(shadowCaster->getShadowMap());
+		auto* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planks.png"),
+			0, GL_RGBA, GL_UNSIGNED_BYTE);
+		auto* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planksSpec.png"),
+			1, GL_RED, GL_UNSIGNED_BYTE);
+		cubeMaterial->addTexture(colorTexture);
+		cubeMaterial->addTexture(specularTexture);
 		cubeMaterial->setReflectiveness(0.3f);
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 		auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
@@ -100,17 +110,62 @@ namespace hograengine {
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 		cubePhysics->setWorldSpaceDrag(glm::vec3(0.5f, 0.5f, 0.5f));
 		cubePhysics->setModelSpaceDrag(glm::vec3(0.1f, 0.3f, 0.1f));
-		cubePhysics->setMass(400.0f);
+		cubePhysics->setMass(3140000.0f);
 		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
 		cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->getScale()));
 		cubePhysics->setRotationalDrag(glm::vec3(2000.0f, 1000.0f, 2000.0f));
-		cubePhysics->setPositionForcingLevel(1.0f);
+		cubePhysics->setPositionForcingLevel(0.5f);
+		cubePhysics->setElasticity(0.1f);
 		if (field != nullptr) {
 			field->addListener(cubePhysics);
 		}
 		obj->addComponent(cubePhysics);
 		collider->setPhysics(cubePhysics);
-		collider->setElasticity(1.0f);
+		obj->addComponent(collider);
+		colliders.push_back(collider);
+		addSceneObject(obj);
+	}
+
+	void Scene::initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field)
+	{
+		SphericalCollider* collider = new SphericalCollider();
+		collider->setRadius(0.5f);
+		colliders.push_back(collider);
+		ShaderProgram* shader = new ShaderProgram(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.frag")
+		);
+		auto* material = new Material(shader);
+		material->addTexture(*cubeMap);
+		material->addTexture(shadowCaster->getShadowMap());
+		auto* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planks.png"),
+			0, GL_RGBA, GL_UNSIGNED_BYTE);
+		auto* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planksSpec.png"),
+			1, GL_RED, GL_UNSIGNED_BYTE);
+		material->addTexture(colorTexture);
+		material->addTexture(specularTexture);
+		material->setReflectiveness(0.3f);
+		Geometry* geometry = GeometryFactory::Sphere::getInstance();
+		geometry->setFaceCulling(false);
+		auto* mesh = new Mesh(material, geometry);
+		auto* obj = new SceneObject(mesh);
+		obj->setPosition(pos);
+		obj->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+		auto* physics = new Physics(obj);
+		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
+		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
+		physics->setMass(50.0f);
+		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
+		physics->setMomentOfInertia(Physics::getMomentOfInertiaOfSolidSphere(physics->getMass(), 0.5f));
+		physics->setRotationalDrag(glm::vec3(0.5f, 0.5f, 0.5f));
+		physics->setPositionForcingLevel(1.0f);
+		physics->setElasticity(0.0f);
+		if (field != nullptr) {
+			field->addListener(physics);
+		}
+		obj->addComponent(physics);
+		collider->setPhysics(physics);
 		obj->addComponent(collider);
 		colliders.push_back(collider);
 		addSceneObject(obj);
@@ -124,7 +179,14 @@ namespace hograengine {
 		);
 		auto* cubeMaterial = new Material(cubeShader);
 		cubeMaterial->setReflectiveness(0.0f);
+		auto* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planks.png"),
+			0, GL_RGBA, GL_UNSIGNED_BYTE);
+		auto* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planksSpec.png"),
+			1, GL_RED, GL_UNSIGNED_BYTE);
+		cubeMaterial->addTexture(colorTexture);
+		cubeMaterial->addTexture(specularTexture);
 		cubeMaterial->addTexture(shadowCaster->getShadowMap());
+
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 		auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
@@ -134,7 +196,7 @@ namespace hograengine {
 		auto* cubePhysics = new Physics(obj);
 		cubePhysics->setPositionForcingLevel(0.0f);
 		AABBCollider* collider = new AABBCollider();
-		collider->setElasticity(0.2f);
+		cubePhysics->setElasticity(0.2f);
 		obj->addComponent(cubePhysics);
 		collider->setPhysics(cubePhysics);
 		collider->setMinInOrigo(glm::vec3(-100.0f, -1.0f, -100.0f));
@@ -149,13 +211,14 @@ namespace hograengine {
 		auto* avatar = new SceneObject();
 		avatar->setPosition(glm::vec3(-60.0f, -20.0f, -60.0f));
 		camera->setPositionProvider(avatar);
-		camera->setPositionInProvidersSpace(glm::vec3(0.0f, 1.0f, 0.0f));
+		camera->setPositionInProvidersSpace(glm::vec3(0.0f, 0.8f, 0.0f));
 		auto* collider = new AABBCollider();
-		collider->setMinInOrigo(glm::vec3(-0.25f, -1.0f, -0.25f));
-		collider->setMaxInOrigo(glm::vec3(0.25f, 1.0f, 0.25f));
+		collider->setMinInOrigo(glm::vec3(-0.1f, -1.0f, -0.1f));
+		collider->setMaxInOrigo(glm::vec3(0.1f, 1.0f, 0.1f));
 		auto* physics = new Physics(avatar);
 		physics->setMass(80.0f);
-		physics->setWorldSpaceDrag(glm::vec3(100.0f, 0.1f, 100.0f));
+		physics->setWorldSpaceDrag(glm::vec3(200.0f, 0.01f, 200.0f));
+		physics->setPositionForcingLevel(1.0f);
 		gravitation->addListener(physics);
 		collider->setPhysics(physics);
 		colliders.push_back(collider);
@@ -164,12 +227,14 @@ namespace hograengine {
 		control->setCamera(camera);
 		control->setInitialDirection(glm::normalize(glm::vec3(1, 0, 1)));
 		control->setInitialUp(getPreferedUp());
-		control->setJumpImpulse(700.0f);
-		control->setPropellingForce(glm::vec3(500.0f, 0.0f, 500.0f));
+		control->setJumpImpulse(600.0f);
+		control->setPropellingForce(glm::vec3(2000.0f, 0.0f, 2000.0f));
 		avatarControl = control;
 		avatar->addComponent(avatarControl);
 		avatar->addComponent(physics);
 		avatar->addComponent(collider);
+		shadowCaster->setPositionProvider(avatar);
+		shadowCaster->setPositionOffsetToProvider(glm::vec3(-50, 50, -50));
 		addSceneObject(avatar);
 	}
 
@@ -180,73 +245,73 @@ namespace hograengine {
 		auto* subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, 5.0f));
+		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, 5.0f));
+		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, 10.0f));
+		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, 7.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, 10.0f));
+		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, 7.5f));
 
 		// -1, 1 quarter
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, 5.0f));
+		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, 5.0f));
+		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, 10.0f));
+		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, 7.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, 10.0f));
+		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, 7.5f));
 
 		// 1, -1 quarter
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, -5.0f));
+		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, -5.0f));
+		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(5.0f, 0.0f, -10.0f));
+		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, -7.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(10.0f, 0.0f, -10.0f));
+		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, -7.5f));
 
 		// -1, -1 quarter
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, -5.0f));
+		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, -5.0f));
+		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-5.0f, 0.0f, -10.0f));
+		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, -7.5f));
 		subCol = new AABBCollider();
 		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
-		col->addSubCollider(subCol, glm::vec3(-10.0f, 0.0f, -10.0f));
+		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, -7.5f));
 
 		return col;
 	}
@@ -264,9 +329,12 @@ namespace hograengine {
 
 	void Scene::initPostProcessStages()
 	{
-		auto* stage = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
+		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
-		postProcessStages.push_back(stage);
+		postProcessStages.push_back(stage0);
+		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
+			contextWidth, contextHeight);
+		postProcessStages.push_back(stage1);
 	}
 
 	void Scene::pokeObject(const glm::vec2& ndcCoords)
@@ -319,7 +387,7 @@ namespace hograengine {
 			instance->initShadowMap();
 			instance->initCameraAndLights();
 			instance->initSceneObjects();
-			//instance->initPostProcessStages();
+			instance->initPostProcessStages();
 		}
 		return instance;
 	}
@@ -404,6 +472,9 @@ namespace hograengine {
 		}
 
 		camera->update();
+		if (shadowCaster != nullptr) {
+			shadowCaster->update();
+		}
 	}
 
 	void Scene::draw()
