@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneEvent.h"
 #include <queue>
+#include <iostream>
 
 namespace hograengine {
 

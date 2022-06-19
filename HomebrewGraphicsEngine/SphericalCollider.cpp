@@ -49,7 +49,7 @@ namespace hograengine {
 		bool isCollision = l <= radius;
 		if (isCollision) {
 			wCollisionPoint = pos;
-			wCollisionNormal = glm::normalize(position - pos);
+			wCollisionNormal = glm::normalize(pos - position);
 			overlapAlongNormal = radius - l;
 		}
 		return isCollision;

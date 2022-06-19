@@ -67,19 +67,35 @@ namespace hograengine {
 	}
 
 	void Physics::collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal) {
-		glm::vec3 va = this->getVelocity();
-		glm::vec3 vb = b.getVelocity();
-		float vRel = glm::dot(normal, va - vb);
 		glm::vec3 ka = point - this->getOwnerPosition();
 		glm::vec3 kb = point - b.getOwnerPosition();
-		float j = -(1.0f + elasticity * b.getElasticity()) * vRel / (this->getInvMass()
+		glm::vec3 va = this->getVelocity() + cross(this->getAngularVelocity(), ka);
+		glm::vec3 vb = b.getVelocity() + cross(b.getAngularVelocity(), kb);
+		float vRel = glm::dot(normal, va - vb);
+		float eb = b.getElasticity();
+		float j = -(1.0f + elasticity * eb) * vRel
+			/ (this->getInvMass()
 			+ b.getInvMass()
-			+ glm::dot(normal, this->getInvInertiaTensor() * glm::cross(glm::cross(ka, normal), ka))
-			+ glm::dot(normal, b.getInvInertiaTensor() * glm::cross(glm::cross(kb, normal), kb))
+			+ glm::dot(normal * this->getInvInertiaTensor(), glm::cross(glm::cross(ka, normal), ka))
+			+ glm::dot(normal * b.getInvInertiaTensor(), glm::cross(glm::cross(kb, normal), kb))
 			);
 		j = std::min(j, 0.0f);
-		this->applyImpulse(j * normal, ka);
-		b.applyImpulse(j * -normal, kb);
+		if (glm::vec3 tangV = va - vb - vRel * normal; length(tangV) > 0.000000001f) {
+			glm::vec3 tangent = glm::normalize(tangV);
+			float vRelTangent = glm::dot(va - vb, tangent);
+			float frictionJ = -friction * b.getFriction() * vRelTangent 
+				/ (this->getInvMass()
+				+ b.getInvMass()
+				+ glm::dot(tangent * this->getInvInertiaTensor(), glm::cross(glm::cross(ka, tangent), ka))
+				+ glm::dot(tangent * b.getInvInertiaTensor(), glm::cross(glm::cross(kb, tangent), kb))
+				);
+			this->applyImpulse(j * normal + frictionJ * tangent, ka);
+			b.applyImpulse(j * -normal - frictionJ * tangent, kb);
+		}
+		else {	// Impulse without friction
+			this->applyImpulse(j * normal, ka);
+			b.applyImpulse(j * -normal, kb);
+		}
 
 		float pfl0 = positionForcingLevel;
 		float pfl1 = b.getPositionForcingLevel();

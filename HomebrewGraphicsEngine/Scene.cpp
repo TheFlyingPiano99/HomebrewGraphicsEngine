@@ -160,14 +160,14 @@ namespace hograengine {
 		physics->setMomentOfInertia(Physics::getMomentOfInertiaOfSolidSphere(physics->getMass(), 0.5f));
 		physics->setRotationalDrag(glm::vec3(0.5f, 0.5f, 0.5f));
 		physics->setPositionForcingLevel(1.0f);
-		physics->setElasticity(0.0f);
+		physics->setElasticity(0.95f);
+		physics->setFriction(1.0f);
 		if (field != nullptr) {
 			field->addListener(physics);
 		}
 		obj->addComponent(physics);
 		collider->setPhysics(physics);
 		obj->addComponent(collider);
-		colliders.push_back(collider);
 		addSceneObject(obj);
 	}
 
@@ -197,6 +197,7 @@ namespace hograengine {
 		cubePhysics->setPositionForcingLevel(0.0f);
 		AABBCollider* collider = new AABBCollider();
 		cubePhysics->setElasticity(0.2f);
+		cubePhysics->setFriction(0.9f);
 		obj->addComponent(cubePhysics);
 		collider->setPhysics(cubePhysics);
 		collider->setMinInOrigo(glm::vec3(-100.0f, -1.0f, -100.0f));
@@ -213,12 +214,13 @@ namespace hograengine {
 		camera->setPositionProvider(avatar);
 		camera->setPositionInProvidersSpace(glm::vec3(0.0f, 0.8f, 0.0f));
 		auto* collider = new AABBCollider();
-		collider->setMinInOrigo(glm::vec3(-0.1f, -1.0f, -0.1f));
-		collider->setMaxInOrigo(glm::vec3(0.1f, 1.0f, 0.1f));
+		collider->setMinInOrigo(glm::vec3(-0.2f, -1.0f, -0.2f));
+		collider->setMaxInOrigo(glm::vec3(0.2f, 1.0f, 0.2f));
 		auto* physics = new Physics(avatar);
 		physics->setMass(80.0f);
 		physics->setWorldSpaceDrag(glm::vec3(200.0f, 0.01f, 200.0f));
 		physics->setPositionForcingLevel(1.0f);
+		physics->setFriction(0.001f);
 		gravitation->addListener(physics);
 		collider->setPhysics(physics);
 		colliders.push_back(collider);

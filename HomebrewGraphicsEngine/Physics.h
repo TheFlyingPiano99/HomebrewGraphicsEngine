@@ -134,7 +134,8 @@ namespace hograengine {
 		}
 
 		glm::mat3 getInvInertiaTensor() const {
-			return invModelSpaceInertiaTensor;
+			glm::mat3 rotationMatrix = owner->getRotationMatrix();
+			return rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix);
 		}
 
 		void setMomentOfInertia(const glm::vec3& moi) {
@@ -166,9 +167,9 @@ namespace hograengine {
 
 		static glm::vec3 getMomentOfInertiaOfCuboid(float mass, glm::vec3 scale) {
 			return glm::vec3(
-				mass / 12.0f * (scale.y * scale.y + scale.z * scale.z),
-				mass / 12.0f * (scale.x * scale.x + scale.z * scale.z),
-				mass / 12.0f * (scale.x * scale.x + scale.y * scale.y)
+				mass / 12.0f * (4.0f * scale.y * scale.y + 4.0f * scale.z * scale.z),
+				mass / 12.0f * (4.0f * scale.x * scale.x + 4.0f * scale.z * scale.z),
+				mass / 12.0f * (4.0f * scale.x * scale.x + 4.0f * scale.y * scale.y)
 			);
 		}
 
@@ -231,6 +232,19 @@ namespace hograengine {
 			elasticity = e;
 		}
 
+		glm::vec3 getAngularVelocity() {
+			glm::mat3 rotationMatrix = owner->getRotationMatrix();
+			return rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix) * angularMomentum;
+		}
+
+		float getFriction() const {
+			return friction;
+		}
+
+		void setFriction(float mu) {
+			friction = mu;
+		}
+
 	private:
 		SceneObject* owner;
 
@@ -249,7 +263,7 @@ namespace hograengine {
 		glm::mat3 invModelSpaceInertiaTensor = glm::mat3(0.0f);
 		glm::vec3 rotationalDrag = glm::vec3(0.0f);
 		float elasticity = 0.0f;	// From [0..1] interval: 1 ~ fully elastic; 0 ~ inelastic. 
-
+		float friction = 0.5f;
 		std::vector<glm::vec3*> forcedPositionOffsets;
 		std::vector<glm::quat*> forcedOrientationOffsets;
 		float positionForcingLevel = 0; // [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
