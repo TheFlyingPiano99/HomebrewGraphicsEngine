@@ -1,43 +1,17 @@
-﻿  AABBCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Callbacks.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Callbacks.cpp(106,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Collider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  CompositeCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ControlAction.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ControlActionManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  CuboidCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  FirstPersonControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ForceField.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  GUI.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  HoGraEngineApplication.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(104,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(105,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Light.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Physics.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Scene.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SceneEvent.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SceneEventImplementation.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SingletonManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SphericalCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  UserControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Generating Code...
+﻿  CameraAnimation.cpp
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

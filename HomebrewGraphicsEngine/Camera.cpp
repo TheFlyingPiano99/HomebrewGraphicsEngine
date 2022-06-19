@@ -12,8 +12,11 @@ namespace hograengine {
 	{
 	}
 
-	bool Camera::update()
+	bool Camera::update(float dt)
 	{
+		if (nullptr != animation) {
+			animation->perform(this, dt);
+		}
 		if (nullptr != positionProvider) {
 			lookDir = center - eye;
 			eye = positionProvider->getPosition() + positionInProvidersSpace;
@@ -24,13 +27,13 @@ namespace hograengine {
 			center = eye + lookDir;
 		}
 		// Makes camera look in the right direction from the right position
-		view = glm::lookAt(eye, center, prefUp);
+		view = glm::lookAt(eye + animationOffset, center + animationOffset, prefUp);
 		// Adds perspective to the scene
 		projection = glm::perspective(glm::radians(FOVdeg), aspectRatio, nearPlane, farPlane);
 
 		viewProjMatrix = projection * view;
 		invViewProjMatrix = glm::inverse(viewProjMatrix);
-		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye));
+		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye + animationOffset));
 		lookDir = normalize(center - eye);
 		right = normalize(cross(lookDir, prefUp));
 		up = normalize(cross(right, lookDir));

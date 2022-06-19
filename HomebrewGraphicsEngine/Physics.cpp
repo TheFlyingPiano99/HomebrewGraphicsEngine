@@ -71,23 +71,23 @@ namespace hograengine {
 		glm::vec3 kb = point - b.getOwnerPosition();
 		glm::vec3 va = this->getVelocity() + cross(this->getAngularVelocity(), ka);
 		glm::vec3 vb = b.getVelocity() + cross(b.getAngularVelocity(), kb);
-		float vRel = glm::dot(normal, va - vb);
+		float vRelNorm = glm::dot(normal, va - vb);
 		float eb = b.getElasticity();
-		float j = -(1.0f + elasticity * eb) * vRel
+		float j = -(1.0f + elasticity * eb) * vRelNorm
 			/ (this->getInvMass()
 			+ b.getInvMass()
-			+ glm::dot(normal * this->getInvInertiaTensor(), glm::cross(glm::cross(ka, normal), ka))
-			+ glm::dot(normal * b.getInvInertiaTensor(), glm::cross(glm::cross(kb, normal), kb))
+			+ glm::dot(normal, glm::cross(this->getInvInertiaTensor() * glm::cross(ka, normal), ka))
+			+ glm::dot(normal, glm::cross(b.getInvInertiaTensor() * glm::cross(kb, normal), kb))
 			);
 		j = std::min(j, 0.0f);
-		if (glm::vec3 tangV = va - vb - vRel * normal; length(tangV) > 0.000000001f) {
+		if (glm::vec3 tangV = va - vb - vRelNorm * normal; length(tangV) > 0.000000001f) {
 			glm::vec3 tangent = glm::normalize(tangV);
 			float vRelTangent = glm::dot(va - vb, tangent);
 			float frictionJ = -friction * b.getFriction() * vRelTangent 
 				/ (this->getInvMass()
 				+ b.getInvMass()
-				+ glm::dot(tangent * this->getInvInertiaTensor(), glm::cross(glm::cross(ka, tangent), ka))
-				+ glm::dot(tangent * b.getInvInertiaTensor(), glm::cross(glm::cross(kb, tangent), kb))
+				+ glm::dot(tangent, glm::cross(this->getInvInertiaTensor() * glm::cross(ka, tangent), ka))
+				+ glm::dot(tangent, glm::cross(b.getInvInertiaTensor() * glm::cross(kb, tangent), kb))
 				);
 			this->applyImpulse(j * normal + frictionJ * tangent, ka);
 			b.applyImpulse(j * -normal - frictionJ * tangent, kb);

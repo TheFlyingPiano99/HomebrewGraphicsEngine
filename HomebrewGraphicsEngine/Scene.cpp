@@ -473,7 +473,7 @@ namespace hograengine {
 			obj->update(dt);
 		}
 
-		camera->update();
+		camera->update(dt);
 		if (shadowCaster != nullptr) {
 			shadowCaster->update();
 		}

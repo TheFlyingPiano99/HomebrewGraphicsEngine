@@ -11,8 +11,12 @@ namespace hograengine {
 
 		void update(float dt) override;
 
+		void moveForward(float dt);
+		void moveBackward(float dt);
+		void moveLeft(float dt);
+		void moveRight(float dt);
 		void rotate(float mouseX, float mouseY) override;
-
+		
 		void jump();
 
 		void setCamera(Camera* cam) {
@@ -27,6 +31,7 @@ namespace hograengine {
 	private:
 		float jumpImpulse = 1000.0f;
 		Camera* camera = nullptr;
+		float tSinceLastInput = 0.0f;
 	};
 }
 

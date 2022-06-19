@@ -160,6 +160,7 @@
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="Callbacks.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraAnimation.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionEventListener.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraAnimation.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionEventListener.h" />
     <ClInclude Include="Component.h" />

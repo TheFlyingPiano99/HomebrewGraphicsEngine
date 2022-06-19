@@ -7,6 +7,7 @@
 #include "ShaderProgram.h"
 #include "PositionProvider.h"
 #include "OrientationProvider.h"
+#include "Animation.h"
 
 namespace hograengine {
 
@@ -17,7 +18,7 @@ namespace hograengine {
 		Camera(float aspectRatio, glm::vec3 eye, glm::vec3 center);
 
 		// Updates the camera matrix to the Vertex Shader
-		bool update();
+		bool update(float dt);
 
 		void updateOrientation(glm::vec3 prefUp);
 		// Exports the camera matrix to a shader
@@ -104,6 +105,18 @@ namespace hograengine {
 			positionInProvidersSpace = pos;
 		}
 
+		Animation* getAnimation() const {
+			return animation;
+		}
+
+		void setAnimation(Animation* _animation) {
+			animation = _animation;
+		}
+
+		void setAnimationOffset(const glm::vec3& offset) {
+			animationOffset = offset;
+		}
+
 	private:
 		// Stores the main vectors of the camera
 		glm::vec3 eye;
@@ -129,6 +142,9 @@ namespace hograengine {
 		glm::vec3 positionInProvidersSpace = glm::vec3(0.0f);
 		OrientationProvider* orientationProvider = nullptr;
 		glm::vec3 lookDirInProvidersSpace = glm::vec3(0.0f, 0.0f, 1.0f);
+
+		Animation* animation = nullptr;
+		glm::vec3 animationOffset = glm::vec3(0.0f);
 
 		// Adjust the speed of the camera and it's sensitivity when looking around
 		float speed = 0.1f;
