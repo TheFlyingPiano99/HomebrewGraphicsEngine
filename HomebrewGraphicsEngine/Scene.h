@@ -90,6 +90,7 @@ namespace hograengine {
 		void initSkyBox(Texture** cubeMap);
 		void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
 		void initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field = nullptr);
+		void initLoadedGeometry(Texture** cubeMap, const glm::vec3& pos, ForceField* field = nullptr);
 		void initGroud();
 		void initAvatar(ForceField* gravitation);
 		CompositeCollider* initCompositeCollider();

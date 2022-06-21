@@ -13,6 +13,7 @@
 #include "ForceField.h"
 #include "CompositeCollider.h"
 #include "FirstPersonControl.h"
+#include "GeometryLoader.h"
 
 namespace hograengine {
 
@@ -58,22 +59,23 @@ namespace hograengine {
 		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-30.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f, -20.0f), field);
+		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, -20.0f, -30.0f), field);
 		initAvatar(field);
 	}
 
 	void Scene::initSkyBox(Texture** cubeMap)
 	{
 		ShaderProgram* skyboxShader = new ShaderProgram(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("skybox.frag")
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("skybox.frag")
 		);
 		std::vector<std::string> imagePaths;
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("left.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("top.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
+		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
+		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("left.jpg").c_str());
+		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("top.jpg").c_str());
+		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
+		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
+		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
 		*cubeMap = new TextureCube(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = new Material(skyboxShader);
 		skyBoxMaterial->addTexture(*cubeMap);
@@ -87,15 +89,15 @@ namespace hograengine {
 	void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
 		ShaderProgram* cubeShader = new ShaderProgram(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.frag")
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
 		);
 		auto* cubeMaterial = new Material(cubeShader);
 		cubeMaterial->addTexture(*cubeMap);
 		cubeMaterial->addTexture(shadowCaster->getShadowMap());
-		auto* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planks.png"),
+		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
 			0, GL_RGBA, GL_UNSIGNED_BYTE);
-		auto* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planksSpec.png"),
+		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
 			1, GL_RED, GL_UNSIGNED_BYTE);
 		cubeMaterial->addTexture(colorTexture);
 		cubeMaterial->addTexture(specularTexture);
@@ -132,15 +134,15 @@ namespace hograengine {
 		collider->setRadius(0.5f);
 		colliders.push_back(collider);
 		ShaderProgram* shader = new ShaderProgram(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.frag")
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
 		);
 		auto* material = new Material(shader);
 		material->addTexture(*cubeMap);
 		material->addTexture(shadowCaster->getShadowMap());
-		auto* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planks.png"),
+		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
 			0, GL_RGBA, GL_UNSIGNED_BYTE);
-		auto* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planksSpec.png"),
+		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
 			1, GL_RED, GL_UNSIGNED_BYTE);
 		material->addTexture(colorTexture);
 		material->addTexture(specularTexture);
@@ -158,7 +160,7 @@ namespace hograengine {
 		physics->setMass(50.0f);
 		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
 		physics->setMomentOfInertia(Physics::getMomentOfInertiaOfSolidSphere(physics->getMass(), 0.5f));
-		physics->setRotationalDrag(glm::vec3(0.5f, 0.5f, 0.5f));
+		physics->setRotationalDrag(glm::vec3(5.0f, 5.0f, 5.0f));
 		physics->setPositionForcingLevel(1.0f);
 		physics->setElasticity(0.95f);
 		physics->setFriction(1.0f);
@@ -174,14 +176,14 @@ namespace hograengine {
 	void Scene::initGroud()
 	{
 		ShaderProgram* cubeShader = new ShaderProgram(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.frag")
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
 		);
 		auto* cubeMaterial = new Material(cubeShader);
 		cubeMaterial->setReflectiveness(0.0f);
-		auto* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planks.png"),
+		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
 			0, GL_RGBA, GL_UNSIGNED_BYTE);
-		auto* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("planksSpec.png"),
+		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
 			1, GL_RED, GL_UNSIGNED_BYTE);
 		cubeMaterial->addTexture(colorTexture);
 		cubeMaterial->addTexture(specularTexture);
@@ -206,6 +208,52 @@ namespace hograengine {
 		colliders.push_back(collider);
 		addSceneObject(obj);
 	}
+
+	void Scene::initLoadedGeometry(Texture** cubeMap, const glm::vec3& pos, ForceField* field)
+	{
+		SphericalCollider* collider = new SphericalCollider();
+		collider->setRadius(0.5f);
+		colliders.push_back(collider);
+		ShaderProgram* shader = new ShaderProgram(
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
+			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
+		);
+		auto* material = new Material(shader);
+		material->addTexture(*cubeMap);
+		material->addTexture(shadowCaster->getShadowMap());
+		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
+			0, GL_RGBA, GL_UNSIGNED_BYTE);
+		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
+			1, GL_RED, GL_UNSIGNED_BYTE);
+		material->addTexture(colorTexture);
+		material->addTexture(specularTexture);
+		material->setReflectiveness(0.3f);
+		Geometry* geometry = GeometryLoader().load(AssetFolderPath::getInstance()->getGeometryFolderPath().append("mango.obj"));
+		geometry->setFaceCulling(false);
+		auto* mesh = new Mesh(material, geometry);
+		auto* obj = new SceneObject(mesh);
+		obj->setPosition(pos);
+		obj->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+
+		auto* physics = new Physics(obj);
+		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
+		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
+		physics->setMass(50.0f);
+		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
+		physics->setMomentOfInertia(Physics::getMomentOfInertiaOfSolidSphere(physics->getMass(), 0.5f));
+		physics->setRotationalDrag(glm::vec3(5.0f, 5.0f, 5.0f));
+		physics->setPositionForcingLevel(1.0f);
+		physics->setElasticity(0.95f);
+		physics->setFriction(1.0f);
+		if (field != nullptr) {
+			field->addListener(physics);
+		}
+		obj->addComponent(physics);
+		collider->setPhysics(physics);
+		obj->addComponent(collider);
+		addSceneObject(obj);
+	}
+
 
 	void Scene::initAvatar(ForceField* gravitation)
 	{
@@ -331,10 +379,10 @@ namespace hograengine {
 
 	void Scene::initPostProcessStages()
 	{
-		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+		auto* stage0 = new PostProcessStage(AssetFolderPath::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage0);
-		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
+		auto* stage1 = new PostProcessStage(AssetFolderPath::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage1);
 	}

@@ -12,9 +12,9 @@ namespace hograengine {
 	* Needs to be called before closing program!
 	*/
 	void Singleton::destroyAllInstances() {
-		ControlActionManager::destroyInstance();
 		Scene::destroyInstance();
-		AssetFolderPathManager::destroyInstance();
+		ControlActionManager::destroyInstance();
+		AssetFolderPath::destroyInstance();
 		GUI::destroyInstance();
 		SceneEventManager::destroyInstance();
 	}
