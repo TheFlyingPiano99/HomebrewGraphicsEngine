@@ -2,17 +2,10 @@
 
 layout (location = 0) out vec4 FragColor;
 
-// Imports the world position from the Vertex Shader
 in vec4 worldPos;
-
 in vec4 lightPos;
-
-// Imports the normal from the Vertex Shader
-in vec4 normal;
-// Imports the color from the Vertex Shader
-in vec3 color;
-// Imports the texture coordinates from the Vertex Shader
-in vec2 texCoord;
+in vec2 texCoords;
+in mat3 TBN;
 
 struct Light {
 	vec4 position;
@@ -21,11 +14,13 @@ struct Light {
 uniform Light lights[64];
 uniform unsigned int lightCount;
 
-layout (binding = 0) uniform sampler2D colorTexture;
-layout (binding = 1) uniform sampler2D specularTexture;
-layout (binding = 2) uniform sampler2D normalTexture;
-layout (binding = 4) uniform sampler2D shadowMap;
+layout (binding = 0) uniform sampler2D albedoMap;
+layout (binding = 1) uniform sampler2D normalMap;
+layout (binding = 2) uniform sampler2D metallicMap;
+layout (binding = 3) uniform sampler2D roughnessMap;
+layout (binding = 4) uniform sampler2D aoMap;
 layout (binding = 5) uniform samplerCube skybox;
+layout (binding = 6) uniform sampler2D shadowMap;
 
 struct Material {
 	vec3 diffuseColor;
@@ -42,6 +37,8 @@ struct Camera {
 	mat4 invViewProjMatrix;
 };
 uniform Camera camera;
+
+const float PI = 3.14159265359;
 
 float calculateShadow() {
 	vec3 projCoords = lightPos.xyz / lightPos.w;
@@ -84,19 +81,20 @@ vec3 calculateLight(Light light, vec3 fragPos, vec3 diffuseColor, float ks, vec3
 
 void main()
 {
-	vec3 n = normalize(normal.xyz);
+	vec3 n =  normalize(TBN * (texture(normalMap, texCoords).xyz * 2.0 - 1.0));
+	//vec3 n = normalize(normal.xyz);
 	vec3 wp = worldPos.xyz / worldPos.w;
 	vec3 viewDir = normalize(camera.position - wp);
 	vec3 lightSum = vec3(0, 0, 0);
-	vec3 diffColor = texture(colorTexture, texCoord).rgb;
-	float ks = texture(specularTexture, texCoord).r;
+	vec3 diffColor = texture(albedoMap, texCoords).rgb;
+	float ks = texture(aoMap, texCoords).r;
 	float shadow = calculateShadow();
 	for (int i = 0; i < lightCount; i++) {
 		lightSum += calculateLight(lights[i], wp, diffColor, ks, n, viewDir, shadow);
 	}
 	lightSum += material.ambientColor;
 	vec3 reflectDir = reflect(-viewDir, n);
-	float r = ks * material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
+	float r = (1 - texture(roughnessMap, texCoords).r) * ks * material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
 	lightSum = max(1.0 - r, 0.0) * lightSum + r * texture(skybox, reflectDir).rgb ;
 	FragColor = vec4(lightSum, 1.0f);
 	vec3 projCoords = lightPos.xyz / lightPos.w;

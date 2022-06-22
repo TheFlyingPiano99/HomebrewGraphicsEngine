@@ -92,18 +92,26 @@ namespace hograengine {
 			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
 			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
 		);
-		auto* cubeMaterial = new Material(cubeShader);
-		cubeMaterial->addTexture(*cubeMap);
-		cubeMaterial->addTexture(shadowCaster->getShadowMap());
-		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
-			0, GL_RGBA, GL_UNSIGNED_BYTE);
-		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
-			1, GL_RED, GL_UNSIGNED_BYTE);
-		cubeMaterial->addTexture(colorTexture);
-		cubeMaterial->addTexture(specularTexture);
-		cubeMaterial->setReflectiveness(0.3f);
+		auto* material = new Material(cubeShader);
+		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("vinyl/albedo.jpg"),
+			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("vinyl/ao.jpg"),
+			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("vinyl/normal.jpg"),
+			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* rougnessMap = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("vinyl/roughness.jpg"),
+			ROUGHNESS_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		material->addTexture(colorTexture);
+		material->addTexture(specularTexture);
+		material->addTexture(normalTexture);		
+		material->addTexture(rougnessMap);
+		material->setReflectiveness(0.3f);
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
-		auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
+		auto* cubeMesh = new Mesh(material, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
 		obj->setPosition(pos);
 		obj->setScale(glm::vec3(10.0f, 0.5f, 10.0f));
@@ -138,14 +146,22 @@ namespace hograengine {
 			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
 		);
 		auto* material = new Material(shader);
-		material->addTexture(*cubeMap);
-		material->addTexture(shadowCaster->getShadowMap());
-		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
-			0, GL_RGBA, GL_UNSIGNED_BYTE);
-		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
-			1, GL_RED, GL_UNSIGNED_BYTE);
+		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/albedo.jpg"),
+			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/ao.jpg"),
+			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/normal.jpg"),
+			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* roughnessMap = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/rougness.jpg"),
+			ROUGHNESS_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		material->addTexture(colorTexture);
 		material->addTexture(specularTexture);
+		material->addTexture(normalTexture);
+		material->addTexture(roughnessMap);
 		material->setReflectiveness(0.3f);
 		Geometry* geometry = GeometryFactory::Sphere::getInstance();
 		geometry->setFaceCulling(false);
@@ -175,22 +191,27 @@ namespace hograengine {
 
 	void Scene::initGroud()
 	{
-		ShaderProgram* cubeShader = new ShaderProgram(
+		ShaderProgram* shader = new ShaderProgram(
 			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
 			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
 		);
-		auto* cubeMaterial = new Material(cubeShader);
-		cubeMaterial->setReflectiveness(0.0f);
-		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
-			0, GL_RGBA, GL_UNSIGNED_BYTE);
-		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
-			1, GL_RED, GL_UNSIGNED_BYTE);
-		cubeMaterial->addTexture(colorTexture);
-		cubeMaterial->addTexture(specularTexture);
-		cubeMaterial->addTexture(shadowCaster->getShadowMap());
+		auto* material = new Material(shader);
+		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("vinyl/albedo.jpg"),
+			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("vinyl/ao.jpg"),
+			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("vinyl/normal.jpg"),
+			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		material->addTexture(colorTexture);
+		material->addTexture(specularTexture);
+		material->addTexture(normalTexture);
+		material->addTexture(shadowCaster->getShadowMap());
 
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
-		auto* cubeMesh = new Mesh(cubeMaterial, cubeGeometry);
+		auto* cubeMesh = new Mesh(material, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
 		obj->setPosition(glm::vec3(0.0f, -50.0f, 0.0f));
 		obj->setScale(glm::vec3(100.0f, 1.0f, 100.0f));
@@ -220,13 +241,22 @@ namespace hograengine {
 		);
 		auto* material = new Material(shader);
 		material->addTexture(*cubeMap);
-		material->addTexture(shadowCaster->getShadowMap());
-		auto* colorTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planks.png"),
-			0, GL_RGBA, GL_UNSIGNED_BYTE);
-		auto* specularTexture = new Texture2D(AssetFolderPath::getInstance()->getTextureFolderPath().append("planksSpec.png"),
-			1, GL_RED, GL_UNSIGNED_BYTE);
+		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/albedo.jpg"),
+			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/ao.jpg"),
+			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/normal.jpg"),
+			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto const* roughnessMap = new Texture2D(AssetFolderPath::getInstance()->
+			getTextureFolderPath().append("planks/rougness.jpg"),
+			ROUGHNESS_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		material->addTexture(colorTexture);
 		material->addTexture(specularTexture);
+		material->addTexture(normalTexture);
+		material->addTexture(roughnessMap);
 		material->setReflectiveness(0.3f);
 		Geometry* geometry = GeometryLoader().load(AssetFolderPath::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->setFaceCulling(false);

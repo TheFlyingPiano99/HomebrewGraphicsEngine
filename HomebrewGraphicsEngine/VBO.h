@@ -9,10 +9,11 @@ namespace hograengine {
 	// Structure to standardize the vertices used in the meshes
 	struct Vertex
 	{
-		glm::vec4 position;
-		glm::vec3 normal;
-		glm::vec3 color;
-		glm::vec2 texUV;
+		glm::vec3 position;		// layout 0
+		glm::vec3 normal;		// layout 1
+		glm::vec3 tangent;		// layout 2
+		glm::vec3 bitangent;	// layout 3
+		glm::vec2 texUV;		// layout 4
 	};
 
 	struct SimpleVertex

@@ -103,7 +103,8 @@ namespace hograengine {
 			Vertex vert;
 			vert.position = glm::vec4(positions.at(i), 1.0f);
 			vert.normal = normalize(positions.at(i));
-			vert.color = glm::vec3(0.18f);
+			vert.tangent = normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), vert.normal));
+			vert.bitangent = normalize(glm::cross(vert.normal, vert.tangent));
 			glm::vec2 horizontal = glm::normalize(glm::vec2(vert.position.x, vert.position.z));
 			vert.texUV = glm::vec2(acosf(horizontal.x) * 0.5f + 0.5f, asinf(vert.normal.y) * 0.5f + 0.5f);
 			vertices.push_back(vert);

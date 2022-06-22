@@ -1,60 +1,6 @@
-﻿  AABBCollider.cpp
+﻿  Scene.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  AssetFolderPathManager.cpp
-  Callbacks.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Callbacks.cpp(106,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Collider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  CompositeCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ControlAction.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ControlActionManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  CuboidCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  FirstPersonControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ForceField.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  GUI.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  HoGraEngineApplication.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(104,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(105,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Light.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Material.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Mesh.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Physics.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  PostProcessStage.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Scene.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.h(30,22): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.h(34,23): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.h(49,24): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.h(51,25): warning C4018: '<': signed/unsigned mismatch
-  SceneEvent.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SceneEventImplementation.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Texture2D.cpp
   Generating Code...
-  Compiling...
-  SceneObject.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ShadowCaster.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SingletonManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SphericalCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  UserControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Generating Code...
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture2D.cpp(117): warning C4172: returning address of local variable or temporary: v
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

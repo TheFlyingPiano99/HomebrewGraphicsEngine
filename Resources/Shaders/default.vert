@@ -1,26 +1,15 @@
 #version 420 core
 
-// Positions/Coordinates
-layout (location = 0) in vec4 aPos;
-// Normals (not necessarily normalized)
+layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
-// Colors
-layout (location = 2) in vec3 aColor;
-// Texture Coordinates
-layout (location = 3) in vec2 aTex;
+layout (location = 2) in vec3 aTangent;
+layout (location = 3) in vec3 aBitangent;
+layout (location = 4) in vec2 aTex;
 
-
-// Outputs the current position for the Fragment Shader
 out vec4 worldPos;
-
 out vec4 lightPos;
-
-// Outputs the normal for the Fragment Shader
-out vec4 normal;
-// Outputs the color for the Fragment Shader
-out vec3 color;
-// Outputs the texture coordinates to the Fragment Shader
-out vec2 texCoord;
+out vec2 texCoords;
+out mat3 TBN;	// Tangent-Bitangent-Normal matrix
 
 
 struct Camera {
@@ -43,11 +32,12 @@ uniform ShadowCaster shadowCaster;
 
 void main()
 {
-	worldPos = sceneObject.modelMatrix * aPos;
+	worldPos = sceneObject.modelMatrix * vec4(aPos, 1.0);
 	lightPos = shadowCaster.lightSpaceMatrix * worldPos;
-	normal = vec4(aNormal, 0.0) * sceneObject.invModelMatrix;
-	color = aColor;
-	texCoord = aTex;
-	
+	texCoords = aTex;	
+	vec3 wTangent = (vec4(aTangent, 0.0) * sceneObject.invModelMatrix).xyz;
+	vec3 wBitangent = (vec4(aBitangent, 0.0) * sceneObject.invModelMatrix).xyz;
+	vec3 wNormal = (vec4(aNormal, 0.0) * sceneObject.invModelMatrix).xyz;
+	TBN = mat3(wTangent, wBitangent, wNormal);
 	gl_Position = camera.viewProjMatrix * worldPos;
 }
