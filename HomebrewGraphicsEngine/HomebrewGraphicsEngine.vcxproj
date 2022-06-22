@@ -192,6 +192,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="OrientationProvider.cpp" />
     <ClCompile Include="Physics.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Listener.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="OrientationProvider.h" />

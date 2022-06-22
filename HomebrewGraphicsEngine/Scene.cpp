@@ -14,6 +14,7 @@
 #include "CompositeCollider.h"
 #include "FirstPersonControl.h"
 #include "GeometryLoader.h"
+#include "MaterialFactory.h"
 
 namespace hograengine {
 
@@ -40,7 +41,7 @@ namespace hograengine {
 		Texture* cubeMap = nullptr;
 		initSkyBox(&cubeMap);
 		ForceField* field = initGravitation();
-		initGroud();
+		initGroud(cubeMap);
 
 		auto* col = initCompositeCollider();
 		initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f), col, field);
@@ -189,27 +190,9 @@ namespace hograengine {
 		addSceneObject(obj);
 	}
 
-	void Scene::initGroud()
+	void Scene::initGroud(const Texture* skyBox)
 	{
-		ShaderProgram* shader = new ShaderProgram(
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
-		);
-		auto* material = new Material(shader);
-		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("vinyl/albedo.jpg"),
-			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("vinyl/ao.jpg"),
-			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("vinyl/normal.jpg"),
-			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		material->addTexture(colorTexture);
-		material->addTexture(specularTexture);
-		material->addTexture(normalTexture);
-		material->addTexture(shadowCaster->getShadowMap());
-
+		auto* material = MaterialFactory().createPBR("vinyl", skyBox);
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 		auto* cubeMesh = new Mesh(material, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);

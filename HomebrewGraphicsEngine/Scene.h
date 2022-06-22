@@ -12,6 +12,7 @@
 #include "CompositeCollider.h"
 #include "ShadowCaster.h"
 #include "UserControl.h"
+#include "TextureCube.h"
 
 namespace hograengine {
 
@@ -91,7 +92,7 @@ namespace hograengine {
 		void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
 		void initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field = nullptr);
 		void initLoadedGeometry(Texture** cubeMap, const glm::vec3& pos, ForceField* field = nullptr);
-		void initGroud();
+		void initGroud(const Texture* skyBox);
 		void initAvatar(ForceField* gravitation);
 		CompositeCollider* initCompositeCollider();
 		ForceField* initGravitation();

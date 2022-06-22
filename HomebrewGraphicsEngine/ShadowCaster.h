@@ -72,6 +72,7 @@ namespace hograengine {
 
 		void exportData(const ShaderProgram& _program) const {
 			glUniformMatrix4fv(glGetUniformLocation(_program.ID, "shadowCaster.lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+			shadowMap->Bind();
 		}
 
 		void setPositionProvider(PositionProvider* provider) {
