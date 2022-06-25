@@ -13,6 +13,7 @@
 #include "ShadowCaster.h"
 #include "UserControl.h"
 #include "TextureCube.h"
+#include "LightManager.h"
 
 namespace hograengine {
 
@@ -60,6 +61,7 @@ namespace hograengine {
 
 		Camera* camera = nullptr;
 		std::vector<Light*> lights;
+		LightManager lightManager;
 
 		std::vector<ShaderProgram*> shaders;
 		std::vector<Geometry*> geometries;

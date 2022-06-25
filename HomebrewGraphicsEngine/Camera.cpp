@@ -4,12 +4,32 @@
 #include<glm/gtc/type_ptr.hpp>
 #include<glm/gtx/rotate_vector.hpp>
 #include<glm/gtx/vector_angle.hpp>
+#include "GlobalInclude.h"
 
 namespace hograengine {
 
 	Camera::Camera(float aspectRatio, glm::vec3 eye, glm::vec3 center)
 		: aspectRatio(aspectRatio), eye(eye), center(center)
 	{
+		std::vector<int> uniformDataSizes;
+		//eye:
+		uniformDataSizes.push_back(sizeof(glm::vec3));
+		//viewProjMatrix:
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		//rayDirMatrix:
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		uniformDataSizes.push_back(sizeof(glm::vec4));
+		ubo = new UniformBufferObject(uniformDataSizes, CAMERA_UBO_BINDING);
+	}
+
+	Camera::~Camera()
+	{
+		delete ubo;
 	}
 
 	bool Camera::update(float dt)
@@ -50,44 +70,22 @@ namespace hograengine {
 		prefUp = newPrefUp;
 	}
 
-	void Camera::exportMatrices(ShaderProgram& shader, const std::string& uniformaName) const
+	void Camera::exportData() const
 	{
-		std::string copy(uniformaName);
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, copy.append(".viewProjMatrix").c_str()), 1, GL_FALSE, glm::value_ptr(viewProjMatrix));
-		copy = uniformaName;
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, copy.append(".invViewProjMatrix").c_str()), 1, GL_FALSE, glm::value_ptr(invViewProjMatrix));
-		copy = uniformaName;
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, copy.append(".rayDirMatrix").c_str()), 1, GL_FALSE, glm::value_ptr(rayDirMatrix));
-	}
-
-
-	void Camera::exportData(ShaderProgram& shader, const std::string& uniformName) const
-	{
-		std::string copy(uniformName);
-		glUniform3f(glGetUniformLocation(shader.ID, copy.append(".position").c_str()), eye.x, eye.y, eye.z);
-		copy = uniformName;
-		glUniform3f(glGetUniformLocation(shader.ID, copy.append(".center").c_str()), center.x, center.y, center.z);
-		copy = uniformName;
-		glUniform3f(glGetUniformLocation(shader.ID, copy.append(".right").c_str()), right.x, right.y, right.z);
-		copy = uniformName;
-		glUniform3f(glGetUniformLocation(shader.ID, copy.append(".up").c_str()), up.x, up.y, up.z);
-		copy = uniformName;
-		glUniform1f(glGetUniformLocation(shader.ID, copy.append(".FOVrad").c_str()), glm::radians(FOVdeg));
-		copy = uniformName;
-		glUniform1f(glGetUniformLocation(shader.ID, copy.append(".aspectRatio").c_str()), aspectRatio);
-		exportMatrices(shader, uniformName);
-	}
-
-	void Camera::exportPostprocessDataAsLightCamera(ShaderProgram& shader)
-	{
-		glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.eye"), eye.x, eye.y, eye.z);
-		glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.center"), center.x, center.y, center.z);
-		glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.right"), right.x, right.y, right.z);
-		glUniform3f(glGetUniformLocation(shader.ID, "lightCamera.up"), up.x, up.y, up.z);
-		glUniform1f(glGetUniformLocation(shader.ID, "lightCamera.FOVrad"), glm::radians(FOVdeg));
-		glUniform1f(glGetUniformLocation(shader.ID, "lightCamera.aspectRatio"), aspectRatio);
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "lightCamera.viewProjMatrix"), 1, GL_FALSE, glm::value_ptr(viewProjMatrix));
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "lightCamera.invViewProjMatrix"), 1, GL_FALSE, glm::value_ptr(invViewProjMatrix));
+		ubo->Bind();
+		//eye:
+		ubo->uploadSubData((void*)glm::value_ptr(eye), 0);
+		//viewProjMatrix:
+		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[0]), 1);
+		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[1]), 2);
+		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[2]), 3);
+		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[3]), 4);
+		//rayDirMatrix:
+		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[0]), 5);
+		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[1]), 6);
+		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[2]), 7);
+		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[3]), 8);
+		ubo->Unbind();
 	}
 
 	void Camera::moveForward(float dt) {

@@ -9,17 +9,15 @@ layout (location = 2) in vec3 aColor;
 // Texture Coordinates
 layout (location = 3) in vec2 aTex;
 
-struct SceneObject {
+uniform struct SceneObject {
 	mat4 modelMatrix;
-};
-uniform SceneObject sceneObject;
+} sceneObject;
 
-struct ShadowCaster {
+layout (std140, binding = 2) uniform ShadowCaster {
 	mat4 lightSpaceMatrix;
 };
-uniform ShadowCaster shadowCaster;
 
 void main()
 {
-	gl_Position = shadowCaster.lightSpaceMatrix * sceneObject.modelMatrix * aPos;
+	gl_Position = lightSpaceMatrix * sceneObject.modelMatrix * aPos;
 }

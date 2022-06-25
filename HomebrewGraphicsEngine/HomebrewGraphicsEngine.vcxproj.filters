@@ -246,6 +246,12 @@
     <ClCompile Include="MaterialFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UniformBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -440,6 +446,12 @@
     <ClInclude Include="MaterialFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UniformBuffer.h">
+      <Filter>Header Files\OpenGLObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -515,5 +527,6 @@
     <None Include="..\Resources\Shaders\hdr.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

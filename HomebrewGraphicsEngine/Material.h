@@ -14,8 +14,6 @@ namespace hograengine {
 
 		void Bind() const;
 
-		void Bind(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster) const;
-
 		void addTexture(const Texture* texture);
 		void clearTextures();
 

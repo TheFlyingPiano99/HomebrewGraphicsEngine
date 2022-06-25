@@ -24,7 +24,10 @@ namespace hograengine {
 	{
 		camera = new Camera((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(-9.0f, 10.0f, -9.0f));
 		lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(0.9f, 0.9f, 0.9f)));	// Directional light
-		lights.push_back(new Light(glm::vec4(10.0f, 5.0f, 20.0f, 1.0f), glm::vec3(100.0f, 100.0f, 100.0f)));
+		lights.push_back(new Light(glm::vec4(-80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(10000.0f, 100.0f, 100.0f)));
+		lights.push_back(new Light(glm::vec4(0.0f, -28.0f, 80.0f, 1.0f), glm::vec3(100.0f, 10000.0f, 100.0f)));
+		lights.push_back(new Light(glm::vec4(80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 10000.0f)));
+		lightManager.registerLights(lights);
 	}
 
 	void Scene::initShadowMap()
@@ -515,16 +518,15 @@ namespace hograengine {
 
 	void Scene::control(float dt)
 	{
-		ControlActionManager::getInstance()->executeQueue(this, dt);
-		SceneEventManager::getInstance()->executeQueue(dt);
-		for (auto& obj : sceneObjects) {
-			obj->control(dt);
-		}
-
 		for (int i = 0; i < colliders.size() - 1; i++) {
 			for (int j = i + 1; j < colliders.size(); j++) {
 				colliders[i]->collide(*colliders[j]);
 			}
+		}
+		ControlActionManager::getInstance()->executeQueue(this, dt);
+		SceneEventManager::getInstance()->executeQueue(dt);
+		for (auto& obj : sceneObjects) {
+			obj->control(dt);
 		}
 	}
 
@@ -542,9 +544,11 @@ namespace hograengine {
 
 	void Scene::draw()
 	{
-		shadowCaster->Bind();
-		for (auto& obj : sceneObjects) {
-			obj->draw(*shadowCaster);
+		if (nullptr != shadowCaster) {
+			shadowCaster->Bind();
+			for (auto& obj : sceneObjects) {
+				obj->drawShadow(*shadowCaster);
+			}
 		}
 
 		if (postProcessStages.size() > 0) {
@@ -561,8 +565,10 @@ namespace hograengine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glStencilMask(0x00);
 
+		camera->exportData();
+		lightManager.exportData();
 		for (auto& obj : sceneObjects) {
-			obj->draw(*camera, lights, *shadowCaster);
+			obj->draw();
 		}
 		for (int i = 0; i < postProcessStages.size(); i++) {
 			if (i < postProcessStages.size() - 1) {

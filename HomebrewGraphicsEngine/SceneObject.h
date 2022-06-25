@@ -27,9 +27,9 @@ namespace hograengine {
 
 		void update(float dt);
 
-		void draw(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster);
+		void draw();
 
-		void draw(const ShadowCaster& shadowCaster);
+		void drawShadow(const ShadowCaster& shadowCaster);
 
 		Mesh* getMesh() const {
 			return mesh;

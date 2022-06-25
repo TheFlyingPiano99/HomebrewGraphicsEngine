@@ -22,23 +22,6 @@ namespace hograengine {
 		}
 	}
 
-	void Mesh::Bind(const Camera& camera, const std::vector<Light*>& lights, const ShadowCaster& shadowCaster) const
-	{
-		material->Bind(camera, lights, shadowCaster);
-		if (depthTest) {
-			glEnable(GL_DEPTH_TEST);
-		}
-		else {
-			glDisable(GL_DEPTH_TEST);
-		}
-		if (stencilTest) {
-			glEnable(GL_STENCIL_TEST);
-		}
-		else {
-			glDisable(GL_STENCIL_TEST);
-		}
-	}
-
 	void Mesh::Draw() const
 	{
 		geometry->Draw();

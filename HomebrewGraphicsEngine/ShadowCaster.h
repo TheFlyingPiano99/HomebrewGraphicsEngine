@@ -13,30 +13,14 @@ namespace hograengine {
 	class ShadowCaster
 	{
 	public:
-		ShadowCaster(glm::vec3 position, glm::vec3 direction) : position(position), direction(glm::normalize(direction)) {
-			fbo.Bind();
-			glDrawBuffer(GL_NONE);
-			glReadBuffer(GL_NONE);
-			shadowMap = new Texture2D(GL_DEPTH_COMPONENT, glm::ivec2(SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT), SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
-			shadowMap->Bind();
-			// Configures the way the texture repeats (if it does at all)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-			float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-			glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-			shadowMap->Unbind();
-			program = new ShaderProgram(
-				AssetFolderPath::getInstance()->getShaderFolderPath().append("shadowCast.vert"),
-				AssetFolderPath::getInstance()->getShaderFolderPath().append("shadowCast.frag")
-			);
-			fbo.LinkTexture(GL_DEPTH_ATTACHMENT, *shadowMap);
-			FBO::BindDefault();
-			update();
-		}
+		ShadowCaster(glm::vec3 position, glm::vec3 direction);
 
 		~ShadowCaster() {
 			if (program != nullptr) {
 				delete program;
+			}
+			if (ubo != nullptr) {
+				delete ubo;
 			}
 		}
 
@@ -51,7 +35,7 @@ namespace hograengine {
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
 			program->Activate();
-			exportData(*program);
+			exportData();
 		}
 
 		void update() {
@@ -70,8 +54,13 @@ namespace hograengine {
 			return *program;
 		}
 
-		void exportData(const ShaderProgram& _program) const {
-			glUniformMatrix4fv(glGetUniformLocation(_program.ID, "shadowCaster.lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+		void exportData() const {
+			ubo->Bind();
+			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[0]), 0);
+			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[1]), 1);
+			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[2]), 2);
+			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[3]), 3);
+			ubo->Unbind();
 			shadowMap->Bind();
 		}
 
@@ -88,6 +77,7 @@ namespace hograengine {
 		glm::vec3 direction;
 
 		FBO fbo;
+		UniformBufferObject* ubo = nullptr;
 		Texture2D* shadowMap = nullptr;	// Do not delete in this object
 		ShaderProgram* program = nullptr;
 		glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);

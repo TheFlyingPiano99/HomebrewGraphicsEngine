@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="hograengine::AABBCollider" Collapsed="true">
+    <Position X="5.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAABEAAQAAAwBBgAAGAAAwAIIAADAAkAAAIAAAAEAAA=</HashCode>
+      <FileName>AABBCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Animation" Collapsed="true">
+    <Position X="1.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Animation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::GoAround" Collapsed="true">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAACCAAAAAAAAAAAAAgAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Animation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::AssetFolderPath" Collapsed="true">
+    <Position X="29" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAIAQQAIAAAAAgAABAAAQQAACBgAAAAAA=</HashCode>
+      <FileName>AssetFolderPathManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::AudioSource" Collapsed="true">
+    <Position X="30.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AudioSource.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Camera" Collapsed="true">
+    <Position X="24.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EjgCCAAllAQASAxBAABQAYBAAQIQAQGImwFACmYsgEA=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Collider" Collapsed="true">
+    <Position X="9" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBIAAAAAAgBggAAEAAIAAChAAlAAESEAIBAAAEAAA=</HashCode>
+      <FileName>Collider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::CollisionEventListener" Collapsed="true">
+    <Position X="32.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CollisionEventListener.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Component" Collapsed="true">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Component.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::CompositeCollider" Collapsed="true">
+    <Position X="8" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAEAAAAAoFAgAAEAIAAAAAAAAAAEAAMIAAAEEAAA=</HashCode>
+      <FileName>CompositeCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::ControlAction" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAUEAAAAAAABAAEAAAAAAAARAAAAAACAIAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::MoveAvatarForward" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::MoveAvatarBackward" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::MoveAvatarRight" Collapsed="true">
+    <Position X="15.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::MoveAvatarLeft" Collapsed="true">
+    <Position X="19.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::MoveAvatarUp" Collapsed="true">
+    <Position X="22" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::MoveAvatarDown" Collapsed="true">
+    <Position X="24.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::JumpAvatar" Collapsed="true">
+    <Position X="26.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAECAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::ToggleGUI" Collapsed="true">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::FastForward" Collapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Rewind" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::TogglePause" Collapsed="true">
+    <Position X="13" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::ToggleFullScreenMode" Collapsed="true">
+    <Position X="17.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ControlAction.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::ControlActionManager" Collapsed="true">
+    <Position X="34.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAACAAAIIBgAAAAAAAAAABAQAQAAAgCACAgAIY=</HashCode>
+      <FileName>ControlActionManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::CuboidCollider" Collapsed="true">
+    <Position X="13" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAABAgAAgAAEAAAAAAAAAAAAEAAAIAAAAAAAA=</HashCode>
+      <FileName>CuboidCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::EBO" Collapsed="true">
+    <Position X="37.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAGAAAAACA=</HashCode>
+      <FileName>EBO.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::FBO" Collapsed="true">
+    <Position X="29" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAACQAgAQABAAAAAAIAAEAAAAAAAAEIAAAAAQ=</HashCode>
+      <FileName>FBO.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::FirstPersonControl" Collapsed="true">
+    <Position X="17" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAIAAgABAAIAAAAQAQAAAAAQAAAAAAgACEAEAAA=</HashCode>
+      <FileName>FirstPersonControl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::ForceField" Collapsed="true">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAABAAEAgAAAAAAAIAAAAAAQAAAAABEIAA=</HashCode>
+      <FileName>ForceField.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::CentralForceField" Collapsed="true">
+    <Position X="1.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAEAAAAEAAA=</HashCode>
+      <FileName>ForceField.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::HomogeneForceField" Collapsed="true">
+    <Position X="3.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAgAAAAAJAAAAAAAAAAAAAAAAIAAAAAAAAAEAAA=</HashCode>
+      <FileName>ForceField.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Geometry" Collapsed="true">
+    <Position X="32.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAQgAAABAAAgAAAAAAAAAAAAAQAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Geometry.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::GeometryLoader" Collapsed="true">
+    <Position X="34.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GeometryLoader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::GUI" Collapsed="true">
+    <Position X="36" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAgAAAIAIAAAABIAQAAABABAAAQAAAAACAJAAAA=</HashCode>
+      <FileName>GUI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::HoGraEngineApplication" Collapsed="true">
+    <Position X="37.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACACAAAAAAAAEAAAAAAAAIIIAAAACAAAAA=</HashCode>
+      <FileName>HoGraEngineApplication.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Light" Collapsed="true">
+    <Position X="29" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQACBQAAAIgAAAAAAAAEAAAAAAAQAAAA=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Listener" Collapsed="true">
+    <Position X="30.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Listener.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Material" Collapsed="true">
+    <Position X="32.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QECBgAAASEIAAAAAAAAEAAAAAIAAAQAAQgAACAAEAYE=</HashCode>
+      <FileName>Material.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Mesh" Collapsed="true">
+    <Position X="36" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACAgAAAAAAAAgAAAAAAAAAAAAAAAAAAgQAAgABAAAA=</HashCode>
+      <FileName>Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::OrientationProvider" Collapsed="true">
+    <Position X="8.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>OrientationProvider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Physics" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAJywAYAmAi5hSgACAoZFSAQAQiEkAEgIAFMcAEFAQA=</HashCode>
+      <FileName>Physics.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Plane" Collapsed="true">
+    <Position X="37.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAACAAAAAAAAAIAAAAggAAAAAAAEAAAIAAAAAACA=</HashCode>
+      <FileName>Plane.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::PositionProvider" Collapsed="true">
+    <Position X="5.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PositionProvider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::PostProcessStage" Collapsed="true">
+    <Position X="29" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAgAAAAAJAAgAAACAEAAAAAAABAAAAAQAAIAhAAgE=</HashCode>
+      <FileName>PostProcessStage.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Ray" Collapsed="true">
+    <Position X="30.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAgAAAAAIAAAAAAAIAACAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Ray.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::RBO" Collapsed="true">
+    <Position X="32.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>RBO.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Scene">
+    <Position X="19.75" Y="3.75" Width="4" />
+    <NestedTypes>
+      <Class Name="hograengine::Scene::SceneNotInstanciatedException" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Scene.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IAQEAAAAWkACdIAggAKAKGAB5AJaIA5KAQQAEABUIEA=</HashCode>
+      <FileName>Scene.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="avatarControl" />
+      <Field Name="camera" />
+      <Field Name="shadowCaster" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="hograengine::SceneEvent" Collapsed="true">
+    <Position X="11.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>SceneEvent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::CollisionEvent" Collapsed="true">
+    <Position X="11.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>SceneEventImplementation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::SceneEventManager" Collapsed="true">
+    <Position X="34.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAACIAAAAAAAAAACAABAAAYAAAAAQAAgAIA=</HashCode>
+      <FileName>SceneEventManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::SceneObject" Collapsed="true">
+    <Position X="5.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACRJAiAAAAABEgACRKCIgADADAhAAgCEAIBAgAlAAA=</HashCode>
+      <FileName>SceneObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::ShaderProgram" Collapsed="true">
+    <Position X="36" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAgABAAAAAAAAAAAEAAAAAAgABAAAAAAA=</HashCode>
+      <FileName>ShaderProgram.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::ShadowCaster" Collapsed="true">
+    <Position X="17.5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgBAgAAAQAhAIAAAAAAAIQAAAAiAAAUACAAAAAIEAAE=</HashCode>
+      <FileName>ShadowCaster.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::SphericalCollider" Collapsed="true">
+    <Position X="10.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABABAAAACAAhAAgAAEAAAAAAAAAAAAEACIIAAAAAAAA=</HashCode>
+      <FileName>SphericalCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Texture" Collapsed="true">
+    <Position X="4" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAggAAAAAAAAAAAAAEAAAAAAAIEAAAAAAA=</HashCode>
+      <FileName>Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Texture1D" Collapsed="true">
+    <Position X="0.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAABgAAQgAAAAAAAQAAAAAAAIAABAAgAAAAEAAAAAAA=</HashCode>
+      <FileName>Texture1D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Texture2D" Collapsed="true">
+    <Position X="3" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAgAAAAAAAEgAAAAAAIQAAAAgAAAAEgAAAACA=</HashCode>
+      <FileName>Texture2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::Texture3D" Collapsed="true">
+    <Position X="5.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABgAAAAAAAAAAAFgAAAAAAIAAAACgAAAAEgEAAAAA=</HashCode>
+      <FileName>Texture3D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::TextureCube" Collapsed="true">
+    <Position X="9.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAgAAAAAAAQEDAAQAAAAEgAAAAAA=</HashCode>
+      <FileName>TextureCube.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::UserControl" Collapsed="true">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAgAAIABBAAABgQAAAAQgQAEAAAQEAQBAAAADkAEgAg=</HashCode>
+      <FileName>UserControl.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::VAO" Collapsed="true">
+    <Position X="29" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAggAAAAAAgAAAAAAAAAAAAAEAAAAAAAAEAACAAAA=</HashCode>
+      <FileName>VAO.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::VBO" Collapsed="true">
+    <Position X="30.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAGAAAEAAA=</HashCode>
+      <FileName>VBO.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::CameraAnimation" Collapsed="true">
+    <Position X="2.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAIgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CameraAnimation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::HeadBob" Collapsed="true">
+    <Position X="2.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAgAAAAIgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CameraAnimation.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::MaterialFactory" Collapsed="true">
+    <Position X="34.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MaterialFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::GeometryFactory::FullScreenQuad" Collapsed="true">
+    <Position X="30.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAIAAAAAAAAAAAAAAAAAYAAABAAAAAAAA=</HashCode>
+      <FileName>GeometryFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::GeometryFactory::Cube" Collapsed="true">
+    <Position X="36" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAgAAAAIAAAAAAAAAAAAAAAAAQAAABAAAAAAAA=</HashCode>
+      <FileName>GeometryFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="hograengine::GeometryFactory::Sphere" Collapsed="true">
+    <Position X="37.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAIAACAAAAAAAAAAAAAAQAAABAAAAAAAA=</HashCode>
+      <FileName>GeometryFactory.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="hograengine::Dnum&lt;T&gt;" Collapsed="true">
+    <Position X="30.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAUAAAgAAAAAAA=</HashCode>
+      <FileName>DualNumber.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="hograengine::GlobalVariables" Collapsed="true">
+    <Position X="32.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAIA=</HashCode>
+      <FileName>GlobalInclude.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="hograengine::Dimensions" Collapsed="true">
+    <Position X="29" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAQAQAAAAAAAAAAAAAAAgQAAIAgAAAA=</HashCode>
+      <FileName>Texture3D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="hograengine::Vertex" Collapsed="true">
+    <Position X="36" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAgAAIAgAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>VBO.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="hograengine::SimpleVertex" Collapsed="true">
+    <Position X="34.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VBO.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>

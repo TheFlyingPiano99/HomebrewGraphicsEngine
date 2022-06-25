@@ -8,6 +8,7 @@
 #include "PositionProvider.h"
 #include "OrientationProvider.h"
 #include "Animation.h"
+#include "UniformBuffer.h"
 
 namespace hograengine {
 
@@ -16,16 +17,17 @@ namespace hograengine {
 	public:
 		// Camera constructor to set up initial values
 		Camera(float aspectRatio, glm::vec3 eye, glm::vec3 center);
+		~Camera();
 
 		// Updates the camera matrix to the Vertex Shader
 		bool update(float dt);
 
 		void updateOrientation(glm::vec3 prefUp);
-		// Exports the camera matrix to a shader
-		void exportMatrices(ShaderProgram& shader, const std::string& uniformaName = "camera") const;
 
-		void exportData(ShaderProgram& program, const std::string& uniformName = "camera") const;
-		void exportPostprocessDataAsLightCamera(ShaderProgram& program);
+		/*
+		* Load data on GPU.
+		*/
+		void exportData() const;
 
 		void moveForward(float dt);
 		void moveBackward(float dt);
@@ -118,6 +120,7 @@ namespace hograengine {
 		}
 
 	private:
+		UniformBufferObject* ubo = nullptr;
 		// Stores the main vectors of the camera
 		glm::vec3 eye;
 		glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);

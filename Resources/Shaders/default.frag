@@ -2,17 +2,37 @@
 
 layout (location = 0) out vec4 FragColor;
 
-in vec4 worldPos;
-in vec4 lightPos;
-in vec2 texCoords;
-in mat3 TBN;
+in VS_OUT {
+	vec4 worldPos;
+	vec2 texCoords;
+	mat3 TBN;		// Tangent-Bitangent-Normal matrix
+} fs_in;
 
-struct Light {
-	vec4 position;
+layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
+	vec3 cameraPosition;			// 16				0
+	mat4 viewProjMatrix;			// 16				16				(column 0)
+									// 16				32				(column 1)
+									// 16				48				(column 2)
+									// 16				64				(column 3)
+	mat4 rayDirMatrix;				// 16				80				(column 0)
+									// 16				96				(column 1)
+									// 16				192				(column 2)
+									// 16				208				(column 3)
+};
+
+struct Light {			// aligned size: 32 bytes
+	vec4 position;		
 	vec3 powerDensity;
 };
-uniform Light lights[64];
-uniform unsigned int lightCount;
+
+layout (std140, binding = 1) uniform Lights {
+	unsigned int lightCount;
+	Light lights[64];
+};
+
+layout (std140, binding = 2) uniform ShadowCaster {
+	mat4 lightSpaceMatrix;
+};
 
 layout (binding = 0) uniform sampler2D albedoMap;
 layout (binding = 1) uniform sampler2D normalMap;
@@ -31,16 +51,10 @@ struct Material {
 };
 uniform Material material;
 
-struct Camera {
-	vec3 position;
-	mat4 viewProjMatrix;
-	mat4 invViewProjMatrix;
-};
-uniform Camera camera;
-
 const float PI = 3.14159265359;
 
 float calculateShadow() {
+	vec4 lightPos = lightSpaceMatrix * fs_in.worldPos;
 	vec3 projCoords = lightPos.xyz / lightPos.w;
 	projCoords = projCoords * 0.5 + 0.5;
 	float currentDepth = projCoords.z - 0.0012;
@@ -81,24 +95,20 @@ vec3 calculateLight(Light light, vec3 fragPos, vec3 diffuseColor, float ks, vec3
 
 void main()
 {
-	vec3 n =  normalize(TBN * (texture(normalMap, texCoords).xyz * 2.0 - 1.0));
+	vec3 n =  normalize(fs_in.TBN * (texture(normalMap, fs_in.texCoords).xyz * 2.0 - 1.0));
 	//vec3 n = normalize(normal.xyz);
-	vec3 wp = worldPos.xyz / worldPos.w;
-	vec3 viewDir = normalize(camera.position - wp);
+	vec3 wp = fs_in.worldPos.xyz / fs_in.worldPos.w;
+	vec3 viewDir = normalize(cameraPosition - wp);
 	vec3 lightSum = vec3(0, 0, 0);
-	vec3 diffColor = texture(albedoMap, texCoords).rgb;
-	float ks = texture(aoMap, texCoords).r;
+	vec3 diffColor = texture(albedoMap, fs_in.texCoords).rgb;
+	float ks = texture(aoMap, fs_in.texCoords).r;
 	float shadow = calculateShadow();
 	for (int i = 0; i < lightCount; i++) {
 		lightSum += calculateLight(lights[i], wp, diffColor, ks, n, viewDir, shadow);
 	}
 	lightSum += material.ambientColor;
 	vec3 reflectDir = reflect(-viewDir, n);
-	float r = (1 - texture(roughnessMap, texCoords).r) * ks * material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
+	float r = (1 - texture(roughnessMap, fs_in.texCoords).r) * ks * material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
 	lightSum = max(1.0 - r, 0.0) * lightSum + r * texture(skybox, reflectDir).rgb ;
 	FragColor = vec4(lightSum, 1.0f);
-	vec3 projCoords = lightPos.xyz / lightPos.w;
-	projCoords = projCoords * 0.5 + 0.5;
-	float closestDepth = texture(shadowMap, projCoords.xy).r;  	
-	//FragColor = vec4(closestDepth, closestDepth, closestDepth, 1);
 }

@@ -2,6 +2,7 @@
 #include<glm/glm.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include "ShaderProgram.h"
+#include "UniformBuffer.h"
 
 namespace hograengine {
 
@@ -12,15 +13,12 @@ namespace hograengine {
 
 		~Light() = default;
 
-		void exportData(const ShaderProgram& program, unsigned int id) const;
+		void exportData(UniformBufferObject* ubo, unsigned int& idx);
 
 	private:
-		static float FOVRad;
-		static float nearPlane;
-		static float farPlane;
-
 		glm::vec4 position;
 		glm::vec3 powerDensity;
+
 	};
 
 }

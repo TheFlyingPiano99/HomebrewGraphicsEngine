@@ -1,6 +1,11 @@
-﻿  Scene.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(29,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Texture2D.cpp
+﻿  AABBCollider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Camera.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  CameraAnimation.cpp
+  Scene.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  UserControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
   Generating Code...
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture2D.cpp(117): warning C4172: returning address of local variable or temporary: v
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

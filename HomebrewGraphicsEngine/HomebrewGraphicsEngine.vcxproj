@@ -190,6 +190,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TextureCube.cpp" />
+    <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
@@ -256,6 +258,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="LightManager.h" />
     <ClInclude Include="Listener.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
@@ -282,6 +285,7 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
+    <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
@@ -311,6 +315,7 @@
     <None Include="..\Resources\Shaders\voxel.frag" />
     <None Include="..\Resources\Shaders\voxelHalfAngleAttenuation.frag" />
     <None Include="..\Resources\Shaders\voxelHalfAngleColor.frag" />
+    <None Include="ClassDiagram.cd" />
     <None Include="imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
