@@ -1,11 +1,23 @@
 #pragma once
 #include "Material.h"
 #include "TextureCube.h"
+#include <string>
+#include <map>
 
 namespace hograengine {
 	class MaterialFactory
 	{
 	public:
-		Material* createPBR(const char* materialName, const Texture* skyBox);
+		static MaterialFactory* getInstance();
+		static void destroyInstance();
+
+		Material* getPBRMaterial(const char* materialName, const Texture* skyBox);
+
+	private:
+		MaterialFactory() = default;
+		~MaterialFactory();
+		static MaterialFactory* instance;
+
+		std::map<std::string, Material*> loadedPBRMaterials;
 	};
 }

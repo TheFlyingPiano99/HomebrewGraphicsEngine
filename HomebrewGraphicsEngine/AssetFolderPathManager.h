@@ -7,8 +7,8 @@ namespace hograengine {
 	/*
 	* Singleton
 	*/
-	class AssetFolderPath {
-		static AssetFolderPath* instance;
+	class AssetFolderPathManager {
+		static AssetFolderPathManager* instance;
 
 		std::string shaderFolderPath;
 		std::string textureFolderPath;
@@ -22,18 +22,18 @@ namespace hograengine {
 			}
 		};
 
-		AssetFolderPath() = default;
+		AssetFolderPathManager() = default;
 
-		~AssetFolderPath() = default;
+		~AssetFolderPathManager() = default;
 
 		std::string findPathIntoFolder(std::string folderName);
 
 
 	public:
 
-		static AssetFolderPath* getInstance() {
+		static AssetFolderPathManager* getInstance() {
 			if (instance == nullptr) {
-				instance = new AssetFolderPath();
+				instance = new AssetFolderPathManager();
 			}
 			return instance;
 		}

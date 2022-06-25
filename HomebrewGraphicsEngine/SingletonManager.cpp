@@ -5,6 +5,7 @@
 #include "AssetFolderPathManager.h"
 #include "GUI.h"
 #include "SceneEventManager.h"
+#include "MaterialFactory.h"
 
 namespace hograengine {
 
@@ -14,8 +15,9 @@ namespace hograengine {
 	void Singleton::destroyAllInstances() {
 		Scene::destroyInstance();
 		ControlActionManager::destroyInstance();
-		AssetFolderPath::destroyInstance();
+		AssetFolderPathManager::destroyInstance();
 		GUI::destroyInstance();
 		SceneEventManager::destroyInstance();
+		MaterialFactory::destroyInstance();
 	}
 }

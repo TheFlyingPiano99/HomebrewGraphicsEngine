@@ -3,9 +3,9 @@
 #include <filesystem>
 namespace hograengine {
 
-	AssetFolderPath* AssetFolderPath::instance = nullptr;
+	AssetFolderPathManager* AssetFolderPathManager::instance = nullptr;
 
-	inline std::string AssetFolderPath::findPathIntoFolder(std::string folderName) {
+	inline std::string AssetFolderPathManager::findPathIntoFolder(std::string folderName) {
 		std::string path = folderName;
 		path.append("/");
 		std::filesystem::path p = std::filesystem::path(folderName.c_str());
@@ -29,21 +29,21 @@ namespace hograengine {
 		return path;
 	}
 
-	std::string AssetFolderPath::getShaderFolderPath() {
+	std::string AssetFolderPathManager::getShaderFolderPath() {
 		if (shaderFolderPath.empty()) {
 			shaderFolderPath = findPathIntoFolder("Resources/Shaders");
 		}
 		return shaderFolderPath;
 	}
 
-	std::string AssetFolderPath::getTextureFolderPath() {
+	std::string AssetFolderPathManager::getTextureFolderPath() {
 		if (textureFolderPath.empty()) {
 			textureFolderPath = findPathIntoFolder("Resources/Textures");
 		}
 		return textureFolderPath;
 	}
 
-	std::string AssetFolderPath::getGeometryFolderPath()
+	std::string AssetFolderPathManager::getGeometryFolderPath()
 	{
 		if (geometryFolderPath.empty()) {
 			geometryFolderPath = findPathIntoFolder("Resources/Geometries");
@@ -51,7 +51,7 @@ namespace hograengine {
 		return geometryFolderPath;
 	}
 
-	std::string AssetFolderPath::getSavesFolderPath() {
+	std::string AssetFolderPathManager::getSavesFolderPath() {
 		if (savesFolderPath.empty()) {
 			savesFolderPath = findPathIntoFolder("Saves");
 		}

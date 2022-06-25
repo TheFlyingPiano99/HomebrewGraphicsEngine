@@ -5,7 +5,8 @@ namespace hograengine {
 	PostProcessStage::PostProcessStage(std::string& fragmentShaderPath, int contextWidth, int contextHeight) {
 		fbo.Bind();
 		program = new ShaderProgram(
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			"",
 			fragmentShaderPath
 		);
 		program->Activate();

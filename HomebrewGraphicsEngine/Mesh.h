@@ -20,6 +20,9 @@ namespace hograengine {
 		// Draws the mesh
 		void Bind() const;
 		void Draw() const;
+
+		void DrawInstanced(const std::vector<Geometry::InstanceData>& data) const;
+
 		Material* getMaterial() const;
 		Geometry* getGeometry() const;
 

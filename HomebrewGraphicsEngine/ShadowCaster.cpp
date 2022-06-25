@@ -13,8 +13,9 @@ namespace hograengine {
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		shadowMap->Unbind();
 		program = new ShaderProgram(
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("shadowCast.vert"),
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("shadowCast.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.frag")
 		);
 		fbo.LinkTexture(GL_DEPTH_ATTACHMENT, *shadowMap);
 		FBO::BindDefault();

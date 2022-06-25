@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include<glm/glm.hpp>
 #include "SceneObject.h"
 #include "Light.h"
@@ -14,6 +15,7 @@
 #include "UserControl.h"
 #include "TextureCube.h"
 #include "LightManager.h"
+#include "InstanceGroup.h"
 
 namespace hograengine {
 
@@ -31,7 +33,7 @@ namespace hograengine {
 		void update(float dt);
 		void draw();
 
-		void addSceneObject(SceneObject* object);
+		void addSceneObject(SceneObject* object, const std::string& instanceGroupName = "");
 
 		const glm::vec3& getPreferedUp() const;
 
@@ -68,6 +70,7 @@ namespace hograengine {
 		std::vector<Material*> materials;
 		std::vector<Mesh*> meshes;
 		std::vector<SceneObject*> sceneObjects;
+		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Component*> components;
 		std::vector<Collider*> colliders;
 		UserControl* avatarControl = nullptr;

@@ -5,6 +5,8 @@ layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec3 aTangent;
 layout (location = 3) in vec3 aBitangent;
 layout (location = 4) in vec2 aTex;
+layout (location = 5) in mat4 modelMatrix;		// Instanced array
+layout (location = 9) in mat4 invModelMatrix;	// Instanced array 
 
 out VS_OUT {
 	vec4 worldPos;
@@ -24,19 +26,13 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 									// 16				208				(column 3)
 };
 
-uniform struct SceneObject {
-	mat4 modelMatrix;
-	mat4 invModelMatrix;
-} sceneObject;
-
-
 void main()
 {
-	vs_out.worldPos = sceneObject.modelMatrix * vec4(aPos, 1.0);
-	vs_out.texCoords = aTex;	
-	vec3 wTangent = (vec4(aTangent, 0.0) * sceneObject.invModelMatrix).xyz;
-	vec3 wBitangent = (vec4(aBitangent, 0.0) * sceneObject.invModelMatrix).xyz;
-	vec3 wNormal = (vec4(aNormal, 0.0) * sceneObject.invModelMatrix).xyz;
+	vs_out.worldPos = modelMatrix * vec4(aPos, 1.0);
+	vs_out.texCoords = aTex;
+	vec3 wTangent = (vec4(aTangent, 0.0) * invModelMatrix).xyz;
+	vec3 wBitangent = (vec4(aBitangent, 0.0) * invModelMatrix).xyz;
+	vec3 wNormal = (vec4(aNormal, 0.0) * invModelMatrix).xyz;
 	vs_out.TBN = mat3(wTangent, wBitangent, wNormal);
 	gl_Position = viewProjMatrix * vs_out.worldPos;
 }

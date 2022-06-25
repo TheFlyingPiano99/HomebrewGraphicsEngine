@@ -15,6 +15,7 @@
 #include "FirstPersonControl.h"
 #include "GeometryLoader.h"
 #include "MaterialFactory.h"
+#include "ShaderProgramFactory.h"
 
 namespace hograengine {
 
@@ -63,6 +64,9 @@ namespace hograengine {
 		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-30.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f, -20.0f), field);
+		for (int i = 0; i < 100; i++) {
+			initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f + i * 5.0f, -20.0f), field);
+		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, -20.0f, -30.0f), field);
 		initAvatar(field);
 	}
@@ -70,16 +74,17 @@ namespace hograengine {
 	void Scene::initSkyBox(Texture** cubeMap)
 	{
 		ShaderProgram* skyboxShader = new ShaderProgram(
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("skybox.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("skybox.frag")
 		);
 		std::vector<std::string> imagePaths;
-		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
-		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("left.jpg").c_str());
-		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("top.jpg").c_str());
-		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
-		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
-		imagePaths.push_back(AssetFolderPath::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("left.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("top.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
 		*cubeMap = new TextureCube(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = new Material(skyboxShader);
 		skyBoxMaterial->addTexture(*cubeMap);
@@ -92,28 +97,8 @@ namespace hograengine {
 
 	void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
-		ShaderProgram* cubeShader = new ShaderProgram(
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
-		);
-		auto* material = new Material(cubeShader);
-		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("vinyl/albedo.jpg"),
-			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("vinyl/ao.jpg"),
-			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("vinyl/normal.jpg"),
-			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* rougnessMap = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("vinyl/roughness.jpg"),
-			ROUGHNESS_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		material->addTexture(colorTexture);
-		material->addTexture(specularTexture);
-		material->addTexture(normalTexture);		
-		material->addTexture(rougnessMap);
-		material->setReflectiveness(0.3f);
+		ShaderProgram* cubeShader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
+		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl",*cubeMap);
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 		auto* cubeMesh = new Mesh(material, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
@@ -137,7 +122,7 @@ namespace hograengine {
 		collider->setPhysics(cubePhysics);
 		obj->addComponent(collider);
 		colliders.push_back(collider);
-		addSceneObject(obj);
+		addSceneObject(obj, "cube");
 	}
 
 	void Scene::initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field)
@@ -145,21 +130,18 @@ namespace hograengine {
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
 		colliders.push_back(collider);
-		ShaderProgram* shader = new ShaderProgram(
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
-		);
+		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
 		auto* material = new Material(shader);
-		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
+		auto const* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->
 			getTextureFolderPath().append("planks/albedo.jpg"),
 			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
+		auto const* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->
 			getTextureFolderPath().append("planks/ao.jpg"),
 			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
+		auto const* normalTexture = new Texture2D(AssetFolderPathManager::getInstance()->
 			getTextureFolderPath().append("planks/normal.jpg"),
 			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* roughnessMap = new Texture2D(AssetFolderPath::getInstance()->
+		auto const* roughnessMap = new Texture2D(AssetFolderPathManager::getInstance()->
 			getTextureFolderPath().append("planks/rougness.jpg"),
 			ROUGHNESS_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		material->addTexture(colorTexture);
@@ -190,12 +172,12 @@ namespace hograengine {
 		obj->addComponent(physics);
 		collider->setPhysics(physics);
 		obj->addComponent(collider);
-		addSceneObject(obj);
+		addSceneObject(obj, "sphere");
 	}
 
 	void Scene::initGroud(const Texture* skyBox)
 	{
-		auto* material = MaterialFactory().createPBR("vinyl", skyBox);
+		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl", skyBox);
 		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
 		auto* cubeMesh = new Mesh(material, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
@@ -213,7 +195,7 @@ namespace hograengine {
 		collider->setMaxInOrigo(glm::vec3(100.0f, 1.0f, 100.0f));
 		obj->addComponent(collider);
 		colliders.push_back(collider);
-		addSceneObject(obj);
+		addSceneObject(obj, "ground");
 	}
 
 	void Scene::initLoadedGeometry(Texture** cubeMap, const glm::vec3& pos, ForceField* field)
@@ -221,30 +203,9 @@ namespace hograengine {
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
 		colliders.push_back(collider);
-		ShaderProgram* shader = new ShaderProgram(
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.vert"),
-			AssetFolderPath::getInstance()->getShaderFolderPath().append("default.frag")
-		);
-		auto* material = new Material(shader);
-		material->addTexture(*cubeMap);
-		auto const* colorTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("planks/albedo.jpg"),
-			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* specularTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("planks/ao.jpg"),
-			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* normalTexture = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("planks/normal.jpg"),
-			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* roughnessMap = new Texture2D(AssetFolderPath::getInstance()->
-			getTextureFolderPath().append("planks/rougness.jpg"),
-			ROUGHNESS_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		material->addTexture(colorTexture);
-		material->addTexture(specularTexture);
-		material->addTexture(normalTexture);
-		material->addTexture(roughnessMap);
-		material->setReflectiveness(0.3f);
-		Geometry* geometry = GeometryLoader().load(AssetFolderPath::getInstance()->getGeometryFolderPath().append("mango.obj"));
+		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
+		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks", *cubeMap);
+		Geometry* geometry = GeometryLoader().load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->setFaceCulling(false);
 		auto* mesh = new Mesh(material, geometry);
 		auto* obj = new SceneObject(mesh);
@@ -395,10 +356,10 @@ namespace hograengine {
 
 	void Scene::initPostProcessStages()
 	{
-		auto* stage0 = new PostProcessStage(AssetFolderPath::getInstance()->getShaderFolderPath().append("hdr.frag"),
+		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage0);
-		auto* stage1 = new PostProcessStage(AssetFolderPath::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
+		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage1);
 	}
@@ -544,10 +505,13 @@ namespace hograengine {
 
 	void Scene::draw()
 	{
+		for (auto& group : instanceGroups) {
+			group.second->gatherInstanceData();
+		}
 		if (nullptr != shadowCaster) {
 			shadowCaster->Bind();
-			for (auto& obj : sceneObjects) {
-				obj->drawShadow(*shadowCaster);
+			for (auto& group : instanceGroups) {
+				group.second->drawShadow();
 			}
 		}
 
@@ -567,8 +531,8 @@ namespace hograengine {
 
 		camera->exportData();
 		lightManager.exportData();
-		for (auto& obj : sceneObjects) {
-			obj->draw();
+		for (auto& group : instanceGroups) {
+			group.second->draw();
 		}
 		for (int i = 0; i < postProcessStages.size(); i++) {
 			if (i < postProcessStages.size() - 1) {
@@ -580,7 +544,7 @@ namespace hograengine {
 		}
 	}
 
-	void Scene::addSceneObject(SceneObject* object)
+	void Scene::addSceneObject(SceneObject* object, const std::string& instanceGroupName)
 	{
 		if (auto objectIter = std::find(sceneObjects.begin(), sceneObjects.end(), object); objectIter != sceneObjects.end()) {		// If already contains
 			return;
@@ -628,6 +592,26 @@ namespace hograengine {
 		}
 
 		sceneObjects.push_back(object);
+
+		static int defaultName = 0;
+		if (mesh != nullptr) {
+			if (instanceGroupName.length() > 0) {
+				const auto& iter = instanceGroups.find(instanceGroupName);
+				if (iter != instanceGroups.end()) {
+					iter->second->addObject(object);
+				}
+				else {
+					auto* group = new InstanceGroup();
+					group->addObject(object);
+					instanceGroups.emplace(instanceGroupName, group);
+				}
+			}
+			else {
+				auto* group = new InstanceGroup();
+				group->addObject(object);
+				instanceGroups.emplace(std::to_string(defaultName++), group);
+			}
+		}
 	}
 
 	const glm::vec3& Scene::getPreferedUp() const {

@@ -105,6 +105,14 @@ namespace hograengine {
 			return translationMatrix;
 		}
 
+		const glm::mat4& getModelMatrix() const {
+			return modelMatrix;
+		}
+
+		const glm::mat4& getInvModelMatrix() const {
+			return invModelMatrix;
+		}
+
 	private:
 		Mesh* mesh = nullptr;		// Don't delete from this object!
 		std::vector<Component*> components;

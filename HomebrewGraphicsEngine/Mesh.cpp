@@ -27,6 +27,11 @@ namespace hograengine {
 		geometry->Draw();
 	}
 
+	void Mesh::DrawInstanced(const std::vector<Geometry::InstanceData>& data) const
+	{
+		geometry->DrawInstanced(data);
+	}
+
 	Material* Mesh::getMaterial() const {
 		return material;
 	}

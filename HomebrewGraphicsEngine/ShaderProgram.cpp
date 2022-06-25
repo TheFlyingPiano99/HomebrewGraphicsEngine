@@ -24,7 +24,7 @@ namespace hograengine {
 	}
 
 	// Constructor that build the Shader Program from 2 different shaders
-	ShaderProgram::ShaderProgram(const std::string& vertexFile, const std::string& fragmentFile)
+	ShaderProgram::ShaderProgram(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile)
 	{
 		// Read vertexFile and fragmentFile and store the strings
 		std::string vertexCode = getFileContent(vertexFile);
@@ -57,6 +57,18 @@ namespace hograengine {
 		// Attach the Vertex and Fragment Shaders to the Shader Program
 		glAttachShader(ID, vertexShader);
 		glAttachShader(ID, fragmentShader);
+
+		GLuint geometryShader = 0;
+		if (0 < geometryFile.length()) {	// Geometry shader
+			std::string geometryCode = getFileContent(geometryFile);
+			const char* geometrySource = geometryCode.c_str();
+			geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+			glShaderSource(geometryShader, 1, &geometrySource, nullptr);
+			glCompileShader(geometryShader);
+			compileErrors(geometryShader, "GEOMETRY");
+			glAttachShader(ID, geometryShader);
+		}
+
 		// Wrap-up/Link all the shaders together into the Shader Program
 		glLinkProgram(ID);
 		// Checks if Shaders linked succesfully
@@ -65,7 +77,9 @@ namespace hograengine {
 		// Delete the now useless Vertex and Fragment Shader objects
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
-
+		if (0 < geometryFile.length()) {
+			glDeleteShader(geometryShader);
+		}
 	}
 
 	// Activates the Shader Program

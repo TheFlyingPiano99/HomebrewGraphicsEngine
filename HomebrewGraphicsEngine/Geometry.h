@@ -12,7 +12,15 @@ namespace hograengine {
 		// Bind the VAO to the currently active GPU program
 		void Draw();
 
+		struct InstanceData {
+			glm::mat4 modelMatrix;
+			glm::mat4 invModelMatrix;
+		};
+
+		void DrawInstanced(const std::vector<InstanceData>& instanceData);
+
 		void setFaceCulling(bool cull);
+
 
 	private:
 		std::vector <Vertex> vertices;

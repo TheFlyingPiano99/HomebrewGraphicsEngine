@@ -1,11 +1,5 @@
-﻿  AABBCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Camera.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  CameraAnimation.cpp
-  Scene.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  UserControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(32,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Generating Code...
+﻿  InstanceGroup.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(5,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(10,20): warning C4018: '<': signed/unsigned mismatch
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe
