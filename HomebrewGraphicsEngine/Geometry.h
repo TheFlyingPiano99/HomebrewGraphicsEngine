@@ -9,6 +9,12 @@ namespace hograengine {
 	public:
 		Geometry(std::vector <Vertex>& vertices, std::vector <GLint>& indices);
 
+		~Geometry() {
+			if (0 != instancedBuffer) {
+				glDeleteBuffers(1, &instancedBuffer);
+			}
+		}
+
 		// Bind the VAO to the currently active GPU program
 		void Draw();
 
@@ -21,8 +27,15 @@ namespace hograengine {
 
 		void setFaceCulling(bool cull);
 
+		void BindVAO() {
+			VAO.Bind();
+		}
 
 	private:
+
+		void initInstancedBuffer();
+
+		unsigned int instancedBuffer = 0;
 		std::vector <Vertex> vertices;
 		std::vector <GLint> indices;
 		VAO VAO;

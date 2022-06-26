@@ -162,6 +162,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraAnimation.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="ColliderGroup.cpp" />
     <ClCompile Include="CollisionEventListener.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CompositeCollider.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraAnimation.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="ColliderGroup.h" />
     <ClInclude Include="CollisionEventListener.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CompositeCollider.h" />

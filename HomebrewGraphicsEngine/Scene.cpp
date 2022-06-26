@@ -121,7 +121,7 @@ namespace hograengine {
 		obj->addComponent(cubePhysics);
 		collider->setPhysics(cubePhysics);
 		obj->addComponent(collider);
-		colliders.push_back(collider);
+		addCollider(collider, "cube");
 		addSceneObject(obj, "cube");
 	}
 
@@ -129,7 +129,7 @@ namespace hograengine {
 	{
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
-		colliders.push_back(collider);
+		addCollider(collider, "sphere" /*, ColliderGroup::ColliderGroupType::collide_only_with_non_group_members*/);
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
 		auto* material = new Material(shader);
 		auto const* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->
@@ -194,7 +194,7 @@ namespace hograengine {
 		collider->setMinInOrigo(glm::vec3(-100.0f, -1.0f, -100.0f));
 		collider->setMaxInOrigo(glm::vec3(100.0f, 1.0f, 100.0f));
 		obj->addComponent(collider);
-		colliders.push_back(collider);
+		addCollider(collider, "ground", ColliderGroup::ColliderGroupType::collide_only_with_non_group_members);
 		addSceneObject(obj, "ground");
 	}
 
@@ -202,7 +202,7 @@ namespace hograengine {
 	{
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
-		colliders.push_back(collider);
+		addCollider(collider, "sphere");
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
 		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks", *cubeMap);
 		Geometry* geometry = GeometryLoader().load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
@@ -248,7 +248,7 @@ namespace hograengine {
 		physics->setFriction(0.001f);
 		gravitation->addListener(physics);
 		collider->setPhysics(physics);
-		colliders.push_back(collider);
+		addCollider(collider, "avatar");
 		FirstPersonControl* control = new FirstPersonControl();
 		control->setPhysics(physics);
 		control->setCamera(camera);
@@ -473,17 +473,25 @@ namespace hograengine {
 		if (shadowCaster != nullptr) {
 			delete shadowCaster;
 		}
+
+		instanceGroups.clear();
+		colliderGroups.clear();
 	}
 
 	//-----------------------------------------------------------------------------
 
 	void Scene::control(float dt)
 	{
-		for (int i = 0; i < colliders.size() - 1; i++) {
-			for (int j = i + 1; j < colliders.size(); j++) {
-				colliders[i]->collide(*colliders[j]);
+		for (auto& group : colliderGroupsVector) {
+			group->selfCollide();
+		}
+		for (int i = 0; i < colliderGroupsVector.size() - 1; i++) {
+			for (int j = i + 1; j < colliderGroupsVector.size(); j++) {
+				colliderGroupsVector[i]->collide(colliderGroupsVector[j]);
 			}
 		}
+
+
 		ControlActionManager::getInstance()->executeQueue(this, dt);
 		SceneEventManager::getInstance()->executeQueue(dt);
 		for (auto& obj : sceneObjects) {
@@ -611,6 +619,36 @@ namespace hograengine {
 				group->addObject(object);
 				instanceGroups.emplace(std::to_string(defaultName++), group);
 			}
+		}
+	}
+
+	void Scene::addCollider(Collider* collider, const std::string& colliderGroupName, ColliderGroup::ColliderGroupType type)
+	{
+		const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
+		if (colliders.end() != iter) {
+			return;
+		}
+		colliders.push_back(collider);
+		static int defaultName = 0;
+		if (0 < colliderGroupName.length()) {
+			const auto& group = colliderGroups.find(colliderGroupName);
+			if (colliderGroups.end() != group) {
+				group->second->addCollider(collider);
+			}
+			else {
+				auto* newGroup = new ColliderGroup();
+				newGroup->addCollider(collider);
+				newGroup->setType(type);
+				colliderGroups.emplace(colliderGroupName, newGroup);
+				colliderGroupsVector.push_back(newGroup);
+			}
+		}
+		else {
+			auto* newGroup = new ColliderGroup();
+			newGroup->addCollider(collider);
+			newGroup->setType(type);
+			colliderGroups.emplace(std::to_string(defaultName++), newGroup);
+			colliderGroupsVector.push_back(newGroup);
 		}
 	}
 

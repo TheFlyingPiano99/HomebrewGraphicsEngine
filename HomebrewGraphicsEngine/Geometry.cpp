@@ -21,36 +21,11 @@ namespace hograengine {
 		EBO.Unbind();
 	}
 
-	void Geometry::Draw()
-	{
-		VAO.Bind();
-		if (faceCulling) {
-			glEnable(GL_CULL_FACE);
-		}
-		else {
-			glDisable(GL_CULL_FACE);
-		}
-
-		glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
-	}
-
-	void Geometry::DrawInstanced(const std::vector<InstanceData>& instanceData)
-	{
-		unsigned int instancedBuffer;
+	void Geometry::initInstancedBuffer() {
 		glGenBuffers(1, &instancedBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedBuffer);
-		glBufferData(GL_ARRAY_BUFFER, instanceData.size() * 2 * sizeof(glm::mat4), &instanceData[0], GL_STATIC_DRAW);
-
-		VAO.Bind();
-		if (faceCulling) {
-			glEnable(GL_CULL_FACE);
-		}
-		else {
-			glDisable(GL_CULL_FACE);
-		}
-
 		std::size_t vec4Size = sizeof(glm::vec4);
-		std::size_t instanceDataSize = sizeof(InstanceData);
+		std::size_t instanceDataSize = sizeof(Geometry::InstanceData);
 		glEnableVertexAttribArray(INSTANCED_MODEL_MATRIX_LOCATION + 0);
 		glEnableVertexAttribArray(INSTANCED_MODEL_MATRIX_LOCATION + 1);
 		glEnableVertexAttribArray(INSTANCED_MODEL_MATRIX_LOCATION + 2);
@@ -80,9 +55,39 @@ namespace hograengine {
 		glVertexAttribDivisor(INSTANCED_INV_MODEL_MATRIX_LOCATION + 1, 1);
 		glVertexAttribDivisor(INSTANCED_INV_MODEL_MATRIX_LOCATION + 2, 1);
 		glVertexAttribDivisor(INSTANCED_INV_MODEL_MATRIX_LOCATION + 3, 1);
+	}
 
+	void Geometry::Draw()
+	{
+		VAO.Bind();
+		if (faceCulling) {
+			glEnable(GL_CULL_FACE);
+		}
+		else {
+			glDisable(GL_CULL_FACE);
+		}
+
+		glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
+	}
+
+	void Geometry::DrawInstanced(const std::vector<InstanceData>& instanceData)
+	{
+		VAO.Bind();
+		if (0 == instancedBuffer) {
+			initInstancedBuffer();
+		}
+		else {
+			glBindBuffer(GL_ARRAY_BUFFER, instancedBuffer);
+		}
+		glBufferData(GL_ARRAY_BUFFER, instanceData.size() * 2 * sizeof(glm::mat4), &instanceData[0], GL_STATIC_DRAW);
+
+		if (faceCulling) {
+			glEnable(GL_CULL_FACE);
+		}
+		else {
+			glDisable(GL_CULL_FACE);
+		}
 		glDrawElementsInstanced(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr, (GLsizei)instanceData.size());
-		glDeleteBuffers(1, &instancedBuffer);
 	}
 
 	void Geometry::setFaceCulling(bool cull)

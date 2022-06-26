@@ -258,6 +258,9 @@
     <ClCompile Include="InstanceGroup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColliderGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -463,6 +466,9 @@
     </ClInclude>
     <ClInclude Include="InstanceGroup.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderGroup.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

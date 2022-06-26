@@ -8,6 +8,9 @@ namespace hograengine{
 		InstanceGroup() {
 		};
 
+		~InstanceGroup() {
+		}
+
 		void gatherInstanceData();
 
 		void draw();
@@ -22,8 +25,6 @@ namespace hograengine{
 			const auto& iter = std::find(objects.begin(), objects.end(), object);
 			objects.erase(iter);
 		}
-
-		void setVertexAttribArray();
 
 	private:
 		std::vector<SceneObject*> objects;

@@ -1,5 +1,73 @@
-﻿  InstanceGroup.cpp
+﻿  AABBCollider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Callbacks.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Callbacks.cpp(106,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Collider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  CompositeCollider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  ControlAction.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  ControlActionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  CuboidCollider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  FirstPersonControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  ForceField.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  GUI.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Geometry.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(34,111): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(35,124): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(36,124): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(37,124): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(49,128): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(50,128): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(51,128): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Geometry.cpp(52,128): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  GeometryFactories.cpp
+  GeometryFactory.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryFactory.cpp(128,37): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  GeometryLoader.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.cpp(23,21): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.cpp(27,22): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.cpp(43,23): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GeometryLoader.cpp(45,24): warning C4018: '<': signed/unsigned mismatch
+  HoGraEngineApplication.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(104,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(105,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  InstanceGroup.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(5,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(10,20): warning C4018: '<': signed/unsigned mismatch
+  Light.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Mesh.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Physics.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  PostProcessStage.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Generating Code...
+  Compiling...
+  Scene.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  SceneEvent.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  SceneEventImplementation.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  SceneObject.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  SingletonManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  SphericalCollider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  UserControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Generating Code...
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

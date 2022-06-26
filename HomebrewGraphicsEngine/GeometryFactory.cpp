@@ -110,7 +110,9 @@ namespace hograengine {
 			vertices.push_back(vert);
 		}
 
-		return new Geometry(vertices, indices);
+		auto* geometry = new Geometry(vertices, indices);
+		geometry->setFaceCulling(true);
+		return geometry;
 	}
 
 	void hograengine::GeometryFactory::Sphere::generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLint>* indices)
