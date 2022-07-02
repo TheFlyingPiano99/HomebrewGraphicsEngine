@@ -40,13 +40,21 @@ namespace hograengine {
 		}
 
 		void update() {
-			static int counter = 0;
-			if (counter == 10) {
+			static int counter0 = 0;
+			static int counter1 = 0;
+			if (counter0 == 10) {
 				root.updateAABB();
-				counter = 0;
+				counter0 = 0;
 			}
 			else {
-				counter++;
+				counter0++;
+			}
+			if (counter1 == 500) {
+				root.print(0);
+				counter1 = 501;
+			}
+			else {
+				counter1++;
 			}
 		}
 

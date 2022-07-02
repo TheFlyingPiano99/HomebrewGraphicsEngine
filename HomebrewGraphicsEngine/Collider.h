@@ -18,7 +18,7 @@ namespace hograengine {
 		/*
 		* Called from scene.
 		*/
-		void collide(const Collider& collider) const;
+		void collide(const Collider* collider) const;
 
 		Physics* getPhysics() const;
 

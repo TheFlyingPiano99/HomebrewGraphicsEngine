@@ -65,7 +65,7 @@ namespace hograengine {
     bool CompositeCollider::collideWithAABB(const Collider* collider) const
     {
         for (auto* c : parts) {
-            c->collide(*collider);
+            c->collide(collider);
         }
         return false;
     }
@@ -73,7 +73,7 @@ namespace hograengine {
     bool CompositeCollider::collideWithCuboid(const Collider* collider) const
     {
         for (auto* c : parts) {
-            c->collide(*collider);
+            c->collide(collider);
         }
         return false;
     }

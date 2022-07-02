@@ -470,11 +470,11 @@
     <ClInclude Include="InstanceGroup.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="ColliderGroup.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionManager.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Model\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderGroup.h">
+      <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

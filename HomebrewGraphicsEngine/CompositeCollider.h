@@ -113,6 +113,7 @@ namespace hograengine {
         void addSubCollider(Collider* collider, const glm::vec3& positionInOrigo) {
             parts.push_back(collider);
             positionsInOrigo.push_back(new glm::vec3(positionInOrigo));
+            expandAABB(collider->getAABBMin(), collider->getAABBMax());
         }
 
         std::span<const Collider* const> getSubColliders() const {
@@ -125,6 +126,22 @@ namespace hograengine {
         virtual glm::vec3 getAABBMax() override;
 
     private:
+
+        void expandAABB(const glm::vec3& candidateMin, const glm::vec3& candidateMax) {
+            glm::vec3 prevMin = aabbMin;
+            glm::vec3 prevMax = aabbMax;
+            glm::vec3 newMin;
+            glm::vec3 newMax;
+            newMin.x = (candidateMin.x < prevMin.x) ? candidateMin.x : prevMin.x;
+            newMin.y = (candidateMin.y < prevMin.y) ? candidateMin.y : prevMin.y;
+            newMin.z = (candidateMin.z < prevMin.z) ? candidateMin.z : prevMin.z;
+            newMax.x = (candidateMax.x > prevMax.x) ? candidateMax.x : prevMax.x;
+            newMax.y = (candidateMax.y > prevMax.y) ? candidateMax.y : prevMax.y;
+            newMax.z = (candidateMax.z > prevMax.z) ? candidateMax.z : prevMax.z;
+            aabbMin = newMin;
+            aabbMax = newMax;
+        }
+
         std::vector<Collider*> parts;
         std::vector<glm::vec3*> positionsInOrigo;  // Reference positions of colliders parts
 

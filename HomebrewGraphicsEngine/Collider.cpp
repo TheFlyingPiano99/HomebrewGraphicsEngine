@@ -4,9 +4,9 @@
 #include <iostream>
 namespace hograengine {
 
-    void Collider::collide(const Collider& collider) const
+    void Collider::collide(const Collider* collider) const
     {
-        auto& otherGroups = collider.getColliderGroups();
+        auto& otherGroups = collider->getColliderGroups();
         for (auto& otherGroup : otherGroups) {
             if (this->isPartOfGroup(otherGroup)) {      // If two cilliders are part of the same group than no collision is calculated.
                 return;
@@ -17,18 +17,18 @@ namespace hograengine {
             glm::vec3 collisionPoint;
             glm::vec3 collisionNormal;
             float overlapAlongNormal;
-            isCollision = testCollision(&collider, collisionPoint, collisionNormal, overlapAlongNormal);
-            if (isCollision && nullptr != physics && nullptr != collider.getPhysics()
+            isCollision = testCollision(collider, collisionPoint, collisionNormal, overlapAlongNormal);
+            if (isCollision && nullptr != physics && nullptr != collider->getPhysics()
                 && !isnan(collisionPoint.x) && !isnan(collisionPoint.y) && !isnan(collisionPoint.z)
                 && !isnan(collisionNormal.x) && !isnan(collisionNormal.y) && !isnan(collisionNormal.z)) {
-                physics->collide(*collider.getPhysics(), collisionPoint, collisionNormal, overlapAlongNormal);
+                physics->collide(*collider->getPhysics(), collisionPoint, collisionNormal, overlapAlongNormal);
             }
         }
         else {
-            isCollision = testCollision(&collider);
+            isCollision = testCollision(collider);
         }
         if (isCollision) {
-            SceneEventManager::getInstance()->pushEvent(new CollisionEvent((const Collider*)this, &collider));
+            SceneEventManager::getInstance()->pushEvent(new CollisionEvent((const Collider*)this, collider));
         }
 
     }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Collider.h"
 #include "AABBCollider.h"
+#include <iostream>
 
 namespace hograengine {
 
@@ -103,13 +104,67 @@ namespace hograengine {
 			return colliders;
 		}
 
+		const std::vector<ColliderGroup*>& getSubGroups() const {
+			return subGroups;
+		}
+
 		const AABBCollider* getAABB() const {
 			return &aabb;
 		}
 
 		void collide(const ColliderGroup* group) {
 			if (aabb.testCollision(group->getAABB())) {
-				// TODO: recursion
+				if (subGroups.empty()) {
+					if (group->getSubGroups().empty()) {
+						const auto& otherColliders = group->getColliders();
+						for (int i = 0; i < colliders.size(); i++) {
+							for (int j = 0; j < otherColliders.size(); j++) {
+								colliders[i]->collide(otherColliders[j]);
+							}
+						}
+					}
+					else {
+						const auto& otherSubGroups = group->getSubGroups();
+						for (int i = 0; i < colliders.size(); i++) {
+							for (int j = 0; j < otherSubGroups.size(); j++) {
+								otherSubGroups[j]->collide(colliders[i]);
+							}
+						}
+					}
+				}
+				else {
+					if (group->getSubGroups().empty()) {
+						const auto& otherColliders = group->getColliders();
+						for (int i = 0; i < subGroups.size(); i++) {
+							for (int j = 0; j < otherColliders.size(); j++) {
+								subGroups[i]->collide(otherColliders[j]);
+							}
+						}
+					}
+					else {
+						const auto& otherSubGroups = group->getColliders();
+						for (int i = 0; i < subGroups.size(); i++) {
+							for (int j = 0; j < otherSubGroups.size(); j++) {
+								subGroups[i]->collide(otherSubGroups[j]);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		void collide(const Collider* collider) {
+			if (aabb.testCollision(collider)) {
+				if (subGroups.empty()) {
+					for (auto& coll : colliders) {
+						collider->collide(coll);
+					}
+				}
+				else {
+					for (auto& group : subGroups) {
+						group->collide(collider);
+					}
+				}
 			}
 		}
 
@@ -126,7 +181,7 @@ namespace hograengine {
 			else {
 				for (int i = 0; i < colliders.size() - 1; i++) {
 					for (int j = i + 1; j < colliders.size(); j++) {
-						colliders[i]->collide(*colliders[j]);
+						colliders[i]->collide(colliders[j]);
 					}
 				}
 			}
@@ -236,6 +291,26 @@ namespace hograengine {
 			}
 			aabb.setMin(newMin);
 			aabb.setMax(newMax);
+		}
+
+		void print(int intend) {
+			for (int i = 0; i < intend; i++) {
+				std::cout << "\t";
+			}
+			glm::vec3 min = getMin();
+			glm::vec3 max = getMax();
+			std::cout << "Group: [(" << min.x << ", " << min.y << ", " << min.z << ")\t(" << max.x << ", " << max.y << "," << max.z << ")]" << std::endl;
+			for (auto& group : subGroups) {
+				group->print(intend + 1);
+			}
+			for (auto& coll : colliders) {
+				min = coll->getAABBMin();
+				max = coll->getAABBMax();
+				for (int i = 0; i < intend + 1; i++) {
+					std::cout << "\t";
+				}
+				std::cout << "Collider: [(" << min.x << ", " << min.y << ", " << min.z << ")\t(" << max.x << ", " << max.y << "," << max.z << ")]" << std::endl;
+			}
 		}
 
 	private:
