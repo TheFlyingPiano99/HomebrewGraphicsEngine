@@ -20,13 +20,6 @@ namespace hograengine {
         virtual bool testPointInside(const glm::vec3& point) const override;
 
         void control(float dt) override {
-            if (nullptr != physics) {
-                position = physics->getOwnerPosition();
-                scale = physics->getOwnerScale();
-                orientation = physics->getOwnerOrientation();
-            }
-            min = minInOrigo + position;
-            max = maxInOrigo + position;
         }
 
         void update(float dt) override {
@@ -39,18 +32,30 @@ namespace hograengine {
             max = maxInOrigo + position;
         }
 
+        /*
+        * Used for spatial tree
+        */
         const glm::vec3& getMin() const {
             return min;
         }
 
+        /*
+        * Used for spatial tree
+        */
         void setMin(const glm::vec3& _min) {
             min = _min;
         }
 
+        /*
+        * Used for spatial tree
+        */
         const glm::vec3& getMax() const {
             return max;
         }
 
+        /*
+        * Used for spatial tree
+        */
         void setMax(const glm::vec3& _max) {
             max = _max;
         }
@@ -72,8 +77,8 @@ namespace hograengine {
         }
 
         // Inherited via Collider
-        virtual glm::vec3 getAABBMin() override;
-        virtual glm::vec3 getAABBMax() override;
+        glm::vec3 getAABBMin() override;
+        glm::vec3 getAABBMax() override;
 
     private:
         glm::vec3 min = glm::vec3();

@@ -22,18 +22,6 @@ namespace hograengine {
         }
 
         void control(float dt) override {
-            if (nullptr != physics) {
-                position = physics->getOwnerPosition();
-                scale = physics->getOwnerScale();
-                orientation = physics->getOwnerOrientation();
-
-                for (int i = 0; i < parts.size(); i++) {
-                    parts[i]->setPosition(orientation * *positionsInOrigo[i] + position);
-                    parts[i]->setScale(scale);
-                    parts[i]->setOrientation(orientation);
-                    parts[i]->update(dt);
-                }
-            }
         }
 
         void update(float dt) override {
@@ -48,45 +36,40 @@ namespace hograengine {
                     parts[i]->setScale(scale);
                     parts[i]->setOrientation(orientation);
                     parts[i]->update(dt);
-                    {
-                        glm::vec3 currentMin = parts[i]->getAABBMin();
-                        if (!isMinSet) {
-                            aabbMin = currentMin;
-                            isMinSet = true;
+                    glm::vec3 currentMin = parts[i]->getAABBMin();
+                    if (!isMinSet) {
+                        aabbMin = currentMin;
+                        isMinSet = true;
+                    }
+                    else {
+                        if (currentMin.x < aabbMin.x) {
+                            aabbMin.x = currentMin.x;
                         }
-                        else {
-                            if (currentMin.x < aabbMin.x) {
-                                aabbMin.x = currentMin.x;
-                            }
-                            if (currentMin.y < aabbMin.y) {
-                                aabbMin.y = currentMin.y;
-                            }
-                            if (currentMin.z < aabbMin.z) {
-                                aabbMin.z = currentMin.z;
-                            }
+                        if (currentMin.y < aabbMin.y) {
+                            aabbMin.y = currentMin.y;
+                        }
+                        if (currentMin.z < aabbMin.z) {
+                            aabbMin.z = currentMin.z;
                         }
                     }
-                    {
-                        glm::vec3 currentMax = parts[i]->getAABBMax();
-                        if (!isMaxSet) {
-                            aabbMax = currentMax;
-                            isMaxSet = true;
+                    glm::vec3 currentMax = parts[i]->getAABBMax();
+                    if (!isMaxSet) {
+                        aabbMax = currentMax;
+                        isMaxSet = true;
+                    }
+                    else {
+                        if (currentMax.x > aabbMax.x) {
+                            aabbMax.x = currentMax.x;
                         }
-                        else {
-                            if (currentMax.x > aabbMax.x) {
-                                aabbMax.x = currentMax.x;
-                            }
-                            if (currentMax.y > aabbMax.y) {
-                                aabbMax.y = currentMax.y;
-                            }
-                            if (currentMax.z > aabbMax.z) {
-                                aabbMax.z = currentMax.z;
-                            }
+                        if (currentMax.y > aabbMax.y) {
+                            aabbMax.y = currentMax.y;
+                        }
+                        if (currentMax.z > aabbMax.z) {
+                            aabbMax.z = currentMax.z;
                         }
                     }
                 }
             }
-
         }
 
         // Inherited via Collider

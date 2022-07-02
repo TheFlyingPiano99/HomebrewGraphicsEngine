@@ -1,8 +1,19 @@
-﻿  Callbacks.cpp
+﻿  AABBCollider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  Callbacks.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.h(100,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.h(28,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Callbacks.cpp(106,58): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Collider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+  ColliderGroup.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.h(100,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  CollisionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.h(100,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.h(28,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   CompositeCollider.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
   ControlAction.cpp
@@ -31,7 +42,7 @@ D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.h(28
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.h(100,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.h(28,1): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(373,13): warning C4101: 'intersectionNormal': unreferenced local variable
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(379,13): warning C4101: 'intersectionNormal': unreferenced local variable
   SingletonManager.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(37,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.h(100,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data

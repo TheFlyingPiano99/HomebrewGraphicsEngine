@@ -64,18 +64,20 @@ namespace hograengine {
 
     bool CompositeCollider::collideWithAABB(const Collider* collider) const
     {
-        for (auto* c : parts) {
-            c->collide(collider);
-        }
-        return false;
+        return iterateParts(
+            [](const Collider* collider1, const Collider* collider2) {
+                return collider1->collideWithAABB(collider2);
+            },
+            collider);
     }
 
     bool CompositeCollider::collideWithCuboid(const Collider* collider) const
     {
-        for (auto* c : parts) {
-            c->collide(collider);
-        }
-        return false;
+        return iterateParts(
+            [](const Collider* collider1, const Collider* collider2) {
+                return collider1->collideWithCuboid(collider2);
+            },
+            collider);
     }
 
     bool CompositeCollider::iterateParts(std::function<bool(const Collider* collider1, const Collider* collider2, glm::vec3&, glm::vec3&, float&)>&& lambda, const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const

@@ -49,22 +49,21 @@ namespace hograengine {
 
 		auto* col = initCompositeCollider();
 		initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 0.0f), col, field);
-		AABBCollider* col2 = new AABBCollider();
 		col = initCompositeCollider();
-		initCube(&cubeMap, glm::vec3(0.0f, 0.0f, 30.0f), col, field);
+		initCube(&cubeMap, glm::vec3(0.0f, 10.0f, 30.0f), col, field);
 		col = initCompositeCollider();
-		initCube(&cubeMap, glm::vec3(30.0f, 0.0f, 0.0f), col, field);
+		initCube(&cubeMap, glm::vec3(30.0f, 10.0f, 0.0f), col, field);
 		col = initCompositeCollider();
-		initCube(&cubeMap, glm::vec3(-30.0f, 0.0f, 30.0f), col, field);
+		initCube(&cubeMap, glm::vec3(-30.0f, 10.0f, 30.0f), col, field);
 		col = initCompositeCollider();
-		initCube(&cubeMap, glm::vec3(0.0f, 0.0f, -30.0f), col, field);
+		initCube(&cubeMap, glm::vec3(0.0f, 10.0f, -30.0f), col, field);
 		col = initCompositeCollider();
 		initCube(&cubeMap, glm::vec3(0.0f, -30.0f, 0.0f), col, field);
 		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -20.0f), field);
 		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-30.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f, -20.0f), field);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 200; i++) {
 			initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f + i * 5.0f, -20.0f), field);
 		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, -20.0f, -30.0f), field);
@@ -107,7 +106,7 @@ namespace hograengine {
 
 		auto* cubePhysics = new Physics(obj);
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
-		cubePhysics->setWorldSpaceDrag(glm::vec3(0.5f, 0.5f, 0.5f));
+		cubePhysics->setWorldSpaceDrag(glm::vec3(0.5f, 100.5f, 0.5f));
 		cubePhysics->setModelSpaceDrag(glm::vec3(0.1f, 0.3f, 0.1f));
 		cubePhysics->setMass(3140000.0f);
 		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
@@ -121,6 +120,7 @@ namespace hograengine {
 		obj->addComponent(cubePhysics);
 		collider->setPhysics(cubePhysics);
 		obj->addComponent(collider);
+		obj->update(0.0f);
 		addCollider(collider);
 		addSceneObject(obj, "cube");
 	}

@@ -74,6 +74,9 @@ namespace hograengine {
         case ColliderType::cuboidColliderType:
             isCollision = collideWithCuboid(collider);
             break;
+        case ColliderType::compositeColliderType:
+            isCollision = collideWithComposite(collider);
+            break;
         default:
             break;
         }
@@ -82,11 +85,6 @@ namespace hograengine {
 
     void Collider::control(float dt)
     {
-        if (nullptr != physics) {
-            position = physics->getOwnerPosition();
-            scale = physics->getOwnerScale();
-            orientation = physics->getOwnerOrientation();
-        }
     }
 
     void Collider::update(float dt)
