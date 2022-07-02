@@ -60,4 +60,14 @@ namespace hograengine {
         return collider->collideWithCuboid(this);
     }
 
+    glm::vec3 CuboidCollider::getAABBMin()
+    {
+        return glm::vec3();
+    }
+
+    glm::vec3 CuboidCollider::getAABBMax()
+    {
+        return glm::vec3();
+    }
+
 }

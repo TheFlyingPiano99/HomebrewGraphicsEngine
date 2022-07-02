@@ -28,6 +28,11 @@ namespace hograengine {
             radius = r;
         }
 
+        // Inherited via Collider
+        virtual glm::vec3 getAABBMin() override;
+
+        virtual glm::vec3 getAABBMax() override;
+
     private:
         float radius = 1.0f;
 
@@ -40,6 +45,8 @@ namespace hograengine {
         bool collideWithAABB(const Collider* collider) const override;
         bool collideWithCuboid(const Collider* collider) const override;
         bool collideWithComposite(const Collider* collider) const override;
+
+
 
     };
 

@@ -164,6 +164,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderGroup.cpp" />
     <ClCompile Include="CollisionEventListener.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CompositeCollider.cpp" />
     <ClCompile Include="ControlAction.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderGroup.h" />
     <ClInclude Include="CollisionEventListener.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CompositeCollider.h" />
     <ClInclude Include="ControlAction.h" />

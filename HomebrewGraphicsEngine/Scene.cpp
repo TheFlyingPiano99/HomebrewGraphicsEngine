@@ -121,7 +121,7 @@ namespace hograengine {
 		obj->addComponent(cubePhysics);
 		collider->setPhysics(cubePhysics);
 		obj->addComponent(collider);
-		addCollider(collider, "cube");
+		addCollider(collider);
 		addSceneObject(obj, "cube");
 	}
 
@@ -129,7 +129,7 @@ namespace hograengine {
 	{
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
-		addCollider(collider, "sphere" /*, ColliderGroup::ColliderGroupType::collide_only_with_non_group_members*/);
+		addCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
 		auto* material = new Material(shader);
 		auto const* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->
@@ -194,7 +194,7 @@ namespace hograengine {
 		collider->setMinInOrigo(glm::vec3(-100.0f, -1.0f, -100.0f));
 		collider->setMaxInOrigo(glm::vec3(100.0f, 1.0f, 100.0f));
 		obj->addComponent(collider);
-		addCollider(collider, "ground", ColliderGroup::ColliderGroupType::collide_only_with_non_group_members);
+		addCollider(collider, "ground");
 		addSceneObject(obj, "ground");
 	}
 
@@ -202,7 +202,7 @@ namespace hograengine {
 	{
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
-		addCollider(collider, "sphere");
+		addCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
 		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks", *cubeMap);
 		Geometry* geometry = GeometryLoader().load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
@@ -376,15 +376,9 @@ namespace hograengine {
 		ray.setDirection(dir);
 		float minT = -1.0f;
 		Collider* selected = nullptr;
-		for (auto* collider : colliders) {
-			if (collider->testRayIntersection(ray, intersectionPoint, intersectionNormal)) {
-				float t = glm::length(intersectionPoint - ray.getPosition());
-				if (t < minT || minT < 0.0f) {
-					selected = collider;
-					minT = t;
-				}
-			}
-		}
+
+		//TODO: Collide
+
 		if (nullptr != selected) {
 			selected->getPhysics()->applyImpulse(dir * 100.0f, intersectionPoint - selected->getPhysics()->getOwnerPosition());
 		}
@@ -468,29 +462,18 @@ namespace hograengine {
 		}
 		components.clear();
 
-		colliders.clear(); // The colliders have been deleted as components!!!
-
 		if (shadowCaster != nullptr) {
 			delete shadowCaster;
 		}
 
 		instanceGroups.clear();
-		colliderGroups.clear();
 	}
 
 	//-----------------------------------------------------------------------------
 
 	void Scene::control(float dt)
 	{
-		for (auto& group : colliderGroupsVector) {
-			group->selfCollide();
-		}
-		for (int i = 0; i < colliderGroupsVector.size() - 1; i++) {
-			for (int j = i + 1; j < colliderGroupsVector.size(); j++) {
-				colliderGroupsVector[i]->collide(colliderGroupsVector[j]);
-			}
-		}
-
+		collisionManager.collide();
 
 		ControlActionManager::getInstance()->executeQueue(this, dt);
 		SceneEventManager::getInstance()->executeQueue(dt);
@@ -509,6 +492,7 @@ namespace hograengine {
 		if (shadowCaster != nullptr) {
 			shadowCaster->update();
 		}
+		collisionManager.update();
 	}
 
 	void Scene::draw()
@@ -622,34 +606,9 @@ namespace hograengine {
 		}
 	}
 
-	void Scene::addCollider(Collider* collider, const std::string& colliderGroupName, ColliderGroup::ColliderGroupType type)
+	void Scene::addCollider(Collider* collider, const std::string& colliderGroupName)
 	{
-		const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
-		if (colliders.end() != iter) {
-			return;
-		}
-		colliders.push_back(collider);
-		static int defaultName = 0;
-		if (0 < colliderGroupName.length()) {
-			const auto& group = colliderGroups.find(colliderGroupName);
-			if (colliderGroups.end() != group) {
-				group->second->addCollider(collider);
-			}
-			else {
-				auto* newGroup = new ColliderGroup();
-				newGroup->addCollider(collider);
-				newGroup->setType(type);
-				colliderGroups.emplace(colliderGroupName, newGroup);
-				colliderGroupsVector.push_back(newGroup);
-			}
-		}
-		else {
-			auto* newGroup = new ColliderGroup();
-			newGroup->addCollider(collider);
-			newGroup->setType(type);
-			colliderGroups.emplace(std::to_string(defaultName++), newGroup);
-			colliderGroupsVector.push_back(newGroup);
-		}
+		collisionManager.addCollider(collider, colliderGroupName);
 	}
 
 	const glm::vec3& Scene::getPreferedUp() const {

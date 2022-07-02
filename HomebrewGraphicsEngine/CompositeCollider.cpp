@@ -115,6 +115,16 @@ namespace hograengine {
         return false;
     }
 
+    glm::vec3 CompositeCollider::getAABBMin()
+    {
+        return aabbMin;
+    }
+
+    glm::vec3 CompositeCollider::getAABBMax()
+    {
+        return aabbMax;
+    }
+
     bool CompositeCollider::collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
         return iterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {

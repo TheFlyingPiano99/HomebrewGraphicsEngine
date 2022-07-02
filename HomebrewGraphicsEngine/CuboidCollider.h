@@ -21,6 +21,10 @@ namespace hograengine {
 
         bool testPointInside(const glm::vec3& point) const override;
 
+        // Inherited via Collider
+        virtual glm::vec3 getAABBMin() override;
+        virtual glm::vec3 getAABBMax() override;
+
     private:
 
         bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
@@ -32,6 +36,7 @@ namespace hograengine {
         bool collideWithAABB(const Collider* collider) const override;
         bool collideWithCuboid(const Collider* collider) const override;
         bool collideWithComposite(const Collider* collider) const override;
+
     };
 }
 

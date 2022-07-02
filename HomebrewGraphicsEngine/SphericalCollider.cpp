@@ -95,6 +95,16 @@ namespace hograengine {
 		return collider->collideWithSpherical(this);
 	}
 
+	glm::vec3 SphericalCollider::getAABBMin()
+	{
+		return position - glm::vec3(radius, radius, radius);
+	}
+
+	glm::vec3 SphericalCollider::getAABBMax()
+	{
+		return position + glm::vec3(radius, radius, radius);
+	}
+
 	bool SphericalCollider::testPointInside(const glm::vec3& point) const
 	{
 		return glm::length(point - position) <= radius;

@@ -41,14 +41,52 @@ namespace hograengine {
                 position = physics->getOwnerPosition();
                 scale = physics->getOwnerScale();
                 orientation = physics->getOwnerOrientation();
-
+                bool isMinSet = false;
+                bool isMaxSet = false;
                 for (int i = 0; i < parts.size(); i++) {
                     parts[i]->setPosition(orientation * *positionsInOrigo[i] + position);
                     parts[i]->setScale(scale);
                     parts[i]->setOrientation(orientation);
                     parts[i]->update(dt);
+                    {
+                        glm::vec3 currentMin = parts[i]->getAABBMin();
+                        if (!isMinSet) {
+                            aabbMin = currentMin;
+                            isMinSet = true;
+                        }
+                        else {
+                            if (currentMin.x < aabbMin.x) {
+                                aabbMin.x = currentMin.x;
+                            }
+                            if (currentMin.y < aabbMin.y) {
+                                aabbMin.y = currentMin.y;
+                            }
+                            if (currentMin.z < aabbMin.z) {
+                                aabbMin.z = currentMin.z;
+                            }
+                        }
+                    }
+                    {
+                        glm::vec3 currentMax = parts[i]->getAABBMax();
+                        if (!isMaxSet) {
+                            aabbMax = currentMax;
+                            isMaxSet = true;
+                        }
+                        else {
+                            if (currentMax.x > aabbMax.x) {
+                                aabbMax.x = currentMax.x;
+                            }
+                            if (currentMax.y > aabbMax.y) {
+                                aabbMax.y = currentMax.y;
+                            }
+                            if (currentMax.z > aabbMax.z) {
+                                aabbMax.z = currentMax.z;
+                            }
+                        }
+                    }
                 }
             }
+
         }
 
         // Inherited via Collider
@@ -81,6 +119,11 @@ namespace hograengine {
             return parts;
         }
 
+        // Inherited via Collider
+        virtual glm::vec3 getAABBMin() override;
+
+        virtual glm::vec3 getAABBMax() override;
+
     private:
         std::vector<Collider*> parts;
         std::vector<glm::vec3*> positionsInOrigo;  // Reference positions of colliders parts
@@ -90,6 +133,9 @@ namespace hograengine {
 
         bool iterateParts(const std::function<bool(const Collider* collider1, const Collider* collider2)>&& lambda,
             const Collider* collider) const;
+
+        glm::vec3 aabbMin;
+        glm::vec3 aabbMax;
 
     };
 

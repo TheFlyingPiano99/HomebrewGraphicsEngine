@@ -16,7 +16,7 @@
 #include "TextureCube.h"
 #include "LightManager.h"
 #include "InstanceGroup.h"
-#include "ColliderGroup.h"
+#include "CollisionManager.h"
 
 namespace hograengine {
 
@@ -36,7 +36,7 @@ namespace hograengine {
 
 		void addSceneObject(SceneObject* object, const std::string& instanceGroupName = "");
 
-		void addCollider(Collider* collider, const std::string& colliderGroupName = "", ColliderGroup::ColliderGroupType type = ColliderGroup::ColliderGroupType::collide_with_all);
+		void addCollider(Collider* collider, const std::string& colliderGroupName = "");
 
 		const glm::vec3& getPreferedUp() const;
 
@@ -75,10 +75,9 @@ namespace hograengine {
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Component*> components;
-		std::vector<Collider*> colliders;
-		std::map<std::string, ColliderGroup*> colliderGroups;
-		std::vector<ColliderGroup*> colliderGroupsVector;
 		UserControl* avatarControl = nullptr;
+
+		CollisionManager collisionManager;
 
 		bool pause = true;
 		unsigned int contextWidth;

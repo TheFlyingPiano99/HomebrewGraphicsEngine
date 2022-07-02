@@ -151,6 +151,15 @@ namespace hograengine {
         return false;
     }
 
+    bool AABBCollider::collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    {
+        bool isCollision = collider->collideWithAABB(this, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+        wCollisionNormal *= -1.0f;
+        return isCollision;
+    }
+
+    // Simple collisions: -------------------------------------------------------------------
+
     bool AABBCollider::collideWithSpherical(const Collider* collider) const
     {
         const auto* spherical = (const SphericalCollider*)collider;
@@ -175,15 +184,19 @@ namespace hograengine {
         return false;
     }
 
-    bool AABBCollider::collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
-    {
-        bool isCollision = collider->collideWithAABB(this, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
-        wCollisionNormal *= -1.0f;
-        return isCollision;
-    }
-
     bool AABBCollider::collideWithComposite(const Collider* collider) const
     {
         return collider->collideWithAABB(this);
     }
+
+    glm::vec3 AABBCollider::getAABBMin()
+    {
+        return min;
+    }
+
+    glm::vec3 AABBCollider::getAABBMax()
+    {
+        return max;
+    }
+
 }

@@ -2,6 +2,7 @@
 #include "Ray.h"
 #include "Physics.h"
 #include "CollisionEventListener.h"
+#include <set>
 
 namespace hograengine {
 
@@ -74,6 +75,28 @@ namespace hograengine {
 			orientation = o;
 		}
 
+		void addToColliderGroup(int group) {
+			auto iter = std::find(colliderGroups.begin(), colliderGroups.end(), group);
+			if (colliderGroups.end() == iter) {
+				colliderGroups.push_back(group);
+			}
+		}
+
+		void removeFromColliderGroup(int group) {
+			auto iter = std::find(colliderGroups.begin(), colliderGroups.end(), group);
+			if (colliderGroups.end() != iter) {
+				colliderGroups.erase(iter);
+			}
+		}
+
+		bool isPartOfGroup(int group) const {
+			return colliderGroups.end() != std::find(colliderGroups.begin(), colliderGroups.end(), group);
+		}
+
+		const std::vector<int>& getColliderGroups() const {
+			return colliderGroups;
+		}
+
 		virtual bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
 		virtual bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
 		virtual bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
@@ -83,6 +106,10 @@ namespace hograengine {
 		virtual bool collideWithAABB(const Collider* collider) const = 0;
 		virtual bool collideWithCuboid(const Collider* collider) const = 0;
 		virtual bool collideWithComposite(const Collider* collider) const = 0;
+	
+		// For collision optimalisation:
+		virtual glm::vec3 getAABBMin() = 0;
+		virtual glm::vec3 getAABBMax() = 0;
 
 	protected:
 
@@ -90,5 +117,6 @@ namespace hograengine {
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::quat orientation = angleAxis(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		glm::vec3 position = glm::vec3(0.0f);
+		std::vector<int> colliderGroups; // The list of collider groups that this collider is part of.
 	};
 }

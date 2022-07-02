@@ -71,6 +71,10 @@ namespace hograengine {
             maxInOrigo = _max;
         }
 
+        // Inherited via Collider
+        virtual glm::vec3 getAABBMin() override;
+        virtual glm::vec3 getAABBMax() override;
+
     private:
         glm::vec3 min = glm::vec3();
         glm::vec3 max = glm::vec3();

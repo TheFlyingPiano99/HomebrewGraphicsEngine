@@ -6,6 +6,12 @@ namespace hograengine {
 
     void Collider::collide(const Collider& collider) const
     {
+        auto& otherGroups = collider.getColliderGroups();
+        for (auto& otherGroup : otherGroups) {
+            if (this->isPartOfGroup(otherGroup)) {      // If two cilliders are part of the same group than no collision is calculated.
+                return;
+            }
+        }
         bool isCollision = false;
         if (nullptr != physics) {
             glm::vec3 collisionPoint;
