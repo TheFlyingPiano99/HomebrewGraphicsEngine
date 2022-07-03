@@ -10,7 +10,7 @@ uniform sampler2D screen;
 
 void main()
 {   
-    const float gamma = 0.8;
+    const float gamma = 2.2;
     const float exposure = 1.0;
     vec3 hdrColor = texture(screen, fs_in.texCoords).rgb;
   

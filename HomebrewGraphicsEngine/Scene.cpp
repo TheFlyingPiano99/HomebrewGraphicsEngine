@@ -24,10 +24,10 @@ namespace hograengine {
 	void Scene::initCameraAndLights()
 	{
 		camera = new Camera((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(-9.0f, 10.0f, -9.0f));
-		lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(0.9f, 0.9f, 0.9f)));	// Directional light
-		lights.push_back(new Light(glm::vec4(-80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(10000.0f, 100.0f, 100.0f)));
-		lights.push_back(new Light(glm::vec4(0.0f, -28.0f, 80.0f, 1.0f), glm::vec3(100.0f, 10000.0f, 100.0f)));
-		lights.push_back(new Light(glm::vec4(80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 10000.0f)));
+		lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f)));	// Directional light
+		lights.push_back(new Light(glm::vec4(-80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(1000.0f, 100.0f, 100.0f)));
+		lights.push_back(new Light(glm::vec4(0.0f, -28.0f, 80.0f, 1.0f), glm::vec3(100.0f, 1000.0f, 100.0f)));
+		lights.push_back(new Light(glm::vec4(80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f)));
 		lightManager.registerLights(lights);
 	}
 
@@ -63,7 +63,7 @@ namespace hograengine {
 		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-30.0f, -30.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f, -20.0f), field);
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 100; i++) {
 			initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f + i * 5.0f, -20.0f), field);
 		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, -20.0f, -30.0f), field);
@@ -131,24 +131,7 @@ namespace hograengine {
 		collider->setRadius(0.5f);
 		addCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
-		auto* material = new Material(shader);
-		auto const* colorTexture = new Texture2D(AssetFolderPathManager::getInstance()->
-			getTextureFolderPath().append("planks/albedo.jpg"),
-			ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* specularTexture = new Texture2D(AssetFolderPathManager::getInstance()->
-			getTextureFolderPath().append("planks/ao.jpg"),
-			AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* normalTexture = new Texture2D(AssetFolderPathManager::getInstance()->
-			getTextureFolderPath().append("planks/normal.jpg"),
-			NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		auto const* roughnessMap = new Texture2D(AssetFolderPathManager::getInstance()->
-			getTextureFolderPath().append("planks/rougness.jpg"),
-			ROUGHNESS_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		material->addTexture(colorTexture);
-		material->addTexture(specularTexture);
-		material->addTexture(normalTexture);
-		material->addTexture(roughnessMap);
-		material->setReflectiveness(0.3f);
+		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks", *cubeMap);
 		Geometry* geometry = GeometryFactory::Sphere::getInstance();
 		geometry->setFaceCulling(false);
 		auto* mesh = new Mesh(material, geometry);
@@ -359,9 +342,9 @@ namespace hograengine {
 		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage0);
-		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
-			contextWidth, contextHeight);
-		postProcessStages.push_back(stage1);
+		//auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
+		//	contextWidth, contextHeight);
+		//postProcessStages.push_back(stage1);
 	}
 
 	void Scene::pokeObject(const glm::vec2& ndcCoords)

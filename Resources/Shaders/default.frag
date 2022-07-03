@@ -36,22 +36,56 @@ layout (std140, binding = 2) uniform ShadowCaster {
 
 layout (binding = 0) uniform sampler2D albedoMap;
 layout (binding = 1) uniform sampler2D normalMap;
-layout (binding = 2) uniform sampler2D metallicMap;
-layout (binding = 3) uniform sampler2D roughnessMap;
+layout (binding = 2) uniform sampler2D roughnessMap;
+layout (binding = 3) uniform sampler2D metallicMap;
 layout (binding = 4) uniform sampler2D aoMap;
 layout (binding = 5) uniform samplerCube skybox;
 layout (binding = 6) uniform sampler2D shadowMap;
 
 struct Material {
-	vec3 diffuseColor;
-	vec3 specularColor;
-	vec3 ambientColor;
-	float shininess;
-	float reflectiveness;
+	vec3 albedo;
+	float roughness;
+	float metallic;
+	float ao;
 };
-uniform Material material;
+uniform Material material;	// not used now!
 
 const float PI = 3.14159265359;
+
+float DistributionGGX(vec3 N, vec3 H, float roughness)
+{
+    float a      = roughness * roughness;
+    float a2     = a * a;
+    float NdotH  = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH * NdotH;
+    float num   = a2;
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom = PI * denom * denom;
+    return num / denom;
+}
+
+float GeometrySchlickGGX(float NdotV, float roughness)
+{
+	float r = (roughness + 1.0);
+    float k = (r * r) / 8.0;
+    float num   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+    return num / denom;
+}
+  
+float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
+{
+    float NdotV = max(dot(N, V), 0.0);
+    float NdotL = max(dot(N, L), 0.0);
+    float ggx2  = GeometrySchlickGGX(NdotV, roughness);
+    float ggx1  = GeometrySchlickGGX(NdotL, roughness);
+    return ggx1 * ggx2;
+}
+
+vec3 fresnelSchlick(float cosTheta, vec3 F0)
+{
+    return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+} 
 
 float calculateShadow() {
 	vec4 lightPos = lightSpaceMatrix * fs_in.worldPos;
@@ -71,44 +105,43 @@ float calculateShadow() {
 	return shadow /= 25 * 1.5;
 }
 
-vec3 calculateLight(Light light, vec3 fragPos, vec3 diffuseColor, float ks, vec3 normal, vec3 viewDir, float shadow)
-{
-	// used in two variables so I calculate it here to not have to do it twice
-	vec3 lightDiff = light.position.xyz - fragPos * light.position.w;
-
-	// intensity of light with respect to distance
-	float dist = length(lightDiff);
-	float attenuation = 1.0 / (dist * dist);
-
-	// diffuse lighting
-	vec3 lightDir = normalize(lightDiff);
-	float diffuseCos = max(dot(normal, lightDir), 0.0);
-	vec3 diffuse = diffuseCos * light.powerDensity * attenuation * diffuseColor;
-
-	// specular lighting
-	vec3 halfway = normalize(lightDir + viewDir);
-	float specularCos = pow(max(dot(halfway, normal), 0.0), material.shininess);
-	vec3 specular = specularCos * light.powerDensity * attenuation * material.specularColor * ks;
-
-	return (1.0 - shadow) * (diffuse + specular);
-}
-
 void main()
 {
+	vec3 albedo = texture(albedoMap, fs_in.texCoords).rgb;
 	vec3 n =  normalize(fs_in.TBN * (texture(normalMap, fs_in.texCoords).xyz * 2.0 - 1.0));
-	//vec3 n = normalize(normal.xyz);
+	float roughness = texture(roughnessMap, fs_in.texCoords).r;
+	float metallic = texture(metallicMap, fs_in.texCoords).r;
+	float ao = texture(aoMap, fs_in.texCoords).r;
 	vec3 wp = fs_in.worldPos.xyz / fs_in.worldPos.w;
 	vec3 viewDir = normalize(cameraPosition - wp);
-	vec3 lightSum = vec3(0, 0, 0);
-	vec3 diffColor = texture(albedoMap, fs_in.texCoords).rgb;
-	float ks = texture(aoMap, fs_in.texCoords).r;
 	float shadow = calculateShadow();
+	vec3 Lo = vec3(0, 0, 0);
+	vec3 F0 = vec3(0.04); 
 	for (int i = 0; i < lightCount; i++) {
-		lightSum += calculateLight(lights[i], wp, diffColor, ks, n, viewDir, shadow);
+		vec3 lightDiff = lights[i].position.xyz - wp * lights[i].position.w;
+		float lightDistance = length(lightDiff);
+		vec3 lightDir = lightDiff / lightDistance;
+		vec3 halfway = normalize(viewDir + lightDir);
+		float attenuation = 1.0 / (lightDistance * lightDistance);
+        vec3 radiance     = lights[i].powerDensity * attenuation * (1.0 - shadow);
+		F0      = mix(F0, albedo, metallic);
+		vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), F0);
+		float NDF = DistributionGGX(n, halfway, roughness);       
+		float G   = GeometrySmith(n, viewDir, lightDir, roughness);
+		vec3 numerator    = NDF * G * F;
+		float denominator = 4.0 * max(dot(n, viewDir), 0.0) * max(dot(n, lightDir), 0.0)  + 0.0001;
+		vec3 specular     = numerator / denominator; 
+		vec3 kS = F;
+		vec3 kD = vec3(1.0) - kS;
+		kD *= 1.0 - metallic;
+	    float NdotL = max(dot(n, lightDir), 0.0);        
+		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
 	}
-	lightSum += material.ambientColor;
-	vec3 reflectDir = reflect(-viewDir, n);
-	float r = (1 - texture(roughnessMap, fs_in.texCoords).r) * ks * material.reflectiveness * (1.0 - max(dot(viewDir, n), 0.0) * 0.8);
-	lightSum = max(1.0 - r, 0.0) * lightSum + r * texture(skybox, reflectDir).rgb ;
-	FragColor = vec4(lightSum, 1.0f);
+    vec3 ambient = vec3(0.03) * albedo * ao;
+    vec3 color = ambient + Lo;
+	
+    //color = color / (color + vec3(1.0));
+    //color = pow(color, vec3(1.0/2.2));  
+   
+    FragColor = vec4(color, 1.0);
 }

@@ -21,36 +21,48 @@ namespace hograengine {
 
 		std::span<const Texture* const> getTextures() const;
 
-		void setDiffuseColor(glm::vec3 color) {
-			this->diffuseColor = color;
+		glm::vec3 getAlbedo() const {
+			return albedo;
 		}
 
-		void setSpecularColor(glm::vec3 color) {
-			this->specularColor = color;
+		void setAlbedo(const glm::vec3& c) {
+			albedo = c;
 		}
 
-		void setAmbientColor(glm::vec3 color) {
-			this->ambientColor = color;
+		float getRoughness() const {
+			return roughness;
 		}
 
-		void setShininess(float _shininess) {
-			this->shininess = _shininess;
+		void setRoughness(float a) {
+			roughness = a;
 		}
 
-		void setReflectiveness(float _reflectiveness) {
-			this->reflectiveness = _reflectiveness;
+		float getMetallic() const {
+			return metallic;
 		}
+
+		void setMetallic(float m) {
+			metallic = m;
+		}
+
+		float getAO() const {
+			return ao;
+		}
+
+		void setAO(float _ao) {
+			ao = _ao;
+		}
+
 
 		void setAlphaBlend(bool blend);
 
 	private:
 		ShaderProgram* program;
 		std::vector <const Texture*> textures;
-		glm::vec3 diffuseColor = glm::vec3(1.0f, 1.0f, 1.0f);
-		glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
-		glm::vec3 ambientColor = glm::vec3(0.0f, 0.0f, 0.0f);
-		float shininess = 30.0f;
-		float reflectiveness = 0.0f;
+		glm::vec3 albedo = glm::vec3(0.95f, 0.95f, 0.95f);
+		float roughness = 0.3f;
+		float metallic = 0.0f;
+		float ao = 0.2f;
 
 		bool alphaBlend = false;
 
