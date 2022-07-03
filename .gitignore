@@ -61,3 +61,7 @@ HomebrewGraphicsEngine/x64/Release/vc143.pdb
 HomebrewGraphicsEngine/HomebrewGraphicsEngine.vcxproj
 HomebrewGraphicsEngine/HomebrewGraphicsEngine.vcxproj
 HomebrewGraphicsEngine/HomebrewGraphicsEngine.vcxproj.filters
+*.tlog
+*.iobj
+*.log
+*.pdb
