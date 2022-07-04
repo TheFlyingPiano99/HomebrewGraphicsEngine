@@ -28,7 +28,12 @@ namespace hograengine {
 		lights.push_back(new Light(glm::vec4(-80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(1000.0f, 100.0f, 100.0f)));
 		lights.push_back(new Light(glm::vec4(0.0f, -28.0f, 80.0f, 1.0f), glm::vec3(100.0f, 1000.0f, 100.0f)));
 		lights.push_back(new Light(glm::vec4(80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f)));
+		std::srand(0);
+		for (int i = 0; i < 100; i++) {
+			lights.push_back(new Light(glm::vec4(std::rand() % 100 - 50, -48.0f, std::rand() % 100 - 50, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f)));
+		}
 		lightManager.registerLights(lights);
+		lightManager.initDefferedSystem(contextWidth, contextHeight);
 	}
 
 	void Scene::initShadowMap()
@@ -480,9 +485,14 @@ namespace hograengine {
 
 	void Scene::draw()
 	{
+		// Init and export data:
 		for (auto& group : instanceGroups) {
 			group.second->gatherInstanceData();
 		}
+		camera->exportData();
+		lightManager.exportData();
+
+		// Shadow pass:
 		if (nullptr != shadowCaster) {
 			shadowCaster->Bind();
 			for (auto& group : instanceGroups) {
@@ -490,6 +500,13 @@ namespace hograengine {
 			}
 		}
 
+		// Geometry pass:
+		lightManager.BindGBuffer();
+		for (auto& group : instanceGroups) {
+			group.second->draw();
+		}
+
+		// Deferred lighting pass:
 		if (postProcessStages.size() > 0) {
 			postProcessStages[0]->Bind();
 		}
@@ -504,11 +521,9 @@ namespace hograengine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glStencilMask(0x00);
 
-		camera->exportData();
-		lightManager.exportData();
-		for (auto& group : instanceGroups) {
-			group.second->draw();
-		}
+		lightManager.renderDeferredLighting();
+
+		// Post-process pass:
 		for (int i = 0; i < postProcessStages.size(); i++) {
 			if (i < postProcessStages.size() - 1) {
 				postProcessStages[i]->Draw(postProcessStages[i + 1]->getFBO());
@@ -618,6 +633,7 @@ namespace hograengine {
 			stage->resize(_contextWidth, _contextHeight);
 		}
 		camera->setMoved(true);
+		lightManager.onResize(_contextWidth, _contextHeight);
 	}
 
 	void Scene::serialize()

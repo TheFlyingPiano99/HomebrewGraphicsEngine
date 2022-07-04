@@ -264,6 +264,9 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DeferredLightingSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -476,6 +479,9 @@
     <ClInclude Include="ColliderGroup.h">
       <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="DeferredLightingSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -553,6 +559,9 @@
     </None>
     <None Include="ClassDiagram.cd" />
     <None Include="..\Resources\Shaders\displayNormals.geom">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\deferredPBRshading.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

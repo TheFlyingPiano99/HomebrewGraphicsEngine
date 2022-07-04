@@ -49,7 +49,7 @@ namespace hograengine {
 		delete colorTexture;
 		delete depthTexture;
 		
-		colorTexture = new Texture2D(GL_RGBA, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
+		colorTexture = new Texture2D(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
 		depthTexture = new Texture2D(GL_DEPTH_COMPONENT, glm::ivec2(contextWidth, contextHeight), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
 		material->addTexture(colorTexture);
 		material->addTexture(depthTexture);
