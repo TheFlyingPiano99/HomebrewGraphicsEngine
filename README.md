@@ -7,3 +7,4 @@ A grahics/videogame engine writen in C++ using OpenGL.
 - Deferred PBR shading
 - Instanced rendering
 
+![HoGraEngine logo](HoGraEngineLogo.png "HoGraEngine logo")
