@@ -60,12 +60,12 @@ namespace hograengine {
         return collider->collideWithCuboid(this);
     }
 
-    glm::vec3 CuboidCollider::getAABBMin()
+    glm::vec3 CuboidCollider::getAABBMin() const
     {
         return glm::vec3();
     }
 
-    glm::vec3 CuboidCollider::getAABBMax()
+    glm::vec3 CuboidCollider::getAABBMax() const
     {
         return glm::vec3();
     }

@@ -108,8 +108,8 @@ namespace hograengine {
 		virtual bool collideWithComposite(const Collider* collider) const = 0;
 	
 		// For collision optimalisation:
-		virtual glm::vec3 getAABBMin() = 0;
-		virtual glm::vec3 getAABBMax() = 0;
+		virtual glm::vec3 getAABBMin() const = 0;
+		virtual glm::vec3 getAABBMax() const = 0;
 
 	protected:
 

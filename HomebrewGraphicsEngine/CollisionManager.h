@@ -18,7 +18,7 @@ namespace hograengine {
 		void setUseSpatialTree(bool b);
 
 	private:
-		ColliderGroup root;
+		ColliderGroup root = ColliderGroup(nullptr);
 		std::vector<Collider*> colliders;
 		bool useSpatialTree = true;
 	};

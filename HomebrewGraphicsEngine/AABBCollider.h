@@ -77,8 +77,8 @@ namespace hograengine {
         }
 
         // Inherited via Collider
-        glm::vec3 getAABBMin() override;
-        glm::vec3 getAABBMax() override;
+        glm::vec3 getAABBMin() const override;
+        glm::vec3 getAABBMax() const override;
 
     private:
         glm::vec3 min = glm::vec3();

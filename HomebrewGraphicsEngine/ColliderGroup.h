@@ -5,7 +5,8 @@
 namespace hograengine {
 
 	// The max number of colliders in a leaf group
-#define MAX_COLLIDER_COUNT 10
+#define MAX_COLLIDER_COUNT 20
+#define MAX_DEPTH_LEVEL 40
 
 	/*
 	* Encapsulates near colliders to reduce the cost of collision check
@@ -14,7 +15,7 @@ namespace hograengine {
 	class ColliderGroup
 	{
 	public:
-		ColliderGroup() = default;
+		ColliderGroup(ColliderGroup* _parent, int _level = 0) : parent(_parent), level(_level) {}
 		
 		~ColliderGroup() {
 			for (auto& group : subGroups) {
@@ -22,6 +23,8 @@ namespace hograengine {
 			}
 			// Deleting colliders is not the responsibility of the group
 		}
+
+		float getExpansion(const Collider* collider);
 
 		void updateAABB();
 
@@ -32,6 +35,10 @@ namespace hograengine {
 		void removeCollider(Collider* collider);
 
 		int getLoad();
+
+		void clear();
+
+		void putInLeastExpandingSubGroup(Collider* collider);
 
 		const std::vector<Collider*>& getColliders() const {
 			return colliders;
@@ -67,19 +74,20 @@ namespace hograengine {
 			aabb.setMax(_max);
 		}
 
-		void setSuperGroup(ColliderGroup* super) {
-			superGroup = super;
+		void setParent(ColliderGroup* super) {
+			parent = super;
 		}
 
 		void updateAABBFromColliders();
 
 		void updateAABBFromSubGroups();
 
-		void print(int intend);
+		void print();
 
 	private:
+		int level = 0;
 		AABBCollider aabb;
-		ColliderGroup* superGroup = nullptr;
+		ColliderGroup* parent = nullptr;
 		std::vector<ColliderGroup*> subGroups;
 		std::vector<Collider*> colliders;
 

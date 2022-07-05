@@ -117,12 +117,12 @@ namespace hograengine {
         return false;
     }
 
-    glm::vec3 CompositeCollider::getAABBMin()
+    glm::vec3 CompositeCollider::getAABBMin() const
     {
         return aabbMin;
     }
 
-    glm::vec3 CompositeCollider::getAABBMax()
+    glm::vec3 CompositeCollider::getAABBMax() const
     {
         return aabbMax;
     }

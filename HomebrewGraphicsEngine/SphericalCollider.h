@@ -29,9 +29,9 @@ namespace hograengine {
         }
 
         // Inherited via Collider
-        virtual glm::vec3 getAABBMin() override;
+        virtual glm::vec3 getAABBMin() const override;
 
-        virtual glm::vec3 getAABBMax() override;
+        virtual glm::vec3 getAABBMax() const override;
 
     private:
         float radius = 1.0f;

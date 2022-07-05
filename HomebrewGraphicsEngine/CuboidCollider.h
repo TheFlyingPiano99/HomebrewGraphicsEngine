@@ -22,8 +22,8 @@ namespace hograengine {
         bool testPointInside(const glm::vec3& point) const override;
 
         // Inherited via Collider
-        virtual glm::vec3 getAABBMin() override;
-        virtual glm::vec3 getAABBMax() override;
+        virtual glm::vec3 getAABBMin() const override;
+        virtual glm::vec3 getAABBMax() const override;
 
     private:
 

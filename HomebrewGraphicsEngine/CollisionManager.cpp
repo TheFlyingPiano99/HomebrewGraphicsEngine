@@ -1,4 +1,5 @@
 #include "CollisionManager.h"
+#include <algorithm>
 
 void hograengine::CollisionManager::addCollider(Collider* collider, const std::string& colliderGroupName) {
 	const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
@@ -41,9 +42,10 @@ void hograengine::CollisionManager::collide() {
 	}
 }
 
+
 void hograengine::CollisionManager::update() {
 	static int counter0 = 0;
-	static int counter1 = 0;
+	static int counter1 = 2000;
 	if (counter0 == 10) {
 		root.updateAABB();
 		counter0 = 0;
@@ -51,9 +53,16 @@ void hograengine::CollisionManager::update() {
 	else {
 		counter0++;
 	}
-	if (counter1 == 0) {
-		root.print(0);
-		counter1 = 1;
+	if (counter1 == 2000) {
+		struct {
+			bool operator()(const Collider* a, const Collider* b) const { return length(a->getAABBMax() - a->getAABBMin()) < length(b->getAABBMax() - b->getAABBMin()); }
+		} customLess;
+		root.clear();
+		std::sort(colliders.begin(), colliders.end(), customLess);
+		for (auto* collider : colliders) {
+			root.addCollider(collider);
+		}
+		counter1 = 0;
 	}
 	else {
 		counter1++;

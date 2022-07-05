@@ -189,12 +189,12 @@ namespace hograengine {
         return collider->collideWithAABB(this);
     }
 
-    glm::vec3 AABBCollider::getAABBMin()
+    glm::vec3 AABBCollider::getAABBMin() const
     {
         return position + minInOrigo;
     }
 
-    glm::vec3 AABBCollider::getAABBMax()
+    glm::vec3 AABBCollider::getAABBMax() const
     {
         return position + maxInOrigo;
     }

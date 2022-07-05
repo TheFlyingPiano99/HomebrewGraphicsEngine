@@ -1,6 +1,17 @@
 #include "ColliderGroup.h"
 #include <iostream>
 
+float hograengine::ColliderGroup::getExpansion(const Collider* collider)
+{
+	glm::vec3 expansion = glm::vec3(0.0f);
+	glm::vec3 min = getMin();
+	glm::vec3 max = getMax();
+	expansion.x = std::max(std::max(0.0f, min.x - collider->getAABBMin().x), std::max(0.0f, collider->getAABBMax().x - max.x));
+	expansion.y = std::max(std::max(0.0f, min.y - collider->getAABBMin().y), std::max(0.0f, collider->getAABBMax().y - max.y));
+	expansion.z = std::max(std::max(0.0f, min.z - collider->getAABBMin().z), std::max(0.0f, collider->getAABBMax().z - max.z));
+	return length(expansion);
+}
+
 void hograengine::ColliderGroup::updateAABB() {
 	if (subGroups.empty()) {
 		updateAABBFromColliders();
@@ -31,29 +42,24 @@ void hograengine::ColliderGroup::expandAABB(const glm::vec3& candidateMin, const
 void hograengine::ColliderGroup::addCollider(Collider* collider) {
 	if (subGroups.empty()) {	// Leaf group
 		colliders.push_back(collider);
-		if (colliders.size() > MAX_COLLIDER_COUNT) {
-			subGroups.push_back(new ColliderGroup());
-			subGroups.push_back(new ColliderGroup());
-			for (int i = 0; i < colliders.size(); i++) {	// Distribute colliders betwean subGroups
+		if (colliders.size() > MAX_COLLIDER_COUNT && level < MAX_DEPTH_LEVEL) {
+			subGroups.push_back(new ColliderGroup(this, level + 1));
+			subGroups.push_back(new ColliderGroup(this, level + 1));
+			for (int i = 0; i < 2; i++) {	// First few in separate groups
 				int groupIdx = i % 2;
 				subGroups[groupIdx]->addCollider(colliders[i]);
 			}
+			for (int i = 2; i < colliders.size(); i++) {	// The remaining in the least expanding groups
+				putInLeastExpandingSubGroup(colliders[i]);
+			}
 			colliders.clear();
 		}
-		expandAABB(collider->getAABBMin(), collider->getAABBMax());
+		else {
+			expandAABB(collider->getAABBMin(), collider->getAABBMax());
+		}
 	}
 	else {	// Not leaf group
-		int minLoad;
-		ColliderGroup* minGroup = nullptr;
-		for (auto& group : subGroups) {	// Find subGroup with least load
-			int currentLoad = group->getLoad();
-			if (nullptr == minGroup || currentLoad < minLoad) {
-				minLoad = currentLoad;
-				minGroup = group;
-			}
-		}
-		minGroup->addCollider(collider);
-		expandAABB(minGroup->getMin(), minGroup->getMax());
+		putInLeastExpandingSubGroup(collider);
 	}
 }
 
@@ -76,6 +82,31 @@ void hograengine::ColliderGroup::removeCollider(Collider* collider) {
 
 int hograengine::ColliderGroup::getLoad() {
 	return std::max(colliders.size(), subGroups.size());
+}
+
+void hograengine::ColliderGroup::clear()
+{
+	for (auto& group : subGroups) {
+		delete group;
+	}
+	subGroups.clear();
+	colliders.clear();
+	// Deleting colliders is not the responsibility of the group!
+}
+
+void hograengine::ColliderGroup::putInLeastExpandingSubGroup(Collider* collider)
+{
+	float minExpansion;
+	ColliderGroup* minGroup = nullptr;
+	for (auto& group : subGroups) {	// Find subGroup least expanded by the new collider
+		float currentExpansion = group->getExpansion(collider);
+		if (nullptr == minGroup || currentExpansion < minExpansion) {
+			minExpansion = currentExpansion;
+			minGroup = group;
+		}
+	}
+	minGroup->addCollider(collider);
+	expandAABB(minGroup->getMin(), minGroup->getMax());
 }
 
 void hograengine::ColliderGroup::collide(const ColliderGroup* group) {
@@ -145,6 +176,7 @@ void hograengine::ColliderGroup::selfCollide() {
 	else {
 		for (int i = 0; i < subGroups.size() - 1; i++) {
 			for (int j = i + 1; j < subGroups.size(); j++) {
+
 				subGroups[i]->selfCollide();
 				subGroups[i]->collide(subGroups[j]);
 			}
@@ -239,21 +271,21 @@ void hograengine::ColliderGroup::updateAABBFromSubGroups() {
 	aabb.setMax(newMax);
 }
 
-void hograengine::ColliderGroup::print(int intend) {
-	for (int i = 0; i < intend; i++) {
-		std::cout << "\t";
+void hograengine::ColliderGroup::print() {
+	for (int i = 0; i < level; i++) {
+		std::cout << "| ";
 	}
 	glm::vec3 min = getMin();
 	glm::vec3 max = getMax();
-	std::cout << "Group: [(" << min.x << ", " << min.y << ", " << min.z << ")\t(" << max.x << ", " << max.y << "," << max.z << ")]" << std::endl;
+	std::cout << "Group: [(" << min.x << ", " << min.y << ", " << min.z << ")\t(" << max.x << ", " << max.y << "," << max.z << ")] " << subGroups.size()  << std::endl;
 	for (auto& group : subGroups) {
-		group->print(intend + 1);
+		group->print();
 	}
 	for (auto& coll : colliders) {
 		min = coll->getAABBMin();
 		max = coll->getAABBMax();
-		for (int i = 0; i < intend + 1; i++) {
-			std::cout << "\t";
+		for (int i = 0; i < level + 1; i++) {
+			std::cout << "| ";
 		}
 		std::cout << "Collider: [(" << min.x << ", " << min.y << ", " << min.z << ")\t(" << max.x << ", " << max.y << "," << max.z << ")]" << std::endl;
 	}

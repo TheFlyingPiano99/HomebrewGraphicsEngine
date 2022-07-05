@@ -95,12 +95,12 @@ namespace hograengine {
 		return collider->collideWithSpherical(this);
 	}
 
-	glm::vec3 SphericalCollider::getAABBMin()
+	glm::vec3 SphericalCollider::getAABBMin() const
 	{
 		return position - glm::vec3(radius, radius, radius);
 	}
 
-	glm::vec3 SphericalCollider::getAABBMax()
+	glm::vec3 SphericalCollider::getAABBMax() const
 	{
 		return position + glm::vec3(radius, radius, radius);
 	}
