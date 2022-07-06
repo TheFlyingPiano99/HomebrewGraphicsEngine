@@ -4,7 +4,7 @@
 #include <iostream>
 namespace hograengine {
 
-    void Collider::collide(const Collider* collider) const
+    void Collider::collide(Collider* collider)
     {
         auto& otherGroups = collider->getColliderGroups();
         for (auto& otherGroup : otherGroups) {
@@ -29,6 +29,8 @@ namespace hograengine {
         }
         if (isCollision) {
             SceneEventManager::getInstance()->pushEvent(new CollisionEvent((const Collider*)this, collider));
+            haveCollided = true;
+            collider->setHaveCollided(true);
         }
 
     }

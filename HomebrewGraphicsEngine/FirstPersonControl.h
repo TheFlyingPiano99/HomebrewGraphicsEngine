@@ -1,5 +1,6 @@
 #pragma once
 #include "UserControl.h"
+#include "Collider.h"
 
 namespace hograengine {
 	class FirstPersonControl : public UserControl
@@ -27,8 +28,19 @@ namespace hograengine {
 			jumpImpulse = j;
 		}
 
+		void setJumpCollider(Collider* collider) {
+			jumpCollider = collider;
+		}
+
+		void setPositionProvider(PositionProvider* provider) {
+			positionProvider = provider;
+		}
 
 	private:
+		bool isGrounded = false;
+		float jumpCoolDown = 0.0f;
+		PositionProvider* positionProvider = nullptr;
+		Collider* jumpCollider = nullptr;
 		float jumpImpulse = 1000.0f;
 		Camera* camera = nullptr;
 		float tSinceLastInput = 0.0f;

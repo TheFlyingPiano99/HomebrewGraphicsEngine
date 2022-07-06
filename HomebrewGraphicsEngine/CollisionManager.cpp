@@ -1,5 +1,6 @@
 #include "CollisionManager.h"
 #include <algorithm>
+#include "GeometryFactory.h"
 
 void hograengine::CollisionManager::addCollider(Collider* collider, const std::string& colliderGroupName) {
 	const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
@@ -45,15 +46,15 @@ void hograengine::CollisionManager::collide() {
 
 void hograengine::CollisionManager::update() {
 	static int counter0 = 0;
-	static int counter1 = 2000;
-	if (counter0 == 10) {
+	static int counter1 = 0;
+	if (counter0 == 1) {
 		root.updateAABB();
 		counter0 = 0;
 	}
 	else {
 		counter0++;
 	}
-	if (counter1 == 2000) {
+	if (counter1 == 1000) {
 		struct {
 			bool operator()(const Collider* a, const Collider* b) const { return length(a->getAABBMax() - a->getAABBMin()) < length(b->getAABBMax() - b->getAABBMin()); }
 		} customLess;
@@ -71,4 +72,28 @@ void hograengine::CollisionManager::update() {
 
 void hograengine::CollisionManager::setUseSpatialTree(bool b) {
 	useSpatialTree = b;
+}
+
+void hograengine::CollisionManager::initDebug()
+{
+	auto* shaderProgram = new ShaderProgram(
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"), 
+		"", 
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
+	auto* geometry = GeometryFactory::WireframeCube::getInstance();
+	geometry->setPrimitiveType(GL_LINES);
+	geometry->setFaceCulling(false);
+	auto* material = new Material(shaderProgram);
+	auto* mesh = new Mesh(material, geometry);
+	mesh->setDepthTest(false);
+	auto* obj = new SceneObject(mesh);
+	instanceGroup.addObject(obj);
+}
+
+void hograengine::CollisionManager::drawDebug()
+{
+	std::vector<Geometry::InstanceData> data;
+	root.gatherInstanceDataForDebug(data);
+	instanceGroup.injectInstanceData(data);
+	instanceGroup.draw();
 }

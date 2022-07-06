@@ -13,6 +13,11 @@ void hograengine::InstanceGroup::gatherInstanceData()
 	}
 }
 
+void hograengine::InstanceGroup::injectInstanceData(const std::vector<Geometry::InstanceData>& data)
+{
+	instanceData = data;
+}
+
 void hograengine::InstanceGroup::draw()
 {
 	if (objects.size() == 0) {

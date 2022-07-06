@@ -35,6 +35,21 @@ namespace hograengine {
 			static Geometry* create();
 		};
 
+		/*
+		* Factory that creates a singleton cube geometry.
+		*/
+		class WireframeCube
+		{
+		public:
+			static Geometry* getInstance();
+			static void destroyInstance();
+
+		private:
+			WireframeCube() = default;
+			static Geometry* geometry;
+			static Geometry* create();
+		};
+
 		class Sphere {
 		public:
 			static Geometry* getInstance();

@@ -1,5 +1,8 @@
 #include "ColliderGroup.h"
 #include <iostream>
+#include<glm/gtc/matrix_transform.hpp>
+#include<glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 float hograengine::ColliderGroup::getExpansion(const Collider* collider)
 {
@@ -89,6 +92,8 @@ void hograengine::ColliderGroup::clear()
 	for (auto& group : subGroups) {
 		delete group;
 	}
+	aabb.setMin(glm::vec3(0, 0, 0));
+	aabb.setMax(glm::vec3(0, 0, 0));
 	subGroups.clear();
 	colliders.clear();
 	// Deleting colliders is not the responsibility of the group!
@@ -150,7 +155,7 @@ void hograengine::ColliderGroup::collide(const ColliderGroup* group) {
 	}
 }
 
-void hograengine::ColliderGroup::collide(const Collider* collider) {
+void hograengine::ColliderGroup::collide(Collider* collider) {
 	if (aabb.testCollision(collider)) {
 		if (subGroups.empty()) {
 			for (auto& coll : colliders) {
@@ -182,6 +187,19 @@ void hograengine::ColliderGroup::selfCollide() {
 			}
 		}
 		subGroups[subGroups.size() - 1]->selfCollide();
+	}
+}
+
+void hograengine::ColliderGroup::gatherInstanceDataForDebug(std::vector<Geometry::InstanceData>& data)
+{
+	glm::vec3 min = aabb.getMin();
+	glm::vec3 max = aabb.getMax();
+	glm::vec3 center = (min + max) / 2.0f;
+	Geometry::InstanceData d;
+	d.modelMatrix = glm::translate(center) * glm::scale((max - min) / 2.0f);
+	data.push_back(d);
+	for (auto& group : subGroups) {
+		group->gatherInstanceDataForDebug(data);
 	}
 }
 

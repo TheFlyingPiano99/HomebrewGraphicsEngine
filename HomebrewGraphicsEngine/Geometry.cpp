@@ -67,7 +67,7 @@ namespace hograengine {
 			glDisable(GL_CULL_FACE);
 		}
 
-		glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(primitiveType, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
 	}
 
 	void Geometry::DrawInstanced(const std::vector<InstanceData>& instanceData)
@@ -87,7 +87,7 @@ namespace hograengine {
 		else {
 			glDisable(GL_CULL_FACE);
 		}
-		glDrawElementsInstanced(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr, (GLsizei)instanceData.size());
+		glDrawElementsInstanced(primitiveType, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr, (GLsizei)instanceData.size());
 	}
 
 	void Geometry::setFaceCulling(bool cull)

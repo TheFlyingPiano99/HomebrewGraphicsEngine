@@ -18,7 +18,7 @@ namespace hograengine {
 		/*
 		* Called from scene.
 		*/
-		void collide(const Collider* collider) const;
+		void collide(Collider* collider);
 
 		Physics* getPhysics() const;
 
@@ -111,12 +111,22 @@ namespace hograengine {
 		virtual glm::vec3 getAABBMin() const = 0;
 		virtual glm::vec3 getAABBMax() const = 0;
 
-	protected:
+		bool popCollided() {
+			bool temp = haveCollided;
+			haveCollided = false;
+			return temp;
+		}
 
+		void setHaveCollided(bool b) {
+			haveCollided = b;
+		}
+
+	protected:
 		Physics* physics = nullptr;
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::quat orientation = angleAxis(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		glm::vec3 position = glm::vec3(0.0f);
 		std::vector<int> colliderGroups; // The list of collider groups that this collider is part of.
+		bool haveCollided = false;
 	};
 }

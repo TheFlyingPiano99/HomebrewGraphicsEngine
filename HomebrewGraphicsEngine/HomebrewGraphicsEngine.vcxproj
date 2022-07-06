@@ -303,6 +303,8 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\bounding.frag" />
     <None Include="..\Resources\Shaders\bounding.vert" />
+    <None Include="..\Resources\Shaders\debug.frag" />
+    <None Include="..\Resources\Shaders\debug.vert" />
     <None Include="..\Resources\Shaders\default.frag" />
     <None Include="..\Resources\Shaders\default.vert" />
     <None Include="..\Resources\Shaders\deferredPBRshading.frag" />

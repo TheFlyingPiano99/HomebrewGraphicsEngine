@@ -564,5 +564,11 @@
     <None Include="..\Resources\Shaders\deferredPBRshading.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\Resources\Shaders\debug.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\debug.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

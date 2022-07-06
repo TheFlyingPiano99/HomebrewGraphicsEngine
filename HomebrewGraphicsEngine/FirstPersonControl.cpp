@@ -56,6 +56,17 @@ void hograengine::FirstPersonControl::moveRight(float dt)
 
 void hograengine::FirstPersonControl::update(float dt)
 {
+	if (jumpCollider != nullptr) {
+		isGrounded = jumpCollider->popCollided();
+		jumpCollider->setPosition(positionProvider->getPosition());
+		jumpCollider->update(0);
+	}
+	if (jumpCoolDown > 0.0f) {
+		jumpCoolDown -= dt;
+		if (jumpCoolDown < 0.0f) {
+			jumpCoolDown = 0.0f;
+		}
+	}
 	if (camera == nullptr) {
 		return;
 	}
@@ -82,8 +93,9 @@ void hograengine::FirstPersonControl::rotate(float mouseX, float mouseY)
 }
 
 void hograengine::FirstPersonControl::jump() {
-	if (physics == nullptr || !allowMove) {
+	if (physics == nullptr || !allowMove || !isGrounded || jumpCoolDown > 0.0f) {
 		return;
 	}
 	physics->applyImpulse(up * jumpImpulse, glm::vec3(0.0f));
+	jumpCoolDown = 1.0f;
 }

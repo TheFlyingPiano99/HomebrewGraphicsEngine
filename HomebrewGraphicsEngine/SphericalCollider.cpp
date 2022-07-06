@@ -87,7 +87,9 @@ namespace hograengine {
 
 	bool SphericalCollider::collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
 	{
-		return collider->collideWithSpherical(this, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+		bool isCollision = collider->collideWithSpherical(this, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+		wCollisionNormal *= -1.0f;
+		return isCollision;
 	}
 
 	bool SphericalCollider::collideWithComposite(const Collider* collider) const

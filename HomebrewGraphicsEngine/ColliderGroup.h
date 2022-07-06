@@ -5,8 +5,8 @@
 namespace hograengine {
 
 	// The max number of colliders in a leaf group
-#define MAX_COLLIDER_COUNT 20
-#define MAX_DEPTH_LEVEL 40
+#define MAX_COLLIDER_COUNT 10
+#define MAX_DEPTH_LEVEL 10
 
 	/*
 	* Encapsulates near colliders to reduce the cost of collision check
@@ -54,9 +54,11 @@ namespace hograengine {
 
 		void collide(const ColliderGroup* group);
 
-		void collide(const Collider* collider);
+		void collide(Collider* collider);
 
 		void selfCollide();
+
+		void gatherInstanceDataForDebug(std::vector<Geometry::InstanceData>& data);
 
 		const glm::vec3& getMin() const {
 			return aabb.getMin();

@@ -59,6 +59,14 @@ namespace hograengine {
 			return avatarControl;
 		}
 
+		bool getDrawDebug() const {
+			return drawDebug;
+		}
+
+		void setDrawDebug(bool b) {
+			drawDebug = b;
+		}
+
 	private:
 		static Scene* instance;
 
@@ -82,6 +90,7 @@ namespace hograengine {
 		bool pause = true;
 		unsigned int contextWidth;
 		unsigned int contextHeight;
+		bool drawDebug = false;
 
 		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
 

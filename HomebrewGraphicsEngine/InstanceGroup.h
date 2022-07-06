@@ -13,6 +13,8 @@ namespace hograengine{
 
 		void gatherInstanceData();
 
+		void injectInstanceData(const std::vector<Geometry::InstanceData>& data);
+
 		void draw();
 
 		void drawShadow();

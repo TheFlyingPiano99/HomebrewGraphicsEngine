@@ -122,4 +122,8 @@ namespace hograengine {
  			control->jump();
 		}
 	}
+	void ToggleDebugInfo::execute(Scene* scene, float dt)
+	{
+		scene->setDrawDebug(!scene->getDrawDebug());
+	}
 }

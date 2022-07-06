@@ -52,6 +52,7 @@ namespace hograengine {
 		registerAction(new TogglePause());
 		registerAction(new ToggleFullScreenMode());
 		registerAction(new JumpAvatar());
+		registerAction(new ToggleDebugInfo());
 	}
 
 	void ControlActionManager::registerAction(ControlAction* toRegister)

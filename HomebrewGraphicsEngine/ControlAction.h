@@ -131,4 +131,12 @@ namespace hograengine {
 
 		void execute(Scene* scene, float dt) override;
 	};
+
+	class ToggleDebugInfo : public ControlAction {
+	public:
+		ToggleDebugInfo() : ControlAction(GLFW_KEY_I) {
+		}
+
+		void execute(Scene* scene, float dt) override;
+	};
 }

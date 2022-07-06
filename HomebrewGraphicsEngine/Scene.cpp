@@ -25,12 +25,12 @@ namespace hograengine {
 	{
 		camera = new Camera((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(-9.0f, 10.0f, -9.0f));
 		lights.push_back(new Light(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f)));	// Directional light
-		lights.push_back(new Light(glm::vec4(-80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(1000.0f, 100.0f, 100.0f)));
-		lights.push_back(new Light(glm::vec4(0.0f, -28.0f, 80.0f, 1.0f), glm::vec3(100.0f, 1000.0f, 100.0f)));
-		lights.push_back(new Light(glm::vec4(80.0f, -28.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f)));
+		lights.push_back(new Light(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(1000.0f, 100.0f, 100.0f)));
+		lights.push_back(new Light(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(100.0f, 1000.0f, 100.0f)));
+		lights.push_back(new Light(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f)));
 		std::srand(0);
 		for (int i = 0; i < 100; i++) {
-			lights.push_back(new Light(glm::vec4(std::rand() % 100 - 50, -48.0f, std::rand() % 100 - 50, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f)));
+			lights.push_back(new Light(glm::vec4(std::rand() % 100 - 50, 2.0f, std::rand() % 100 - 50, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f)));
 		}
 		lightManager.registerLights(lights);
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
@@ -63,16 +63,17 @@ namespace hograengine {
 		col = initCompositeCollider();
 		initCube(&cubeMap, glm::vec3(0.0f, 10.0f, -30.0f), col, field);
 		col = initCompositeCollider();
-		initCube(&cubeMap, glm::vec3(0.0f, -30.0f, 0.0f), col, field);
-		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -20.0f), field);
-		initSphere(&cubeMap, glm::vec3(-20.0f, -30.0f, -10.0f), field);
-		initSphere(&cubeMap, glm::vec3(-30.0f, -30.0f, -10.0f), field);
-		initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f, -20.0f), field);
+		initCube(&cubeMap, glm::vec3(0.0f, 3.0f, 0.0f), col, field);
+		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -20.0f), field);
+		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -10.0f), field);
+		initSphere(&cubeMap, glm::vec3(-30.0f, 3.0f, -10.0f), field);
+		initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f, -20.0f), field);
 		for (int i = 0; i < 100; i++) {
-			initSphere(&cubeMap, glm::vec3(-10.0f, -30.0f + i * 5.0f, -20.0f), field);
+			initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f + i * 5.0f, -20.0f), field);
 		}
-		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, -20.0f, -30.0f), field);
+		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, 3.0f, -30.0f), field);
 		initAvatar(field);
+		collisionManager.initDebug();
 	}
 
 	void Scene::initSkyBox(Texture** cubeMap)
@@ -165,25 +166,29 @@ namespace hograengine {
 
 	void Scene::initGroud(const Texture* skyBox)
 	{
-		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl", skyBox);
-		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
-		auto* cubeMesh = new Mesh(material, cubeGeometry);
-		auto* obj = new SceneObject(cubeMesh);
-		obj->setPosition(glm::vec3(0.0f, -50.0f, 0.0f));
-		obj->setScale(glm::vec3(100.0f, 1.0f, 100.0f));
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl", skyBox);
+				Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
+				auto* cubeMesh = new Mesh(material, cubeGeometry);
+				auto* obj = new SceneObject(cubeMesh);
+				obj->setPosition(glm::vec3(i * 100.0f - 500.0f, 0.0f, j * 100.0f -500.0f));
+				obj->setScale(glm::vec3(50.0f, 1.0f, 50.0f));
 
-		auto* cubePhysics = new Physics(obj);
-		cubePhysics->setPositionForcingLevel(0.0f);
-		AABBCollider* collider = new AABBCollider();
-		cubePhysics->setElasticity(0.2f);
-		cubePhysics->setFriction(0.9f);
-		obj->addComponent(cubePhysics);
-		collider->setPhysics(cubePhysics);
-		collider->setMinInOrigo(glm::vec3(-100.0f, -1.0f, -100.0f));
-		collider->setMaxInOrigo(glm::vec3(100.0f, 1.0f, 100.0f));
-		obj->addComponent(collider);
-		addCollider(collider, "ground");
-		addSceneObject(obj, "ground");
+				auto* cubePhysics = new Physics(obj);
+				cubePhysics->setPositionForcingLevel(0.0f);
+				AABBCollider* collider = new AABBCollider();
+				cubePhysics->setElasticity(0.2f);
+				cubePhysics->setFriction(0.9f);
+				obj->addComponent(cubePhysics);
+				collider->setPhysics(cubePhysics);
+				collider->setMinInOrigo(glm::vec3(-49.99f, -1.0f, -49.99f));
+				collider->setMaxInOrigo(glm::vec3(49.99f, 1.0f, 49.99f));
+				obj->addComponent(collider);
+				addCollider(collider, "ground");
+				addSceneObject(obj, "ground");
+			}
+		}
 	}
 
 	void Scene::initLoadedGeometry(Texture** cubeMap, const glm::vec3& pos, ForceField* field)
@@ -223,7 +228,7 @@ namespace hograengine {
 	void Scene::initAvatar(ForceField* gravitation)
 	{
 		auto* avatar = new SceneObject();
-		avatar->setPosition(glm::vec3(-60.0f, -20.0f, -60.0f));
+		avatar->setPosition(glm::vec3(-60.0f, 2.0f, -60.0f));
 		camera->setPositionProvider(avatar);
 		camera->setPositionInProvidersSpace(glm::vec3(0.0f, 0.8f, 0.0f));
 		auto* collider = new AABBCollider();
@@ -244,8 +249,14 @@ namespace hograengine {
 		control->setInitialUp(getPreferedUp());
 		control->setJumpImpulse(600.0f);
 		control->setPropellingForce(glm::vec3(2000.0f, 0.0f, 2000.0f));
+		auto* jumpCollider = new AABBCollider();
+		jumpCollider->setMinInOrigo(glm::vec3(-0.2f, -1.1f, -0.2f));
+		jumpCollider->setMaxInOrigo(glm::vec3(0.2f, -0.9f, 0.2f));
+		control->setJumpCollider(jumpCollider);
+		control->setPositionProvider(avatar);
+		addCollider(jumpCollider, "avatar");
 		avatarControl = control;
-		avatar->addComponent(avatarControl);
+		avatar->addComponent(control);
 		avatar->addComponent(physics);
 		avatar->addComponent(collider);
 		shadowCaster->setPositionProvider(avatar);
@@ -531,6 +542,9 @@ namespace hograengine {
 			else {
 				postProcessStages[i]->Draw(FBO::getDefault());
 			}
+		}
+		if (drawDebug) {
+			collisionManager.drawDebug();
 		}
 	}
 

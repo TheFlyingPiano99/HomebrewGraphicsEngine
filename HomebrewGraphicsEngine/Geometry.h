@@ -31,8 +31,12 @@ namespace hograengine {
 			VAO.Bind();
 		}
 
-	private:
+		void setPrimitiveType(int type) {
+			primitiveType = type;
+		}
 
+	private:
+		int primitiveType = GL_TRIANGLES;
 		void initInstancedBuffer();
 
 		unsigned int instancedBuffer = 0;

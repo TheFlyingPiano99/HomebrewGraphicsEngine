@@ -1,5 +1,6 @@
 #pragma once
 #include "ColliderGroup.h"
+#include "InstanceGroup.h"
 
 namespace hograengine {
 	class CollisionManager
@@ -17,10 +18,15 @@ namespace hograengine {
 
 		void setUseSpatialTree(bool b);
 
+		void initDebug();
+
+		void drawDebug();
+
 	private:
 		ColliderGroup root = ColliderGroup(nullptr);
 		std::vector<Collider*> colliders;
 		bool useSpatialTree = true;
+		InstanceGroup instanceGroup;
 	};
 }
 
