@@ -23,13 +23,11 @@ namespace hograengine {
         }
 
         void update(float dt) override {
-            if (nullptr != physics) {
-                position = physics->getOwnerPosition();
-                scale = physics->getOwnerScale();
-                orientation = physics->getOwnerOrientation();
+            if (nullptr != positionProvider) {
+                position = positionProvider->getPosition();
             }
-            min = minInOrigo + position;
-            max = maxInOrigo + position;
+            min = minRelToPosition + position;
+            max = maxRelToPosition + position;
         }
 
         /*
@@ -60,20 +58,20 @@ namespace hograengine {
             max = _max;
         }
 
-        const glm::vec3& getMinInOrigo() const {
-            return minInOrigo;
+        const glm::vec3& getMinRelToPosition() const {
+            return minRelToPosition;
         }
 
-        void setMinInOrigo(const glm::vec3& _min) {
-            minInOrigo = _min;
+        void setMinRelToPosition(const glm::vec3& _min) {
+            minRelToPosition = _min;
         }
 
-        const glm::vec3& getMaxInOrigo() const {
-            return maxInOrigo;
+        const glm::vec3& getMaxRelToPosition() const {
+            return maxRelToPosition;
         }
 
-        void setMaxInOrigo(const glm::vec3& _max) {
-            maxInOrigo = _max;
+        void setMaxRelToPosition(const glm::vec3& _max) {
+            maxRelToPosition = _max;
         }
 
         // Inherited via Collider
@@ -84,8 +82,8 @@ namespace hograengine {
         glm::vec3 min = glm::vec3();
         glm::vec3 max = glm::vec3();
 
-        glm::vec3 minInOrigo = glm::vec3();
-        glm::vec3 maxInOrigo = glm::vec3();
+        glm::vec3 minRelToPosition = glm::vec3();
+        glm::vec3 maxRelToPosition = glm::vec3();
 
         bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
         bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;

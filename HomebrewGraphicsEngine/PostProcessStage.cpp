@@ -15,7 +15,7 @@ namespace hograengine {
 		material = new Material(program);
 		material->addTexture(colorTexture);
 		material->addTexture(depthTexture);
-		mesh = new Mesh(material, GeometryFactory::FullScreenQuad::getInstance());
+		mesh = new Mesh(material, GeometryFactory::getInstance()->getFullScreenQuad());
 		mesh->setDepthTest(false);
 		mesh->setStencilTest(false);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *colorTexture, 0);

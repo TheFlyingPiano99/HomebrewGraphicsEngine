@@ -25,10 +25,11 @@ namespace hograengine {
         }
 
         void update(float dt) override {
-            if (nullptr != physics) {
-                position = physics->getOwnerPosition();
-                scale = physics->getOwnerScale();
-                orientation = physics->getOwnerOrientation();
+            if (nullptr != positionProvider) {
+                if (nullptr != orientationProvider) {
+                    orientation = orientationProvider->getOrientation();
+                }
+                position = positionProvider->getPosition();
                 bool isMinSet = false;
                 bool isMaxSet = false;
                 for (int i = 0; i < parts.size(); i++) {

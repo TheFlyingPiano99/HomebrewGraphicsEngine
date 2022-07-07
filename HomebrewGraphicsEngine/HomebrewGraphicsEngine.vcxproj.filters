@@ -165,9 +165,6 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeometryFactories.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PostProcessStage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -265,6 +262,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeferredLightingSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -480,6 +480,9 @@
       <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
     <ClInclude Include="DeferredLightingSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -91,10 +91,14 @@ namespace hograengine {
 
     void Collider::update(float dt)
     {
-        if (nullptr != physics) {
-            position = physics->getOwnerPosition();
-            scale = physics->getOwnerScale();
-            orientation = physics->getOwnerOrientation();
+        if (nullptr != positionProvider) {
+            position = positionProvider->getPosition();
+        }
+        if (nullptr != orientationProvider) {
+            orientation = orientationProvider->getOrientation();
+        }
+        if (nullptr != scaleProvider) {
+            scale = scaleProvider->getScale();
         }
     }
 }

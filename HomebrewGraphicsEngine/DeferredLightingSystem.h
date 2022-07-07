@@ -32,7 +32,7 @@ namespace hograengine {
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshading.frag"));
 			material = new Material(program);
-			mesh = new Mesh(material, GeometryFactory::FullScreenQuad::getInstance());
+			mesh = new Mesh(material, GeometryFactory::getInstance()->getFullScreenQuad());
 			mesh->setDepthTest(false);
 			mesh->setStencilTest(false);
 			Resize(width, height);
@@ -93,7 +93,6 @@ namespace hograengine {
 		Texture2D* depthTexture = nullptr;
 		Material* material = nullptr;
 		Mesh* mesh = nullptr;
-
 	};
 }
 

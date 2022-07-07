@@ -3,64 +3,32 @@
 #include "Geometry.h"
 
 namespace hograengine {
-	namespace GeometryFactory {
 
-		/*
-		* Factory that creates a singleton full screen quad geometry.
-		*/
-		class FullScreenQuad
-		{
-		public:
-			static Geometry* getInstance();
-			static void destroyInstance();
+	/*
+	* Factory that creates a singleton full screen quad geometry.
+	*/
+	class GeometryFactory
+	{
+	public:
+		static GeometryFactory* getInstance();
+		static void destroyInstance();
 
-		private:
-			FullScreenQuad() = default;
-			static Geometry* geometry;
-			static Geometry* create();
-		};
+		Geometry* getFullScreenQuad();
 
-		/*
-		* Factory that creates a singleton cube geometry.
-		*/
-		class Cube
-		{
-		public:
-			static Geometry* getInstance();
-			static void destroyInstance();
+		Geometry* getCube();
 
-		private:
-			Cube() = default;
-			static Geometry* geometry;
-			static Geometry* create();
-		};
+		Geometry* getWireframeCube();
 
-		/*
-		* Factory that creates a singleton cube geometry.
-		*/
-		class WireframeCube
-		{
-		public:
-			static Geometry* getInstance();
-			static void destroyInstance();
+		Geometry* getSphere();
 
-		private:
-			WireframeCube() = default;
-			static Geometry* geometry;
-			static Geometry* create();
-		};
+	private:
+		static void generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLint>* indices);
+		GeometryFactory() = default;
+		static GeometryFactory* instance;
 
-		class Sphere {
-		public:
-			static Geometry* getInstance();
-			static void destroyInstance();
-
-			private:
-				static Geometry* create();
-
-				static void generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLint>* indices);
-
-				static Geometry* geometry;
-		};
-	}
+		Geometry* fullScreenQuad = nullptr;
+		Geometry* cube = nullptr;
+		Geometry* wireframeCube = nullptr;
+		Geometry* sphere = nullptr;
+	};
 }

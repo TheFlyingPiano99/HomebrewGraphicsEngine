@@ -32,14 +32,9 @@ namespace hograengine {
 			jumpCollider = collider;
 		}
 
-		void setPositionProvider(PositionProvider* provider) {
-			positionProvider = provider;
-		}
-
 	private:
 		bool isGrounded = false;
 		float jumpCoolDown = 0.0f;
-		PositionProvider* positionProvider = nullptr;
 		Collider* jumpCollider = nullptr;
 		float jumpImpulse = 1000.0f;
 		Camera* camera = nullptr;

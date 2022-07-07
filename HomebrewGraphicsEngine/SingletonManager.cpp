@@ -6,6 +6,7 @@
 #include "GUI.h"
 #include "SceneEventManager.h"
 #include "MaterialFactory.h"
+#include "ShaderProgramFactory.h"
 
 namespace hograengine {
 
@@ -13,11 +14,13 @@ namespace hograengine {
 	* Needs to be called before closing program!
 	*/
 	void Singleton::destroyAllInstances() {
-		Scene::destroyInstance();
-		ControlActionManager::destroyInstance();
-		AssetFolderPathManager::destroyInstance();
 		GUI::destroyInstance();
+		Scene::destroyInstance();
+		AssetFolderPathManager::destroyInstance();
+		ControlActionManager::destroyInstance();
 		SceneEventManager::destroyInstance();
 		MaterialFactory::destroyInstance();
+		GeometryFactory::destroyInstance();
+		ShaderProgramFactory::destroyInstance();
 	}
 }

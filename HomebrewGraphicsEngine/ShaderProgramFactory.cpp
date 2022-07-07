@@ -15,6 +15,7 @@ namespace hograengine {
 		if (nullptr != instance) {
 			delete instance;
 		}
+		instance = nullptr;
 	}
 	
 	ShaderProgram* ShaderProgramFactory::getDefaultPBRProgramWithMapping() {

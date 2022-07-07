@@ -93,7 +93,7 @@ namespace hograengine {
 		*cubeMap = new TextureCube(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = new Material(skyboxShader);
 		skyBoxMaterial->addTexture(*cubeMap);
-		Geometry* fullscreenQuad = GeometryFactory::FullScreenQuad::getInstance();
+		Geometry* fullscreenQuad = GeometryFactory::getInstance()->getFullScreenQuad();
 		auto* skyBoxMesh = new Mesh(skyBoxMaterial, fullscreenQuad);
 		skyBoxMesh->setDepthTest(false);
 		skyBoxMesh->setStencilTest(false);
@@ -104,7 +104,7 @@ namespace hograengine {
 	{
 		ShaderProgram* cubeShader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
 		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl",*cubeMap);
-		Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
+		Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
 		auto* cubeMesh = new Mesh(material, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
 		obj->setPosition(pos);
@@ -125,6 +125,8 @@ namespace hograengine {
 		}
 		obj->addComponent(cubePhysics);
 		collider->setPhysics(cubePhysics);
+		collider->setPositionProvider(obj);
+		collider->setOrientationProvider(obj);
 		obj->addComponent(collider);
 		obj->update(0.0f);
 		addCollider(collider);
@@ -138,7 +140,7 @@ namespace hograengine {
 		addCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
 		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks", *cubeMap);
-		Geometry* geometry = GeometryFactory::Sphere::getInstance();
+		Geometry* geometry = GeometryFactory::getInstance()->getSphere();
 		geometry->setFaceCulling(false);
 		auto* mesh = new Mesh(material, geometry);
 		auto* obj = new SceneObject(mesh);
@@ -160,6 +162,8 @@ namespace hograengine {
 		}
 		obj->addComponent(physics);
 		collider->setPhysics(physics);
+		collider->setPositionProvider(obj);
+		collider->setOrientationProvider(obj);
 		obj->addComponent(collider);
 		addSceneObject(obj, "sphere");
 	}
@@ -169,7 +173,7 @@ namespace hograengine {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl", skyBox);
-				Geometry* cubeGeometry = GeometryFactory::Cube::getInstance();
+				Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
 				auto* cubeMesh = new Mesh(material, cubeGeometry);
 				auto* obj = new SceneObject(cubeMesh);
 				obj->setPosition(glm::vec3(i * 100.0f - 500.0f, 0.0f, j * 100.0f -500.0f));
@@ -182,8 +186,9 @@ namespace hograengine {
 				cubePhysics->setFriction(0.9f);
 				obj->addComponent(cubePhysics);
 				collider->setPhysics(cubePhysics);
-				collider->setMinInOrigo(glm::vec3(-49.99f, -1.0f, -49.99f));
-				collider->setMaxInOrigo(glm::vec3(49.99f, 1.0f, 49.99f));
+				collider->setMinRelToPosition(glm::vec3(-49.99f, -1.0f, -49.99f));
+				collider->setMaxRelToPosition(glm::vec3(49.99f, 1.0f, 49.99f));
+				collider->setPositionProvider(obj);
 				obj->addComponent(collider);
 				addCollider(collider, "ground");
 				addSceneObject(obj, "ground");
@@ -204,7 +209,8 @@ namespace hograengine {
 		auto* obj = new SceneObject(mesh);
 		obj->setPosition(pos);
 		obj->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-
+		collider->setPositionProvider(obj);
+		collider->setOrientationProvider(obj);
 		auto* physics = new Physics(obj);
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
@@ -232,8 +238,8 @@ namespace hograengine {
 		camera->setPositionProvider(avatar);
 		camera->setPositionInProvidersSpace(glm::vec3(0.0f, 0.8f, 0.0f));
 		auto* collider = new AABBCollider();
-		collider->setMinInOrigo(glm::vec3(-0.2f, -1.0f, -0.2f));
-		collider->setMaxInOrigo(glm::vec3(0.2f, 1.0f, 0.2f));
+		collider->setMinRelToPosition(glm::vec3(-0.2f, -1.0f, -0.2f));
+		collider->setMaxRelToPosition(glm::vec3(0.2f, 1.0f, 0.2f));
 		auto* physics = new Physics(avatar);
 		physics->setMass(80.0f);
 		physics->setWorldSpaceDrag(glm::vec3(200.0f, 0.01f, 200.0f));
@@ -241,6 +247,7 @@ namespace hograengine {
 		physics->setFriction(0.001f);
 		gravitation->addListener(physics);
 		collider->setPhysics(physics);
+		collider->setPositionProvider(avatar);
 		addCollider(collider, "avatar");
 		FirstPersonControl* control = new FirstPersonControl();
 		control->setPhysics(physics);
@@ -250,10 +257,12 @@ namespace hograengine {
 		control->setJumpImpulse(600.0f);
 		control->setPropellingForce(glm::vec3(2000.0f, 0.0f, 2000.0f));
 		auto* jumpCollider = new AABBCollider();
-		jumpCollider->setMinInOrigo(glm::vec3(-0.2f, -1.1f, -0.2f));
-		jumpCollider->setMaxInOrigo(glm::vec3(0.2f, -0.9f, 0.2f));
+		jumpCollider->setMinRelToPosition(glm::vec3(-0.2f, -1.1f, -0.2f));
+		jumpCollider->setMaxRelToPosition(glm::vec3(0.2f, -0.9f, 0.2f));
 		control->setJumpCollider(jumpCollider);
 		control->setPositionProvider(avatar);
+		control->setOrientationProvider(avatar);
+		avatar->addComponent(jumpCollider);
 		addCollider(jumpCollider, "avatar");
 		avatarControl = control;
 		avatar->addComponent(control);
@@ -269,74 +278,74 @@ namespace hograengine {
 		// 1, 1 quarter
 		CompositeCollider* col = new CompositeCollider();
 		auto* subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, 7.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, 7.5f));
 
 		// -1, 1 quarter
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, 2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, 7.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, 7.5f));
 
 		// 1, -1 quarter
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, -7.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, -7.5f));
 
 		// -1, -1 quarter
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, -2.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, -7.5f));
 		subCol = new AABBCollider();
-		subCol->setMinInOrigo(glm::vec3(-2.5f, -0.5f, -2.5f));
-		subCol->setMaxInOrigo(glm::vec3(2.5f, 0.5f, 2.5f));
+		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
+		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, -7.5f));
 
 		return col;

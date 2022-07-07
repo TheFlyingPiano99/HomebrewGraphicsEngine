@@ -35,6 +35,14 @@ namespace hograengine {
 			physics = _physics;
 		}
 
+		void setPositionProvider(PositionProvider* provider) {
+			positionProvider = provider;
+		}
+
+		void setOrientationProvider(OrientationProvider* provider) {
+			orientationProvider = provider;
+		}
+
 	protected:
 
 		glm::vec3 initialDirection;
@@ -55,6 +63,10 @@ namespace hograengine {
 		// Inherited via Component
 		void control(float dt) override;
 		void update(float dt) override;
+
+		PositionProvider* positionProvider = nullptr;
+		OrientationProvider* orientationProvider = nullptr;
+
 	};
 }
 

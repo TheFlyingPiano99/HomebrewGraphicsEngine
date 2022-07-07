@@ -19,6 +19,7 @@ namespace hograengine {
 		if (nullptr != instance) {
 			delete instance;
 		}
+		instance = nullptr;
 	}
 
 	Material* MaterialFactory::getPBRMaterial(const char* materialName, const Texture* skyBox) {

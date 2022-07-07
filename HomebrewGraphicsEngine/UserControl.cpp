@@ -5,7 +5,7 @@ void hograengine::UserControl::moveForward(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(ahead * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(ahead * (orientationProvider->getOrientation() * propellingForce));
 }
 
 void hograengine::UserControl::moveBackward(float dt)
@@ -13,7 +13,7 @@ void hograengine::UserControl::moveBackward(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-ahead * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(-ahead * (orientationProvider->getOrientation() * propellingForce));
 }
 
 void hograengine::UserControl::moveLeft(float dt)
@@ -21,7 +21,7 @@ void hograengine::UserControl::moveLeft(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-right * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(-right * (orientationProvider->getOrientation() * propellingForce));
 }
 
 void hograengine::UserControl::moveRight(float dt)
@@ -29,7 +29,7 @@ void hograengine::UserControl::moveRight(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(right * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(right * (orientationProvider->getOrientation() * propellingForce));
 }
 
 void hograengine::UserControl::moveUp(float dt)
@@ -37,7 +37,7 @@ void hograengine::UserControl::moveUp(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(up * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(up * (orientationProvider->getOrientation() * propellingForce));
 }
 
 void hograengine::UserControl::moveDown(float dt)
@@ -45,7 +45,7 @@ void hograengine::UserControl::moveDown(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-up * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(-up * (orientationProvider->getOrientation() * propellingForce));
 }
 
 void hograengine::UserControl::rotate(float mouseX, float mouseY)
@@ -66,7 +66,7 @@ void hograengine::UserControl::update(float dt)
 	if (nullptr == physics) {
 		return;
 	}
-	ahead = physics->getOwnerOrientation() * initialDirection;
+	ahead = orientationProvider->getOrientation() * initialDirection;
 	right = glm::cross(ahead, initialUp);
 	up = glm::cross(right, ahead);
 }

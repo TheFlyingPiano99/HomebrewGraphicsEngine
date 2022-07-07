@@ -13,10 +13,11 @@
 #include "ShadowCaster.h"
 #include "PositionProvider.h"
 #include "OrientationProvider.h"
+#include "ScaleProvider.h"
 
 namespace hograengine {
 
-	class SceneObject : public PositionProvider, public OrientationProvider
+	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider
 	{
 	public:
 		SceneObject(Mesh* _mesh = nullptr) : mesh(_mesh) {}
@@ -47,7 +48,7 @@ namespace hograengine {
 			position = pos;
 		}
 
-		glm::vec3 getScale() const {
+		const glm::vec3& getScale() const override {
 			return scale;
 		}
 

@@ -153,18 +153,6 @@ namespace hograengine {
 			rotationalDrag = rDrag;
 		}
 
-		const glm::vec3& getOwnerPosition() const {
-			return owner->getPosition();
-		}
-
-		glm::vec3 getOwnerScale() const {
-			return owner->getScale();
-		}
-
-		glm::quat getOwnerOrientation() const {
-			return owner->getOrientation();
-		}
-
 		static glm::vec3 getMomentOfInertiaOfCuboid(float mass, glm::vec3 scale) {
 			return glm::vec3(
 				mass / 12.0f * (4.0f * scale.y * scale.y + 4.0f * scale.z * scale.z),
@@ -243,6 +231,13 @@ namespace hograengine {
 
 		void setFriction(float mu) {
 			friction = mu;
+		}
+	
+		/*
+		* Should be used only for collision between two Physics objects
+		*/
+		const glm::vec3& getOwnerPosition() const {
+			return owner->getPosition();
 		}
 
 	private:

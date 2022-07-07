@@ -191,12 +191,12 @@ namespace hograengine {
 
     glm::vec3 AABBCollider::getAABBMin() const
     {
-        return position + minInOrigo;
+        return position + minRelToPosition;
     }
 
     glm::vec3 AABBCollider::getAABBMax() const
     {
-        return position + maxInOrigo;
+        return position + maxRelToPosition;
     }
 
 }

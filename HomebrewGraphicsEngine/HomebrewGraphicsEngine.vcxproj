@@ -176,7 +176,6 @@
     <ClCompile Include="FBO.cpp" />
     <ClCompile Include="FirstPersonControl.cpp" />
     <ClCompile Include="ForceField.cpp" />
-    <ClCompile Include="GeometryFactories.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GeometryFactory.cpp" />
     <ClCompile Include="GeometryLoader.cpp" />
@@ -206,6 +205,7 @@
     <ClCompile Include="PostProcessStage.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RBO.cpp" />
+    <ClCompile Include="ScaleProvider.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneEvent.cpp" />
     <ClCompile Include="SceneEventImplementation.cpp" />
@@ -280,6 +280,7 @@
     <ClInclude Include="PostProcessStage.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RBO.h" />
+    <ClInclude Include="ScaleProvider.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEvent.h" />
     <ClInclude Include="SceneEventImplementation.h" />

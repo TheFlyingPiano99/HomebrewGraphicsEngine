@@ -7,7 +7,7 @@ void hograengine::FirstPersonControl::moveForward(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(ahead * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(ahead * (orientationProvider->getOrientation() * propellingForce));
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -20,7 +20,7 @@ void hograengine::FirstPersonControl::moveBackward(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-ahead * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(-ahead * (orientationProvider->getOrientation() * propellingForce));
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -33,7 +33,7 @@ void hograengine::FirstPersonControl::moveLeft(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-right * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(-right * (orientationProvider->getOrientation() * propellingForce));
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -46,7 +46,7 @@ void hograengine::FirstPersonControl::moveRight(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(right * (physics->getOwnerOrientation() * propellingForce));
+	physics->applyTransientForce(right * (orientationProvider->getOrientation() * propellingForce));
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -58,8 +58,6 @@ void hograengine::FirstPersonControl::update(float dt)
 {
 	if (jumpCollider != nullptr) {
 		isGrounded = jumpCollider->popCollided();
-		jumpCollider->setPosition(positionProvider->getPosition());
-		jumpCollider->update(0);
 	}
 	if (jumpCoolDown > 0.0f) {
 		jumpCoolDown -= dt;

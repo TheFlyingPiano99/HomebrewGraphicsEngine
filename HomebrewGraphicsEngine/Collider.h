@@ -121,11 +121,28 @@ namespace hograengine {
 			haveCollided = b;
 		}
 
+		void setPositionProvider(const PositionProvider* provider) {
+			positionProvider = provider;
+		}
+
+		void setOrientationProvider(const OrientationProvider* provider) {
+			orientationProvider = provider;
+		}
+
+		void setScaleProvoder(const ScaleProvider* provider) {
+			scaleProvider = provider;
+		}
+
 	protected:
 		Physics* physics = nullptr;
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 		glm::quat orientation = angleAxis(0.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		glm::vec3 position = glm::vec3(0.0f);
+
+		const PositionProvider* positionProvider = nullptr;
+		const OrientationProvider* orientationProvider = nullptr;
+		const ScaleProvider* scaleProvider = nullptr;
+
 		std::vector<int> colliderGroups; // The list of collider groups that this collider is part of.
 		bool haveCollided = false;
 	};
