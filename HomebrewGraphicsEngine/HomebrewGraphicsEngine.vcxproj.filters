@@ -49,6 +49,18 @@
     <Filter Include="Header Files\Model\Collision">
       <UniqueIdentifier>{abbda47a-d2d7-47fd-ae16-c97a0c3d86e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Model\Factories">
+      <UniqueIdentifier>{f3d9861e-58b5-4922-b52a-14a7a73a7193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model\UserControls">
+      <UniqueIdentifier>{8d84df0f-8d14-4c96-a678-1f97e8f05aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model\Lighting">
+      <UniqueIdentifier>{0f6ba421-ec2c-4c51-9c3e-fccf30ce7c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model\Animations">
+      <UniqueIdentifier>{37fabc3f-7254-41d9-afdf-8382bc164645}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -338,9 +350,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="AssetFolderPathManager.h">
       <Filter>Header Files\Controler</Filter>
     </ClInclude>
@@ -355,9 +364,6 @@
     </ClInclude>
     <ClInclude Include="GlobalInclude.h">
       <Filter>Header Files\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="MathUtil.h">
       <Filter>Header Files\Math</Filter>
@@ -379,9 +385,6 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\OpenGLObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryFactory.h">
-      <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="PostProcessStage.h">
       <Filter>Header Files\Model</Filter>
@@ -434,41 +437,11 @@
     <ClInclude Include="CompositeCollider.h">
       <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="HoGraEngineApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadowCaster.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="PositionProvider.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="OrientationProvider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UserControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FirstPersonControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraAnimation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UniformBuffer.h">
       <Filter>Header Files\OpenGLObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="LightManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderProgramFactory.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InstanceGroup.h">
       <Filter>Header Files\Model</Filter>
@@ -479,10 +452,49 @@
     <ClInclude Include="ColliderGroup.h">
       <Filter>Header Files\Model\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="DeferredLightingSystem.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GeometryLoader.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="ScaleProvider.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="OrientationProvider.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryFactory.h">
+      <Filter>Header Files\Model\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialFactory.h">
+      <Filter>Header Files\Model\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderProgramFactory.h">
+      <Filter>Header Files\Model\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="UserControl.h">
+      <Filter>Header Files\Model\UserControls</Filter>
+    </ClInclude>
+    <ClInclude Include="FirstPersonControl.h">
+      <Filter>Header Files\Model\UserControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Model\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.h">
+      <Filter>Header Files\Model\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredLightingSystem.h">
+      <Filter>Header Files\Model\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowCaster.h">
+      <Filter>Header Files\Model\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Header Files\Model\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraAnimation.h">
+      <Filter>Header Files\Model\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="HoGraEngineApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

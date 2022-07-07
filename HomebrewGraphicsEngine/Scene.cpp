@@ -259,6 +259,7 @@ namespace hograengine {
 		auto* jumpCollider = new AABBCollider();
 		jumpCollider->setMinRelToPosition(glm::vec3(-0.2f, -1.1f, -0.2f));
 		jumpCollider->setMaxRelToPosition(glm::vec3(0.2f, -0.9f, 0.2f));
+		jumpCollider->setPositionProvider(avatar);
 		control->setJumpCollider(jumpCollider);
 		control->setPositionProvider(avatar);
 		control->setOrientationProvider(avatar);
