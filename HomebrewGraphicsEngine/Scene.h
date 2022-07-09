@@ -17,6 +17,7 @@
 #include "LightManager.h"
 #include "InstanceGroup.h"
 #include "CollisionManager.h"
+#include "Light.h"
 
 namespace hograengine {
 
@@ -38,6 +39,16 @@ namespace hograengine {
 
 		void addCollider(Collider* collider, const std::string& colliderGroupName = "");
 
+		void addPostProcessStage(PostProcessStage* stage);
+
+		void setCamera(Camera* _camera);
+
+		void addLight(Light* light);
+
+		void addLights(const std::vector<Light*>& lights);
+
+		void setUserControl(UserControl* uc);
+
 		const glm::vec3& getPreferedUp() const;
 
 		void togglePause();
@@ -56,7 +67,7 @@ namespace hograengine {
 		void pokeObject(const glm::vec2& ndcCoords);
 
 		UserControl* getAvatarControl() {
-			return avatarControl;
+			return userControl;
 		}
 
 		bool getDrawDebug() const {
@@ -83,7 +94,7 @@ namespace hograengine {
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Component*> components;
-		UserControl* avatarControl = nullptr;
+		UserControl* userControl = nullptr;
 
 		CollisionManager collisionManager;
 

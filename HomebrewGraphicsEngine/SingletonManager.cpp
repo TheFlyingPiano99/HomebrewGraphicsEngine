@@ -7,6 +7,8 @@
 #include "SceneEventManager.h"
 #include "MaterialFactory.h"
 #include "ShaderProgramFactory.h"
+#include "SceneManager.h"
+#include "SceneFactory.h"
 
 namespace hograengine {
 
@@ -22,5 +24,7 @@ namespace hograengine {
 		MaterialFactory::destroyInstance();
 		GeometryFactory::destroyInstance();
 		ShaderProgramFactory::destroyInstance();
+		SceneManager::destroyInstance();
+		SceneFactory::destroyInstance();
 	}
 }

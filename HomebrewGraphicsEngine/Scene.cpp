@@ -32,7 +32,9 @@ namespace hograengine {
 		for (int i = 0; i < 100; i++) {
 			lights.push_back(new Light(glm::vec4(std::rand() % 100 - 50, 2.0f, std::rand() % 100 - 50, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f)));
 		}
-		lightManager.registerLights(lights);
+		for (auto& light : lights) {
+			lightManager.addLight(light);
+		}
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
 	}
 
@@ -265,7 +267,7 @@ namespace hograengine {
 		control->setOrientationProvider(avatar);
 		avatar->addComponent(jumpCollider);
 		addCollider(jumpCollider, "avatar");
-		avatarControl = control;
+		userControl = control;
 		avatar->addComponent(control);
 		avatar->addComponent(physics);
 		avatar->addComponent(collider);
@@ -631,6 +633,24 @@ namespace hograengine {
 	void Scene::addCollider(Collider* collider, const std::string& colliderGroupName)
 	{
 		collisionManager.addCollider(collider, colliderGroupName);
+	}
+
+	void Scene::addPostProcessStage(PostProcessStage* stage) {
+		postProcessStages.push_back(stage);
+	}
+
+	void Scene::setCamera(Camera* _camera) {
+		camera = _camera;
+	}
+
+	void Scene::addLight(Light* light)
+	{
+		lightManager.addLight(light);
+	}
+
+
+	void Scene::setUserControl(UserControl* uc) {
+		userControl = uc;
 	}
 
 	const glm::vec3& Scene::getPreferedUp() const {

@@ -210,6 +210,8 @@
     <ClCompile Include="SceneEvent.cpp" />
     <ClCompile Include="SceneEventImplementation.cpp" />
     <ClCompile Include="SceneEventManager.cpp" />
+    <ClCompile Include="SceneFactory.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgramFactory.cpp" />
@@ -285,6 +287,8 @@
     <ClInclude Include="SceneEvent.h" />
     <ClInclude Include="SceneEventImplementation.h" />
     <ClInclude Include="SceneEventManager.h" />
+    <ClInclude Include="SceneFactory.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShaderProgramFactory.h" />

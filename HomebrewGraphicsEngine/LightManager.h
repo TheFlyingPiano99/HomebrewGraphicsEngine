@@ -11,8 +11,9 @@ namespace hograengine {
 		LightManager();
 		~LightManager();
 		void exportData();
-		void registerLights(const std::vector<Light*>& _lights) {
-			lights = _lights;
+		
+		void addLight(Light* _light) {
+			lights.push_back(_light);
 		}
 
 		void initDefferedSystem(int contextWidth, int contextHeight) {
