@@ -41,7 +41,7 @@ namespace hograengine {
 		if (shadowCaster != nullptr) {
 			throw new std::exception("Shadowcaster already initialised! Only one allowed.");
 		}
-		shadowCaster = new ShadowCaster(glm::vec3(-50, -10, -50), glm::normalize(glm::vec3(1, -1, 1)));
+		shadowCaster = new ShadowCaster(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
 		textures.push_back(shadowCaster->getShadowMap());
 	}
 
@@ -270,7 +270,7 @@ namespace hograengine {
 		avatar->addComponent(physics);
 		avatar->addComponent(collider);
 		shadowCaster->setPositionProvider(avatar);
-		shadowCaster->setPositionOffsetToProvider(glm::vec3(-50, 50, -50));
+		shadowCaster->setPositionOffsetToProvider(glm::vec3(-20, 20, -20));
 		addSceneObject(avatar);
 	}
 

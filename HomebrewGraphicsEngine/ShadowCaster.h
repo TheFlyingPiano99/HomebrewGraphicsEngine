@@ -28,7 +28,7 @@ namespace hograengine {
 			return shadowMap;
 		}
 
-		void Bind() {
+		void Bind() const {
 			fbo.Bind();
 			glClearDepth(1);
 			glClear(GL_DEPTH_BUFFER_BIT);
@@ -42,8 +42,8 @@ namespace hograengine {
 			if (nullptr != positionProvider) {
 				position = positionProvider->getPosition() + positionOffsetToProvider;
 			}
-			float near_plane = 1.0f, far_plane = 500.0f;
-			glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
+			float near_plane = 1.0f, far_plane = 100.0f;
+			glm::mat4 lightProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, near_plane, far_plane);
 			glm::mat4 lightView = glm::lookAt(position,
 				position + direction,
 				glm::vec3(0.0f, 1.0f, 0.0f));

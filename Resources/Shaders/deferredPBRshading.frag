@@ -83,7 +83,7 @@ float calculateShadow(vec3 wp) {
 	vec4 lightPos = lightSpaceMatrix * vec4(wp, 1.0);
 	vec3 projCoords = lightPos.xyz / lightPos.w;
 	projCoords = projCoords * 0.5 + 0.5;
-	float currentDepth = projCoords.z - 0.0012;
+	float currentDepth = projCoords.z - 0.0008;
 	float shadow = 0.0;
 	vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
 	for(int x = -2; x <= 2; ++x)
@@ -91,7 +91,7 @@ float calculateShadow(vec3 wp) {
 		for(int y = -2; y <= 2; ++y)
 		{
 			float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
-			shadow += currentDepth > pcfDepth ? 1.0 : 0.0;        
+			shadow += (currentDepth < 1.0 && currentDepth > pcfDepth) ? 1.0 : 0.0;        
 		}    
 	}
 	return shadow /= 25 * 1.5;

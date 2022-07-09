@@ -45,7 +45,7 @@ void hograengine::ColliderGroup::expandAABB(const glm::vec3& candidateMin, const
 void hograengine::ColliderGroup::addCollider(Collider* collider) {
 	if (subGroups.empty()) {	// Leaf group
 		colliders.push_back(collider);
-		if (colliders.size() > MAX_COLLIDER_COUNT && level < MAX_DEPTH_LEVEL) {
+		if (colliders.size() > MAX_COLLIDER_COUNT && level < MAX_DEPTH_LEVEL) {	// Divide group into subgroups
 			subGroups.push_back(new ColliderGroup(this, level + 1));
 			subGroups.push_back(new ColliderGroup(this, level + 1));
 			for (int i = 0; i < 2; i++) {	// First few in separate groups
@@ -78,6 +78,7 @@ void hograengine::ColliderGroup::removeCollider(Collider* collider) {
 			colliders.erase(iter);
 			if (colliders.empty()) {
 				// TODO: Remove colliderGroup from super.
+				// Not urgent, because the tree is getting rebuit regularly
 			}
 		}
 	}

@@ -27,7 +27,11 @@ void hograengine::CollisionManager::addCollider(Collider* collider, const std::s
 }
 
 void hograengine::CollisionManager::removeCollider(Collider* collider) {
-	root.removeCollider(collider);
+	const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
+	if (colliders.end() != iter) {
+		colliders.erase(iter);
+		root.removeCollider(collider);
+	}
 }
 
 void hograengine::CollisionManager::collide() {
