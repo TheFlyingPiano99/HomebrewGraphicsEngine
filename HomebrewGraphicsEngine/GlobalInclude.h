@@ -34,5 +34,8 @@ namespace hograengine {
 		static int windowWidth;
 		static int windowHeight;
 		static bool fullScreenMode;
+
+		static int renderResolutionWidth;
+		static int renderResolutionHeight;
 	};
 }

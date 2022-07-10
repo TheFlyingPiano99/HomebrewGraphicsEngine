@@ -32,7 +32,7 @@ namespace hograengine {
 		// Set control layout
 		ControlActionManager::getInstance()->registerDefault();
 
-		SceneManager::getInstance()->init(width, height);
+		SceneManager::getInstance()->init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 		GUI::getInstance()->initGUI(window);
 	}
 
@@ -124,7 +124,6 @@ namespace hograengine {
 		GlobalVariables::windowWidth = width;
 		GlobalVariables::windowHeight = height;
 		glViewport(0, 0, width, height);
-		SceneManager::getInstance()->getScene()->onContextResize(width, height);
 	}
 
 	void Callbacks::toggleFullScreen()
