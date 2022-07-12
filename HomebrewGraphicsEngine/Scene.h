@@ -18,6 +18,7 @@
 #include "InstanceGroup.h"
 #include "CollisionManager.h"
 #include "Light.h"
+#include "Font.h"
 
 namespace hograengine {
 
@@ -46,6 +47,8 @@ namespace hograengine {
 		void addLight(Light* light);
 
 		void addLights(const std::vector<Light*>& lights);
+
+		void addFont(Font* font);
 
 		void setUserControl(UserControl* uc);
 
@@ -94,6 +97,7 @@ namespace hograengine {
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Component*> components;
+		std::vector<Font*> fonts;
 		UserControl* userControl = nullptr;
 
 		CollisionManager collisionManager;
@@ -123,6 +127,7 @@ namespace hograengine {
 		void initLoadedGeometry(Texture** cubeMap, const glm::vec3& pos, ForceField* field = nullptr);
 		void initGroud(const Texture* skyBox);
 		void initAvatar(ForceField* gravitation);
+		void initFonts();
 		CompositeCollider* initCompositeCollider();
 		ForceField* initGravitation();
 		void initPostProcessStages();

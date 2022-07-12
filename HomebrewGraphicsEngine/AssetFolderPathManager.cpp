@@ -57,4 +57,11 @@ namespace hograengine {
 		}
 		return savesFolderPath;
 	}
+	std::string AssetFolderPathManager::getFontsFolderPath()
+	{
+		if (fontsFolderPath.empty()) {
+			fontsFolderPath = findPathIntoFolder("Resources/Fonts");
+		}
+		return fontsFolderPath;
+	}
 }

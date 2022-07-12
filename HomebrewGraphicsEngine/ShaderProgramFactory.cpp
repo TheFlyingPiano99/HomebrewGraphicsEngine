@@ -30,4 +30,17 @@ namespace hograengine {
 		return defaultBPRProgramWithMapping;
 	}
 
+	ShaderProgram* ShaderProgramFactory::getGlyphProgram()
+	{
+		if (nullptr == glyphProgram) {
+			glyphProgram
+				= new ShaderProgram(
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("glyph.vert"),
+					"",
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("glyph.frag")
+				);
+		}
+		return glyphProgram;
+	}
+
 }

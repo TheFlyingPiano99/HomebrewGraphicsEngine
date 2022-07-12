@@ -61,6 +61,9 @@
     <Filter Include="Header Files\Model\Animations">
       <UniqueIdentifier>{37fabc3f-7254-41d9-afdf-8382bc164645}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\View\Text">
+      <UniqueIdentifier>{c0ecc28f-5d13-4569-b3fa-cde09786736d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -283,6 +286,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Caption.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -509,6 +518,12 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Header Files\View\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Caption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -595,6 +610,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\debug.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\glyph.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\glyph.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

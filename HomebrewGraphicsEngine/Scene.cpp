@@ -170,6 +170,14 @@ namespace hograengine {
 		addSceneObject(obj, "sphere");
 	}
 
+	void Scene::initFonts()
+	{
+		auto* shader = ShaderProgramFactory::getInstance()->getGlyphProgram();
+		auto* font = new Font(shader);
+		font->Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append("arial.ttf"));
+		addFont(font);
+	}
+
 	void Scene::initGroud(const Texture* skyBox)
 	{
 		for (int i = 0; i < 10; i++) {
@@ -420,6 +428,7 @@ namespace hograengine {
 			instance->initCameraAndLights();
 			instance->initSceneObjects();
 			instance->initPostProcessStages();
+			instance->initFonts();
 		}
 		return instance;
 	}
@@ -478,6 +487,11 @@ namespace hograengine {
 		}
 
 		instanceGroups.clear();
+
+		for (auto& font : fonts) {
+			delete font;
+		}
+		fonts.clear();
 	}
 
 	//-----------------------------------------------------------------------------
@@ -557,6 +571,8 @@ namespace hograengine {
 		}
 		if (drawDebug) {
 			collisionManager.drawDebug();
+			fonts[0]->RenderText("Debug mode", contextWidth / 2, contextHeight * 0.9f, 1.0f, glm::vec3(0, 1, 0));
+			fonts[0]->RenderText("A nevem Simon Zoltán és ez UTF-8 kódolású. Ügyes!", contextWidth / 2, contextHeight * 0.8f, 1.0f, glm::vec3(0, 1, 0));
 		}
 	}
 
@@ -648,6 +664,19 @@ namespace hograengine {
 		lightManager.addLight(light);
 	}
 
+
+	void Scene::addFont(Font* font)
+	{
+		if (!fonts.empty() && std::find(fonts.begin(), fonts.end(), font) != fonts.end()) {
+			return;
+		}
+		auto* shader = font->getShaderProgram();
+		auto shaderIter = std::find(shaders.begin(), shaders.end(), shader);
+		if (shader != nullptr && shaderIter == shaders.end()) {
+			shaders.push_back(shader);
+		}
+		fonts.push_back(font);
+	}
 
 	void Scene::setUserControl(UserControl* uc) {
 		userControl = uc;

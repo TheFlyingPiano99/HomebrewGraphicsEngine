@@ -13,7 +13,9 @@ namespace hograengine {
 		std::string shaderFolderPath;
 		std::string textureFolderPath;
 		std::string geometryFolderPath;
+		std::string fontsFolderPath;
 		std::string savesFolderPath;
+
 
 		class AssetFolderNotFound : public std::exception {
 		public:
@@ -52,5 +54,7 @@ namespace hograengine {
 		std::string getGeometryFolderPath();
 
 		std::string getSavesFolderPath();
+
+		std::string getFontsFolderPath();
 	};
 }
