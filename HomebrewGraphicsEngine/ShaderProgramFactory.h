@@ -14,6 +14,8 @@ namespace hograengine {
 
 		ShaderProgram* getGlyphProgram();
 
+		ShaderProgram* getCaptionProgram();
+
 	private:
 		ShaderProgramFactory() = default;
 		~ShaderProgramFactory() = default;
@@ -22,5 +24,6 @@ namespace hograengine {
 
 		ShaderProgram* defaultBPRProgramWithMapping = nullptr;
 		ShaderProgram* glyphProgram = nullptr;
+		ShaderProgram* captionProgram = nullptr;
 	};
 }

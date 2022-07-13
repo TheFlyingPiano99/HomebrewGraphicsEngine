@@ -19,6 +19,7 @@
 #include "CollisionManager.h"
 #include "Light.h"
 #include "Font.h"
+#include "Caption.h"
 
 namespace hograengine {
 
@@ -49,6 +50,8 @@ namespace hograengine {
 		void addLights(const std::vector<Light*>& lights);
 
 		void addFont(Font* font);
+
+		void addCaption(Caption* caption);
 
 		void setUserControl(UserControl* uc);
 
@@ -98,6 +101,7 @@ namespace hograengine {
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Component*> components;
 		std::vector<Font*> fonts;
+		std::vector<Caption*> captions;
 		UserControl* userControl = nullptr;
 
 		CollisionManager collisionManager;

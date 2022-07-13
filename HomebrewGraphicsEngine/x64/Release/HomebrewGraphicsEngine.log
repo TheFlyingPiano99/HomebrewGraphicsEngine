@@ -1,341 +1,53 @@
-﻿  AABBCollider.cpp
+﻿  Scene.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Callbacks.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(91,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,28): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=glm::i32
           ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(181,25): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=glm::i32
           ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(182,25): warning C4244: 'initializing': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=glm::i32
           ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(184,45): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=glm::i32
           ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Callbacks.cpp(106,77): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Caption.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(187,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=glm::i32
           ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(190,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=glm::i32
           ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(193,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=glm::i32
           ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(196,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
           with
           [
               T=glm::i32
           ]
-  Collider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ColliderGroup.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.cpp(88,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  CollisionManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.cpp(23,49): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  CompositeCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ControlAction.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  ControlActionManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  CuboidCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  DeferredLightingSystem.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  FBO.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\FBO.cpp(43,38): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  FirstPersonControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Font.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  ForceField.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  GUI.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  HoGraEngineApplication.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(104,35): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(105,34): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  InstanceGroup.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(5,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(10,20): warning C4018: '<': signed/unsigned mismatch
-  Light.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  LightManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\LightManager.cpp(23,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Compiling...
-  Material.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  MaterialFactory.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Mesh.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Physics.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  PostProcessStage.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  Scene.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(392,13): warning C4101: 'intersectionNormal': unreferenced local variable
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(574,52): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(575,97): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  SceneEvent.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SceneEventImplementation.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SceneFactory.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  SceneManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  SceneObject.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  ShadowCaster.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  SingletonManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(87,41): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(177,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(180,29): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(183,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.h(186,34): warning C4244: '=': conversion from 'float' to 'T', possible loss of data
-          with
-          [
-              T=glm::i32
-          ]
-  SphericalCollider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
-  UserControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(40,3): warning C4091: 'static ': ignored on left of 'hograengine::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(183,32): warning C4566: character represented by universal-character-name '\u0171' cannot be represented in the current code page (1252)
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(183,32): warning C4566: character represented by universal-character-name '\u0151' cannot be represented in the current code page (1252)
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(183,32): warning C4566: character represented by universal-character-name '\u013E' cannot be represented in the current code page (1252)
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(403,13): warning C4101: 'intersectionNormal': unreferenced local variable
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  2 of 4533 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 4661 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     28 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

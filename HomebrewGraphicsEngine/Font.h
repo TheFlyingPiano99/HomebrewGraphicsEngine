@@ -7,6 +7,7 @@
 #include "ShaderProgram.h"
 #include "GlobalInclude.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "Texture2D.h"
 
 namespace hograengine {
 #define DEFAULT_FONT_HEIGHT 24
@@ -14,6 +15,9 @@ namespace hograengine {
     class Font
     {
     public:
+
+        class UnloadedFontException : public std::exception {
+        };
 
         struct Character {
             unsigned int textureID;  // ID handle of the glyph texture
@@ -155,13 +159,16 @@ namespace hograengine {
             glBindTexture(GL_TEXTURE_2D, 0);
         }
 
+        Texture2D* RenderTextInTexture(const std::string& text);
+            
         ShaderProgram* getShaderProgram() const {
             return shaderProgram;
         }
 
-        glm::ivec2 getTextDimension(const std::string& text, float scale) {
+        glm::ivec2 getTextDimension(const std::string& text, float& maxBaseline) {
             glm::ivec2 min;
             glm::ivec2 max;
+            maxBaseline = 0.0f;
             bool first = true;
             std::string::const_iterator c;
             float x = 0;
@@ -169,10 +176,13 @@ namespace hograengine {
             {
                 auto& ch = characters[*c];
 
-                float xpos = x + ch.bearing.x * scale;
-                float ypos = (ch.bearing.y - ch.size.y) * scale;
-                float w = ch.size.x * scale;
-                float h = ch.size.y * scale;
+                float xpos = x + ch.bearing.x;
+                float ypos = ch.bearing.y - ch.size.y;
+                float w = ch.size.x;
+                float h = ch.size.y;
+                if (maxBaseline < ch.size.y - ch.bearing.y) {
+                    maxBaseline = ch.size.y - ch.bearing.y;
+                }
                 if (first || xpos < min.x) {
                     min.x = xpos;
                 }
@@ -188,7 +198,7 @@ namespace hograengine {
                 if (first) {
                     first = false;
                 }
-                x += (ch.advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
+                x += (ch.advance >> 6); // bitshift by 6 to get value in pixels (2^6 = 64)
             }
             return max - min;
         }

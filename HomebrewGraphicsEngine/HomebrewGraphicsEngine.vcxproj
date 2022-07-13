@@ -312,6 +312,7 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\bounding.frag" />
     <None Include="..\Resources\Shaders\bounding.vert" />
+    <None Include="..\Resources\Shaders\caption.frag" />
     <None Include="..\Resources\Shaders\debug.frag" />
     <None Include="..\Resources\Shaders\debug.vert" />
     <None Include="..\Resources\Shaders\default.frag" />
@@ -321,7 +322,7 @@
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
     <None Include="..\Resources\Shaders\flatColor.frag" />
     <None Include="..\Resources\Shaders\glyph.frag" />
-    <None Include="..\Resources\Shaders\glyph.vert" />
+    <None Include="..\Resources\Shaders\text.vert" />
     <None Include="..\Resources\Shaders\hdr.frag" />
     <None Include="..\Resources\Shaders\light.frag" />
     <None Include="..\Resources\Shaders\light.vert" />

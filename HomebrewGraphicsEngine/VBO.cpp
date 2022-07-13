@@ -18,6 +18,13 @@ namespace hograengine {
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
 	}
 
+	// Constructor that generates a Vertex Buffer Object and links it to vertices
+	VBO::VBO(std::vector<glm::vec4>& vertices)
+	{
+		glGenBuffers(1, &ID);
+		glBindBuffer(GL_ARRAY_BUFFER, ID);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec4), vertices.data(), GL_STATIC_DRAW);
+	}
 
 	// Binds the VBO
 	void VBO::Bind()
@@ -43,5 +50,13 @@ namespace hograengine {
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_ARRAY_BUFFER, ID);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
+	}
+
+	void VBO::Recreate(std::vector<glm::vec4>& vertices)
+	{
+		glDeleteBuffers(1, &ID);
+		glGenBuffers(1, &ID);
+		glBindBuffer(GL_ARRAY_BUFFER, ID);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec4), vertices.data(), GL_STATIC_DRAW);
 	}
 }

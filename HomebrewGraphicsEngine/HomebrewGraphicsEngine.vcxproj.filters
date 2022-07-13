@@ -522,7 +522,7 @@
       <Filter>Header Files\View\Text</Filter>
     </ClInclude>
     <ClInclude Include="Caption.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\View\Text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -615,7 +615,10 @@
     <None Include="..\Resources\Shaders\glyph.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\glyph.vert">
+    <None Include="..\Resources\Shaders\text.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\caption.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

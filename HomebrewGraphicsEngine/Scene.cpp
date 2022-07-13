@@ -1,4 +1,4 @@
-#include "Scene.h"
+﻿#include "Scene.h"
 #include "GlobalInclude.h"
 #include "ControlActionManager.h"
 #include "AssetFolderPathManager.h"
@@ -176,6 +176,17 @@ namespace hograengine {
 		auto* font = new Font(shader);
 		font->Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append("arial.ttf"));
 		addFont(font);
+
+		auto* caption1 = new Caption("Debug text", fonts[0], ShaderProgramFactory::getInstance()->getCaptionProgram(),
+				glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.9), 1.5f, glm::vec4(0,1,0,1));
+		addCaption(caption1);
+		auto* caption2 = new Caption("Ékezetes karakterek: aá, eé, ií, üű, oó, öő !ľ", fonts[0], ShaderProgramFactory::getInstance()->getCaptionProgram(),
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.8), 1.0f, glm::vec4(1, 1, 0, 0.5));
+		addCaption(caption2);
+		auto* caption3 = new Caption("Halvány szöveg", fonts[0], ShaderProgramFactory::getInstance()->getCaptionProgram(),
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.7), 1.0f, glm::vec4(0, 1, 1, 0.2));
+		addCaption(caption3);
+
 	}
 
 	void Scene::initGroud(const Texture* skyBox)
@@ -492,6 +503,10 @@ namespace hograengine {
 			delete font;
 		}
 		fonts.clear();
+		for (auto& caption : captions) {
+			delete caption;
+		}
+		captions.clear();
 	}
 
 	//-----------------------------------------------------------------------------
@@ -571,11 +586,12 @@ namespace hograengine {
 		}
 		if (drawDebug) {
 			collisionManager.drawDebug();
-			fonts[0]->RenderText("Debug mode", contextWidth / 2, contextHeight * 0.9f, 1.0f, glm::vec3(0, 1, 0));
-			fonts[0]->RenderText("A nevem Simon Zolt�n �s ez UTF-8 k�dol�s�. �gyes!", contextWidth / 2, contextHeight * 0.8f, 1.0f, glm::vec3(0, 1, 0));
+			for (auto* caption : captions) {
+				caption->draw();
+			}
+
 		}
 	}
-
 	void Scene::addSceneObject(SceneObject* object, const std::string& instanceGroupName)
 	{
 		if (auto objectIter = std::find(sceneObjects.begin(), sceneObjects.end(), object); objectIter != sceneObjects.end()) {		// If already contains
@@ -676,6 +692,19 @@ namespace hograengine {
 			shaders.push_back(shader);
 		}
 		fonts.push_back(font);
+	}
+
+	void Scene::addCaption(Caption* caption)
+	{
+		if (!captions.empty() && std::find(captions.begin(), captions.end(), caption) != captions.end()) {
+			return;
+		}
+		auto* shader = caption->getShaderProgram();
+		auto shaderIter = std::find(shaders.begin(), shaders.end(), shader);
+		if (shader != nullptr && shaderIter == shaders.end()) {
+			shaders.push_back(shader);
+		}
+		captions.push_back(caption);
 	}
 
 	void Scene::setUserControl(UserControl* uc) {

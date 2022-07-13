@@ -32,6 +32,7 @@ namespace hograengine {
 		// Constructor that generates a Vertex Buffer Object and links it to vertices
 		VBO(std::vector<Vertex>& vertices);
 		VBO(std::vector<glm::vec3>& vertices);
+		VBO(std::vector<glm::vec4>& vertices);
 
 		// Binds the VBO
 		void Bind();
@@ -41,5 +42,7 @@ namespace hograengine {
 		void Delete();
 
 		void Recreate(std::vector<glm::vec3>& vertices);
+
+		void Recreate(std::vector<glm::vec4>& vertices);
 	};
 }
