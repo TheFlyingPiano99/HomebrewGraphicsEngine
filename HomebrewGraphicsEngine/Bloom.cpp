@@ -3,8 +3,8 @@
 #include<glm/glm.hpp>
 #include<glm/gtc/type_ptr.hpp>
 
-#define BLOOM_RESOLUTION_WIDTH 256
-#define BLOOM_RESOLUTION_HEIGHT 256
+#define BLOOM_RESOLUTION_WIDTH 512
+#define BLOOM_RESOLUTION_HEIGHT 512
 
 hograengine::Bloom::Bloom() {
 	treshold = 1.0f;

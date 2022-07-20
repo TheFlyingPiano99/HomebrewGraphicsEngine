@@ -67,12 +67,15 @@ namespace hograengine {
 		initCube(&cubeMap, glm::vec3(0.0f, 10.0f, -30.0f), col, field);
 		col = initCompositeCollider();
 		initCube(&cubeMap, glm::vec3(0.0f, 3.0f, 0.0f), col, field);
-		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -20.0f), field);
-		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -10.0f), field);
-		initSphere(&cubeMap, glm::vec3(-30.0f, 3.0f, -10.0f), field);
-		initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f, -20.0f), field);
+		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -20.0f), field, "planks");
+		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -10.0f), field, "planks");
+		initSphere(&cubeMap, glm::vec3(-30.0f, 3.0f, -10.0f), field, "planks");
+		initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f, -20.0f), field, "planks");
 		for (int i = 0; i < 100; i++) {
-			initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f + i * 5.0f, -20.0f), field);
+			initSphere(&cubeMap, glm::vec3(-10.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "planks");
+		}
+		for (int i = 100; i < 200; i++) {
+			initSphere(&cubeMap, glm::vec3(-11.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "gold");
 		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, 3.0f, -30.0f), field);
 		initAvatar(field);
@@ -136,13 +139,13 @@ namespace hograengine {
 		addSceneObject(obj, "cube");
 	}
 
-	void Scene::initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field)
+	void Scene::initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field, const char* materialName)
 	{
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
 		addCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
-		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks", *cubeMap);
+		auto* material = MaterialFactory::getInstance()->getPBRMaterial(materialName, *cubeMap);
 		Geometry* geometry = GeometryFactory::getInstance()->getSphere();
 		geometry->setFaceCulling(false);
 		auto* mesh = new Mesh(material, geometry);
@@ -168,7 +171,7 @@ namespace hograengine {
 		collider->setPositionProvider(obj);
 		collider->setOrientationProvider(obj);
 		obj->addComponent(collider);
-		addSceneObject(obj, "sphere");
+		addSceneObject(obj, std::string("sphere").append(materialName));
 	}
 
 	void Scene::initFonts()
