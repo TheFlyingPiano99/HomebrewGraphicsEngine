@@ -29,13 +29,14 @@ namespace hograengine {
 		lights.push_back(new Light(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(100.0f, 1000.0f, 100.0f)));
 		lights.push_back(new Light(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f)));
 		std::srand(0);
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < 10; i++) {
 			lights.push_back(new Light(glm::vec4(std::rand() % 100 - 50, 2.0f, std::rand() % 100 - 50, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f)));
 		}
 		for (auto& light : lights) {
 			lightManager.addLight(light);
 		}
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
+		bloom.init(contextWidth, contextHeight);
 	}
 
 	void Scene::initShadowMap()
@@ -70,7 +71,7 @@ namespace hograengine {
 		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-30.0f, 3.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f, -20.0f), field);
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 100; i++) {
 			initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f + i * 5.0f, -20.0f), field);
 		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, 3.0f, -30.0f), field);
@@ -576,7 +577,10 @@ namespace hograengine {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glStencilMask(0x00);
 
+		bloom.BindBrightTexture();
 		lightManager.renderDeferredLighting();
+		bloom.UnbindBrightTexture();
+		bloom.draw((postProcessStages.size() > 0) ? postProcessStages[0]->getFBO() : FBO::getDefault());
 
 		// Post-process pass:
 		for (int i = 0; i < postProcessStages.size(); i++) {
@@ -739,6 +743,7 @@ namespace hograengine {
 		}
 		camera->setMoved(true);
 		lightManager.onResize(_contextWidth, _contextHeight);
+		bloom.onResize(_contextWidth, _contextHeight);
 	}
 
 	void Scene::serialize()

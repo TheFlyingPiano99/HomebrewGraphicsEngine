@@ -90,7 +90,6 @@ namespace hograengine {
 		aoMap->Unbind();
 		aoMap->Delete();
 		delete aoMap;
-		combinationProgram->Delete();
 		delete combinationProgram;
 
 		auto* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();

@@ -20,6 +20,7 @@
 #include "Light.h"
 #include "Font.h"
 #include "Caption.h"
+#include "Bloom.h"
 
 namespace hograengine {
 
@@ -84,6 +85,14 @@ namespace hograengine {
 			drawDebug = b;
 		}
 
+		void setBloomTreshold(float treshold) {
+			bloom.setTreshold(treshold);
+		}
+
+		void setBloomIntensity(float intensity) {
+			bloom.setIntensity(intensity);
+		}
+
 	private:
 		static Scene* instance;
 
@@ -92,6 +101,7 @@ namespace hograengine {
 		Camera* camera = nullptr;
 		std::vector<Light*> lights;
 		LightManager lightManager;
+		Bloom bloom;
 
 		std::vector<ShaderProgram*> shaders;
 		std::vector<Geometry*> geometries;

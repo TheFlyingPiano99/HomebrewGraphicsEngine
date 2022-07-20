@@ -82,6 +82,10 @@ namespace hograengine {
 		}
 	}
 
+	ShaderProgram::~ShaderProgram() {
+		Delete();
+	}
+
 	// Activates the Shader Program
 	void ShaderProgram::Activate() const
 	{

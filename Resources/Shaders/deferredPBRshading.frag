@@ -1,6 +1,7 @@
 #version 420 core
 
 layout (location = 0) out vec4 FragColor;
+layout (location = 1) out vec4 BrightColor;
 
 in VS_OUT {
     vec2 texCoords;
@@ -31,6 +32,10 @@ layout (std140, binding = 1) uniform Lights {
 
 layout (std140, binding = 2) uniform ShadowCaster {
 	mat4 lightSpaceMatrix;
+};
+
+layout (std140, binding = 3) uniform Bloom {
+	float treshold;
 };
 
 layout (binding = 0) uniform sampler2D gPosition;
@@ -125,7 +130,7 @@ void main()
 		vec3 lightDir = lightDiff / lightDistance;
 		vec3 halfway = normalize(viewDir + lightDir);
 		float attenuation = 1.0 / (lightDistance * lightDistance);
-        vec3 radiance     = lights[i].powerDensity * attenuation * (1.0 - shadow);
+        vec3 radiance     = lights[i].powerDensity * attenuation * (1.0 - shadow);	// ! radiance !
 		F0      = mix(F0, albedo, metallic);
 		vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), F0);
 		float NDF = DistributionGGX(n, halfway, roughness);       
@@ -139,8 +144,15 @@ void main()
 	    float NdotL = max(dot(n, lightDir), 0.0);        
 		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
 	}
-    vec3 ambient = vec3(0.03) * albedo * ao;
+    vec3 ambient = vec3(0.001) * albedo * ao;
     vec3 color = ambient + Lo;
 	   
     FragColor = vec4(color, 1.0);
+	float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+	if (brightness > treshold) {
+		BrightColor = vec4(color, 1.0);
+	}
+	else {
+		BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
+	}
 }

@@ -13,6 +13,8 @@ namespace hograengine {
 		// Constructor that build the Shader Program from 2 different shaders
 		ShaderProgram(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile);
 
+		~ShaderProgram();
+
 		// Activates the Shader Program
 		void Activate() const;
 		// Deletes the Shader Program

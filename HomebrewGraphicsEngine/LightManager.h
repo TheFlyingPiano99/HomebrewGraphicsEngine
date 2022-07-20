@@ -36,7 +36,6 @@ namespace hograengine {
 		std::vector<Light*> lights;
 		UniformBufferObject* ubo = nullptr;
 		DeferredLightingSystem deferredLightingSystem;
-
 	};
 }
 
