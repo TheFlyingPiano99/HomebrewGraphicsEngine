@@ -26,7 +26,7 @@ namespace hograengine {
 
 		void control(float dt);
 
-		void update(float dt);
+		void update(float dt, const Camera& camera);
 
 		void draw();
 

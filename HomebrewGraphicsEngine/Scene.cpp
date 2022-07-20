@@ -29,7 +29,7 @@ namespace hograengine {
 		lights.push_back(new Light(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(100.0f, 1000.0f, 100.0f)));
 		lights.push_back(new Light(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f)));
 		std::srand(0);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 26; i++) {
 			lights.push_back(new Light(glm::vec4(std::rand() % 100 - 50, 2.0f, std::rand() % 100 - 50, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f)));
 		}
 		for (auto& light : lights) {
@@ -70,7 +70,7 @@ namespace hograengine {
 		initSphere(&cubeMap, glm::vec3(-20.0f, 3.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-30.0f, 3.0f, -10.0f), field);
 		initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f, -20.0f), field);
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 200; i++) {
 			initSphere(&cubeMap, glm::vec3(-10.0f, 3.0f + i * 5.0f, -20.0f), field);
 		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, 3.0f, -30.0f), field);
@@ -130,7 +130,7 @@ namespace hograengine {
 		collider->setPositionProvider(obj);
 		collider->setOrientationProvider(obj);
 		obj->addComponent(collider);
-		obj->update(0.0f);
+		obj->update(0.0f, *camera);
 		addCollider(collider);
 		addSceneObject(obj, "cube");
 	}
@@ -525,7 +525,7 @@ namespace hograengine {
 	void Scene::update(float dt)
 	{
 		for (auto& obj : sceneObjects) {
-			obj->update(dt);
+			obj->update(dt, *camera);
 		}
 
 		camera->update(dt);
@@ -533,6 +533,9 @@ namespace hograengine {
 			shadowCaster->update();
 		}
 		collisionManager.update();
+		for (auto& group : instanceGroups) {
+			group.second->optimalize(*camera);
+		}
 	}
 
 	void Scene::draw()

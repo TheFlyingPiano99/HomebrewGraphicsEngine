@@ -98,11 +98,11 @@ namespace hograengine {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	const glm::ivec2 Texture2D::getDimensions() {
+	const glm::ivec2 Texture2D::getDimensions() const {
 		return dimensions;
 	}
 
-	const std::vector<glm::vec4>& Texture2D::getBytes() {
+	const std::vector<glm::vec4>& Texture2D::getBytes() const {
 		return bytes;
 	}
 

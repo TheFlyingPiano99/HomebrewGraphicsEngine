@@ -35,7 +35,7 @@ namespace hograengine {
 		if (nullptr == glyphProgram) {
 			glyphProgram
 				= new ShaderProgram(
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("text.vert"),
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 					"",
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("glyph.frag")
 				);
@@ -47,7 +47,7 @@ namespace hograengine {
 	{
 		if (nullptr == captionProgram) {
 			captionProgram = new ShaderProgram(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("text.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("caption.frag")
 			);

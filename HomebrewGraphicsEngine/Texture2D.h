@@ -23,9 +23,9 @@ namespace hograengine {
 			this->Delete();
 		}
 
-		const glm::ivec2 getDimensions();
+		const glm::ivec2 getDimensions() const;
 
-		const std::vector<glm::vec4>& getBytes();
+		const std::vector<glm::vec4>& getBytes() const;
 
 		glm::vec4& operator()(glm::ivec2 position);
 

@@ -1,4 +1,5 @@
 #include "InstanceGroup.h"
+#include <algorithm>
 
 void hograengine::InstanceGroup::gatherInstanceData()
 {
@@ -35,4 +36,18 @@ void hograengine::InstanceGroup::drawShadow()
 	}
 	Mesh* mesh = objects[0]->getMesh();
 	mesh->DrawInstanced(instanceData);
+}
+
+void hograengine::InstanceGroup::optimalize(const Camera& camera)
+{
+	if (optimalizationCounter > 500) {
+		optimalizationCounter = 0;
+
+		std::sort(objects.begin(), objects.end(), [&camera](SceneObject const* obj1, SceneObject const* obj2) {
+			return glm::length(obj1->getPosition() - camera.getEyePos()) < glm::length(obj2->getPosition() - camera.getEyePos());
+		});
+	}
+	else {
+		optimalizationCounter++;
+	}
 }

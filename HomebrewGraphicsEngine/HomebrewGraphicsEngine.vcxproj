@@ -286,6 +286,7 @@
     <ClInclude Include="PostProcessStage.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RBO.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ScaleProvider.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneEvent.h" />
@@ -322,7 +323,8 @@
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
     <None Include="..\Resources\Shaders\flatColor.frag" />
     <None Include="..\Resources\Shaders\glyph.frag" />
-    <None Include="..\Resources\Shaders\text.vert" />
+    <None Include="..\Resources\Shaders\roughnessMetallicAOCombination.frag" />
+    <None Include="..\Resources\Shaders\simple2D.vert" />
     <None Include="..\Resources\Shaders\hdr.frag" />
     <None Include="..\Resources\Shaders\light.frag" />
     <None Include="..\Resources\Shaders\light.vert" />
@@ -343,6 +345,9 @@
     <None Include="..\Resources\Shaders\voxelHalfAngleColor.frag" />
     <None Include="ClassDiagram.cd" />
     <None Include="imgui.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HomebrewGraphicsEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -19,6 +19,8 @@ namespace hograengine{
 
 		void drawShadow();
 
+		void optimalize(const Camera& camera);
+
 		void addObject(SceneObject* object) {
 			objects.push_back(object);
 		}
@@ -31,6 +33,7 @@ namespace hograengine{
 	private:
 		std::vector<SceneObject*> objects;
 		std::vector<Geometry::InstanceData> instanceData;
+		int optimalizationCounter = 0;
 	};
 }
 

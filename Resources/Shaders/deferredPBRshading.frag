@@ -111,9 +111,10 @@ void main()
 		return;
 	}
 	vec3 albedo = albedo4.rgb;
-	float roughness = texture(gRoughnessMetallicAO, fs_in.texCoords).r;
-	float metallic = texture(gRoughnessMetallicAO, fs_in.texCoords).g;
-	float ao = texture(gRoughnessMetallicAO, fs_in.texCoords).b;
+	vec3 roughnessMetallicAO = texture(gRoughnessMetallicAO, fs_in.texCoords).rgb;
+	float roughness = roughnessMetallicAO.r;
+	float metallic = roughnessMetallicAO.g;
+	float ao = roughnessMetallicAO.b;
 	vec3 viewDir = normalize(cameraPosition - wp);
 	float shadow = calculateShadow(wp);
 	vec3 Lo = vec3(0, 0, 0);

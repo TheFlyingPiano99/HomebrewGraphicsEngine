@@ -10,7 +10,7 @@ namespace hograengine {
 		}
 	}
 
-	void SceneObject::update(float dt) {
+	void SceneObject::update(float dt, const Camera& camera) {
 		for (auto& component : components) {
 			component->update(dt);
 		}
