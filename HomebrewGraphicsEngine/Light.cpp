@@ -7,4 +7,14 @@ namespace hograengine {
 		ubo->uploadSubData(glm::value_ptr(position), idx++);
 		ubo->uploadSubData(glm::value_ptr(powerDensity), idx++);
 	}
+	void Light::control(float dt)
+	{
+	}
+
+	void Light::update(float dt)
+	{
+		if (positionProvider != nullptr) {
+			position = glm::vec4(positionProvider->getPosition(), 1.0f);
+		}
+	}
 }

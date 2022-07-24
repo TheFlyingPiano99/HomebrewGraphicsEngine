@@ -78,7 +78,11 @@ namespace hograengine {
 			initSphere(&cubeMap, glm::vec3(-11.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "gold");
 		}
 		for (int i = 200; i < 250; i++) {
-			initSphere(&cubeMap, glm::vec3(-11.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "glowing");
+			auto* obj = initSphere(&cubeMap, glm::vec3(-11.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "glowing");
+			auto* light = new Light(glm::vec4(0, 0, 0, 1), glm::vec3(0,0,100));
+			obj->addComponent(light);
+			light->setPositionProvider(obj);
+			addLight(light);
 		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, 3.0f, -30.0f), field);
 		initAvatar(field);
@@ -142,7 +146,7 @@ namespace hograengine {
 		addSceneObject(obj, "cube");
 	}
 
-	void Scene::initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field, const char* materialName)
+	SceneObject* Scene::initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field, const char* materialName)
 	{
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
@@ -180,6 +184,7 @@ namespace hograengine {
 		collider->setOrientationProvider(obj);
 		obj->addComponent(collider);
 		addSceneObject(obj, std::string("sphere").append(materialName));
+		return obj;
 	}
 
 	void Scene::initFonts()

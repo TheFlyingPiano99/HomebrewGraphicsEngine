@@ -115,7 +115,6 @@ void main()
 		FragColor = vec4(albedo4.rgb, 1.0);
 		float brightness = dot(albedo4.rgb, vec3(0.2126, 0.7152, 0.0722));
 		if (brightness > treshold) {
-			FragColor = vec4(1,0,0, 1.0);
 			BrightColor = vec4(albedo4.rgb, 1.0);
 		}
 		else {
