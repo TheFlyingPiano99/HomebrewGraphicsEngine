@@ -24,7 +24,7 @@ namespace hograengine {
 		instance = nullptr;
 	}
 
-	Material* MaterialFactory::getPBRMaterial(const char* materialName, const Texture* skyBox) {
+	Material* MaterialFactory::getPBRMaterial(const char* materialName) {
 
 		const auto& iter = loadedPBRMaterials.find(materialName);
 		if (iter != loadedPBRMaterials.end()) {
@@ -97,10 +97,19 @@ namespace hograengine {
 		material->addTexture(albedoMap);
 		material->addTexture(normalMap);
 		material->addTexture(roughnessMetallicAO);
-		material->addTexture(skyBox);
 		loadedPBRMaterials.emplace(materialName, material);
 		return material;
 	}
+	
+	Material* MaterialFactory::getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity)
+	{
+		ShaderProgram* program = ShaderProgramFactory::getInstance()->getEmissiveMaterialProgram();
+		Material* material = new Material(program);
+		material->setAlbedo(color * intensity);
+		material->setAlphaBlend(false);
+		return material;
+	}
+	
 	MaterialFactory::~MaterialFactory()
 	{
 

@@ -11,7 +11,9 @@ namespace hograengine {
 		static MaterialFactory* getInstance();
 		static void destroyInstance();
 
-		Material* getPBRMaterial(const char* materialName, const Texture* skyBox);
+		Material* getPBRMaterial(const char* materialName);
+
+		Material* getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity);
 
 	private:
 		MaterialFactory() = default;

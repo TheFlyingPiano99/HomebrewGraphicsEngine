@@ -77,6 +77,9 @@ namespace hograengine {
 		for (int i = 100; i < 200; i++) {
 			initSphere(&cubeMap, glm::vec3(-11.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "gold");
 		}
+		for (int i = 200; i < 250; i++) {
+			initSphere(&cubeMap, glm::vec3(-11.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "glowing");
+		}
 		initLoadedGeometry(&cubeMap, glm::vec3(-10.0f, 3.0f, -30.0f), field);
 		initAvatar(field);
 		collisionManager.initDebug();
@@ -109,7 +112,7 @@ namespace hograengine {
 	void Scene::initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
 		ShaderProgram* cubeShader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
-		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl",*cubeMap);
+		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl");
 		Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
 		auto* cubeMesh = new Mesh(material, cubeGeometry);
 		auto* obj = new SceneObject(cubeMesh);
@@ -144,8 +147,13 @@ namespace hograengine {
 		SphericalCollider* collider = new SphericalCollider();
 		collider->setRadius(0.5f);
 		addCollider(collider);
-		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
-		auto* material = MaterialFactory::getInstance()->getPBRMaterial(materialName, *cubeMap);
+		Material* material;
+		if (std::string(materialName) == std::string("glowing")) {
+			material = MaterialFactory::getInstance()->getEmissiveMaterial("glowing", glm::vec3(0, 0, 1), 100.0f);
+		}
+		else {
+			material = MaterialFactory::getInstance()->getPBRMaterial(materialName);
+		}
 		Geometry* geometry = GeometryFactory::getInstance()->getSphere();
 		geometry->setFaceCulling(false);
 		auto* mesh = new Mesh(material, geometry);
@@ -197,7 +205,7 @@ namespace hograengine {
 	{
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl", skyBox);
+				auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl");
 				Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
 				auto* cubeMesh = new Mesh(material, cubeGeometry);
 				auto* obj = new SceneObject(cubeMesh);
@@ -227,7 +235,7 @@ namespace hograengine {
 		collider->setRadius(0.5f);
 		addCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
-		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks", *cubeMap);
+		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks");
 		Geometry* geometry = GeometryLoader().load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->setFaceCulling(false);
 		auto* mesh = new Mesh(material, geometry);

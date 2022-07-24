@@ -49,7 +49,7 @@ namespace hograengine {
 			
 			gPosition = new Texture2D(GL_RGBA32F, glm::ivec2(width, height), 0, GL_RGBA, GL_FLOAT);
 			gNormal = new Texture2D(GL_RGBA16F, glm::ivec2(width, height), 1, GL_RGBA, GL_FLOAT);
-			gAlbedo = new Texture2D(GL_RGBA8, glm::ivec2(width, height), 2, GL_RGBA, GL_UNSIGNED_BYTE);
+			gAlbedo = new Texture2D(GL_RGBA16F, glm::ivec2(width, height), 2, GL_RGBA, GL_FLOAT);
 			gRoughnessMetallicAO = new Texture2D(GL_RGBA8, glm::ivec2(width, height), 3, GL_RGBA, GL_UNSIGNED_BYTE);
 			depthTexture = new Texture2D(GL_DEPTH_COMPONENT, glm::ivec2(width, height), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
 			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0, *gPosition, 0);

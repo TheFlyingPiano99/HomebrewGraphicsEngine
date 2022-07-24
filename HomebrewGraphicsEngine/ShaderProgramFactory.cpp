@@ -55,4 +55,17 @@ namespace hograengine {
 		return captionProgram;
 	}
 
+	ShaderProgram* ShaderProgramFactory::getEmissiveMaterialProgram()
+	{
+		if (nullptr == emissiveMaterial) {
+			emissiveMaterial = new ShaderProgram(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("emissive.frag")
+			);
+
+		}
+		return emissiveMaterial;
+	}
+
 }
