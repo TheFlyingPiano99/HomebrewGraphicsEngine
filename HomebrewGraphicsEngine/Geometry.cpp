@@ -57,11 +57,46 @@ namespace hograengine {
 		glVertexAttribDivisor(INSTANCED_INV_MODEL_MATRIX_LOCATION + 3, 1);
 	}
 
+	void Geometry::initLightInstancedBuffer()
+	{
+		glGenBuffers(1, &instancedBuffer);
+		glBindBuffer(GL_ARRAY_BUFFER, instancedBuffer);
+		std::size_t vec4Size = sizeof(glm::vec4);
+		std::size_t instanceDataSize = sizeof(LightInstancedData);
+
+		// ModelMatrix:
+		glEnableVertexAttribArray(INSTANCED_MODEL_MATRIX_LOCATION + 0);
+		glEnableVertexAttribArray(INSTANCED_MODEL_MATRIX_LOCATION + 1);
+		glEnableVertexAttribArray(INSTANCED_MODEL_MATRIX_LOCATION + 2);
+		glEnableVertexAttribArray(INSTANCED_MODEL_MATRIX_LOCATION + 3);
+
+		glVertexAttribPointer(INSTANCED_MODEL_MATRIX_LOCATION + 0, 4, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)0);
+		glVertexAttribPointer(INSTANCED_MODEL_MATRIX_LOCATION + 1, 4, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)(1 * vec4Size));
+		glVertexAttribPointer(INSTANCED_MODEL_MATRIX_LOCATION + 2, 4, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)(2 * vec4Size));
+		glVertexAttribPointer(INSTANCED_MODEL_MATRIX_LOCATION + 3, 4, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)(3 * vec4Size));
+
+		glVertexAttribDivisor(INSTANCED_MODEL_MATRIX_LOCATION + 0, 1);
+		glVertexAttribDivisor(INSTANCED_MODEL_MATRIX_LOCATION + 1, 1);
+		glVertexAttribDivisor(INSTANCED_MODEL_MATRIX_LOCATION + 2, 1);
+		glVertexAttribDivisor(INSTANCED_MODEL_MATRIX_LOCATION + 3, 1);
+
+		// LightPosition:
+		glEnableVertexAttribArray(INSTANCED_LIGHT_LOCATION);
+		glVertexAttribPointer(INSTANCED_LIGHT_LOCATION, 4, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)(4 * vec4Size));
+		glVertexAttribDivisor(INSTANCED_LIGHT_LOCATION, 1);
+
+		// LightPowerDensity:
+		glEnableVertexAttribArray(INSTANCED_LIGHT_POWER_DENSITY_LOCATION);
+		glVertexAttribPointer(INSTANCED_LIGHT_POWER_DENSITY_LOCATION, 4, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)(5 * vec4Size));
+		glVertexAttribDivisor(INSTANCED_LIGHT_POWER_DENSITY_LOCATION, 1);
+	}
+
 	void Geometry::Draw()
 	{
 		VAO.Bind();
 		if (faceCulling) {
 			glEnable(GL_CULL_FACE);
+			glFrontFace(faceCullingOrietation);
 		}
 		else {
 			glDisable(GL_CULL_FACE);
@@ -79,10 +114,32 @@ namespace hograengine {
 		else {
 			glBindBuffer(GL_ARRAY_BUFFER, instancedBuffer);
 		}
-		glBufferData(GL_ARRAY_BUFFER, instanceData.size() * 2 * sizeof(glm::mat4), &instanceData[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, instanceData.size() * sizeof(InstanceData), &instanceData[0], GL_STATIC_DRAW);
 
 		if (faceCulling) {
 			glEnable(GL_CULL_FACE);
+			glFrontFace(faceCullingOrietation);
+		}
+		else {
+			glDisable(GL_CULL_FACE);
+		}
+		glDrawElementsInstanced(primitiveType, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr, (GLsizei)instanceData.size());
+	}
+
+	void Geometry::DrawInstanced(const std::vector<LightInstancedData>& instanceData)
+	{
+		VAO.Bind();
+		if (0 == instancedBuffer) {
+			initLightInstancedBuffer();
+		}
+		else {
+			glBindBuffer(GL_ARRAY_BUFFER, instancedBuffer);
+		}
+		glBufferData(GL_ARRAY_BUFFER, instanceData.size() * sizeof(LightInstancedData), &instanceData[0], GL_STATIC_DRAW);
+
+		if (faceCulling) {
+			glEnable(GL_CULL_FACE);
+			glFrontFace(faceCullingOrietation);
 		}
 		else {
 			glDisable(GL_CULL_FACE);
@@ -93,5 +150,9 @@ namespace hograengine {
 	void Geometry::setFaceCulling(bool cull)
 	{
 		faceCulling = cull;
+	}
+	void Geometry::setFaceCullingOrientation(int orientation)
+	{
+		faceCullingOrietation = orientation;
 	}
 }

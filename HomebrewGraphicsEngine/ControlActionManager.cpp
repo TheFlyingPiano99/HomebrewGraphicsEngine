@@ -47,8 +47,6 @@ namespace hograengine {
 		registerAction(new MoveAvatarUp());
 		registerAction(new MoveAvatarDown());
 		registerAction(new ToggleGUI());
-		registerAction(new FastForward());
-		registerAction(new Rewind());
 		registerAction(new TogglePause());
 		registerAction(new ToggleFullScreenMode());
 		registerAction(new JumpAvatar());

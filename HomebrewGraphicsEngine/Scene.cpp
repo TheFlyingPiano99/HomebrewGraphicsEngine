@@ -79,7 +79,7 @@ namespace hograengine {
 		}
 		for (int i = 200; i < 250; i++) {
 			auto* obj = initSphere(&cubeMap, glm::vec3(-11.0f + 0.02f * (i % 2), 3.0f + i * 5.0f, -20.0f), field, "glowing");
-			auto* light = new Light(glm::vec4(0, 0, 0, 1), glm::vec3(0,0,100));
+			auto* light = new Light(glm::vec4(0, 0, 0, 1), glm::vec3(0,0, 10));
 			obj->addComponent(light);
 			light->setPositionProvider(obj);
 			addLight(light);

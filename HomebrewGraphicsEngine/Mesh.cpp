@@ -20,6 +20,17 @@ namespace hograengine {
 		else {
 			glDisable(GL_STENCIL_TEST);
 		}
+		switch (depthTestFunc)
+		{
+			case DepthTestFunc::less_func:
+				glDepthFunc(GL_LESS);
+				break;
+			case DepthTestFunc::greater_func:
+				glDepthFunc(GL_GREATER);
+				break;
+			default:
+			break;
+		}
 	}
 
 	void Mesh::Draw() const
@@ -28,6 +39,11 @@ namespace hograengine {
 	}
 
 	void Mesh::DrawInstanced(const std::vector<Geometry::InstanceData>& data) const
+	{
+		geometry->DrawInstanced(data);
+	}
+
+	void Mesh::DrawInstanced(const std::vector<Geometry::LightInstancedData>& data) const
 	{
 		geometry->DrawInstanced(data);
 	}
@@ -49,5 +65,9 @@ namespace hograengine {
 	void Mesh::setStencilTest(bool test)
 	{
 		stencilTest = test;
+	}
+	void Mesh::setDepthFunc(const DepthTestFunc func)
+	{
+		depthTestFunc = func;
 	}
 }

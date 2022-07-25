@@ -18,6 +18,7 @@ namespace hograengine {
 
 		if (alphaBlend) {
 			glEnable(GL_BLEND);
+			glBlendFunc(srcBlendFunc, destBlendFunc);
 		}
 		else {
 			glDisable(GL_BLEND);
@@ -43,5 +44,10 @@ namespace hograengine {
 
 	void Material::setAlphaBlend(bool blend) {
 		alphaBlend = blend;
+	}
+	
+	void Material::setBlendFunc(int src, int dest) {
+		srcBlendFunc = src;
+		destBlendFunc = dest;
 	}
 }

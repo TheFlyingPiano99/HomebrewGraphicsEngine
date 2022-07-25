@@ -23,18 +23,10 @@ struct Light {			// aligned size: 32 bytes
 	vec4 position;		
 	vec3 powerDensity;
 };
-
-layout (std140, binding = 1) uniform Lights {
-	unsigned int lightCount;
-	Light lights[1024];
-};
+uniform Light light;
 
 layout (std140, binding = 2) uniform ShadowCaster {
 	mat4 lightSpaceMatrix;
-};
-
-layout (std140, binding = 3) uniform Bloom {
-	float treshold;
 };
 
 layout (binding = 0) uniform sampler2D gPosition;
@@ -123,26 +115,26 @@ void main()
 	float shadow = calculateShadow(wp);
 	vec3 Lo = vec3(0, 0, 0);
 	vec3 F0 = vec3(0.04); 
-	for (int i = 0; i < lightCount; i++) {
-		vec3 lightDiff = lights[i].position.xyz - wp * lights[i].position.w;
-		float lightDistance = length(lightDiff);
-		vec3 lightDir = lightDiff / lightDistance;
-		vec3 halfway = normalize(viewDir + lightDir);
-		float attenuation = 1.0 / (lightDistance * lightDistance);
-        vec3 radiance     = lights[i].powerDensity * attenuation * (1.0 - shadow);	// ! radiance !
-		F0      = mix(F0, albedo, metallic);
-		vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), F0);
-		float NDF = DistributionGGX(n, halfway, roughness);       
-		float G   = GeometrySmith(n, viewDir, lightDir, roughness);
-		vec3 numerator    = NDF * G * F;
-		float denominator = 4.0 * max(dot(n, viewDir), 0.0) * max(dot(n, lightDir), 0.0)  + 0.0001;
-		vec3 specular     = numerator / denominator; 
-		vec3 kS = F;
-		vec3 kD = vec3(1.0) - kS;
-		kD *= 1.0 - metallic;
-	    float NdotL = max(dot(n, lightDir), 0.0);        
-		Lo += (kD * albedo / PI + specular) * radiance * NdotL;
-	}
+
+	vec3 lightDiff = light.position.xyz - wp * light.position.w;
+	float lightDistance = length(lightDiff);
+	vec3 lightDir = lightDiff / lightDistance;
+	vec3 halfway = normalize(viewDir + lightDir);
+	float attenuation = 1.0 / (lightDistance * lightDistance);
+    vec3 radiance     = light.powerDensity * attenuation * (1.0 - shadow);	// ! radiance !
+	F0      = mix(F0, albedo, metallic);
+	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), F0);
+	float NDF = DistributionGGX(n, halfway, roughness);       
+	float G   = GeometrySmith(n, viewDir, lightDir, roughness);
+	vec3 numerator    = NDF * G * F;
+	float denominator = 4.0 * max(dot(n, viewDir), 0.0) * max(dot(n, lightDir), 0.0)  + 0.0001;
+	vec3 specular     = numerator / denominator; 
+	vec3 kS = F;
+	vec3 kD = vec3(1.0) - kS;
+	kD *= 1.0 - metallic;
+	float NdotL = max(dot(n, lightDir), 0.0);        
+	Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+
     vec3 ambient = vec3(0.001) * albedo * ao;
     vec3 color = ambient + Lo;
 

@@ -7,6 +7,11 @@ namespace hograengine {
 		glGenFramebuffers(1, &ID);
 	}
 
+	FBO::~FBO()
+	{
+		Delete();
+	}
+
 	void FBO::Bind() const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, ID);

@@ -10,7 +10,7 @@ uniform float mixBloom;
 void main()
 {
 	// If brightness of input color is greater then the treshold than the color is outputed
-	vec3 bloom = textureLod(bloomTexture, texCoords, 5).rgb;
+	vec3 bloom = texture(bloomTexture, texCoords).rgb;
 	vec3 hdrColor = texture(hdrTexture, texCoords).rgb;
 	combined = hdrColor + mixBloom * bloom;
 }

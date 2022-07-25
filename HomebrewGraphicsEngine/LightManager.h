@@ -25,7 +25,7 @@ namespace hograengine {
 		}
 
 		void renderDeferredLighting() {
-			deferredLightingSystem.Draw();
+			deferredLightingSystem.Draw(lights);
 		}
 
 		void BindGBuffer() {

@@ -323,6 +323,7 @@
     <None Include="..\Resources\Shaders\default.frag" />
     <None Include="..\Resources\Shaders\default.vert" />
     <None Include="..\Resources\Shaders\deferredPBRshading.frag" />
+    <None Include="..\Resources\Shaders\deferredPBRshadingLightVolume.frag" />
     <None Include="..\Resources\Shaders\displayNormals.geom" />
     <None Include="..\Resources\Shaders\bloomDownSampling.frag" />
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
@@ -330,7 +331,9 @@
     <None Include="..\Resources\Shaders\flatColor.frag" />
     <None Include="..\Resources\Shaders\gausianBlur.frag" />
     <None Include="..\Resources\Shaders\glyph.frag" />
+    <None Include="..\Resources\Shaders\lightVolume.vert" />
     <None Include="..\Resources\Shaders\roughnessMetallicAOCombination.frag" />
+    <None Include="..\Resources\Shaders\simple2D-no-projection.vert" />
     <None Include="..\Resources\Shaders\simple2D.vert" />
     <None Include="..\Resources\Shaders\hdr.frag" />
     <None Include="..\Resources\Shaders\light.frag" />

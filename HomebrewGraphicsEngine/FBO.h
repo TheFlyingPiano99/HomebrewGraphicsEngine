@@ -12,6 +12,8 @@ namespace hograengine {
 
 		FBO();
 
+		~FBO();
+
 		void Bind() const;
 		void Unbind() const;
 		void Delete();

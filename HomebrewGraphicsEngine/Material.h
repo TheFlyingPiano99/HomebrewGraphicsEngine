@@ -56,6 +56,8 @@ namespace hograengine {
 
 		void setAlphaBlend(bool blend);
 
+		void setBlendFunc(int src, int dest);
+
 	private:
 		ShaderProgram* program;
 		std::vector <const Texture*> textures;
@@ -65,6 +67,8 @@ namespace hograengine {
 		float ao = 0.2f;
 
 		bool alphaBlend = false;
+		int srcBlendFunc = GL_ONE;
+		int destBlendFunc = GL_ONE;
 
 		class ShaderProgramIsNullptr : public std::exception {};
 	};

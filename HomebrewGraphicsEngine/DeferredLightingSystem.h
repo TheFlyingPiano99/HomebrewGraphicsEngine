@@ -4,6 +4,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "GeometryFactory.h"
+#include "glm/gtx/transform.hpp"
 
 namespace hograengine {
 	class DeferredLightingSystem
@@ -19,20 +20,34 @@ namespace hograengine {
 				delete gRoughnessMetallicAO;
 				delete depthTexture;
 			}
-			if (program != nullptr) {
-				delete program;
+			if (lightVolumeProgram != nullptr) {
+				delete fullScreenProgram;
+				delete lightVolumeProgram;
+				delete materialFullScreen;
+				delete meshFullScreen;
 				delete material;
 				delete mesh;
 			}
 		};
 
 		void Init(int width, int height) {
-			program = new ShaderProgram(
+			fullScreenProgram = new ShaderProgram(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshading.frag"));
-			material = new Material(program);
-			mesh = new Mesh(material, GeometryFactory::getInstance()->getFullScreenQuad());
+			materialFullScreen = new Material(fullScreenProgram);
+			meshFullScreen = new Mesh(materialFullScreen, GeometryFactory::getInstance()->getFullScreenQuad());
+			meshFullScreen->setDepthTest(false);
+			meshFullScreen->setStencilTest(false);
+
+			lightVolumeProgram = new ShaderProgram(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingLightVolume.frag"));
+			material = new Material(lightVolumeProgram);
+			material->setAlphaBlend(true);
+			material->setBlendFunc(GL_ONE, GL_ONE);
+			mesh = new Mesh(material, GeometryFactory::getInstance()->getLightVolumeSphere());
 			mesh->setDepthTest(false);
 			mesh->setStencilTest(false);
 			Resize(width, height);
@@ -64,6 +79,11 @@ namespace hograengine {
 			material->addTexture(gNormal);
 			material->addTexture(gAlbedo);
 			material->addTexture(gRoughnessMetallicAO);
+			materialFullScreen->clearTextures();
+			materialFullScreen->addTexture(gPosition);
+			materialFullScreen->addTexture(gNormal);
+			materialFullScreen->addTexture(gAlbedo);
+			materialFullScreen->addTexture(gRoughnessMetallicAO);
 			gBuffer.Unbind();
 		}
 
@@ -78,21 +98,37 @@ namespace hograengine {
 			glStencilMask(0x00);
 		}
 
-		void Draw() {
+		void Draw(const std::vector<Light*>& lights) {
+			meshFullScreen->Bind();
+			glm::vec4 pos = lights[0]->getPosition();
+			glm::vec3 pow = lights[0]->getPowerDensity();
+			glUniform4f(glGetUniformLocation(fullScreenProgram->ID, "light.position"), pos.x , pos.y, pos.z, pos.w);
+			glUniform3f(glGetUniformLocation(fullScreenProgram->ID, "light.powerDensity"), pow.x, pow.y, pow.z);
+			meshFullScreen->Draw();
+
 			mesh->Bind();
-			mesh->Draw();
+			instanceData.clear();
+			for (int i = 1; i < lights.size(); i++) {
+				Geometry::LightInstancedData d = { lights[i]->getVolumeModelMatrix(), lights[i]->getPosition(), glm::vec4(lights[i]->getPowerDensity(), 0.0)};
+				instanceData.push_back(d);
+			}
+			mesh->DrawInstanced(instanceData);
 		}
 
 	private:
 		FBO gBuffer;
-		ShaderProgram* program = nullptr;
+		ShaderProgram* fullScreenProgram = nullptr;
+		ShaderProgram* lightVolumeProgram = nullptr;
 		Texture2D* gPosition = nullptr;
 		Texture2D* gNormal = nullptr;
 		Texture2D* gAlbedo = nullptr;
 		Texture2D* gRoughnessMetallicAO = nullptr;
 		Texture2D* depthTexture = nullptr;
+		Material* materialFullScreen = nullptr;
+		Mesh* meshFullScreen = nullptr;
 		Material* material = nullptr;
 		Mesh* mesh = nullptr;
+		std::vector<Geometry::LightInstancedData> instanceData;
 	};
 }
 

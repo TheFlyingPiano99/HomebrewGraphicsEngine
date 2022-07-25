@@ -10,8 +10,7 @@ namespace hograengine {
 
 	class Light : public Component {
 	public:
-		Light(glm::vec4 position, glm::vec3 powerDensity)
-			: position(position), powerDensity(powerDensity) {}
+		Light(glm::vec4 position, glm::vec3 powerDensity);
 
 		~Light() = default;
 
@@ -30,9 +29,25 @@ namespace hograengine {
 			positionProvider = provider;
 		}
 
+		const glm::vec4& getPosition() const {
+			return position;
+		}
+
+		const glm::vec3& getPowerDensity() const {
+			return powerDensity;
+		}
+
+		float getEffectiveRadius() const;
+
+		const glm::mat4& getVolumeModelMatrix() const {
+			return volumeModelMatrix;
+		}
+
 	private:
 		glm::vec4 position;
 		glm::vec3 powerDensity;
+		glm::mat4 volumeModelMatrix;
 		PositionProvider* positionProvider;
+		float effectiveRadius;
 	};
 }

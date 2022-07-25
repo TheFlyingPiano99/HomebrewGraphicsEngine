@@ -13,26 +13,36 @@ hograengine::Bloom::Bloom() {
 }
 
 hograengine::Bloom::~Bloom() {
+	delete prefilterProgram;
+	delete downSampleProgram;
+	delete upSampleProgram;
+	delete recombineProgram;
+	delete hdrTexture;
+	delete depthTexture;
+	for (auto* downScaledTexture : downScaledTextures) {
+		delete downScaledTexture;
+	}
+	delete vbo;
 }
 
 void hograengine::Bloom::init(unsigned int width, unsigned int height) {
 	prefilterProgram = new ShaderProgram(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomPrefilter.frag")
 	);
 	downSampleProgram = new ShaderProgram(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomDownSampling.frag")
 	);
 	upSampleProgram = new ShaderProgram(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomUpSampling.frag")
 	);
 	recombineProgram = new ShaderProgram(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomRecombine.frag")
 	);
@@ -53,11 +63,10 @@ void hograengine::Bloom::draw(const FBO& outFBO) {
 	fbo.Bind();
 	glDisable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 	prefilterProgram->Activate();
 	hdrTexture->Bind();														// Input of the shader
 	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *downScaledTextures[0], 0);			// Output of the shader
-	glm::mat4 projection(1.0f);
-	glUniformMatrix4fv(glGetUniformLocation(prefilterProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniform1f(glGetUniformLocation(prefilterProgram->ID, "treshold"), treshold);
 
 	vao.Bind();
@@ -65,12 +74,10 @@ void hograengine::Bloom::draw(const FBO& outFBO) {
 	
 	downSampleProgram->Activate();
 	downScaledTextures[0]->Bind();											// Input of the shader
-	glUniformMatrix4fv(glGetUniformLocation(downSampleProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	int amount = 9;
 	for (int i = 1; i <= amount; i++)
 	{
 		downScaledTextures[i - 1]->Bind();											// Input of the shader
-		glUniform1i(glGetUniformLocation(downSampleProgram->ID, "mipLevel"), 0);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *downScaledTextures[i], 0);	// Output of the shader
 		glDrawArrays(GL_TRIANGLES, 0, 6);	// Down sample draw call
 	}
@@ -79,19 +86,17 @@ void hograengine::Bloom::draw(const FBO& outFBO) {
 	glUniform1f(glGetUniformLocation(upSampleProgram->ID, "falloff"), falloff);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
-	glUniformMatrix4fv(glGetUniformLocation(upSampleProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	for (int i = amount - 1; i >= 0; i--)
 	{
 		downScaledTextures[i + 1]->Bind();											// Input of the shader
-		glUniform1i(glGetUniformLocation(upSampleProgram->ID, "mipLevel"), 0);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *downScaledTextures[i], 0);	// Output of the shader
 		glDrawArrays(GL_TRIANGLES, 0, 6);	// Up sample draw call
 	}
 	
 	outFBO.Bind();
 	glDisable(GL_BLEND);
+	glDisable(GL_CULL_FACE);
 	recombineProgram->Activate();
-	glUniformMatrix4fv(glGetUniformLocation(recombineProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniform1f(glGetUniformLocation(recombineProgram->ID, "mixBloom"), mixBloom);
 	downScaledTextures[0]->Bind();
 	hdrTexture->Bind();

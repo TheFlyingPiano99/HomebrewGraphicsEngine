@@ -21,6 +21,11 @@ namespace hograengine {
 
 		Geometry* getSphere();
 
+		/*
+		* The Front face is the opposite
+		*/
+		Geometry* getLightVolumeSphere();
+
 	private:
 		static void generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLint>* indices);
 		GeometryFactory() = default;
@@ -30,5 +35,6 @@ namespace hograengine {
 		Geometry* cube = nullptr;
 		Geometry* wireframeCube = nullptr;
 		Geometry* sphere = nullptr;
+		Geometry* lightVolumeSphere = nullptr;
 	};
 }

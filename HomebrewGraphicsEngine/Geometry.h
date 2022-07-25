@@ -23,9 +23,19 @@ namespace hograengine {
 			glm::mat4 invModelMatrix;
 		};
 
+		struct LightInstancedData {
+			glm::mat4 modelMatrix;
+			glm::vec4 lightPosition;
+			glm::vec4 lightPowerDensity;
+		};
+
 		void DrawInstanced(const std::vector<InstanceData>& instanceData);
 
+		void DrawInstanced(const std::vector<LightInstancedData>& instanceData);
+
 		void setFaceCulling(bool cull);
+
+		void setFaceCullingOrientation(int orientation);
 
 		void BindVAO() {
 			VAO.Bind();
@@ -37,7 +47,9 @@ namespace hograengine {
 
 	private:
 		int primitiveType = GL_TRIANGLES;
+		int faceCullingOrietation = GL_CCW;
 		void initInstancedBuffer();
+		void initLightInstancedBuffer();
 
 		unsigned int instancedBuffer = 0;
 		std::vector <Vertex> vertices;

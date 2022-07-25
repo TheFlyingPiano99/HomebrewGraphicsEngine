@@ -12,11 +12,10 @@ layout (binding = 0) uniform sampler2D srcTexture;
 
 in vec2 texCoords;
 layout (location = 0) out vec3 downsample;
-uniform int mipLevel;
 
 void main()
 {
-    vec2 srcTexelSize = 1.0 / textureSize(srcTexture, mipLevel);
+    vec2 srcTexelSize = 1.0 / textureSize(srcTexture, 0);
     float x = srcTexelSize.x;
     float y = srcTexelSize.y;
 
@@ -27,22 +26,22 @@ void main()
     // - l - m -
     // g - h - i
     // === ('e' is the current texel) ===
-    vec3 a = textureLod(srcTexture, vec2(texCoords.x - 2 * x, texCoords.y + 2 * y), mipLevel).rgb;
-    vec3 b = textureLod(srcTexture, vec2(texCoords.x,       texCoords.y + 2 * y), mipLevel).rgb;
-    vec3 c = textureLod(srcTexture, vec2(texCoords.x + 2 * x, texCoords.y + 2 * y), mipLevel).rgb;
+    vec3 a = texture(srcTexture, vec2(texCoords.x - 2 * x, texCoords.y + 2 * y)).rgb;
+    vec3 b = texture(srcTexture, vec2(texCoords.x,       texCoords.y + 2 * y)).rgb;
+    vec3 c = texture(srcTexture, vec2(texCoords.x + 2 * x, texCoords.y + 2 * y)).rgb;
 
-    vec3 d = textureLod(srcTexture, vec2(texCoords.x - 2 * x, texCoords.y), mipLevel).rgb;
-    vec3 e = textureLod(srcTexture, vec2(texCoords.x,       texCoords.y), mipLevel).rgb;
-    vec3 f = textureLod(srcTexture, vec2(texCoords.x + 2 * x, texCoords.y), mipLevel).rgb;
+    vec3 d = texture(srcTexture, vec2(texCoords.x - 2 * x, texCoords.y)).rgb;
+    vec3 e = texture(srcTexture, vec2(texCoords.x,       texCoords.y)).rgb;
+    vec3 f = texture(srcTexture, vec2(texCoords.x + 2 * x, texCoords.y)).rgb;
 
-    vec3 g = textureLod(srcTexture, vec2(texCoords.x - 2 * x, texCoords.y - 2 * y), mipLevel).rgb;
-    vec3 h = textureLod(srcTexture, vec2(texCoords.x,       texCoords.y - 2 * y), mipLevel).rgb;
-    vec3 i = textureLod(srcTexture, vec2(texCoords.x + 2 * x, texCoords.y - 2 * y), mipLevel).rgb;
+    vec3 g = texture(srcTexture, vec2(texCoords.x - 2 * x, texCoords.y - 2 * y)).rgb;
+    vec3 h = texture(srcTexture, vec2(texCoords.x,       texCoords.y - 2 * y)).rgb;
+    vec3 i = texture(srcTexture, vec2(texCoords.x + 2 * x, texCoords.y - 2 * y)).rgb;
 
-    vec3 j = textureLod(srcTexture, vec2(texCoords.x - x, texCoords.y + y), mipLevel).rgb;
-    vec3 k = textureLod(srcTexture, vec2(texCoords.x + x, texCoords.y + y), mipLevel).rgb;
-    vec3 l = textureLod(srcTexture, vec2(texCoords.x - x, texCoords.y - y), mipLevel).rgb;
-    vec3 m = textureLod(srcTexture, vec2(texCoords.x + x, texCoords.y - y), mipLevel).rgb;
+    vec3 j = texture(srcTexture, vec2(texCoords.x - x, texCoords.y + y)).rgb;
+    vec3 k = texture(srcTexture, vec2(texCoords.x + x, texCoords.y + y)).rgb;
+    vec3 l = texture(srcTexture, vec2(texCoords.x - x, texCoords.y - y)).rgb;
+    vec3 m = texture(srcTexture, vec2(texCoords.x + x, texCoords.y - y)).rgb;
 
     // Apply weighted distribution:
     // 0.5 + 0.125 + 0.125 + 0.125 + 0.125 = 1
