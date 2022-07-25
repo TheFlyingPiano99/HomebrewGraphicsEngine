@@ -8,26 +8,33 @@
 
 hograengine::Bloom::Bloom() {
 	treshold = 1.0f;
-	intensity = 1.0f;
+	mixBloom = 0.4f;
+	falloff = 0.9f;
 }
 
 hograengine::Bloom::~Bloom() {
-	if (nullptr != ubo) {
-		delete ubo;
-		delete program;
-		delete vbo;
-		glDeleteTextures(1, & brightTexture);
-	}
 }
 
 void hograengine::Bloom::init(unsigned int width, unsigned int height) {
-	std::vector<int> subdataSizes;
-	subdataSizes.push_back(sizeof(float));		// brightness treshold
-	ubo = new UniformBufferObject(subdataSizes, 3);
-	program = new ShaderProgram(
+	prefilterProgram = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 		"",
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("gausianBlur.frag")
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomPrefilter.frag")
+	);
+	downSampleProgram = new ShaderProgram(
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+		"",
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomDownSampling.frag")
+	);
+	upSampleProgram = new ShaderProgram(
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+		"",
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomUpSampling.frag")
+	);
+	recombineProgram = new ShaderProgram(
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+		"",
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomRecombine.frag")
 	);
 	vao.Bind();
 	std::vector<glm::vec4> vertices;
@@ -39,92 +46,83 @@ void hograengine::Bloom::init(unsigned int width, unsigned int height) {
 	vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //1
 	vbo = new VBO(vertices);
 	vao.LinkAttrib(*vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
-
-	// Init Pingpong:
-	glGenFramebuffers(2, pingpongFBO);
-	glGenTextures(2, pingpongBuffers);
-	for (unsigned int i = 0; i < 2; i++)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
-		glViewport(0, 0, BLOOM_RESOLUTION_WIDTH, BLOOM_RESOLUTION_HEIGHT);
-		glBindTexture(GL_TEXTURE_2D, pingpongBuffers[i]);
-		glTexImage2D(
-			GL_TEXTURE_2D, 0, GL_RGBA16F, BLOOM_RESOLUTION_WIDTH, BLOOM_RESOLUTION_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL
-		);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glFramebufferTexture2D(
-			GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pingpongBuffers[i], 0
-		);
-	}
-
 	onResize(width, height);
 }
 
-void hograengine::Bloom::BindBrightTexture() {
-	ubo->Bind();
-	ubo->uploadSubData(&treshold, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, brightTexture, 0);
-	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers(2, attachments);
-}
-
-void hograengine::Bloom::UnbindBrightTexture() {
-	ubo->Unbind();
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, 0, 0);
-	unsigned int attachments[1] = { GL_COLOR_ATTACHMENT0 };
-	glDrawBuffers(1, attachments);
-}
-
-void hograengine::Bloom::draw(const FBO& fbo) {
-	program->Activate();
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, brightTexture);
+void hograengine::Bloom::draw(const FBO& outFBO) {
+	fbo.Bind();
 	glDisable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
+	prefilterProgram->Activate();
+	hdrTexture->Bind();														// Input of the shader
+	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *downScaledTextures[0], 0);			// Output of the shader
 	glm::mat4 projection(1.0f);
-	glUniformMatrix4fv(glGetUniformLocation(program->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-	glUniform1f(glGetUniformLocation(program->ID, "intensity"), intensity);
+	glUniformMatrix4fv(glGetUniformLocation(prefilterProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform1f(glGetUniformLocation(prefilterProgram->ID, "treshold"), treshold);
+
 	vao.Bind();
-	bool horizontal = true, first_iteration = true;
-	int amount = 10;
-	for (unsigned int i = 0; i < amount; i++)
+	glDrawArrays(GL_TRIANGLES, 0, 6);	// Prefilter draw call
+	
+	downSampleProgram->Activate();
+	downScaledTextures[0]->Bind();											// Input of the shader
+	glUniformMatrix4fv(glGetUniformLocation(downSampleProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	int amount = 9;
+	for (int i = 1; i <= amount; i++)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
-		glViewport(0, 0, BLOOM_RESOLUTION_WIDTH, BLOOM_RESOLUTION_HEIGHT);
-		glUniform1i(glGetUniformLocation(program->ID, "horizontal"), horizontal);
-		glBindTexture(
-			GL_TEXTURE_2D, (first_iteration)? brightTexture : pingpongBuffers[!horizontal]
-		);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		horizontal = !horizontal;
-		if (first_iteration)
-			first_iteration = false;
+		downScaledTextures[i - 1]->Bind();											// Input of the shader
+		glUniform1i(glGetUniformLocation(downSampleProgram->ID, "mipLevel"), 0);
+		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *downScaledTextures[i], 0);	// Output of the shader
+		glDrawArrays(GL_TRIANGLES, 0, 6);	// Down sample draw call
 	}
-	fbo.Bind();
-	glUniform1i(glGetUniformLocation(program->ID, "horizontal"), horizontal);
-	glBindTexture(
-		GL_TEXTURE_2D, pingpongBuffers[!horizontal]
-	);
+
+	upSampleProgram->Activate();
+	glUniform1f(glGetUniformLocation(upSampleProgram->ID, "falloff"), falloff);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glUniformMatrix4fv(glGetUniformLocation(upSampleProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	for (int i = amount - 1; i >= 0; i--)
+	{
+		downScaledTextures[i + 1]->Bind();											// Input of the shader
+		glUniform1i(glGetUniformLocation(upSampleProgram->ID, "mipLevel"), 0);
+		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *downScaledTextures[i], 0);	// Output of the shader
+		glDrawArrays(GL_TRIANGLES, 0, 6);	// Up sample draw call
+	}
+	
+	outFBO.Bind();
 	glDisable(GL_BLEND);
+	recombineProgram->Activate();
+	glUniformMatrix4fv(glGetUniformLocation(recombineProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniform1f(glGetUniformLocation(recombineProgram->ID, "mixBloom"), mixBloom);
+	downScaledTextures[0]->Bind();
+	hdrTexture->Bind();
+	glDrawArrays(GL_TRIANGLES, 0, 6);	// Recombine draw call
 	vao.Unbind();
 }
 
 void hograengine::Bloom::onResize(unsigned int width, unsigned int height) {
-	if (0 != brightTexture) {
-		glDeleteTextures(1, &brightTexture);
+	if (nullptr != hdrTexture) {
+		delete hdrTexture;
+		delete depthTexture;
+		for (auto* downScaledTexture : downScaledTextures) {
+			delete downScaledTexture;
+		}
+		downScaledTextures.clear();
 	}
-	glGenTextures(1, &brightTexture);
-	glBindTexture(GL_TEXTURE_2D, brightTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glm::ivec2 dim = glm::ivec2(width, height);
+	hdrTexture = new Texture2D(GL_RGBA16F, dim, 1, GL_RGBA, GL_FLOAT);
+	depthTexture = new Texture2D(GL_DEPTH_COMPONENT, dim, 1, GL_DEPTH_COMPONENT, GL_FLOAT);
+	int divider = 2;
+	for (int i = 0; i < 10; i++) {
+		downScaledTextures.push_back(new Texture2D(GL_R11F_G11F_B10F, dim / divider, 0, GL_RGB, GL_FLOAT));
+		divider *= 2;
+	}
+	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *hdrTexture, 0);
+	fbo.LinkTexture(GL_DEPTH_ATTACHMENT, *depthTexture, 0);
+	fbo.Unbind();
+}
 
+void hograengine::Bloom::Bind()
+{
+	fbo.Bind();
+	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *hdrTexture, 0);
 }

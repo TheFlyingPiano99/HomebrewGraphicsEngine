@@ -577,26 +577,20 @@ namespace hograengine {
 		for (auto& group : instanceGroups) {
 			group.second->draw();
 		}
-
+		bloom.Bind();
 		// Deferred lighting pass:
-		if (postProcessStages.size() > 0) {
-			postProcessStages[0]->Bind();
-		}
-		else {
-			FBO::BindDefault();
-		}
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 		glClearDepth(1);
+		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glFrontFace(GL_CCW);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glStencilMask(0x00);
 
-		bloom.BindBrightTexture();
 		lightManager.renderDeferredLighting();
-		bloom.UnbindBrightTexture();
-		bloom.draw((postProcessStages.size() > 0) ? postProcessStages[0]->getFBO() : FBO::getDefault());
+
+		bloom.draw(postProcessStages[0]->getFBO());
 
 		// Post-process pass:
 		for (int i = 0; i < postProcessStages.size(); i++) {
@@ -612,9 +606,9 @@ namespace hograengine {
 			for (auto* caption : captions) {
 				caption->draw();
 			}
-
 		}
 	}
+
 	void Scene::addSceneObject(SceneObject* object, const std::string& instanceGroupName)
 	{
 		if (auto objectIter = std::find(sceneObjects.begin(), sceneObjects.end(), object); objectIter != sceneObjects.end()) {		// If already contains
@@ -755,7 +749,7 @@ namespace hograengine {
 			camera->setAspectRatio((float)_contextWidth / (float)_contextHeight);
 		}
 		for (auto& stage : postProcessStages) {
-			stage->resize(_contextWidth, _contextHeight);
+			stage->onResize(_contextWidth, _contextHeight);
 		}
 		camera->setMoved(true);
 		lightManager.onResize(_contextWidth, _contextHeight);

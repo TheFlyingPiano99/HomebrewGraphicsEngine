@@ -1,7 +1,6 @@
 #version 420 core
 
 layout (location = 0) out vec4 FragColor;
-layout (location = 1) out vec4 BrightColor;
 
 in VS_OUT {
     vec2 texCoords;
@@ -113,13 +112,6 @@ void main()
 	vec4 albedo4 = texture(gAlbedo, fs_in.texCoords);
 	if (albedo4.w < 0.0001) {
 		FragColor = vec4(albedo4.rgb, 1.0);
-		float brightness = dot(albedo4.rgb, vec3(0.2126, 0.7152, 0.0722));
-		if (brightness > treshold) {
-			BrightColor = vec4(albedo4.rgb, 1.0);
-		}
-		else {
-			BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-		}
 		return;
 	}
 	vec3 albedo = albedo4.rgb;
@@ -153,13 +145,6 @@ void main()
 	}
     vec3 ambient = vec3(0.001) * albedo * ao;
     vec3 color = ambient + Lo;
-	   
+
     FragColor = vec4(color, 1.0);
-	float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-	if (brightness > treshold) {
-		BrightColor = vec4(color, 1.0);
-	}
-	else {
-		BrightColor = vec4(0.0, 0.0, 0.0, 1.0);
-	}
 }

@@ -93,6 +93,18 @@ namespace hograengine {
 
 		// Assigns the image to the OpenGL Texture object
 		glTexImage2D(GL_TEXTURE_2D, 0, internalformat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
+		/*
+		glTexImage2D(GL_TEXTURE_2D, 1, internalformat, dimensions.x / 2, dimensions.y / 2, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 2, internalformat, dimensions.x / 4, dimensions.y / 4, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 3, internalformat, dimensions.x / 8, dimensions.y / 8, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 4, internalformat, dimensions.x / 16, dimensions.y / 16, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 5, internalformat, dimensions.x / 32, dimensions.y / 32, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 6, internalformat, dimensions.x / 64, dimensions.y / 64, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 7, internalformat, dimensions.x / 128, dimensions.y / 128, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 8, internalformat, dimensions.x / 256, dimensions.y / 256, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 9, internalformat, dimensions.x / 512, dimensions.y / 512, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 10, internalformat, dimensions.x / 1024, dimensions.y / 1024, 0, format, pixelType, nullptr);
+		*/
 
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 		glBindTexture(GL_TEXTURE_2D, 0);

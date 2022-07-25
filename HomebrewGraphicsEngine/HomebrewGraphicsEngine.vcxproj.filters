@@ -531,7 +531,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bloom.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Model\Lighting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -637,6 +637,18 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\emissive.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\bloomDownSampling.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\bloomUpSampling.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\bloomPrefilter.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\bloomRecombine.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

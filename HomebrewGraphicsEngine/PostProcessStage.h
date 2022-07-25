@@ -24,9 +24,13 @@ namespace hograengine {
 		void Draw(const FBO& fbo) const;
 		const FBO& getFBO() const;
 
-		void resize(int contextWidth, int contextHeight);
+		void onResize(int contextWidth, int contextHeight);
 
 		void setActive(bool _active);
+
+		Texture2D* getColorTexture() const {
+			return colorTexture;
+		}
 
 	private:
 		FBO fbo;

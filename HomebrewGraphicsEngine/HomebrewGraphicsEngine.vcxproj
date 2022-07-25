@@ -313,6 +313,8 @@
     <ClInclude Include="VBO.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
+    <None Include="..\Resources\Shaders\bloomRecombine.frag" />
     <None Include="..\Resources\Shaders\bounding.frag" />
     <None Include="..\Resources\Shaders\bounding.vert" />
     <None Include="..\Resources\Shaders\caption.frag" />
@@ -322,6 +324,7 @@
     <None Include="..\Resources\Shaders\default.vert" />
     <None Include="..\Resources\Shaders\deferredPBRshading.frag" />
     <None Include="..\Resources\Shaders\displayNormals.geom" />
+    <None Include="..\Resources\Shaders\bloomDownSampling.frag" />
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
     <None Include="..\Resources\Shaders\emissive.frag" />
     <None Include="..\Resources\Shaders\flatColor.frag" />
@@ -344,6 +347,7 @@
     <None Include="..\Resources\Shaders\fullscreenQuad.vert" />
     <None Include="..\Resources\Shaders\transfer.frag" />
     <None Include="..\Resources\Shaders\transfer.vert" />
+    <None Include="..\Resources\Shaders\bloomUpSampling.frag" />
     <None Include="..\Resources\Shaders\voxel.frag" />
     <None Include="..\Resources\Shaders\voxelHalfAngleAttenuation.frag" />
     <None Include="..\Resources\Shaders\voxelHalfAngleColor.frag" />

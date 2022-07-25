@@ -85,14 +85,6 @@ namespace hograengine {
 			drawDebug = b;
 		}
 
-		void setBloomTreshold(float treshold) {
-			bloom.setTreshold(treshold);
-		}
-
-		void setBloomIntensity(float intensity) {
-			bloom.setIntensity(intensity);
-		}
-
 	private:
 		static Scene* instance;
 

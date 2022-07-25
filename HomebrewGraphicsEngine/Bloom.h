@@ -15,11 +15,7 @@ namespace hograengine {
 
 		void init(unsigned int width, unsigned int height);
 
-		void BindBrightTexture();
-
-		void UnbindBrightTexture();
-
-		void draw(const FBO& fbo);
+		void draw(const FBO& outFBO);
 
 		float getTreshold() const {
 			return treshold;
@@ -28,27 +24,25 @@ namespace hograengine {
 		void setTreshold(float _treshold) {
 			treshold = _treshold;
 		}
-
-		float getIntensity() const {
-			return intensity;
-		}
-
-		void setIntensity(float _intensity) {
-			intensity = _intensity;
-		}
 		
 		void onResize(unsigned int width, unsigned int height);
 
+		void Bind();
+
 	private:
-		ShaderProgram* program = nullptr;
-		UniformBufferObject* ubo = nullptr;
-		unsigned int brightTexture = 0;
+		ShaderProgram* prefilterProgram = nullptr;
+		ShaderProgram* downSampleProgram = nullptr;
+		ShaderProgram* upSampleProgram = nullptr;
+		ShaderProgram* recombineProgram = nullptr;
+		Texture2D* hdrTexture = nullptr;
+		Texture2D* depthTexture = nullptr;
+		std::vector<Texture2D*> downScaledTextures;
 		VAO vao;
 		VBO* vbo = nullptr;
-		unsigned int pingpongFBO[2];
-		unsigned int pingpongBuffers[2];
+		FBO fbo;
 		float treshold;
-		float intensity;
+		float falloff;
+		float mixBloom;
 	};
 }
 

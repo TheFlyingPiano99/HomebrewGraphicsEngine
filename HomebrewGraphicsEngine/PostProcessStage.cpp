@@ -43,7 +43,7 @@ namespace hograengine {
 		return fbo;
 	}
 
-	void PostProcessStage::resize(int contextWidth, int contextHeight)
+	void PostProcessStage::onResize(int contextWidth, int contextHeight)
 	{
 		material->clearTextures();
 		delete colorTexture;

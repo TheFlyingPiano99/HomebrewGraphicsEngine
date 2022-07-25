@@ -25,7 +25,7 @@ namespace hograengine {
 
 	void FBO::LinkTexture(GLenum attachment, Texture2D& texture, GLint level)
 	{
-		glm::ivec2 dim = texture.getDimensions();
+		glm::ivec2 dim = texture.getDimensions() / (level + 1);
 		viewport = glm::vec4(0, 0, dim.x, dim.y);
 		Bind();
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, texture.ID, level);
