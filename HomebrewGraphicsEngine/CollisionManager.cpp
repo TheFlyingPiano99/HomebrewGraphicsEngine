@@ -85,8 +85,6 @@ void hograengine::CollisionManager::initDebug()
 		"", 
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
 	auto* geometry = GeometryFactory::getInstance()->getWireframeCube();
-	geometry->setPrimitiveType(GL_LINES);
-	geometry->setFaceCulling(false);
 	auto* material = new Material(shaderProgram);
 	auto* mesh = new Mesh(material, geometry);
 	mesh->setDepthTest(false);

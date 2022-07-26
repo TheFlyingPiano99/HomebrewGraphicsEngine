@@ -36,6 +36,7 @@ namespace hograengine {
 			lightManager.addLight(light);
 		}
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
+		lightManager.initDebug();
 		bloom.init(contextWidth, contextHeight);
 	}
 
@@ -159,7 +160,6 @@ namespace hograengine {
 			material = MaterialFactory::getInstance()->getPBRMaterial(materialName);
 		}
 		Geometry* geometry = GeometryFactory::getInstance()->getSphere();
-		geometry->setFaceCulling(false);
 		auto* mesh = new Mesh(material, geometry);
 		auto* obj = new SceneObject(mesh);
 		obj->setPosition(pos);
@@ -603,6 +603,7 @@ namespace hograengine {
 		}
 		if (drawDebug) {
 			collisionManager.drawDebug();
+			lightManager.drawDebug();
 			for (auto* caption : captions) {
 				caption->draw();
 			}

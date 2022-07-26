@@ -16,6 +16,10 @@ namespace hograengine {
 	LightManager::~LightManager()
 	{
 		delete ubo;
+		delete shaderProgram;
+		delete debugMaterial;
+		delete debugGeometry;
+		delete debugLightVolumeMesh;
 	}
 
 	void LightManager::exportData()
@@ -28,5 +32,34 @@ namespace hograengine {
 			light->exportData(ubo, idx);
 		}
 		ubo->Unbind();
+	}
+
+	void LightManager::initDebug()
+	{
+		if (nullptr != debugLightVolumeMesh) {
+			return;
+		}
+		shaderProgram = new ShaderProgram(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
+		debugMaterial = new Material(shaderProgram);
+		debugGeometry = GeometryFactory::getInstance()->getWireFrameSphere();
+		debugLightVolumeMesh = new Mesh(debugMaterial, debugGeometry);
+		debugLightVolumeMesh->setDepthTest(false);
+	}
+
+	void LightManager::drawDebug()
+	{
+		if (nullptr == debugLightVolumeMesh) {
+			return;
+		}
+		debugLightVolumeMesh->Bind();
+		std::vector<Geometry::InstanceData> data;
+		for (int i = 1; i < lights.size(); i++) {
+			data.push_back({ lights[i]->getVolumeModelMatrix(), glm::mat4(1.0f)});
+		}
+		debugLightVolumeMesh->DrawInstanced(data);
+
 	}
 }

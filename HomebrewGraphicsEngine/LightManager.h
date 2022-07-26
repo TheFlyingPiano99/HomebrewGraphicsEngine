@@ -32,10 +32,18 @@ namespace hograengine {
 			deferredLightingSystem.BindGBuffer();
 		}
 
+		void initDebug();
+
+		void drawDebug();
+
 	private:
 		std::vector<Light*> lights;
 		UniformBufferObject* ubo = nullptr;
 		DeferredLightingSystem deferredLightingSystem;
+		Mesh* debugLightVolumeMesh = nullptr;
+		ShaderProgram* shaderProgram = nullptr;
+		Material* debugMaterial = nullptr;
+		Geometry* debugGeometry = nullptr;
 	};
 }
 

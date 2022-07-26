@@ -1,5 +1,6 @@
 #include "GeometryFactory.h"
 #include <complex>
+#include "GlobalInclude.h"
 
 namespace hograengine {
 
@@ -7,107 +8,81 @@ namespace hograengine {
 
 	Geometry* GeometryFactory::getSphere()
 	{
-		if (nullptr != sphere) {
-			return sphere;
+		if (nullptr == sphere) {
+			sphere = generateSphere();
+			sphere->setFaceCulling(true);
 		}
-		// ------------------- ICOSAHEDRON SPHERE -------------------
-		float r = 1.0f;
-		float a = 3.0f;
-		float b = 1.0f;
-		float sum = a + b;
-
-		std::vector<Vertex> vertices;
-		glm::vec3 norm = glm::vec3(1.0f, 1.0f, 1.0f);
-
-		std::vector<glm::vec3> positions;
-
-		// base poits of rectangles:
-
-		// x rectangle:
-		glm::vec3 x1 = glm::vec3(0, sum / 2, a / 2);
-		glm::vec3 x2 = glm::vec3(0, -sum / 2, a / 2);
-		glm::vec3 x3 = glm::vec3(0, -sum / 2, -a / 2);
-		glm::vec3 x4 = glm::vec3(0, sum / 2, -a / 2);
-
-		positions.push_back(x1);
-		positions.push_back(x2);
-		positions.push_back(x3);
-		positions.push_back(x4);
-
-		// y rectangle:
-		glm::vec3 y1 = glm::vec3(a / 2, 0, sum / 2);
-		glm::vec3 y2 = glm::vec3(a / 2, 0, -sum / 2);
-		glm::vec3 y3 = glm::vec3(-a / 2, 0, -sum / 2);
-		glm::vec3 y4 = glm::vec3(-a / 2, 0, sum / 2);
-
-		positions.push_back(y1);
-		positions.push_back(y2);
-		positions.push_back(y3);
-		positions.push_back(y4);
-
-		//z rectangle:
-		glm::vec3 z1 = glm::vec3(sum / 2, a / 2, 0);
-		glm::vec3 z2 = glm::vec3(-sum / 2, a / 2, 0);
-		glm::vec3 z3 = glm::vec3(-sum / 2, -a / 2, 0);
-		glm::vec3 z4 = glm::vec3(sum / 2, -a / 2, 0);
-
-		positions.push_back(z1);
-		positions.push_back(z2);
-		positions.push_back(z3);
-		positions.push_back(z4);
-
-		std::vector<GLint> indices;
-
-		int resolution = 10;
-
-		// generates points on sphere from icosaheder faces
-		generateIcosaFace(x1, y1, y4, resolution, r, &positions, &indices);
-		generateIcosaFace(x2, y1, y4, resolution, r, &positions, &indices);
-		generateIcosaFace(x3, y2, y3, resolution, r, &positions, &indices);
-		generateIcosaFace(x4, y2, y3, resolution, r, &positions, &indices);
-
-		generateIcosaFace(y1, z1, z4, resolution, r, &positions, &indices);
-		generateIcosaFace(y2, z1, z4, resolution, r, &positions, &indices);
-		generateIcosaFace(y3, z2, z3, resolution, r, &positions, &indices);
-		generateIcosaFace(y4, z2, z3, resolution, r, &positions, &indices);
-
-		generateIcosaFace(z1, x1, x4, resolution, r, &positions, &indices);
-		generateIcosaFace(z2, x1, x4, resolution, r, &positions, &indices);
-		generateIcosaFace(z3, x2, x3, resolution, r, &positions, &indices);
-		generateIcosaFace(z4, x2, x3, resolution, r, &positions, &indices);
-
-		generateIcosaFace(x1, y1, z1, resolution, r, &positions, &indices);
-		generateIcosaFace(x4, y2, z1, resolution, r, &positions, &indices);
-		generateIcosaFace(x1, y4, z2, resolution, r, &positions, &indices);
-		generateIcosaFace(x4, y3, z2, resolution, r, &positions, &indices);
-
-		generateIcosaFace(x2, y1, z4, resolution, r, &positions, &indices);
-		generateIcosaFace(x3, y2, z4, resolution, r, &positions, &indices);
-		generateIcosaFace(x2, y4, z3, resolution, r, &positions, &indices);
-		generateIcosaFace(x3, y3, z3, resolution, r, &positions, &indices);
-
-		for (int i = 0; i < positions.size(); i++)
-		{
-			Vertex vert;
-			vert.position = glm::vec4(positions.at(i), 1.0f);
-			vert.normal = normalize(positions.at(i));
-			vert.tangent = normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), vert.normal));
-			vert.bitangent = normalize(glm::cross(vert.normal, vert.tangent));
-			glm::vec2 horizontal = glm::normalize(glm::vec2(vert.position.x, vert.position.z));
-			vert.texUV = glm::vec2(horizontal.x * 0.5f + 0.5f, vert.normal.y * 0.5f + 0.5f);
-			vertices.push_back(vert);
-		}
-
-		sphere = new Geometry(vertices, indices);
-		sphere->setFaceCulling(true);
 		return sphere;
+	}
+
+	Geometry* GeometryFactory::getWireFrameSphere()
+	{
+		if (nullptr == wireFrameSphere) {
+			std::vector<Vertex> vertices;
+			std::vector<int> indices;
+			int zRes = 100;
+			int yRes = 100;
+			int xRes = 100;
+			float r = 1.0f;
+			for (int i = 0; i < zRes; i++) {
+				Vertex v;
+				v.position = r * glm::vec3(std::sinf(2.0f * M_PI * i / (float)zRes), std::cosf(2.0f * M_PI * i / (float)zRes), 0.0f);
+				vertices.push_back(v);
+
+				if (i < zRes - 1) {
+					indices.push_back(i);
+					indices.push_back(i + 1);
+				}
+				else {
+					indices.push_back(i);
+					indices.push_back(0);
+				}
+			}
+			for (int i = 0; i < yRes; i++) {
+				Vertex v;
+				v.position = r * glm::vec3(std::sinf(2.0f * M_PI * i / (float)yRes), 0.0f, std::cosf(2.0f * M_PI * i / (float)yRes));
+				vertices.push_back(v);
+				if (i < yRes - 1) {
+					indices.push_back(zRes + i);
+					indices.push_back(zRes + i + 1);
+				}
+				else {
+					indices.push_back(zRes + i);
+					indices.push_back(zRes + 0);
+				}
+			}
+			for (int i = 0; i < xRes; i++) {
+				Vertex v;
+				v.position = r * glm::vec3(0.0f, std::sinf(2.0f * M_PI * i / (float)xRes), std::cosf(2.0f * M_PI * i / (float)xRes));
+				vertices.push_back(v);
+				if (i < xRes - 1) {
+					indices.push_back(zRes + yRes + i);
+					indices.push_back(zRes + yRes + i + 1);
+				}
+				else {
+					indices.push_back(zRes + yRes + i);
+					indices.push_back(zRes + yRes + 0);
+				}
+			}
+			wireFrameSphere = new Geometry(vertices, indices);
+			wireFrameSphere->setPrimitiveType(GL_LINES);
+			wireFrameSphere->setFaceCulling(false);
+		}
+		return wireFrameSphere;
 	}
 
 	Geometry* GeometryFactory::getLightVolumeSphere()
 	{
-		if (nullptr != lightVolumeSphere) {
-			return lightVolumeSphere;
+		if (nullptr == lightVolumeSphere) {
+			lightVolumeSphere = generateSphere();
+			lightVolumeSphere->setFaceCulling(true);
+			lightVolumeSphere->setFaceCullingOrientation(GL_CW);
 		}
+		return lightVolumeSphere;
+	}
+
+	Geometry* GeometryFactory::generateSphere()
+	{
 		// ------------------- ICOSAHEDRON SPHERE -------------------
 		float r = 1.0f;
 		float a = 3.0f;
@@ -188,20 +163,25 @@ namespace hograengine {
 		{
 			Vertex vert;
 			vert.position = glm::vec4(positions.at(i), 1.0f);
-			vert.normal = glm::vec3(0.0f);
-			vert.tangent = glm::vec3(0.0f);
-			vert.bitangent = glm::vec3(0.0f);
+			vert.normal = normalize(positions.at(i));
+			vert.tangent = normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), vert.normal));
+			vert.bitangent = normalize(glm::cross(vert.normal, vert.tangent));
+			glm::vec2 horizontal = glm::normalize(glm::vec2(vert.position.x, vert.position.z));
+			vert.texUV = glm::vec2(horizontal.x * 0.5f + 0.5f, vert.normal.y * 0.5f + 0.5f);
 			vertices.push_back(vert);
 		}
 
-		lightVolumeSphere = new Geometry(vertices, indices);
-		lightVolumeSphere->setFaceCulling(true);
-		lightVolumeSphere->setFaceCullingOrientation(GL_CW);
-		return lightVolumeSphere;
+		return new Geometry(vertices, indices);
 	}
 
 	void GeometryFactory::generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLint>* indices)
 	{
+		if (0.0 > glm::dot(glm::cross(b - a, c - a), a)) {
+			glm::vec3 temp = a;
+			a = b;
+			b = temp;
+		}
+
 		a = normalize(a);
 		a = r * a;
 		b = normalize(b);
@@ -234,7 +214,6 @@ namespace hograengine {
 			for (int j = 0; j < i; j++)
 			{
 				vertexIndex++;
-
 				indices->push_back(vertexIndex - i);
 				indices->push_back(vertexIndex);
 				indices->push_back(vertexIndex + 1);
@@ -693,6 +672,8 @@ Geometry* GeometryFactory::getWireframeCube()
 	indices.push_back(7);
 
 	wireframeCube = new Geometry(vertices, indices);
+	wireframeCube->setPrimitiveType(GL_LINES);
+	wireframeCube->setFaceCulling(false);
 	return wireframeCube;
 }
 
