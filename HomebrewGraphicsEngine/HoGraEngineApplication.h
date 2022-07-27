@@ -2,17 +2,17 @@
 #include "GlobalInclude.h"
 #include <string>
 
-namespace hograengine {
+namespace Hogra {
 	class HoGraEngineApplication
 	{
 	public:
 		HoGraEngineApplication() = default;
 
-		int init(const char* windowName);
+		int Init(const char* windowName);
 
 		void loop();
 
-		void destroy();
+		void Destroy();
 
 	private:
 

@@ -1,6 +1,6 @@
 #include"VBO.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	// Constructor that generates a Vertex Buffer Object and links it to vertices
 	VBO::VBO(std::vector<Vertex>& vertices)
@@ -44,7 +44,7 @@ namespace hograengine {
 		glDeleteBuffers(1, &ID);
 	}
 
-	void VBO::Recreate(std::vector<glm::vec3>& vertices)
+	void VBO::Load(std::vector<glm::vec3>& vertices)
 	{
 		glDeleteBuffers(1, &ID);
 		glGenBuffers(1, &ID);
@@ -52,7 +52,7 @@ namespace hograengine {
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), vertices.data(), GL_STATIC_DRAW);
 	}
 
-	void VBO::Recreate(std::vector<glm::vec4>& vertices)
+	void VBO::Load(std::vector<glm::vec4>& vertices)
 	{
 		glDeleteBuffers(1, &ID);
 		glGenBuffers(1, &ID);

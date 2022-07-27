@@ -6,7 +6,7 @@
 #include "Component.h"
 #include "PositionProvider.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Light : public Component {
 	public:
@@ -14,22 +14,22 @@ namespace hograengine {
 
 		~Light() = default;
 
-		void exportData(UniformBufferObject* ubo, unsigned int& idx);
+		void ExportData(UniformBufferObject& ubo, unsigned int& idx);
 
 		// Inherited via Component
-		void control(float dt);
+		void Control(float dt);
 
-		void update(float dt);
+		void Update(float dt);
 
 		PositionProvider* getPositionProvider() const {
 			return positionProvider;
 		}
 
-		void setPositionProvider(PositionProvider* provider) {
+		void SetPositionProvider(PositionProvider* provider) {
 			positionProvider = provider;
 		}
 
-		const glm::vec4& getPosition() const {
+		const glm::vec4& GetPosition() const {
 			return position;
 		}
 

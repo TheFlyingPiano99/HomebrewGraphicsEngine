@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
 
-namespace hograengine {
+namespace Hogra {
 	SceneManager* SceneManager::instance = nullptr;
 
 	SceneManager* SceneManager::getInstance() {
@@ -10,12 +10,20 @@ namespace hograengine {
 		}
 		return instance;
 	}
-	void SceneManager::init(int contextWidth, int contextHeight)
+	void SceneManager::Init(int contextWidth, int contextHeight)
 	{
-		SceneFactory::getInstance()->initDefaultScene(contextWidth, contextHeight);
+		if (nullptr != currentScene) {
+			return;
+		}
+		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
 	}
-	void SceneManager::draw()
+	void SceneManager::Draw()
 	{
-		Scene::getInstance()->draw();
+		currentScene->Draw();
+	}
+	void SceneManager::UpdateAndControl(float dt)
+	{
+		currentScene->Control(dt);
+		currentScene->Update(dt);
 	}
 }

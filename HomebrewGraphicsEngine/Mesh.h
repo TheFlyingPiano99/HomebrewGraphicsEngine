@@ -7,7 +7,7 @@
 #include "Light.h"
 #include "ShadowCaster.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Mesh
 	{

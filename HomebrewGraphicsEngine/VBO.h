@@ -4,7 +4,7 @@
 #include<glad/glad.h>
 #include<vector>
 
-namespace hograengine {
+namespace Hogra {
 
 	// Structure to standardize the vertices used in the meshes
 	struct Vertex
@@ -41,8 +41,8 @@ namespace hograengine {
 		// Deletes the VBO
 		void Delete();
 
-		void Recreate(std::vector<glm::vec3>& vertices);
+		void Load(std::vector<glm::vec3>& vertices);
 
-		void Recreate(std::vector<glm::vec4>& vertices);
+		void Load(std::vector<glm::vec4>& vertices);
 	};
 }

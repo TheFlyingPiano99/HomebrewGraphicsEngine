@@ -1,8 +1,8 @@
 #include "ForceField.h"
 
-namespace hograengine {
+namespace Hogra {
 
-	void HomogeneForceField::control(float dt)
+	void HomogeneForceField::Control(float dt)
 	{
 		for (auto& listener : listeners) {
 			float m = listener->getMass();
@@ -13,15 +13,15 @@ namespace hograengine {
 		}
 	}
 
-	void HomogeneForceField::update(float dt)
+	void HomogeneForceField::Update(float dt)
 	{
 	}
 
-	void CentralForceField::control(float dt)
+	void CentralForceField::Control(float dt)
 	{
 	}
 
-	void CentralForceField::update(float dt)
+	void CentralForceField::Update(float dt)
 	{
 	}
 }

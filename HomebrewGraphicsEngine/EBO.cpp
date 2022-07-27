@@ -1,15 +1,15 @@
 #include"EBO.h"
-namespace hograengine {
+namespace Hogra {
 
 	// Constructor that generates a Elements Buffer Object and links it to indices
-	EBO::EBO(std::vector<GLint>& indices)
+	void EBO::Init(std::vector<GLint>& indices)
 	{
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLint), indices.data(), GL_STATIC_DRAW);
 	}
 
-	void EBO::Recreate(std::vector<GLint>& indices)
+	void EBO::Load(std::vector<GLint>& indices)
 	{
 		glDeleteBuffers(1, &ID);
 		glGenBuffers(1, &ID);

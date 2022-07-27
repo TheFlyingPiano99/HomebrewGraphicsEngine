@@ -6,13 +6,13 @@
 #define BLOOM_RESOLUTION_WIDTH 512
 #define BLOOM_RESOLUTION_HEIGHT 512
 
-hograengine::Bloom::Bloom() {
+Hogra::Bloom::Bloom() {
 	treshold = 1.0f;
 	mixBloom = 0.4f;
 	falloff = 0.9f;
 }
 
-hograengine::Bloom::~Bloom() {
+Hogra::Bloom::~Bloom() {
 	delete prefilterProgram;
 	delete downSampleProgram;
 	delete upSampleProgram;
@@ -25,7 +25,7 @@ hograengine::Bloom::~Bloom() {
 	delete vbo;
 }
 
-void hograengine::Bloom::init(unsigned int width, unsigned int height) {
+void Hogra::Bloom::Init(unsigned int width, unsigned int height) {
 	prefilterProgram = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
 		"",
@@ -46,6 +46,7 @@ void hograengine::Bloom::init(unsigned int width, unsigned int height) {
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomRecombine.frag")
 	);
+	fbo.Init();
 	vao.Bind();
 	std::vector<glm::vec4> vertices;
 	vertices.push_back(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));	//6
@@ -59,7 +60,7 @@ void hograengine::Bloom::init(unsigned int width, unsigned int height) {
 	onResize(width, height);
 }
 
-void hograengine::Bloom::draw(const FBO& outFBO) {
+void Hogra::Bloom::Draw(const FBO& outFBO) {
 	fbo.Bind();
 	glDisable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
@@ -104,7 +105,7 @@ void hograengine::Bloom::draw(const FBO& outFBO) {
 	vao.Unbind();
 }
 
-void hograengine::Bloom::onResize(unsigned int width, unsigned int height) {
+void Hogra::Bloom::onResize(unsigned int width, unsigned int height) {
 	if (nullptr != hdrTexture) {
 		delete hdrTexture;
 		delete depthTexture;
@@ -126,7 +127,7 @@ void hograengine::Bloom::onResize(unsigned int width, unsigned int height) {
 	fbo.Unbind();
 }
 
-void hograengine::Bloom::Bind()
+void Hogra::Bloom::Bind()
 {
 	fbo.Bind();
 	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *hdrTexture, 0);

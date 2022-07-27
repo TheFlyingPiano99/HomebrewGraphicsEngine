@@ -5,7 +5,7 @@
 
 #include"ShaderProgram.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Texture1D : public Texture
 	{

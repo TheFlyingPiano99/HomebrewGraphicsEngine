@@ -2,7 +2,7 @@
 #include "Collider.h"
 #include "AABBCollider.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	// The max number of colliders in a leaf group
 #define MAX_COLLIDER_COUNT 10
@@ -24,19 +24,19 @@ namespace hograengine {
 			// Deleting colliders is not the responsibility of the group
 		}
 
-		float getExpansion(const Collider* collider);
+		float GetExpansion(const Collider* collider);
 
-		void updateAABB();
+		void UpdateAABB();
 
-		void expandAABB(const glm::vec3& candidateMin, const glm::vec3& candidateMax);
+		void ExpandAABB(const glm::vec3& candidateMin, const glm::vec3& candidateMax);
 
-		void addCollider(Collider* collider);
+		void AddCollider(Collider* collider);
 
-		void removeCollider(Collider* collider);
+		void RemoveCollider(Collider* collider);
 
-		int getLoad();
+		int GetLoad();
 
-		void clear();
+		void Clear();
 
 		void putInLeastExpandingSubGroup(Collider* collider);
 
@@ -52,39 +52,39 @@ namespace hograengine {
 			return &aabb;
 		}
 
-		void collide(const ColliderGroup* group);
+		void Collide(const ColliderGroup* group);
 
-		void collide(Collider* collider);
+		void Collide(Collider* collider);
 
-		void selfCollide();
+		void SelfCollide();
 
-		void gatherInstanceDataForDebug(std::vector<Geometry::InstanceData>& data);
+		void GatherInstanceDataForDebug(std::vector<Geometry::InstanceData>& data);
 
 		const glm::vec3& getMin() const {
 			return aabb.getMin();
 		}
 
-		void setMin(const glm::vec3& _min) {
-			aabb.setMin(_min);
+		void SetMin(const glm::vec3& _min) {
+			aabb.SetMin(_min);
 		}
 
-		const glm::vec3& getMax() const {
-			return aabb.getMax();
+		const glm::vec3& GetMax() const {
+			return aabb.GetMax();
 		}
 
-		void setMax(const glm::vec3& _max) {
-			aabb.setMax(_max);
+		void SetMax(const glm::vec3& _max) {
+			aabb.SetMax(_max);
 		}
 
-		void setParent(ColliderGroup* super) {
+		void SetParent(ColliderGroup* super) {
 			parent = super;
 		}
 
-		void updateAABBFromColliders();
+		void UpdateAABBFromColliders();
 
-		void updateAABBFromSubGroups();
+		void UpdateAABBFromSubGroups();
 
-		void print();
+		void Print();
 
 	private:
 		int level = 0;

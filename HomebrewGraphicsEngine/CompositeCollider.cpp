@@ -1,15 +1,15 @@
 #include "CompositeCollider.h"
 #include <algorithm>
-namespace hograengine {
+namespace Hogra {
 
-    bool CompositeCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
+    bool CompositeCollider::TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
     {
         float minT = -1.0f;
         glm::vec3 point = glm::vec3(0.0f);
         glm::vec3 normal = glm::vec3(0.0f);
         for (auto* collider : parts) {
-            if (collider->testRayIntersection(ray, wIntersectionPoint, wIntersectionNormal)) {
-                float t = glm::length(ray.getPosition() - wIntersectionPoint);
+            if (collider->TestRayIntersection(ray, wIntersectionPoint, wIntersectionNormal)) {
+                float t = glm::length(ray.GetPosition() - wIntersectionPoint);
                 if (t < minT || minT < 0.0f) {
                     minT = t;
                     point = wIntersectionPoint;
@@ -22,65 +22,65 @@ namespace hograengine {
         return (minT >= 0.0f);
     }
 
-    bool CompositeCollider::testPointInside(const glm::vec3& point) const
+    bool CompositeCollider::TestPointInside(const glm::vec3& point) const
     {
         for (auto* collider : parts) {
-            if (collider->testPointInside(point)) {
+            if (collider->TestPointInside(point)) {
                 return true;
             }
         }
         return false;
     }
 
-    bool CompositeCollider::collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool CompositeCollider::CollideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
-        return iterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
-            return collider1->collideWithSpherical(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+        return IterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
+            return collider1->CollideWithSpherical(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             }, collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
     }
 
-    bool CompositeCollider::collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool CompositeCollider::CollideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
-        return iterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
-            return collider1->collideWithAABB(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+        return IterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
+            return collider1->CollideWithAABB(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             }, collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
     }
 
-    bool CompositeCollider::collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool CompositeCollider::CollideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
-        return iterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
-            return collider1->collideWithCuboid(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+        return IterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
+            return collider1->CollideWithCuboid(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             }, collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
     }
 
-    bool CompositeCollider::collideWithSpherical(const Collider* collider) const
+    bool CompositeCollider::CollideWithSpherical(const Collider* collider) const
     {
-        return iterateParts(
+        return IterateParts(
             [](const Collider* collider1, const Collider* collider2) {
-                return collider1->collideWithSpherical(collider2);
+                return collider1->CollideWithSpherical(collider2);
             },
             collider);
     }
 
-    bool CompositeCollider::collideWithAABB(const Collider* collider) const
+    bool CompositeCollider::CollideWithAABB(const Collider* collider) const
     {
-        return iterateParts(
+        return IterateParts(
             [](const Collider* collider1, const Collider* collider2) {
-                return collider1->collideWithAABB(collider2);
+                return collider1->CollideWithAABB(collider2);
             },
             collider);
     }
 
-    bool CompositeCollider::collideWithCuboid(const Collider* collider) const
+    bool CompositeCollider::CollideWithCuboid(const Collider* collider) const
     {
-        return iterateParts(
+        return IterateParts(
             [](const Collider* collider1, const Collider* collider2) {
-                return collider1->collideWithCuboid(collider2);
+                return collider1->CollideWithCuboid(collider2);
             },
             collider);
     }
 
-    bool CompositeCollider::iterateParts(std::function<bool(const Collider* collider1, const Collider* collider2, glm::vec3&, glm::vec3&, float&)>&& lambda, const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool CompositeCollider::IterateParts(std::function<bool(const Collider* collider1, const Collider* collider2, glm::vec3&, glm::vec3&, float&)>&& lambda, const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
         bool isCollision = false;
         glm::vec3 sumPoint = glm::vec3(0.0f);
@@ -107,7 +107,7 @@ namespace hograengine {
         return isCollision;
     }
 
-    bool CompositeCollider::iterateParts(const std::function<bool(const Collider* collider1, const Collider* collider2)>&& lambda, const Collider* collider) const
+    bool CompositeCollider::IterateParts(const std::function<bool(const Collider* collider1, const Collider* collider2)>&& lambda, const Collider* collider) const
     {
         for (auto& c : parts) {
             if (lambda(c, collider)) {
@@ -117,28 +117,28 @@ namespace hograengine {
         return false;
     }
 
-    glm::vec3 CompositeCollider::getAABBMin() const
+    glm::vec3 CompositeCollider::GetAABBMin() const
     {
         return aabbMin;
     }
 
-    glm::vec3 CompositeCollider::getAABBMax() const
+    glm::vec3 CompositeCollider::GetAABBMax() const
     {
         return aabbMax;
     }
 
-    bool CompositeCollider::collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool CompositeCollider::CollideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
-        return iterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
-            return collider1->collideWithComposite(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+        return IterateParts([](const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) {
+            return collider1->CollideWithComposite(collider2, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             }, collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
     }
 
-    bool CompositeCollider::collideWithComposite(const Collider* collider) const
+    bool CompositeCollider::CollideWithComposite(const Collider* collider) const
     {
-        return iterateParts(
+        return IterateParts(
             [](const Collider* collider1, const Collider* collider2) {
-                return collider1->collideWithComposite(collider2);
+                return collider1->CollideWithComposite(collider2);
             },
             collider);
     }

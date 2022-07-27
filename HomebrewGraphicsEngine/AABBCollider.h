@@ -1,6 +1,6 @@
 #pragma once
 #include "Collider.h"
-namespace hograengine {
+namespace Hogra {
 
     /*
     * Cheap axis alligned bounding box collider.
@@ -15,16 +15,16 @@ namespace hograengine {
 
         // Inherited via Collider
 
-        virtual bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
+        virtual bool TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
 
-        virtual bool testPointInside(const glm::vec3& point) const override;
+        virtual bool TestPointInside(const glm::vec3& point) const override;
 
-        void control(float dt) override {
+        void Control(float dt) override {
         }
 
-        void update(float dt) override {
+        void Update(float dt) override {
             if (nullptr != positionProvider) {
-                position = positionProvider->getPosition();
+                position = positionProvider->GetPosition();
             }
             min = minRelToPosition + position;
             max = maxRelToPosition + position;
@@ -40,21 +40,21 @@ namespace hograengine {
         /*
         * Used for spatial tree
         */
-        void setMin(const glm::vec3& _min) {
+        void SetMin(const glm::vec3& _min) {
             min = _min;
         }
 
         /*
         * Used for spatial tree
         */
-        const glm::vec3& getMax() const {
+        const glm::vec3& GetMax() const {
             return max;
         }
 
         /*
         * Used for spatial tree
         */
-        void setMax(const glm::vec3& _max) {
+        void SetMax(const glm::vec3& _max) {
             max = _max;
         }
 
@@ -75,8 +75,8 @@ namespace hograengine {
         }
 
         // Inherited via Collider
-        glm::vec3 getAABBMin() const override;
-        glm::vec3 getAABBMax() const override;
+        glm::vec3 GetAABBMin() const override;
+        glm::vec3 GetAABBMax() const override;
 
     private:
         glm::vec3 min = glm::vec3();
@@ -85,14 +85,14 @@ namespace hograengine {
         glm::vec3 minRelToPosition = glm::vec3();
         glm::vec3 maxRelToPosition = glm::vec3();
 
-        bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-        bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-        bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-        bool collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
 
-        bool collideWithSpherical(const Collider* collider) const override;
-        bool collideWithAABB(const Collider* collider) const override;
-        bool collideWithCuboid(const Collider* collider) const override;
-        bool collideWithComposite(const Collider* collider) const override;
+        bool CollideWithSpherical(const Collider* collider) const override;
+        bool CollideWithAABB(const Collider* collider) const override;
+        bool CollideWithCuboid(const Collider* collider) const override;
+        bool CollideWithComposite(const Collider* collider) const override;
     };
 }

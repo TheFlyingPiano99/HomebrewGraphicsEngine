@@ -2,7 +2,7 @@
 #include <vector>
 #include"VAO.h"
 #include"EBO.h"
-namespace hograengine {
+namespace Hogra {
 
 	class Geometry
 	{
@@ -33,15 +33,15 @@ namespace hograengine {
 
 		void DrawInstanced(const std::vector<LightInstancedData>& instanceData);
 
-		void setFaceCulling(bool cull);
+		void SetFaceCulling(bool cull);
 
-		void setFaceCullingOrientation(int orientation);
+		void SetFaceCullingOrientation(int orientation);
 
 		void BindVAO() {
 			VAO.Bind();
 		}
 
-		void setPrimitiveType(int type) {
+		void SetPrimitiveType(int type) {
 			primitiveType = type;
 		}
 

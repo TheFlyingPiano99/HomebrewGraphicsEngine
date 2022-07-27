@@ -4,7 +4,7 @@
 #include "VAO.h"
 #include "VBO.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	MaterialFactory* MaterialFactory::instance = nullptr;
 
@@ -16,7 +16,7 @@ namespace hograengine {
 		return instance;
 	}
 
-	void MaterialFactory::destroyInstance()
+	void MaterialFactory::DestroyInstance()
 	{
 		if (nullptr != instance) {
 			delete instance;
@@ -58,6 +58,7 @@ namespace hograengine {
 		vao.LinkAttrib(*vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
 
 		FBO fbo;
+		fbo.Init();
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *roughnessMetallicAO);
 		fbo.Bind();
 		auto* combinationProgram = new ShaderProgram(
@@ -92,7 +93,7 @@ namespace hograengine {
 		delete aoMap;
 		delete combinationProgram;
 
-		auto* shader = ShaderProgramFactory::getInstance()->getDefaultPBRProgramWithMapping();
+		auto* shader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
 		auto* material = new Material(shader);
 		material->addTexture(albedoMap);
 		material->addTexture(normalMap);
@@ -103,7 +104,7 @@ namespace hograengine {
 	
 	Material* MaterialFactory::getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity)
 	{
-		ShaderProgram* program = ShaderProgramFactory::getInstance()->getEmissiveMaterialProgram();
+		ShaderProgram* program = ShaderProgramFactory::getInstance()->GetEmissiveMaterialProgram();
 		Material* material = new Material(program);
 		material->setAlbedo(color * intensity);
 		material->setAlphaBlend(false);

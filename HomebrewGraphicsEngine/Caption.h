@@ -9,7 +9,7 @@
 #include "VAO.h"
 #include "VBO.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Caption : public Component
 	{
@@ -39,7 +39,7 @@ namespace hograengine {
 			vao.Delete();
 		}
 
-		void draw() {
+		void Draw() {
 			program->Activate();
 			texture->Bind();
 			glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::renderResolutionWidth, 0.0f, (float)GlobalVariables::renderResolutionHeight)
@@ -60,8 +60,8 @@ namespace hograengine {
 		}
 
 		// Inherited via Component
-		void control(float dt) override;
-		void update(float dt) override;
+		void Control(float dt) override;
+		void Update(float dt) override;
 
 		ShaderProgram* getShaderProgram() const {
 			return program;

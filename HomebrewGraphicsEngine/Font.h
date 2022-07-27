@@ -9,7 +9,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Texture2D.h"
 
-namespace hograengine {
+namespace Hogra {
 #define DEFAULT_FONT_HEIGHT 24
 
     class Font
@@ -165,21 +165,21 @@ namespace hograengine {
             return shaderProgram;
         }
 
-        glm::ivec2 getTextDimension(const std::string& text, float& maxBaseline) {
+        glm::ivec2 GetTextDimension(const std::string& text, int& maxBaseline) {
             glm::ivec2 min;
             glm::ivec2 max;
             maxBaseline = 0.0f;
             bool first = true;
             std::string::const_iterator c;
-            float x = 0;
+            float x = 0.0f;
             for (c = text.begin(); c != text.end(); c++)
             {
                 auto& ch = characters[*c];
 
-                float xpos = x + ch.bearing.x;
-                float ypos = ch.bearing.y - ch.size.y;
-                float w = ch.size.x;
-                float h = ch.size.y;
+                int xpos = x + ch.bearing.x;
+                int ypos = ch.bearing.y - ch.size.y;
+                int w = ch.size.x;
+                int h = ch.size.y;
                 if (maxBaseline < ch.size.y - ch.bearing.y) {
                     maxBaseline = ch.size.y - ch.bearing.y;
                 }

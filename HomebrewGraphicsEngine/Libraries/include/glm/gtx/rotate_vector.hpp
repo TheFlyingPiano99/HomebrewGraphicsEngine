@@ -48,14 +48,14 @@ namespace glm
 	//! Rotate a two dimensional vector.
 	//! From GLM_GTX_rotate_vector extension.
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL vec<2, T, Q> rotate(
+	GLM_FUNC_DECL vec<2, T, Q> Rotate(
 		vec<2, T, Q> const& v,
 		T const& angle);
 
 	//! Rotate a three dimensional vector around an axis.
 	//! From GLM_GTX_rotate_vector extension.
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL vec<3, T, Q> rotate(
+	GLM_FUNC_DECL vec<3, T, Q> Rotate(
 		vec<3, T, Q> const& v,
 		T const& angle,
 		vec<3, T, Q> const& normal);
@@ -63,7 +63,7 @@ namespace glm
 	//! Rotate a four dimensional vector around an axis.
 	//! From GLM_GTX_rotate_vector extension.
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL vec<4, T, Q> rotate(
+	GLM_FUNC_DECL vec<4, T, Q> Rotate(
 		vec<4, T, Q> const& v,
 		T const& angle,
 		vec<3, T, Q> const& normal);

@@ -3,7 +3,7 @@
 #include <glm/ext/vector_float3.hpp>
 #include "Physics.h"
 
-namespace hograengine {
+namespace Hogra {
 	class UserControl : public Component
 	{
 	public:
@@ -13,7 +13,7 @@ namespace hograengine {
 		virtual void moveRight(float dt);
 		virtual void moveUp(float dt);
 		virtual void moveDown(float dt);
-		virtual void rotate(float mouseX, float mouseY);
+		virtual void Rotate(float mouseX, float mouseY);
 
 		void setInitialDirection(const glm::vec3& dir) {
 			initialDirection = dir;
@@ -35,11 +35,11 @@ namespace hograengine {
 			physics = _physics;
 		}
 
-		void setPositionProvider(PositionProvider* provider) {
+		void SetPositionProvider(PositionProvider* provider) {
 			positionProvider = provider;
 		}
 
-		void setOrientationProvider(OrientationProvider* provider) {
+		void SetOrientationProvider(OrientationProvider* provider) {
 			orientationProvider = provider;
 		}
 
@@ -61,8 +61,8 @@ namespace hograengine {
 		Physics* physics;
 
 		// Inherited via Component
-		void control(float dt) override;
-		void update(float dt) override;
+		void Control(float dt) override;
+		void Update(float dt) override;
 
 		PositionProvider* positionProvider = nullptr;
 		OrientationProvider* orientationProvider = nullptr;

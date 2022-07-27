@@ -1,5 +1,5 @@
 #include "Animation.h"
-namespace hograengine {
+namespace Hogra {
 
 	void Animation::reset() {
 		t = 0.0f;

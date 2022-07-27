@@ -4,7 +4,7 @@
 #include "AssetFolderPathManager.h"
 #include "GeometryFactory.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class PostProcessStage
 	{

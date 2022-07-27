@@ -1,6 +1,6 @@
 #pragma once
 #include<glm/glm.hpp>
-namespace hograengine {
+namespace Hogra {
 
 	class Animation
 	{

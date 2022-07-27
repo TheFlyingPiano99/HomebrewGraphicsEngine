@@ -2,7 +2,7 @@
 
 #include "Geometry.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	/*
 	* Factory that creates a singleton full screen quad geometry.
@@ -11,7 +11,7 @@ namespace hograengine {
 	{
 	public:
 		static GeometryFactory* getInstance();
-		static void destroyInstance();
+		static void DestroyInstance();
 
 		Geometry* getFullScreenQuad();
 

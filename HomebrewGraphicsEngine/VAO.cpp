@@ -1,6 +1,6 @@
 #include"VAO.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	// Constructor that generates a VAO ID
 	VAO::VAO()

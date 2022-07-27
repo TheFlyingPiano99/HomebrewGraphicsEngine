@@ -1,7 +1,7 @@
 #pragma once
 #include "Collider.h"
 
-namespace hograengine {
+namespace Hogra {
 
     /*
     * Simple and cheap sphere shaped collider object.
@@ -16,35 +16,35 @@ namespace hograengine {
         ~SphericalCollider() = default;
 
         // Inherited via Collider
-        bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
+        bool TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
 
-        bool testPointInside(const glm::vec3& point) const override;
+        bool TestPointInside(const glm::vec3& point) const override;
 
-        float getRadius() const {
+        float GetRadius() const {
             return radius;
         }
 
-        void setRadius(float r) {
+        void SetRadius(float r) {
             radius = r;
         }
 
         // Inherited via Collider
-        virtual glm::vec3 getAABBMin() const override;
+        virtual glm::vec3 GetAABBMin() const override;
 
-        virtual glm::vec3 getAABBMax() const override;
+        virtual glm::vec3 GetAABBMax() const override;
 
     private:
         float radius = 1.0f;
 
-        bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-        bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-        bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
-        bool collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
 
-        bool collideWithSpherical(const Collider* collider) const override;
-        bool collideWithAABB(const Collider* collider) const override;
-        bool collideWithCuboid(const Collider* collider) const override;
-        bool collideWithComposite(const Collider* collider) const override;
+        bool CollideWithSpherical(const Collider* collider) const override;
+        bool CollideWithAABB(const Collider* collider) const override;
+        bool CollideWithCuboid(const Collider* collider) const override;
+        bool CollideWithComposite(const Collider* collider) const override;
 
 
 

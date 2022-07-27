@@ -2,7 +2,7 @@
 #include "Component.h"
 #include<glm/glm.hpp>
 #include "SceneObject.h"
-namespace hograengine {
+namespace Hogra {
 
 	class Physics : public Component
 	{
@@ -11,8 +11,8 @@ namespace hograengine {
 		~Physics() override = default;
 
 		// Inherited via Component
-		void control(float dt) override;
-		void update(float dtSec) override;
+		void Control(float dt) override;
+		void Update(float dtSec) override;
 
 		/*
 		* return force applied to center of mass in Newtons
@@ -188,7 +188,7 @@ namespace hograengine {
 			);
 		}
 
-		void collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal);
+		void Collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal);
 
 		void forcePositionOffset(const glm::vec3& offset) {
 			forcedPositionOffsets.push_back(new glm::vec3(offset));
@@ -237,7 +237,7 @@ namespace hograengine {
 		* Should be used only for collision between two Physics objects
 		*/
 		const glm::vec3& getOwnerPosition() const {
-			return owner->getPosition();
+			return owner->GetPosition();
 		}
 
 	private:

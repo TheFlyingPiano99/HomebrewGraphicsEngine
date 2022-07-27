@@ -2,7 +2,7 @@
 
 #include "imgui_impl_glfw.h"
 #include "Scene.h"
-namespace hograengine {
+namespace Hogra {
 
 	/*
 	* Singleton object
@@ -26,7 +26,7 @@ namespace hograengine {
 			return instance;
 		}
 
-		static void destroyInstance() {
+		static void DestroyInstance() {
 			if (instance != nullptr) {
 				delete instance;
 				instance = nullptr;
@@ -41,7 +41,7 @@ namespace hograengine {
 
 		void configToScene(Scene& scene);
 
-		void draw();
+		void Draw();
 
 		void setVisible(bool b) {
 			visible = b;

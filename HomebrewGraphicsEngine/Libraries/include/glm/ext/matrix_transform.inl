@@ -15,7 +15,7 @@ namespace glm
 	}
 
 	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> rotate(mat<4, 4, T, Q> const& m, T angle, vec<3, T, Q> const& v)
+	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> Rotate(mat<4, 4, T, Q> const& m, T angle, vec<3, T, Q> const& v)
 	{
 		T const a = angle;
 		T const c = cos(a);

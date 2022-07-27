@@ -30,7 +30,7 @@
 
 #define MAX_LIGHT_COUNT 1024
 
-namespace hograengine {
+namespace Hogra {
 	static struct GlobalVariables {
 		static GLFWwindow* window;
 		static int windowWidth;

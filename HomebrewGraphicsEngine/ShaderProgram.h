@@ -2,7 +2,7 @@
 
 #include<glad/glad.h>
 #include<string>
-namespace hograengine {
+namespace Hogra {
 
 	class ShaderProgram
 	{

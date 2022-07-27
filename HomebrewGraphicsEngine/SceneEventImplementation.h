@@ -2,7 +2,7 @@
 #include "SceneEvent.h"
 
 #include "Collider.h"
-namespace hograengine {
+namespace Hogra {
 
 	class CollisionEvent : public SceneEvent
 	{

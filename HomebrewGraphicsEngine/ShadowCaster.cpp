@@ -1,6 +1,7 @@
 #include "ShadowCaster.h"
-namespace hograengine {
+namespace Hogra {
 	ShadowCaster::ShadowCaster(glm::vec3 position, glm::vec3 direction) : position(position), direction(glm::normalize(direction)) {
+		fbo.Init();
 		fbo.Bind();
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
@@ -20,7 +21,7 @@ namespace hograengine {
 		);
 		fbo.LinkTexture(GL_DEPTH_ATTACHMENT, *shadowMap);
 		FBO::BindDefault();
-		update();
+		Update();
 
 		std::vector<int> dataSizes;
 		// lightSpaceMatrix:
@@ -28,6 +29,6 @@ namespace hograengine {
 		dataSizes.push_back(sizeof(glm::vec4));
 		dataSizes.push_back(sizeof(glm::vec4));
 		dataSizes.push_back(sizeof(glm::vec4));
-		ubo = new UniformBufferObject(dataSizes, SHADOWCASTER_UBO_BINDING);
+		ubo.Init(dataSizes, SHADOWCASTER_UBO_BINDING);
 	}
 }

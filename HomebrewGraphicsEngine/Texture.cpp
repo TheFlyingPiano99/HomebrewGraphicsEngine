@@ -1,7 +1,7 @@
 #include "Texture.h"
 #include "glad/glad.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	void Texture::Delete() const
 	{

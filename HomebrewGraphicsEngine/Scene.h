@@ -22,7 +22,7 @@
 #include "Caption.h"
 #include "Bloom.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	/*
 	* Singleton object
@@ -30,48 +30,42 @@ namespace hograengine {
 	class Scene
 	{
 	public:
-		static Scene* init(int contextWidth, int contextHeight);
-		static Scene* getInstance();
-		static void destroyInstance();
+		void Init(int contextWidth, int contextHeight);
 
-		void control(float dt);
-		void update(float dt);
-		void draw();
+		void Control(float dt);
+		void Update(float dt);
+		void Draw();
 
-		void addSceneObject(SceneObject* object, const std::string& instanceGroupName = "");
+		void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "");
 
-		void addCollider(Collider* collider, const std::string& colliderGroupName = "");
+		void AddCollider(Collider* collider, const std::string& colliderGroupName = "");
 
-		void addPostProcessStage(PostProcessStage* stage);
+		void AddPostProcessStage(PostProcessStage* stage);
 
-		void setCamera(Camera* _camera);
+		void AddLight(Light* light);
 
-		void addLight(Light* light);
+		void AddFont(Font* font);
 
-		void addLights(const std::vector<Light*>& lights);
+		void AddCaption(Caption* caption);
 
-		void addFont(Font* font);
-
-		void addCaption(Caption* caption);
-
-		void setUserControl(UserControl* uc);
+		void SetUserControl(UserControl* uc);
 
 		const glm::vec3& getPreferedUp() const;
 
-		void togglePause();
+		void TogglePause();
 
-		Camera* getCamera();
+		Camera& GetCamera();
 
-		void onContextResize(int contextWidth, int contextHeight);
+		void Resize(int contextWidth, int contextHeight);
 
-		void serialize();
+		void Serialize();
 
 		~Scene() {
-			serialize();
-			destroy();
+			Serialize();
+			Destroy();
 		}
 
-		void pokeObject(const glm::vec2& ndcCoords);
+		void PokeObject(const glm::vec2& ndcCoords);
 
 		UserControl* getAvatarControl() {
 			return userControl;
@@ -85,12 +79,15 @@ namespace hograengine {
 			drawDebug = b;
 		}
 
+		ShadowCaster* getShadowCaster() const {
+			return shadowCaster;
+		}
+
 	private:
-		static Scene* instance;
 
 		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
 
-		Camera* camera = nullptr;
+		Camera camera;
 		std::vector<Light*> lights;
 		LightManager lightManager;
 		Bloom bloom;
@@ -119,23 +116,12 @@ namespace hograengine {
 		std::vector<PostProcessStage*> postProcessStages;
 		ShadowCaster* shadowCaster = nullptr;
 
-		Scene(unsigned int contextWidth, unsigned int contextHeight) : contextWidth(contextWidth), contextHeight(contextHeight) {
-		}
+		void Destroy();
 
-		void destroy();
-
-		void initCameraAndLights();
 		void initShadowMap();
-		void initSceneObjects();
-		void initSkyBox(Texture** cubeMap);
-		void initCube(Texture** cubeMap, glm::vec3 pos, Collider* collider, ForceField* = nullptr);
-		SceneObject* initSphere(Texture** cubeMap, const glm::vec3& pos, ForceField* field = nullptr, const char* materialName = "");
-		void initLoadedGeometry(Texture** cubeMap, const glm::vec3& pos, ForceField* field = nullptr);
-		void initGroud(const Texture* skyBox);
-		void initAvatar(ForceField* gravitation);
-		void initFonts();
+
 		CompositeCollider* initCompositeCollider();
-		ForceField* initGravitation();
+		ForceField* InitGravitation();
 		void initPostProcessStages();
 		class SceneNotInstanciatedException : public std::exception {
 

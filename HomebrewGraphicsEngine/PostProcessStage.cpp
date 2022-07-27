@@ -1,8 +1,9 @@
 #include "PostProcessStage.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	PostProcessStage::PostProcessStage(std::string& fragmentShaderPath, int contextWidth, int contextHeight) {
+		fbo.Init();
 		fbo.Bind();
 		program = new ShaderProgram(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),

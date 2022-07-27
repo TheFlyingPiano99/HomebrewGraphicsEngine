@@ -2,25 +2,25 @@
 #include "ColliderGroup.h"
 #include "InstanceGroup.h"
 
-namespace hograengine {
+namespace Hogra {
 	class CollisionManager
 	{
 	public:
 		CollisionManager() = default;
 
-		void addCollider(Collider* collider, const std::string& colliderGroupName);
+		void AddCollider(Collider* collider, const std::string& colliderGroupName);
 
-		void removeCollider(Collider* collider);
+		void RemoveCollider(Collider* collider);
 
-		void collide();
+		void Collide();
 
-		void update();
+		void Update();
 
-		void setUseSpatialTree(bool b);
+		void SetUseSpatialTree(bool b);
 
-		void initDebug();
+		void InitDebug();
 
-		void drawDebug();
+		void DrawDebug();
 
 	private:
 		ColliderGroup root = ColliderGroup(nullptr);

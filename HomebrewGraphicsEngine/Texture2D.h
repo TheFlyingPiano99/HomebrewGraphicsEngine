@@ -7,7 +7,7 @@
 #include <vector>
 #include "ShaderProgram.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Texture2D : public Texture
 	{

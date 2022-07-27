@@ -40,7 +40,7 @@ namespace glm
 	/// @tparam T Floating-point scalar types
 	/// @tparam Q Value from qualifier enum
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL qua<T, Q> rotate(qua<T, Q> const& q, T const& angle, vec<3, T, Q> const& axis);
+	GLM_FUNC_DECL qua<T, Q> Rotate(qua<T, Q> const& q, T const& angle, vec<3, T, Q> const& axis);
 	/// @}
 } //namespace glm
 

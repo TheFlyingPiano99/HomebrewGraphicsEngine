@@ -1,9 +1,9 @@
 #include "Caption.h"
 
-void hograengine::Caption::control(float dt)
+void Hogra::Caption::Control(float dt)
 {
 }
 
-void hograengine::Caption::update(float dt)
+void Hogra::Caption::Update(float dt)
 {
 }

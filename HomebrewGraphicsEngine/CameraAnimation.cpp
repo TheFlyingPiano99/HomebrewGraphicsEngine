@@ -1,6 +1,6 @@
 #include "CameraAnimation.h"
 
-void hograengine::HeadBob::perform(void* obj, float dt)
+void Hogra::HeadBob::perform(void* obj, float dt)
 {
 	Camera* camera = (Camera*)obj;
 	float amplitude = 0.05f;

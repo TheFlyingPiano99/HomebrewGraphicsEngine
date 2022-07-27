@@ -1,7 +1,7 @@
 #include "SceneEventImplementation.h"
 #include <iostream>
 
-namespace hograengine {
+namespace Hogra {
 
 	void CollisionEvent::execute(float dt)
 	{

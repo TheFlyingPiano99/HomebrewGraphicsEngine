@@ -6,11 +6,13 @@
 #include<glm/gtx/vector_angle.hpp>
 #include "GlobalInclude.h"
 
-namespace hograengine {
+namespace Hogra {
 
-	Camera::Camera(float aspectRatio, glm::vec3 eye, glm::vec3 center)
-		: aspectRatio(aspectRatio), eye(eye), center(center)
-	{
+
+	void Camera::Init(float aspectRatio, glm::vec3 eye, glm::vec3 center) {
+		this->aspectRatio = aspectRatio;
+		this->eye = eye;
+		this->center = center;
 		std::vector<int> uniformDataSizes;
 		//eye:
 		uniformDataSizes.push_back(sizeof(glm::vec3));
@@ -24,26 +26,21 @@ namespace hograengine {
 		uniformDataSizes.push_back(sizeof(glm::vec4));
 		uniformDataSizes.push_back(sizeof(glm::vec4));
 		uniformDataSizes.push_back(sizeof(glm::vec4));
-		ubo = new UniformBufferObject(uniformDataSizes, CAMERA_UBO_BINDING);
+		ubo.Init(uniformDataSizes, CAMERA_UBO_BINDING);
 	}
 
-	Camera::~Camera()
-	{
-		delete ubo;
-	}
-
-	bool Camera::update(float dt)
+	bool Camera::Update(float dt)
 	{
 		if (nullptr != animation) {
 			animation->perform(this, dt);
 		}
 		if (nullptr != positionProvider) {
 			lookDir = center - eye;
-			eye = positionProvider->getPosition() + positionInProvidersSpace;
+			eye = positionProvider->GetPosition() + positionInProvidersSpace;
 			center = eye + lookDir;
 		}
 		if (nullptr != orientationProvider) {
-			lookDir = orientationProvider->getOrientation() * lookDirInProvidersSpace;
+			lookDir = orientationProvider->GetOrientation() * lookDirInProvidersSpace;
 			center = eye + lookDir;
 		}
 		// Makes camera look in the right direction from the right position
@@ -70,22 +67,22 @@ namespace hograengine {
 		prefUp = newPrefUp;
 	}
 
-	void Camera::exportData() const
+	void Camera::ExportData()
 	{
-		ubo->Bind();
+		ubo.Bind();
 		//eye:
-		ubo->uploadSubData((void*)glm::value_ptr(eye), 0);
+		ubo.UploadSubData((void*)glm::value_ptr(eye), 0);
 		//viewProjMatrix:
-		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[0]), 1);
-		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[1]), 2);
-		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[2]), 3);
-		ubo->uploadSubData((void*)glm::value_ptr(viewProjMatrix[3]), 4);
+		ubo.UploadSubData((void*)glm::value_ptr(viewProjMatrix[0]), 1);
+		ubo.UploadSubData((void*)glm::value_ptr(viewProjMatrix[1]), 2);
+		ubo.UploadSubData((void*)glm::value_ptr(viewProjMatrix[2]), 3);
+		ubo.UploadSubData((void*)glm::value_ptr(viewProjMatrix[3]), 4);
 		//rayDirMatrix:
-		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[0]), 5);
-		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[1]), 6);
-		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[2]), 7);
-		ubo->uploadSubData((void*)glm::value_ptr(rayDirMatrix[3]), 8);
-		ubo->Unbind();
+		ubo.UploadSubData((void*)glm::value_ptr(rayDirMatrix[0]), 5);
+		ubo.UploadSubData((void*)glm::value_ptr(rayDirMatrix[1]), 6);
+		ubo.UploadSubData((void*)glm::value_ptr(rayDirMatrix[2]), 7);
+		ubo.UploadSubData((void*)glm::value_ptr(rayDirMatrix[3]), 8);
+		ubo.Unbind();
 	}
 
 	void Camera::moveForward(float dt) {
@@ -147,7 +144,7 @@ namespace hograengine {
 		moved = true;
 	}
 
-	void Camera::rotate(float rotX, float rotY)
+	void Camera::Rotate(float rotX, float rotY)
 	{
 		if (nullptr != orientationProvider) {
 			return;

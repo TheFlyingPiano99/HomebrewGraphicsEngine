@@ -1,6 +1,6 @@
 #include "TextureCube.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	TextureCube::TextureCube(std::vector<std::string>& images, GLuint unit)
 	{

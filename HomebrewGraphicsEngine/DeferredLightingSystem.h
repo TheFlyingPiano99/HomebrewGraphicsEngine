@@ -6,7 +6,7 @@
 #include "GeometryFactory.h"
 #include "glm/gtx/transform.hpp"
 
-namespace hograengine {
+namespace Hogra {
 	class DeferredLightingSystem
 	{
 	public:
@@ -31,6 +31,7 @@ namespace hograengine {
 		};
 
 		void Init(int width, int height) {
+			gBuffer.Init();
 			fullScreenProgram = new ShaderProgram(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 				"",
@@ -100,7 +101,7 @@ namespace hograengine {
 
 		void Draw(const std::vector<Light*>& lights) {
 			meshFullScreen->Bind();
-			glm::vec4 pos = lights[0]->getPosition();
+			glm::vec4 pos = lights[0]->GetPosition();
 			glm::vec3 pow = lights[0]->getPowerDensity();
 			glUniform4f(glGetUniformLocation(fullScreenProgram->ID, "light.position"), pos.x , pos.y, pos.z, pos.w);
 			glUniform3f(glGetUniformLocation(fullScreenProgram->ID, "light.powerDensity"), pow.x, pow.y, pow.z);
@@ -109,7 +110,7 @@ namespace hograengine {
 			mesh->Bind();
 			instanceData.clear();
 			for (int i = 1; i < lights.size(); i++) {
-				Geometry::LightInstancedData d = { lights[i]->getVolumeModelMatrix(), lights[i]->getPosition(), glm::vec4(lights[i]->getPowerDensity(), 0.0)};
+				Geometry::LightInstancedData d = { lights[i]->getVolumeModelMatrix(), lights[i]->GetPosition(), glm::vec4(lights[i]->getPowerDensity(), 0.0)};
 				instanceData.push_back(d);
 			}
 			mesh->DrawInstanced(instanceData);

@@ -4,12 +4,12 @@
 #include <string>
 #include <map>
 
-namespace hograengine {
+namespace Hogra {
 	class MaterialFactory
 	{
 	public:
 		static MaterialFactory* getInstance();
-		static void destroyInstance();
+		static void DestroyInstance();
 
 		Material* getPBRMaterial(const char* materialName);
 

@@ -4,32 +4,32 @@
 #include<glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 
-float hograengine::ColliderGroup::getExpansion(const Collider* collider)
+float Hogra::ColliderGroup::GetExpansion(const Collider* collider)
 {
 	glm::vec3 expansion = glm::vec3(0.0f);
 	glm::vec3 min = getMin();
-	glm::vec3 max = getMax();
-	expansion.x = std::max(std::max(0.0f, min.x - collider->getAABBMin().x), std::max(0.0f, collider->getAABBMax().x - max.x));
-	expansion.y = std::max(std::max(0.0f, min.y - collider->getAABBMin().y), std::max(0.0f, collider->getAABBMax().y - max.y));
-	expansion.z = std::max(std::max(0.0f, min.z - collider->getAABBMin().z), std::max(0.0f, collider->getAABBMax().z - max.z));
+	glm::vec3 max = GetMax();
+	expansion.x = std::max(std::max(0.0f, min.x - collider->GetAABBMin().x), std::max(0.0f, collider->GetAABBMax().x - max.x));
+	expansion.y = std::max(std::max(0.0f, min.y - collider->GetAABBMin().y), std::max(0.0f, collider->GetAABBMax().y - max.y));
+	expansion.z = std::max(std::max(0.0f, min.z - collider->GetAABBMin().z), std::max(0.0f, collider->GetAABBMax().z - max.z));
 	return length(expansion);
 }
 
-void hograengine::ColliderGroup::updateAABB() {
+void Hogra::ColliderGroup::UpdateAABB() {
 	if (subGroups.empty()) {
-		updateAABBFromColliders();
+		UpdateAABBFromColliders();
 	}
 	else {
 		for (auto& group : subGroups) {
-			group->updateAABB();
+			group->UpdateAABB();
 		}
-		updateAABBFromSubGroups();
+		UpdateAABBFromSubGroups();
 	}
 }
 
-void hograengine::ColliderGroup::expandAABB(const glm::vec3& candidateMin, const glm::vec3& candidateMax) {
+void Hogra::ColliderGroup::ExpandAABB(const glm::vec3& candidateMin, const glm::vec3& candidateMax) {
 	glm::vec3 prevMin = aabb.getMin();
-	glm::vec3 prevMax = aabb.getMax();
+	glm::vec3 prevMax = aabb.GetMax();
 	glm::vec3 newMin;
 	glm::vec3 newMax;
 	newMin.x = (candidateMin.x < prevMin.x) ? candidateMin.x : prevMin.x;
@@ -38,11 +38,11 @@ void hograengine::ColliderGroup::expandAABB(const glm::vec3& candidateMin, const
 	newMax.x = (candidateMax.x > prevMax.x) ? candidateMax.x : prevMax.x;
 	newMax.y = (candidateMax.y > prevMax.y) ? candidateMax.y : prevMax.y;
 	newMax.z = (candidateMax.z > prevMax.z) ? candidateMax.z : prevMax.z;
-	aabb.setMin(newMin);
-	aabb.setMax(newMax);
+	aabb.SetMin(newMin);
+	aabb.SetMax(newMax);
 }
 
-void hograengine::ColliderGroup::addCollider(Collider* collider) {
+void Hogra::ColliderGroup::AddCollider(Collider* collider) {
 	if (subGroups.empty()) {	// Leaf group
 		colliders.push_back(collider);
 		if (colliders.size() > MAX_COLLIDER_COUNT && level < MAX_DEPTH_LEVEL) {	// Divide group into subgroups
@@ -50,7 +50,7 @@ void hograengine::ColliderGroup::addCollider(Collider* collider) {
 			subGroups.push_back(new ColliderGroup(this, level + 1));
 			for (int i = 0; i < 2; i++) {	// First few in separate groups
 				int groupIdx = i % 2;
-				subGroups[groupIdx]->addCollider(colliders[i]);
+				subGroups[groupIdx]->AddCollider(colliders[i]);
 			}
 			for (int i = 2; i < colliders.size(); i++) {	// The remaining in the least expanding groups
 				putInLeastExpandingSubGroup(colliders[i]);
@@ -58,7 +58,7 @@ void hograengine::ColliderGroup::addCollider(Collider* collider) {
 			colliders.clear();
 		}
 		else {
-			expandAABB(collider->getAABBMin(), collider->getAABBMax());
+			ExpandAABB(collider->GetAABBMin(), collider->GetAABBMax());
 		}
 	}
 	else {	// Not leaf group
@@ -66,10 +66,10 @@ void hograengine::ColliderGroup::addCollider(Collider* collider) {
 	}
 }
 
-void hograengine::ColliderGroup::removeCollider(Collider* collider) {
+void Hogra::ColliderGroup::RemoveCollider(Collider* collider) {
 	if (!subGroups.empty()) {
 		for (auto& group : subGroups) {
-			group->removeCollider(collider);
+			group->RemoveCollider(collider);
 		}
 	}
 	else {
@@ -84,45 +84,45 @@ void hograengine::ColliderGroup::removeCollider(Collider* collider) {
 	}
 }
 
-int hograengine::ColliderGroup::getLoad() {
+int Hogra::ColliderGroup::GetLoad() {
 	return std::max(colliders.size(), subGroups.size());
 }
 
-void hograengine::ColliderGroup::clear()
+void Hogra::ColliderGroup::Clear()
 {
 	for (auto& group : subGroups) {
 		delete group;
 	}
-	aabb.setMin(glm::vec3(0, 0, 0));
-	aabb.setMax(glm::vec3(0, 0, 0));
+	aabb.SetMin(glm::vec3(0, 0, 0));
+	aabb.SetMax(glm::vec3(0, 0, 0));
 	subGroups.clear();
 	colliders.clear();
 	// Deleting colliders is not the responsibility of the group!
 }
 
-void hograengine::ColliderGroup::putInLeastExpandingSubGroup(Collider* collider)
+void Hogra::ColliderGroup::putInLeastExpandingSubGroup(Collider* collider)
 {
 	float minExpansion;
 	ColliderGroup* minGroup = nullptr;
 	for (auto& group : subGroups) {	// Find subGroup least expanded by the new collider
-		float currentExpansion = group->getExpansion(collider);
+		float currentExpansion = group->GetExpansion(collider);
 		if (nullptr == minGroup || currentExpansion < minExpansion) {
 			minExpansion = currentExpansion;
 			minGroup = group;
 		}
 	}
-	minGroup->addCollider(collider);
-	expandAABB(minGroup->getMin(), minGroup->getMax());
+	minGroup->AddCollider(collider);
+	ExpandAABB(minGroup->getMin(), minGroup->GetMax());
 }
 
-void hograengine::ColliderGroup::collide(const ColliderGroup* group) {
-	if (aabb.testCollision(group->getAABB())) {
+void Hogra::ColliderGroup::Collide(const ColliderGroup* group) {
+	if (aabb.TestCollision(group->getAABB())) {
 		if (subGroups.empty()) {
 			if (group->getSubGroups().empty()) {
 				const auto& otherColliders = group->getColliders();
 				for (int i = 0; i < colliders.size(); i++) {
 					for (int j = 0; j < otherColliders.size(); j++) {
-						colliders[i]->collide(otherColliders[j]);
+						colliders[i]->Collide(otherColliders[j]);
 					}
 				}
 			}
@@ -130,7 +130,7 @@ void hograengine::ColliderGroup::collide(const ColliderGroup* group) {
 				const auto& otherSubGroups = group->getSubGroups();
 				for (int i = 0; i < colliders.size(); i++) {
 					for (int j = 0; j < otherSubGroups.size(); j++) {
-						otherSubGroups[j]->collide(colliders[i]);
+						otherSubGroups[j]->Collide(colliders[i]);
 					}
 				}
 			}
@@ -140,7 +140,7 @@ void hograengine::ColliderGroup::collide(const ColliderGroup* group) {
 				const auto& otherColliders = group->getColliders();
 				for (int i = 0; i < subGroups.size(); i++) {
 					for (int j = 0; j < otherColliders.size(); j++) {
-						subGroups[i]->collide(otherColliders[j]);
+						subGroups[i]->Collide(otherColliders[j]);
 					}
 				}
 			}
@@ -148,7 +148,7 @@ void hograengine::ColliderGroup::collide(const ColliderGroup* group) {
 				const auto& otherSubGroups = group->getSubGroups();
 				for (int i = 0; i < subGroups.size(); i++) {
 					for (int j = 0; j < otherSubGroups.size(); j++) {
-						subGroups[i]->collide(otherSubGroups[j]);
+						subGroups[i]->Collide(otherSubGroups[j]);
 					}
 				}
 			}
@@ -156,26 +156,26 @@ void hograengine::ColliderGroup::collide(const ColliderGroup* group) {
 	}
 }
 
-void hograengine::ColliderGroup::collide(Collider* collider) {
-	if (aabb.testCollision(collider)) {
+void Hogra::ColliderGroup::Collide(Collider* collider) {
+	if (aabb.TestCollision(collider)) {
 		if (subGroups.empty()) {
 			for (auto& coll : colliders) {
-				collider->collide(coll);
+				collider->Collide(coll);
 			}
 		}
 		else {
 			for (auto& group : subGroups) {
-				group->collide(collider);
+				group->Collide(collider);
 			}
 		}
 	}
 }
 
-void hograengine::ColliderGroup::selfCollide() {
+void Hogra::ColliderGroup::SelfCollide() {
 	if (subGroups.empty()) {
 		for (int i = 0; i < colliders.size() - 1; i++) {
 			for (int j = i + 1; j < colliders.size(); j++) {
-				colliders[i]->collide(colliders[j]);
+				colliders[i]->Collide(colliders[j]);
 			}
 		}
 	}
@@ -183,34 +183,34 @@ void hograengine::ColliderGroup::selfCollide() {
 		for (int i = 0; i < subGroups.size() - 1; i++) {
 			for (int j = i + 1; j < subGroups.size(); j++) {
 
-				subGroups[i]->selfCollide();
-				subGroups[i]->collide(subGroups[j]);
+				subGroups[i]->SelfCollide();
+				subGroups[i]->Collide(subGroups[j]);
 			}
 		}
-		subGroups[subGroups.size() - 1]->selfCollide();
+		subGroups[subGroups.size() - 1]->SelfCollide();
 	}
 }
 
-void hograengine::ColliderGroup::gatherInstanceDataForDebug(std::vector<Geometry::InstanceData>& data)
+void Hogra::ColliderGroup::GatherInstanceDataForDebug(std::vector<Geometry::InstanceData>& data)
 {
 	glm::vec3 min = aabb.getMin();
-	glm::vec3 max = aabb.getMax();
+	glm::vec3 max = aabb.GetMax();
 	glm::vec3 center = (min + max) / 2.0f;
 	Geometry::InstanceData d;
 	d.modelMatrix = glm::translate(center) * glm::scale((max - min) / 2.0f);
 	data.push_back(d);
 	for (auto& group : subGroups) {
-		group->gatherInstanceDataForDebug(data);
+		group->GatherInstanceDataForDebug(data);
 	}
 }
 
-void hograengine::ColliderGroup::updateAABBFromColliders() {
+void Hogra::ColliderGroup::UpdateAABBFromColliders() {
 	bool isMinSet = false;
 	bool isMaxSet = false;
 	glm::vec3 newMin;
 	glm::vec3 newMax;
 	for (const auto& collider : colliders) {
-		glm::vec3 currentMin = collider->getAABBMin();
+		glm::vec3 currentMin = collider->GetAABBMin();
 		if (!isMinSet) {
 			newMin = currentMin;
 			isMinSet = true;
@@ -226,7 +226,7 @@ void hograengine::ColliderGroup::updateAABBFromColliders() {
 				newMin.z = currentMin.z;
 			}
 		}
-		glm::vec3 currentMax = collider->getAABBMax();
+		glm::vec3 currentMax = collider->GetAABBMax();
 		if (!isMaxSet) {
 			newMax = currentMax;
 			isMaxSet = true;
@@ -243,11 +243,11 @@ void hograengine::ColliderGroup::updateAABBFromColliders() {
 			}
 		}
 	}
-	aabb.setMin(newMin);
-	aabb.setMax(newMax);
+	aabb.SetMin(newMin);
+	aabb.SetMax(newMax);
 }
 
-void hograengine::ColliderGroup::updateAABBFromSubGroups() {
+void Hogra::ColliderGroup::UpdateAABBFromSubGroups() {
 	bool isMinSet = false;
 	bool isMaxSet = false;
 	glm::vec3 newMin;
@@ -269,7 +269,7 @@ void hograengine::ColliderGroup::updateAABBFromSubGroups() {
 				newMin.z = currentMin.z;
 			}
 		}
-		glm::vec3 currentMax = group->getMax();
+		glm::vec3 currentMax = group->GetMax();
 		if (!isMaxSet) {
 			newMax = currentMax;
 			isMaxSet = true;
@@ -286,23 +286,23 @@ void hograengine::ColliderGroup::updateAABBFromSubGroups() {
 			}
 		}
 	}
-	aabb.setMin(newMin);
-	aabb.setMax(newMax);
+	aabb.SetMin(newMin);
+	aabb.SetMax(newMax);
 }
 
-void hograengine::ColliderGroup::print() {
+void Hogra::ColliderGroup::Print() {
 	for (int i = 0; i < level; i++) {
 		std::cout << "| ";
 	}
 	glm::vec3 min = getMin();
-	glm::vec3 max = getMax();
+	glm::vec3 max = GetMax();
 	std::cout << "Group: [(" << min.x << ", " << min.y << ", " << min.z << ")\t(" << max.x << ", " << max.y << "," << max.z << ")] " << subGroups.size()  << std::endl;
 	for (auto& group : subGroups) {
-		group->print();
+		group->Print();
 	}
 	for (auto& coll : colliders) {
-		min = coll->getAABBMin();
-		max = coll->getAABBMax();
+		min = coll->GetAABBMin();
+		max = coll->GetAABBMax();
 		for (int i = 0; i < level + 1; i++) {
 			std::cout << "| ";
 		}

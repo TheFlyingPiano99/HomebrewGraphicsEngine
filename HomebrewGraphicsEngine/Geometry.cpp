@@ -1,6 +1,6 @@
 #include "Geometry.h"
 #include "GlobalInclude.h"
-namespace hograengine {
+namespace Hogra {
 
 	Geometry::Geometry(std::vector<Vertex>& vertices, std::vector<GLint>& indices) : vertices(vertices), indices(indices)
 	{
@@ -8,7 +8,8 @@ namespace hograengine {
 		// Generates Vertex Buffer Object and links it to vertices
 		VBO VBO(vertices);
 		// Generates Element Buffer Object and links it to indices
-		EBO EBO(indices);
+		EBO ebo;
+		ebo.Init(indices);
 		// Links VBO attributes such as coordinates and colors to VAO
 		VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);	// pos
 		VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));	// normal
@@ -18,7 +19,7 @@ namespace hograengine {
 		// Unbind all to prevent accidentally modifying them
 		VAO.Unbind();
 		VBO.Unbind();
-		EBO.Unbind();
+		ebo.Unbind();
 	}
 
 	void Geometry::initInstancedBuffer() {
@@ -147,11 +148,11 @@ namespace hograengine {
 		glDrawElementsInstanced(primitiveType, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr, (GLsizei)instanceData.size());
 	}
 
-	void Geometry::setFaceCulling(bool cull)
+	void Geometry::SetFaceCulling(bool cull)
 	{
 		faceCulling = cull;
 	}
-	void Geometry::setFaceCullingOrientation(int orientation)
+	void Geometry::SetFaceCullingOrientation(int orientation)
 	{
 		faceCullingOrietation = orientation;
 	}

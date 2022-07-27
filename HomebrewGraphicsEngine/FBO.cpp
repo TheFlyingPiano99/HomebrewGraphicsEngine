@@ -1,8 +1,8 @@
 #include "FBO.h"
 #include "GlobalInclude.h"
-namespace hograengine {
+namespace Hogra {
 
-	FBO::FBO()
+	void FBO::Init()
 	{
 		glGenFramebuffers(1, &ID);
 	}

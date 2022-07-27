@@ -1,7 +1,7 @@
 #include "AssetFolderPathManager.h"
 #include <fstream>
 #include <filesystem>
-namespace hograengine {
+namespace Hogra {
 
 	AssetFolderPathManager* AssetFolderPathManager::instance = nullptr;
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "SceneObject.h"
 
-namespace hograengine{
+namespace Hogra{
 	class InstanceGroup
 	{
 	public:
@@ -15,7 +15,7 @@ namespace hograengine{
 
 		void injectInstanceData(const std::vector<Geometry::InstanceData>& data);
 
-		void draw();
+		void Draw();
 
 		void drawShadow();
 

@@ -43,7 +43,7 @@ namespace glm
 	/// @see gtc_matrix_transform
 	/// @see gtx_transform
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL mat<4, 4, T, Q> rotate(
+	GLM_FUNC_DECL mat<4, 4, T, Q> Rotate(
 		T angle,
 		vec<3, T, Q> const& v);
 

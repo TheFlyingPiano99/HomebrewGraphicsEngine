@@ -5,7 +5,7 @@
 #include "VBO.h"
 #include "FBO.h"
 
-namespace hograengine {
+namespace Hogra {
 	class Bloom
 	{
 	public:
@@ -13,9 +13,9 @@ namespace hograengine {
 
 		~Bloom();
 
-		void init(unsigned int width, unsigned int height);
+		void Init(unsigned int width, unsigned int height);
 
-		void draw(const FBO& outFBO);
+		void Draw(const FBO& outFBO);
 
 		float getTreshold() const {
 			return treshold;

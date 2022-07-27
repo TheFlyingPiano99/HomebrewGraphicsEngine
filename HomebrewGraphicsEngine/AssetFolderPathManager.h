@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace hograengine {
+namespace Hogra {
 
 	/*
 	* Singleton
@@ -40,7 +40,7 @@ namespace hograengine {
 			return instance;
 		}
 
-		static void destroyInstance() {
+		static void DestroyInstance() {
 			if (instance != nullptr) {
 				delete instance;
 				instance = nullptr;

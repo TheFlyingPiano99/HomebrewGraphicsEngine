@@ -1,54 +1,54 @@
 #include "UserControl.h"
 
-void hograengine::UserControl::moveForward(float dt)
+void Hogra::UserControl::moveForward(float dt)
 {
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(ahead * (orientationProvider->getOrientation() * propellingForce));
+	physics->applyTransientForce(ahead * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void hograengine::UserControl::moveBackward(float dt)
+void Hogra::UserControl::moveBackward(float dt)
 {
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-ahead * (orientationProvider->getOrientation() * propellingForce));
+	physics->applyTransientForce(-ahead * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void hograengine::UserControl::moveLeft(float dt)
+void Hogra::UserControl::moveLeft(float dt)
 {
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-right * (orientationProvider->getOrientation() * propellingForce));
+	physics->applyTransientForce(-right * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void hograengine::UserControl::moveRight(float dt)
+void Hogra::UserControl::moveRight(float dt)
 {
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(right * (orientationProvider->getOrientation() * propellingForce));
+	physics->applyTransientForce(right * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void hograengine::UserControl::moveUp(float dt)
+void Hogra::UserControl::moveUp(float dt)
 {
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(up * (orientationProvider->getOrientation() * propellingForce));
+	physics->applyTransientForce(up * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void hograengine::UserControl::moveDown(float dt)
+void Hogra::UserControl::moveDown(float dt)
 {
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-up * (orientationProvider->getOrientation() * propellingForce));
+	physics->applyTransientForce(-up * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void hograengine::UserControl::rotate(float mouseX, float mouseY)
+void Hogra::UserControl::Rotate(float mouseX, float mouseY)
 {
 	if (physics == nullptr || !allowRotate) {
 		return;
@@ -56,17 +56,17 @@ void hograengine::UserControl::rotate(float mouseX, float mouseY)
 	physics->applyTransientTorque(rotatingTorque * glm::vec3(mouseY, mouseX, 0.0f));
 }
 
-void hograengine::UserControl::control(float dt)
+void Hogra::UserControl::Control(float dt)
 {
 
 }
 
-void hograengine::UserControl::update(float dt)
+void Hogra::UserControl::Update(float dt)
 {
 	if (nullptr == physics) {
 		return;
 	}
-	ahead = orientationProvider->getOrientation() * initialDirection;
+	ahead = orientationProvider->GetOrientation() * initialDirection;
 	right = glm::cross(ahead, initialUp);
 	up = glm::cross(right, ahead);
 }

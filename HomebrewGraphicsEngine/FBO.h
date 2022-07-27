@@ -2,7 +2,7 @@
 #include<glad/glad.h>
 #include "Texture2D.h"
 #include "RBO.h"
-namespace hograengine {
+namespace Hogra {
 
 	class FBO
 	{
@@ -10,7 +10,7 @@ namespace hograengine {
 		GLuint ID;
 		glm::ivec4 viewport;
 
-		FBO();
+		void Init();
 
 		~FBO();
 

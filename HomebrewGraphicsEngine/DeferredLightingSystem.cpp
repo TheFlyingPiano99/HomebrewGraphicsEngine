@@ -1,5 +1,5 @@
 #include "DeferredLightingSystem.h"
 
-namespace hograengine {
+namespace Hogra {
 	
 }

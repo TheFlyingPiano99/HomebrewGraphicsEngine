@@ -2,7 +2,7 @@
 #include "Collider.h"
 #include <functional>
 
-namespace hograengine {
+namespace Hogra {
 
     class CompositeCollider :
         public Collider
@@ -21,23 +21,23 @@ namespace hograengine {
             }
         }
 
-        void control(float dt) override {
+        void Control(float dt) override {
         }
 
-        void update(float dt) override {
+        void Update(float dt) override {
             if (nullptr != positionProvider) {
                 if (nullptr != orientationProvider) {
-                    orientation = orientationProvider->getOrientation();
+                    orientation = orientationProvider->GetOrientation();
                 }
-                position = positionProvider->getPosition();
+                position = positionProvider->GetPosition();
                 bool isMinSet = false;
                 bool isMaxSet = false;
                 for (int i = 0; i < parts.size(); i++) {
-                    parts[i]->setPosition(orientation * *positionsInOrigo[i] + position);
-                    parts[i]->setScale(scale);
-                    parts[i]->setOrientation(orientation);
-                    parts[i]->update(dt);
-                    glm::vec3 currentMin = parts[i]->getAABBMin();
+                    parts[i]->SetPosition(orientation * *positionsInOrigo[i] + position);
+                    parts[i]->SetScale(scale);
+                    parts[i]->SetOrientation(orientation);
+                    parts[i]->Update(dt);
+                    glm::vec3 currentMin = parts[i]->GetAABBMin();
                     if (!isMinSet) {
                         aabbMin = currentMin;
                         isMinSet = true;
@@ -53,7 +53,7 @@ namespace hograengine {
                             aabbMin.z = currentMin.z;
                         }
                     }
-                    glm::vec3 currentMax = parts[i]->getAABBMax();
+                    glm::vec3 currentMax = parts[i]->GetAABBMax();
                     if (!isMaxSet) {
                         aabbMax = currentMax;
                         isMaxSet = true;
@@ -74,30 +74,30 @@ namespace hograengine {
         }
 
         // Inherited via Collider
-        bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
+        bool TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const override;
 
-        bool testPointInside(const glm::vec3& point) const override;
+        bool TestPointInside(const glm::vec3& point) const override;
 
-        bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
 
-        bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
 
-        bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
 
-        bool collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
+        bool CollideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const override;
 
-        bool collideWithSpherical(const Collider* collider) const override;
+        bool CollideWithSpherical(const Collider* collider) const override;
 
-        bool collideWithAABB(const Collider* collider) const override;
+        bool CollideWithAABB(const Collider* collider) const override;
 
-        bool collideWithCuboid(const Collider* collider) const override;
+        bool CollideWithCuboid(const Collider* collider) const override;
 
-        bool collideWithComposite(const Collider* collider) const override;
+        bool CollideWithComposite(const Collider* collider) const override;
 
         void addSubCollider(Collider* collider, const glm::vec3& positionInOrigo) {
             parts.push_back(collider);
             positionsInOrigo.push_back(new glm::vec3(positionInOrigo));
-            expandAABB(collider->getAABBMin(), collider->getAABBMax());
+            ExpandAABB(collider->GetAABBMin(), collider->GetAABBMax());
         }
 
         std::span<const Collider* const> getSubColliders() const {
@@ -105,13 +105,13 @@ namespace hograengine {
         }
 
         // Inherited via Collider
-        virtual glm::vec3 getAABBMin() const override;
+        virtual glm::vec3 GetAABBMin() const override;
 
-        virtual glm::vec3 getAABBMax() const override;
+        virtual glm::vec3 GetAABBMax() const override;
 
     private:
 
-        void expandAABB(const glm::vec3& candidateMin, const glm::vec3& candidateMax) {
+        void ExpandAABB(const glm::vec3& candidateMin, const glm::vec3& candidateMax) {
             glm::vec3 prevMin = aabbMin;
             glm::vec3 prevMax = aabbMax;
             glm::vec3 newMin;
@@ -129,10 +129,10 @@ namespace hograengine {
         std::vector<Collider*> parts;
         std::vector<glm::vec3*> positionsInOrigo;  // Reference positions of colliders parts
 
-        bool iterateParts(std::function<bool(const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)>&& lambda,
+        bool IterateParts(std::function<bool(const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)>&& lambda,
             const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const;
 
-        bool iterateParts(const std::function<bool(const Collider* collider1, const Collider* collider2)>&& lambda,
+        bool IterateParts(const std::function<bool(const Collider* collider1, const Collider* collider2)>&& lambda,
             const Collider* collider) const;
 
         glm::vec3 aabbMin;

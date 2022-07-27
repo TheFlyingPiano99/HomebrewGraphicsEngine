@@ -1,14 +1,14 @@
 #include "Physics.h"
 #include <math.h>
 #include <iostream>
-namespace hograengine {
+namespace Hogra {
 
-	void Physics::control(float dtSec)
+	void Physics::Control(float dtSec)
 	{
 
 	}
 
-	void Physics::update(float dtSec)
+	void Physics::Update(float dtSec)
 	{
 		if (!forcedPositionOffsets.empty()) {
 			glm::vec3 sumOffset = glm::vec3(0.0f);	// Position offset constraints
@@ -18,7 +18,7 @@ namespace hograengine {
 				delete offset;
 			}
 			forcedPositionOffsets.clear();
-			owner->setPosition(owner->getPosition() + sumOffset / n);
+			owner->SetPosition(owner->GetPosition() + sumOffset / n);
 		}
 		if (!forcedOrientationOffsets.empty()) {
 			glm::quat cumOffset = angleAxis(0.0f, glm::vec3(0.0f, 0.0f, 0.0f));	// Orientation offset constraints
@@ -28,17 +28,17 @@ namespace hograengine {
 				delete offset;
 			}
 			forcedOrientationOffsets.clear();
-			owner->setOrientation(cumOffset * owner->getOrientation());
+			owner->SetOrientation(cumOffset * owner->GetOrientation());
 		}
 		//Movement:
 		momentum += (appliedForce + appliedTransientForce) * dtSec + impulse;
-		glm::quat orientation = owner->getOrientation();
+		glm::quat orientation = owner->GetOrientation();
 		glm::vec3 rotatedModelSpaceDrag = abs(orientation * modelSpaceDrag);
 		glm::vec3 drag = worldSpaceDrag + rotatedModelSpaceDrag;
 		momentum *= glm::vec3(std::expf(-drag.x * dtSec * invMass), std::expf(-drag.y * dtSec * invMass), std::expf(-drag.z * dtSec * invMass));
-		glm::vec3 pos = owner->getPosition();
+		glm::vec3 pos = owner->GetPosition();
 		pos += momentum * invMass * dtSec;
-		owner->setPosition(pos);
+		owner->SetPosition(pos);
 
 		//Rotation:
 		angularMomentum += (appliedTorque + appliedTransientTorque) * dtSec + impulseAsIntegratedTorque;
@@ -56,7 +56,7 @@ namespace hograengine {
 		glm::vec3 rotation = dtSec * rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix) * angularMomentum;
 		if (float ang = length(rotation); ang > 0.0f) {
 			orientation = glm::angleAxis(ang, glm::normalize(rotation)) * orientation;
-			owner->setOrientation(orientation);
+			owner->SetOrientation(orientation);
 		}
 
 		// Clear transient:
@@ -66,7 +66,7 @@ namespace hograengine {
 		impulseAsIntegratedTorque = glm::vec3(0.0f, 0.0f, 0.0f);
 	}
 
-	void Physics::collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal) {
+	void Physics::Collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal) {
 		glm::vec3 ka = point - this->getOwnerPosition();
 		glm::vec3 kb = point - b.getOwnerPosition();
 		glm::vec3 va = this->getVelocity() + cross(this->getAngularVelocity(), ka);

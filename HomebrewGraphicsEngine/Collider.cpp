@@ -2,13 +2,13 @@
 #include "SceneEventManager.h"
 #include "SceneEventImplementation.h"
 #include <iostream>
-namespace hograengine {
+namespace Hogra {
 
-    void Collider::collide(Collider* collider)
+    void Collider::Collide(Collider* collider)
     {
-        auto& otherGroups = collider->getColliderGroups();
+        auto& otherGroups = collider->GetColliderGroups();
         for (auto& otherGroup : otherGroups) {
-            if (this->isPartOfGroup(otherGroup)) {      // If two cilliders are part of the same group than no collision is calculated.
+            if (this->IsPartOfGroup(otherGroup)) {      // If two cilliders are part of the same group than no collision is calculated.
                 return;
             }
         }
@@ -17,44 +17,44 @@ namespace hograengine {
             glm::vec3 collisionPoint;
             glm::vec3 collisionNormal;
             float overlapAlongNormal;
-            isCollision = testCollision(collider, collisionPoint, collisionNormal, overlapAlongNormal);
-            if (isCollision && nullptr != physics && nullptr != collider->getPhysics()
+            isCollision = TestCollision(collider, collisionPoint, collisionNormal, overlapAlongNormal);
+            if (isCollision && nullptr != physics && nullptr != collider->GetPhysics()
                 && !isnan(collisionPoint.x) && !isnan(collisionPoint.y) && !isnan(collisionPoint.z)
                 && !isnan(collisionNormal.x) && !isnan(collisionNormal.y) && !isnan(collisionNormal.z)) {
-                physics->collide(*collider->getPhysics(), collisionPoint, collisionNormal, overlapAlongNormal);
+                physics->Collide(*collider->GetPhysics(), collisionPoint, collisionNormal, overlapAlongNormal);
             }
         }
         else {
-            isCollision = testCollision(collider);
+            isCollision = TestCollision(collider);
         }
         if (isCollision) {
             SceneEventManager::getInstance()->pushEvent(new CollisionEvent((const Collider*)this, collider));
             haveCollided = true;
-            collider->setHaveCollided(true);
+            collider->SetHaveCollided(true);
         }
 
     }
 
-    Physics* Collider::getPhysics() const {
+    Physics* Collider::GetPhysics() const {
         return physics;
     }
 
-    bool Collider::testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool Collider::TestCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
         bool isCollision = false;
         switch (collider->type)
         {
         case ColliderType::sphericalColliderType:
-            isCollision = collideWithSpherical(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+            isCollision = CollideWithSpherical(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             break;
         case ColliderType::AABBColliderType:
-            isCollision = collideWithAABB(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+            isCollision = CollideWithAABB(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             break;
         case ColliderType::cuboidColliderType:
-            isCollision = collideWithCuboid(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+            isCollision = CollideWithCuboid(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             break;
         case ColliderType::compositeColliderType:
-            isCollision = collideWithComposite(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+            isCollision = CollideWithComposite(collider, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
             break;
         default:
             break;
@@ -62,22 +62,22 @@ namespace hograengine {
         return isCollision;
     }
 
-    bool Collider::testCollision(const Collider* collider) const
+    bool Collider::TestCollision(const Collider* collider) const
     {
         bool isCollision = false;
         switch (collider->type)
         {
         case ColliderType::sphericalColliderType:
-            isCollision = collideWithSpherical(collider);
+            isCollision = CollideWithSpherical(collider);
             break;
         case ColliderType::AABBColliderType:
-            isCollision = collideWithAABB(collider);
+            isCollision = CollideWithAABB(collider);
             break;
         case ColliderType::cuboidColliderType:
-            isCollision = collideWithCuboid(collider);
+            isCollision = CollideWithCuboid(collider);
             break;
         case ColliderType::compositeColliderType:
-            isCollision = collideWithComposite(collider);
+            isCollision = CollideWithComposite(collider);
             break;
         default:
             break;
@@ -85,20 +85,20 @@ namespace hograengine {
         return isCollision;
     }
 
-    void Collider::control(float dt)
+    void Collider::Control(float dt)
     {
     }
 
-    void Collider::update(float dt)
+    void Collider::Update(float dt)
     {
         if (nullptr != positionProvider) {
-            position = positionProvider->getPosition();
+            position = positionProvider->GetPosition();
         }
         if (nullptr != orientationProvider) {
-            orientation = orientationProvider->getOrientation();
+            orientation = orientationProvider->GetOrientation();
         }
         if (nullptr != scaleProvider) {
-            scale = scaleProvider->getScale();
+            scale = scaleProvider->GetScale();
         }
     }
 }

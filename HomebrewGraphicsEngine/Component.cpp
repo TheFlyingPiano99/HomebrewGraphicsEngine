@@ -1,4 +1,4 @@
 #include "Component.h"
-namespace hograengine {
+namespace Hogra {
 
 }

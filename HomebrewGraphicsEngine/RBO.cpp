@@ -1,6 +1,6 @@
 #include "RBO.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	RBO::RBO(GLenum internalformat, GLsizei width, GLsizei height)
 	{

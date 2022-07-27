@@ -1,5 +1,5 @@
 #include "GlobalInclude.h"
-namespace hograengine {
+namespace Hogra {
 
 	GLFWwindow* GlobalVariables::window = nullptr;
 	int GlobalVariables::windowWidth = DEFAULT_WINDOW_WIDTH;

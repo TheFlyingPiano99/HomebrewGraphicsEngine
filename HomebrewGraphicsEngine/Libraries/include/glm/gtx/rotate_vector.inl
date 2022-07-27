@@ -25,7 +25,7 @@ namespace glm
 	}
 
 	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<2, T, Q> rotate
+	GLM_FUNC_QUALIFIER vec<2, T, Q> Rotate
 	(
 		vec<2, T, Q> const& v,
 		T const& angle
@@ -41,14 +41,14 @@ namespace glm
 	}
 
 	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<3, T, Q> rotate
+	GLM_FUNC_QUALIFIER vec<3, T, Q> Rotate
 	(
 		vec<3, T, Q> const& v,
 		T const& angle,
 		vec<3, T, Q> const& normal
 	)
 	{
-		return mat<3, 3, T, Q>(glm::rotate(angle, normal)) * v;
+		return mat<3, 3, T, Q>(glm::Rotate(angle, normal)) * v;
 	}
 	/*
 	template<typename T, qualifier Q>
@@ -63,14 +63,14 @@ namespace glm
 	}
 	*/
 	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER vec<4, T, Q> rotate
+	GLM_FUNC_QUALIFIER vec<4, T, Q> Rotate
 	(
 		vec<4, T, Q> const& v,
 		T const& angle,
 		vec<3, T, Q> const& normal
 	)
 	{
-		return rotate(angle, normal) * v;
+		return Rotate(angle, normal) * v;
 	}
 
 	template<typename T, qualifier Q>
@@ -182,6 +182,6 @@ namespace glm
 		vec<3, T, Q> RotationAxis = cross(Up, Normal);
 		T Angle = acos(dot(Normal, Up));
 
-		return rotate(Angle, RotationAxis);
+		return Rotate(Angle, RotationAxis);
 	}
 }//namespace glm

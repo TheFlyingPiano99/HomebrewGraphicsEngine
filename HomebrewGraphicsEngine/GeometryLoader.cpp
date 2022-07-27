@@ -3,8 +3,8 @@
 #include <assimp/postprocess.h>      
 #include <assimp/scene.h>      
 
-namespace hograengine {
-	Geometry* GeometryLoader::load(const std::string& path) {
+namespace Hogra {
+	Geometry* GeometryLoader::Load(const std::string& path) {
 		Geometry* geometry = nullptr;
 		Assimp::Importer importer;
 		auto* scene = importer.ReadFile(
@@ -17,8 +17,7 @@ namespace hograengine {
 		if (nullptr == scene) {
 			throw GeometryLoadingException();
 		}
-
-
+		
 		// Process meshes:
 		for (int m = 0; m < scene->mNumMeshes; m++) {	// Obsolate loop (only one mesh)
 			auto* mesh = scene->mMeshes[m];
@@ -30,7 +29,7 @@ namespace hograengine {
 				auto aiTangent = mesh->mTangents[v];
 				auto aiBitangent = mesh->mBitangents[v];
 				auto aiUV = mesh->mTextureCoords[0][v];
-
+				
 				Vertex vertex;
 				vertex.position = glm::vec3(aiVertex.x, aiVertex.y, aiVertex.z);
 				vertex.normal = glm::vec3(aiNormal.x, aiNormal.y, aiNormal.z);

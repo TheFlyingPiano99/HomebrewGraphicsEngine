@@ -10,24 +10,23 @@
 #include "Animation.h"
 #include "UniformBuffer.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Camera
 	{
 	public:
-		// Camera constructor to set up initial values
-		Camera(float aspectRatio, glm::vec3 eye, glm::vec3 center);
-		~Camera();
 
+		void Init(float aspectRatio, glm::vec3 eye, glm::vec3 center);
+			
 		// Updates the camera matrix to the Vertex Shader
-		bool update(float dt);
+		bool Update(float dt);
 
 		void updateOrientation(glm::vec3 prefUp);
 
 		/*
 		* Load data on GPU.
 		*/
-		void exportData() const;
+		void ExportData();
 
 		void moveForward(float dt);
 		void moveBackward(float dt);
@@ -36,7 +35,7 @@ namespace hograengine {
 		void moveUp(float dt);
 		void moveDown(float dt);
 
-		void rotate(float mouseX, float mouseY);
+		void Rotate(float mouseX, float mouseY);
 		void approachCenter(float delta);
 
 		void setAspectRatio(float ratio) {
@@ -75,7 +74,7 @@ namespace hograengine {
 			return positionProvider;
 		}
 
-		void setPositionProvider(PositionProvider* provider) {
+		void SetPositionProvider(PositionProvider* provider) {
 			positionProvider = provider;
 		}
 
@@ -83,7 +82,7 @@ namespace hograengine {
 			return orientationProvider;
 		}
 
-		void setOrientationProvider(OrientationProvider* provider) {
+		void SetOrientationProvider(OrientationProvider* provider) {
 			orientationProvider = provider;
 		}
 
@@ -99,7 +98,7 @@ namespace hograengine {
 			return prefUp;
 		}
 
-		glm::quat getOrientation() {
+		glm::quat GetOrientation() {
 			return quat_cast(glm::inverse(view));
 		}
 
@@ -120,7 +119,7 @@ namespace hograengine {
 		}
 
 	private:
-		UniformBufferObject* ubo = nullptr;
+		UniformBufferObject ubo;
 		// Stores the main vectors of the camera
 		glm::vec3 eye;
 		glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);

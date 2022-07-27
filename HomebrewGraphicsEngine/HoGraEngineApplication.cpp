@@ -5,8 +5,9 @@
 #include <iostream>
 #include "GUI.h"
 #include "ControlActionManager.h"
+#include "SceneManager.h"
 
-namespace hograengine {
+namespace Hogra {
 	void HoGraEngineApplication::setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {
 		if (isFullScreenMode) {
 			GLFWmonitor* monitor = glfwGetPrimaryMonitor();
@@ -19,7 +20,7 @@ namespace hograengine {
 		glfwGetWindowSize(window, &GlobalVariables::windowWidth, &GlobalVariables::windowHeight);
 	}
 
-	int HoGraEngineApplication::init(const char* _windowName) {
+	int HoGraEngineApplication::Init(const char* _windowName) {
 		windowName = _windowName;
 		// Initialize GLFW
 		glfwInit();
@@ -101,8 +102,7 @@ namespace hograengine {
 					realDelta = 0.0;
 				}
 				ControlActionManager::getInstance()->queueTriggeringActions();
-				Scene::getInstance()->control(dt);
-				Scene::getInstance()->update(dt);
+				SceneManager::getInstance()->UpdateAndControl(dt);
 			}
 			prevIterTime = crntTime;
 
@@ -114,7 +114,7 @@ namespace hograengine {
 
 	}
 	
-	void HoGraEngineApplication::destroy() {
+	void HoGraEngineApplication::Destroy() {
 		GUI::getInstance()->destroyGUI();
 
 		// Delete window before ending the program

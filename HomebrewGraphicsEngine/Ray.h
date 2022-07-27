@@ -1,16 +1,16 @@
 #pragma once
 #include "glm/glm.hpp"
-namespace hograengine {
+namespace Hogra {
 
 	class Ray
 	{
 	public:
 
-		const glm::vec3& getPosition() const {
+		const glm::vec3& GetPosition() const {
 			return position;
 		}
 
-		void setPosition(const glm::vec3& pos) {
+		void SetPosition(const glm::vec3& pos) {
 			position = pos;
 		}
 

@@ -87,7 +87,7 @@ namespace glm
 	///
 	/// @see gtx_quaternion
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL vec<3, T, Q> rotate(
+	GLM_FUNC_DECL vec<3, T, Q> Rotate(
 		qua<T, Q> const& q,
 		vec<3, T, Q> const& v);
 
@@ -95,7 +95,7 @@ namespace glm
 	///
 	/// @see gtx_quaternion
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL vec<4, T, Q> rotate(
+	GLM_FUNC_DECL vec<4, T, Q> Rotate(
 		qua<T, Q> const& q,
 		vec<4, T, Q> const& v);
 

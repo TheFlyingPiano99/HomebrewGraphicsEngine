@@ -2,7 +2,7 @@
 #include <complex>
 #include "GlobalInclude.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	GeometryFactory* GeometryFactory::instance = nullptr;
 
@@ -10,7 +10,7 @@ namespace hograengine {
 	{
 		if (nullptr == sphere) {
 			sphere = generateSphere();
-			sphere->setFaceCulling(true);
+			sphere->SetFaceCulling(true);
 		}
 		return sphere;
 	}
@@ -65,8 +65,8 @@ namespace hograengine {
 				}
 			}
 			wireFrameSphere = new Geometry(vertices, indices);
-			wireFrameSphere->setPrimitiveType(GL_LINES);
-			wireFrameSphere->setFaceCulling(false);
+			wireFrameSphere->SetPrimitiveType(GL_LINES);
+			wireFrameSphere->SetFaceCulling(false);
 		}
 		return wireFrameSphere;
 	}
@@ -75,8 +75,8 @@ namespace hograengine {
 	{
 		if (nullptr == lightVolumeSphere) {
 			lightVolumeSphere = generateSphere();
-			lightVolumeSphere->setFaceCulling(true);
-			lightVolumeSphere->setFaceCullingOrientation(GL_CW);
+			lightVolumeSphere->SetFaceCulling(true);
+			lightVolumeSphere->SetFaceCullingOrientation(GL_CW);
 		}
 		return lightVolumeSphere;
 	}
@@ -238,7 +238,7 @@ GeometryFactory* GeometryFactory::getInstance()
 	return instance;
 }
 
-void GeometryFactory::destroyInstance()
+void GeometryFactory::DestroyInstance()
 {
 	if (nullptr != instance) {
 		delete instance;
@@ -319,7 +319,7 @@ Geometry* GeometryFactory::getFullScreenQuad()
 	indices.push_back(4);
 	indices.push_back(5);
 	fullScreenQuad = new Geometry(vertices, indices);
-	fullScreenQuad->setFaceCulling(false);
+	fullScreenQuad->SetFaceCulling(false);
 	return fullScreenQuad;
 }
 
@@ -672,8 +672,8 @@ Geometry* GeometryFactory::getWireframeCube()
 	indices.push_back(7);
 
 	wireframeCube = new Geometry(vertices, indices);
-	wireframeCube->setPrimitiveType(GL_LINES);
-	wireframeCube->setFaceCulling(false);
+	wireframeCube->SetPrimitiveType(GL_LINES);
+	wireframeCube->SetFaceCulling(false);
 	return wireframeCube;
 }
 

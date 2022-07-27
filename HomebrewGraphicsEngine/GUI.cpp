@@ -5,7 +5,7 @@
 #include "imgui_impl_opengl3.h"
 #include "GlobalInclude.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	GUI* GUI::instance = nullptr;
 
@@ -45,7 +45,7 @@ namespace hograengine {
 		ImGui::End();
 	}
 
-	void GUI::draw()
+	void GUI::Draw()
 	{
 		if (!visible)
 			return;

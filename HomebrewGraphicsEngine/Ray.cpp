@@ -1,4 +1,4 @@
 #include "Ray.h"
-namespace hograengine {
+namespace Hogra {
 
 }

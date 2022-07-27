@@ -3,7 +3,7 @@
 #include "Component.h"
 #include <vector>
 #include "Physics.h"
-namespace hograengine {
+namespace Hogra {
 
 	class ForceField : public Component
 	{
@@ -11,23 +11,23 @@ namespace hograengine {
 		ForceField() = default;
 
 		// Inherited via Component
-		virtual void control(float dt) override = 0;
+		virtual void Control(float dt) override = 0;
 
-		virtual void update(float dt) override = 0;
+		virtual void Update(float dt) override = 0;
 
 		std::span<const Physics* const > getListeners() const {
 			return listeners;
 		}
 
-		void addListener(Physics* physics) {
+		void AddListener(Physics* physics) {
 			listeners.push_back(physics);
 		}
 
-		float getStrength() const {
+		float GetStrength() const {
 			return strength;
 		}
 
-		void setStrength(float str) {
+		void SetStrength(float str) {
 			strength = str;
 		}
 
@@ -42,9 +42,9 @@ namespace hograengine {
 		CentralForceField() = default;
 
 		// Inherited via Component
-		void control(float dt) override;
+		void Control(float dt) override;
 
-		void update(float dt) override;
+		void Update(float dt) override;
 
 	};
 
@@ -54,9 +54,9 @@ namespace hograengine {
 		HomogeneForceField() = default;
 
 		// Inherited via Component
-		void control(float dt) override;
+		void Control(float dt) override;
 
-		void update(float dt) override;
+		void Update(float dt) override;
 
 		const glm::vec3& getDirection() const {
 			return direction;

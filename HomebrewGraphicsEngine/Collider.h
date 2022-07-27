@@ -4,7 +4,7 @@
 #include "CollisionEventListener.h"
 #include <set>
 
-namespace hograengine {
+namespace Hogra {
 
 	/*
 	* Virtual base class of all colliders.
@@ -18,24 +18,24 @@ namespace hograengine {
 		/*
 		* Called from scene.
 		*/
-		void collide(Collider* collider);
+		void Collide(Collider* collider);
 
-		Physics* getPhysics() const;
+		Physics* GetPhysics() const;
 
-		void setPhysics(Physics* p) {
+		void SetPhysics(Physics* p) {
 			physics = p;
 		}
 
-		bool testCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const;
+		bool TestCollision(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const;
 
 		/*
 		* Cheaper version, without collision point and normal calculation t/f output
 		*/
-		bool testCollision(const Collider* collider) const;
+		bool TestCollision(const Collider* collider) const;
 
-		virtual bool testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const = 0;
+		virtual bool TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const = 0;
 
-		virtual bool testPointInside(const glm::vec3& point) const = 0;
+		virtual bool TestPointInside(const glm::vec3& point) const = 0;
 
 		enum class ColliderType {
 			sphericalColliderType,
@@ -47,89 +47,89 @@ namespace hograengine {
 		ColliderType type = ColliderType::undefinedColliderType;
 
 		// Inherited via Component
-		virtual void control(float dt) override;
+		virtual void Control(float dt) override;
 
-		virtual void update(float dt) override;
+		virtual void Update(float dt) override;
 
-		const glm::vec3& getPosition() const {
+		const glm::vec3& GetPosition() const {
 			return position;
 		}
 
-		void setPosition(const glm::vec3& p) {
+		void SetPosition(const glm::vec3& p) {
 			position = p;
 		}
 
-		const glm::vec3& getScale() const {
+		const glm::vec3& GetScale() const {
 			return scale;
 		}
 
-		void setScale(const glm::vec3& s) {
+		void SetScale(const glm::vec3& s) {
 			scale = s;
 		}
 
-		const glm::quat& getOrientation() const {
+		const glm::quat& GetOrientation() const {
 			return orientation;
 		}
 
-		void setOrientation(const glm::quat& o) {
+		void SetOrientation(const glm::quat& o) {
 			orientation = o;
 		}
 
-		void addToColliderGroup(int group) {
+		void AddToColliderGroup(int group) {
 			auto iter = std::find(colliderGroups.begin(), colliderGroups.end(), group);
 			if (colliderGroups.end() == iter) {
 				colliderGroups.push_back(group);
 			}
 		}
 
-		void removeFromColliderGroup(int group) {
+		void RemoveFromColliderGroup(int group) {
 			auto iter = std::find(colliderGroups.begin(), colliderGroups.end(), group);
 			if (colliderGroups.end() != iter) {
 				colliderGroups.erase(iter);
 			}
 		}
 
-		bool isPartOfGroup(int group) const {
+		bool IsPartOfGroup(int group) const {
 			return colliderGroups.end() != std::find(colliderGroups.begin(), colliderGroups.end(), group);
 		}
 
-		const std::vector<int>& getColliderGroups() const {
+		const std::vector<int>& GetColliderGroups() const {
 			return colliderGroups;
 		}
 
-		virtual bool collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
-		virtual bool collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
-		virtual bool collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
-		virtual bool collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+		virtual bool CollideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+		virtual bool CollideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+		virtual bool CollideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
+		virtual bool CollideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const = 0;
 
-		virtual bool collideWithSpherical(const Collider* collider) const = 0;
-		virtual bool collideWithAABB(const Collider* collider) const = 0;
-		virtual bool collideWithCuboid(const Collider* collider) const = 0;
-		virtual bool collideWithComposite(const Collider* collider) const = 0;
+		virtual bool CollideWithSpherical(const Collider* collider) const = 0;
+		virtual bool CollideWithAABB(const Collider* collider) const = 0;
+		virtual bool CollideWithCuboid(const Collider* collider) const = 0;
+		virtual bool CollideWithComposite(const Collider* collider) const = 0;
 	
 		// For collision optimalisation:
-		virtual glm::vec3 getAABBMin() const = 0;
-		virtual glm::vec3 getAABBMax() const = 0;
+		virtual glm::vec3 GetAABBMin() const = 0;
+		virtual glm::vec3 GetAABBMax() const = 0;
 
-		bool popCollided() {
+		bool PopCollided() {
 			bool temp = haveCollided;
 			haveCollided = false;
 			return temp;
 		}
 
-		void setHaveCollided(bool b) {
+		void SetHaveCollided(bool b) {
 			haveCollided = b;
 		}
 
-		void setPositionProvider(const PositionProvider* provider) {
+		void SetPositionProvider(const PositionProvider* provider) {
 			positionProvider = provider;
 		}
 
-		void setOrientationProvider(const OrientationProvider* provider) {
+		void SetOrientationProvider(const OrientationProvider* provider) {
 			orientationProvider = provider;
 		}
 
-		void setScaleProvoder(const ScaleProvider* provider) {
+		void SetScaleProvoder(const ScaleProvider* provider) {
 			scaleProvider = provider;
 		}
 

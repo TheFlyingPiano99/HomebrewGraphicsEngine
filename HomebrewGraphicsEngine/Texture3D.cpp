@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <sstream>
 
-namespace hograengine {
+namespace Hogra {
 
 	Texture3D::Texture3D(const char* directory, const Dimensions dimensions, GLuint slot, GLenum format)
 		: dimensions(dimensions), maxValue(std::pow(2, dimensions.bytesPerVoxel * 8) - 1)

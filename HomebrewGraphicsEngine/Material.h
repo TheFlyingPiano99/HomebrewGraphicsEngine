@@ -5,7 +5,7 @@
 #include "Light.h"
 #include <span>
 #include "ShadowCaster.h"
-namespace hograengine {
+namespace Hogra {
 
 	class Material
 	{

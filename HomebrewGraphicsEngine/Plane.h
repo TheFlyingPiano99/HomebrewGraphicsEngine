@@ -1,7 +1,7 @@
 #pragma once
 #include<glm/glm.hpp>
 #include "ShaderProgram.h"
-namespace hograengine {
+namespace Hogra {
 
 	class Plane
 	{
@@ -10,7 +10,7 @@ namespace hograengine {
 	public:
 		Plane(glm::vec3 point, glm::vec3 norm);
 
-		void exportData(ShaderProgram* shader, const char* uniform);
+		void ExportData(ShaderProgram* shader, const char* uniform);
 
 
 		glm::vec3 getPoint() {

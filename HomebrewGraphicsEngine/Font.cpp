@@ -1,14 +1,15 @@
 #include "Font.h"
 #include "FBO.h"
-namespace hograengine {
+namespace Hogra {
     Texture2D* Font::RenderTextInTexture(const std::string& text) {
         if (nullptr == shaderProgram) {
             throw new UnloadedFontException();
         }
-        float baseline;
-        glm::ivec2 dim = getTextDimension(text, baseline);
+        int baseline;
+        glm::ivec2 dim = GetTextDimension(text, baseline);
         Texture2D* texture = new Texture2D(GL_RGBA, dim, 0, GL_RGBA, GL_UNSIGNED_BYTE);
         FBO fbo;
+        fbo.Init();
         fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *texture);
         fbo.Bind();
 
@@ -22,26 +23,26 @@ namespace hograengine {
 
         // iterate through all characters
         std::string::const_iterator c;
-        float x = 0.0f;
-        float y = baseline;
+        int x = 0;
+        int y = baseline;
         for (c = text.begin(); c != text.end(); c++)
         {
             auto& ch = characters[*c];
 
-            float xpos = x + ch.bearing.x;
-            float ypos = y - (ch.size.y - ch.bearing.y);
+            int xpos = x + ch.bearing.x;
+            int ypos = y - (ch.size.y - ch.bearing.y);
 
-            float w = ch.size.x;
-            float h = ch.size.y;
+            int w = ch.size.x;
+            int h = ch.size.y;
             // update VBO for each character
             float vertices[6][4] = {
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos,     ypos,       0.0f, 1.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
+                { (float)xpos,     ypos + h,   0.0f, 0.0f },
+                { (float)xpos,     ypos,       0.0f, 1.0f },
+                { (float)xpos + w, ypos,       1.0f, 1.0f },
 
-                { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos + w, ypos,       1.0f, 1.0f },
-                { xpos + w, ypos + h,   1.0f, 0.0f }
+                { (float)xpos,     ypos + h,   0.0f, 0.0f },
+                { (float)(xpos + w), ypos,       1.0f, 1.0f },
+                { (float)(xpos + w), ypos + h,   1.0f, 0.0f }
             };
             // render glyph texture over quad
             glBindTexture(GL_TEXTURE_2D, ch.textureID);

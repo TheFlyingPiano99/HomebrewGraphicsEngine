@@ -1,6 +1,6 @@
 #include "ShaderProgramFactory.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	ShaderProgramFactory* ShaderProgramFactory::instance = nullptr;
 
@@ -11,14 +11,14 @@ namespace hograengine {
 		return instance;
 	}
 	
-	void ShaderProgramFactory::destroyInstance() {
+	void ShaderProgramFactory::DestroyInstance() {
 		if (nullptr != instance) {
 			delete instance;
 		}
 		instance = nullptr;
 	}
 	
-	ShaderProgram* ShaderProgramFactory::getDefaultPBRProgramWithMapping() {
+	ShaderProgram* ShaderProgramFactory::GetDefaultPBRProgramWithMapping() {
 		if (nullptr == defaultBPRProgramWithMapping) {
 			defaultBPRProgramWithMapping
 				= new ShaderProgram(
@@ -30,7 +30,7 @@ namespace hograengine {
 		return defaultBPRProgramWithMapping;
 	}
 
-	ShaderProgram* ShaderProgramFactory::getGlyphProgram()
+	ShaderProgram* ShaderProgramFactory::GetGlyphProgram()
 	{
 		if (nullptr == glyphProgram) {
 			glyphProgram
@@ -43,7 +43,7 @@ namespace hograengine {
 		return glyphProgram;
 	}
 
-	ShaderProgram* ShaderProgramFactory::getCaptionProgram()
+	ShaderProgram* ShaderProgramFactory::GetCaptionProgram()
 	{
 		if (nullptr == captionProgram) {
 			captionProgram = new ShaderProgram(
@@ -55,7 +55,7 @@ namespace hograengine {
 		return captionProgram;
 	}
 
-	ShaderProgram* ShaderProgramFactory::getEmissiveMaterialProgram()
+	ShaderProgram* ShaderProgramFactory::GetEmissiveMaterialProgram()
 	{
 		if (nullptr == emissiveMaterial) {
 			emissiveMaterial = new ShaderProgram(

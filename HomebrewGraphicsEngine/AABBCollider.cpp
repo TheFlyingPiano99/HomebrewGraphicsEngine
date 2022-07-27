@@ -1,19 +1,19 @@
 #include "AABBCollider.h"
 
 #include "SphericalCollider.h"
-namespace hograengine {
+namespace Hogra {
 
-    bool AABBCollider::testRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
+    bool AABBCollider::TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
     {
-        float tmin = (min.x - ray.getPosition().x) / ray.getDirection().x;
-        float tmax = (max.x - ray.getPosition().x) / ray.getDirection().x;
+        float tmin = (min.x - ray.GetPosition().x) / ray.getDirection().x;
+        float tmax = (max.x - ray.GetPosition().x) / ray.getDirection().x;
         float normalX = -1.0f;
         if (tmin > tmax) {
             std::swap(tmin, tmax);
             normalX = 1.0f;
         }
-        float tymin = (min.y - ray.getPosition().y) / ray.getDirection().y;
-        float tymax = (max.y - ray.getPosition().y) / ray.getDirection().y;
+        float tymin = (min.y - ray.GetPosition().y) / ray.getDirection().y;
+        float tymax = (max.y - ray.GetPosition().y) / ray.getDirection().y;
         float normalY = -1.0f;
         if (tymin > tymax) {
             std::swap(tymin, tymax);
@@ -30,8 +30,8 @@ namespace hograengine {
         if (tymax < tmax) {
             tmax = tymax;
         }
-        float tzmin = (min.z - ray.getPosition().z) / ray.getDirection().z;
-        float tzmax = (max.z - ray.getPosition().z) / ray.getDirection().z;
+        float tzmin = (min.z - ray.GetPosition().z) / ray.getDirection().z;
+        float tzmax = (max.z - ray.GetPosition().z) / ray.getDirection().z;
         float normalZ = -1.0f;
         if (tzmin > tzmax) {
             std::swap(tzmin, tzmax);
@@ -50,51 +50,51 @@ namespace hograengine {
             tmax = tzmax;
         }
 
-        wIntersectionPoint = ray.getPosition() + ray.getDirection() * tmin;
+        wIntersectionPoint = ray.GetPosition() + ray.getDirection() * tmin;
         wIntersectionNormal = n;
 
         return true;
     }
 
-    bool AABBCollider::testPointInside(const glm::vec3& point) const
+    bool AABBCollider::TestPointInside(const glm::vec3& point) const
     {
         return point.x >= min.x && point.x <= max.x
             && point.y >= min.y && point.y <= max.y
             && point.z >= min.z && point.z <= max.z;
     }
 
-    bool AABBCollider::collideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool AABBCollider::CollideWithSpherical(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
         const auto* spherical = (const SphericalCollider*)collider;
         glm::vec3 pos;
-        pos.x = std::max(min.x, std::min(spherical->getPosition().x, max.x));
-        pos.y = std::max(min.y, std::min(spherical->getPosition().y, max.y));
-        pos.z = std::max(min.z, std::min(spherical->getPosition().z, max.z));
-        float l = glm::length(pos - spherical->getPosition());
-        bool isCollision = l <= spherical->getRadius();
+        pos.x = std::max(min.x, std::min(spherical->GetPosition().x, max.x));
+        pos.y = std::max(min.y, std::min(spherical->GetPosition().y, max.y));
+        pos.z = std::max(min.z, std::min(spherical->GetPosition().z, max.z));
+        float l = glm::length(pos - spherical->GetPosition());
+        bool isCollision = l <= spherical->GetRadius();
         if (isCollision) {
             wCollisionPoint = pos;
-            wCollisionNormal = glm::normalize(spherical->getPosition() - pos);
-            overlapAlongNormal = spherical->getRadius() - l;
+            wCollisionNormal = glm::normalize(spherical->GetPosition() - pos);
+            overlapAlongNormal = spherical->GetRadius() - l;
         }
         return isCollision;
     }
 
-    bool AABBCollider::collideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool AABBCollider::CollideWithAABB(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
         const auto* aabb = (const AABBCollider*)collider;
-        bool isCollision = aabb->getMin().x <= max.x && aabb->getMax().x >= min.x
-            && aabb->getMin().y <= max.y && aabb->getMax().y >= min.y
-            && aabb->getMin().z <= max.z && aabb->getMax().z >= min.z;
+        bool isCollision = aabb->getMin().x <= max.x && aabb->GetMax().x >= min.x
+            && aabb->getMin().y <= max.y && aabb->GetMax().y >= min.y
+            && aabb->getMin().z <= max.z && aabb->GetMax().z >= min.z;
         if (isCollision) {
             glm::vec3 intesectionMin;
             glm::vec3 intesectionMax;
             intesectionMin.x = std::max(min.x, aabb->getMin().x);
             intesectionMin.y = std::max(min.y, aabb->getMin().y);
             intesectionMin.z = std::max(min.z, aabb->getMin().z);
-            intesectionMax.x = std::min(max.x, aabb->getMax().x);
-            intesectionMax.y = std::min(max.y, aabb->getMax().y);
-            intesectionMax.z = std::min(max.z, aabb->getMax().z);
+            intesectionMax.x = std::min(max.x, aabb->GetMax().x);
+            intesectionMax.y = std::min(max.y, aabb->GetMax().y);
+            intesectionMax.z = std::min(max.z, aabb->GetMax().z);
             wCollisionPoint = (intesectionMin + intesectionMax) / 2.0f;
 
             glm::vec3 nearestDist;
@@ -145,56 +145,56 @@ namespace hograengine {
         return isCollision;
     }
 
-    bool AABBCollider::collideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool AABBCollider::CollideWithCuboid(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
         //TODO
         return false;
     }
 
-    bool AABBCollider::collideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
+    bool AABBCollider::CollideWithComposite(const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const
     {
-        bool isCollision = collider->collideWithAABB(this, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
+        bool isCollision = collider->CollideWithAABB(this, wCollisionPoint, wCollisionNormal, overlapAlongNormal);
         wCollisionNormal *= -1.0f;
         return isCollision;
     }
 
     // Simple collisions: -------------------------------------------------------------------
 
-    bool AABBCollider::collideWithSpherical(const Collider* collider) const
+    bool AABBCollider::CollideWithSpherical(const Collider* collider) const
     {
         const auto* spherical = (const SphericalCollider*)collider;
         glm::vec3 pos;
-        pos.x = std::max(min.x, std::min(spherical->getPosition().x, max.x));
-        pos.y = std::max(min.y, std::min(spherical->getPosition().y, max.y));
-        pos.z = std::max(min.z, std::min(spherical->getPosition().z, max.z));
-        return glm::length(pos - spherical->getPosition()) <= spherical->getRadius();
+        pos.x = std::max(min.x, std::min(spherical->GetPosition().x, max.x));
+        pos.y = std::max(min.y, std::min(spherical->GetPosition().y, max.y));
+        pos.z = std::max(min.z, std::min(spherical->GetPosition().z, max.z));
+        return glm::length(pos - spherical->GetPosition()) <= spherical->GetRadius();
     }
 
-    bool AABBCollider::collideWithAABB(const Collider* collider) const
+    bool AABBCollider::CollideWithAABB(const Collider* collider) const
     {
         const auto* aabb = (const AABBCollider*)collider;
-        return aabb->getMin().x <= max.x && aabb->getMax().x >= min.x
-            && aabb->getMin().y <= max.y && aabb->getMax().y >= min.y
-            && aabb->getMin().z <= max.z && aabb->getMax().z >= min.z;
+        return aabb->getMin().x <= max.x && aabb->GetMax().x >= min.x
+            && aabb->getMin().y <= max.y && aabb->GetMax().y >= min.y
+            && aabb->getMin().z <= max.z && aabb->GetMax().z >= min.z;
     }
 
-    bool AABBCollider::collideWithCuboid(const Collider* collider) const
+    bool AABBCollider::CollideWithCuboid(const Collider* collider) const
     {
         //TODO
         return false;
     }
 
-    bool AABBCollider::collideWithComposite(const Collider* collider) const
+    bool AABBCollider::CollideWithComposite(const Collider* collider) const
     {
-        return collider->collideWithAABB(this);
+        return collider->CollideWithAABB(this);
     }
 
-    glm::vec3 AABBCollider::getAABBMin() const
+    glm::vec3 AABBCollider::GetAABBMin() const
     {
         return position + minRelToPosition;
     }
 
-    glm::vec3 AABBCollider::getAABBMax() const
+    glm::vec3 AABBCollider::GetAABBMax() const
     {
         return position + maxRelToPosition;
     }

@@ -1,10 +1,11 @@
 #include "UniformBuffer.h"
 
-namespace hograengine {
+namespace Hogra {
 
-	UniformBufferObject::UniformBufferObject(const std::vector<int>& subDataSizes, int _binding) : binding(_binding)
+	void UniformBufferObject::Init(const std::vector<int>& subDataSizes, int _binding)
 	{
-		calculateAlignment(subDataSizes);
+		this->binding = _binding;
+		CalculateAlignment(subDataSizes);
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_UNIFORM_BUFFER, ID);
 		glBufferData(GL_UNIFORM_BUFFER, memorySize, nullptr, GL_STATIC_DRAW);	// Allocate GPU memory
@@ -17,7 +18,7 @@ namespace hograengine {
 		Delete();
 	}
 
-	void UniformBufferObject::Bind()
+	void UniformBufferObject::Bind() const
 	{
 		glBindBuffer(GL_UNIFORM_BUFFER, ID);
 	}
@@ -32,12 +33,12 @@ namespace hograengine {
 		glDeleteBuffers(1, &ID);
 	}
 
-	void UniformBufferObject::uploadSubData(const void* subDataPtr, int index)
+	void UniformBufferObject::UploadSubData(const void* subDataPtr, int index)
 	{
 		glBufferSubData(GL_UNIFORM_BUFFER, memoryAlignments[index].alignedOffset, memoryAlignments[index].baseAlignment, subDataPtr);
 	}
 
-	void UniformBufferObject::calculateAlignment(const std::vector<int>& subDataSizes)
+	void UniformBufferObject::CalculateAlignment(const std::vector<int>& subDataSizes)
 	{
 		int currentOffset = 0;
 		for (auto& subDataSize : subDataSizes) {

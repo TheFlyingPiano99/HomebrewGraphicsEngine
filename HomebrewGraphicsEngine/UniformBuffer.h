@@ -3,20 +3,21 @@
 #include<glad/glad.h>
 #include <vector>
 
-namespace hograengine {
+namespace Hogra {
 	class UniformBufferObject
 	{
 	public:
-		UniformBufferObject(const std::vector<int>& subDataSizes, int binding);
+		void Init(const std::vector<int>& subDataSizes, int binding);
+
 		~UniformBufferObject();
 
-		void Bind();
+		void Bind() const;
 
 		void Unbind();
 
 		void Delete();
 
-		void uploadSubData(const void* subDataPtr, int index);
+		void UploadSubData(const void* subDataPtr, int index);
 
 		struct MemoryAlignment {
 			int baseAlignment;
@@ -28,7 +29,7 @@ namespace hograengine {
 		int binding;
 		int memorySize;
 		std::vector<MemoryAlignment> memoryAlignments;
-		void calculateAlignment(const std::vector<int>& subDataSizes);
+		void CalculateAlignment(const std::vector<int>& subDataSizes);
 	};
 }
 

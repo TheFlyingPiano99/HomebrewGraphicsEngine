@@ -9,7 +9,7 @@
 #include "GlobalInclude.h"
 #include "AssetFolderPathManager.h"
 
-namespace hograengine {
+namespace Hogra {
 	class ShadowCaster
 	{
 	public:
@@ -19,28 +19,25 @@ namespace hograengine {
 			if (program != nullptr) {
 				delete program;
 			}
-			if (ubo != nullptr) {
-				delete ubo;
-			}
 		}
 
 		const Texture2D* getShadowMap() const {
 			return shadowMap;
 		}
 
-		void Bind() const {
+		void Bind() {
 			fbo.Bind();
 			glClearDepth(1);
 			glClear(GL_DEPTH_BUFFER_BIT);
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
 			program->Activate();
-			exportData();
+			ExportData();
 		}
 
-		void update() {
+		void Update() {
 			if (nullptr != positionProvider) {
-				position = positionProvider->getPosition() + positionOffsetToProvider;
+				position = positionProvider->GetPosition() + positionOffsetToProvider;
 			}
 			float near_plane = 1.0f, far_plane = 100.0f;
 			glm::mat4 lightProjection = glm::ortho(-30.0f, 30.0f, -30.0f, 30.0f, near_plane, far_plane);
@@ -54,17 +51,17 @@ namespace hograengine {
 			return *program;
 		}
 
-		void exportData() const {
-			ubo->Bind();
-			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[0]), 0);
-			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[1]), 1);
-			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[2]), 2);
-			ubo->uploadSubData((void*)glm::value_ptr(lightSpaceMatrix[3]), 3);
-			ubo->Unbind();
+		void ExportData() {
+			ubo.Bind();
+			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[0]), 0);
+			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[1]), 1);
+			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[2]), 2);
+			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[3]), 3);
+			ubo.Unbind();
 			shadowMap->Bind();
 		}
 
-		void setPositionProvider(PositionProvider* provider) {
+		void SetPositionProvider(PositionProvider* provider) {
 			positionProvider = provider;
 		}
 
@@ -77,7 +74,7 @@ namespace hograengine {
 		glm::vec3 direction;
 
 		FBO fbo;
-		UniformBufferObject* ubo = nullptr;
+		UniformBufferObject ubo;
 		Texture2D* shadowMap = nullptr;	// Do not delete in this object
 		ShaderProgram* program = nullptr;
 		glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);

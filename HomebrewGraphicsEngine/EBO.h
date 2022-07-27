@@ -2,23 +2,23 @@
 #include<glad/glad.h>
 #include<vector>
 
-namespace hograengine {
+namespace Hogra {
 
 	class EBO
 	{
 	public:
 		// ID reference of Elements Buffer Object
 		GLuint ID;
-		// Constructor that generates a Elements Buffer Object and links it to indices
-		EBO(std::vector<GLint>& indices);
 
-		void Recreate(std::vector<GLint>& indices);
+		void Init(std::vector<GLint>& indices);
 
-		// Binds the EBO
+		void Load(std::vector<GLint>& indices);
+
+		// Bind's the EBO
 		void Bind();
-		// Unbinds the EBO
+		// Unbind's the EBO
 		void Unbind();
-		// Deletes the EBO
+		// Delete's the EBO
 		void Delete();
 	};
 }

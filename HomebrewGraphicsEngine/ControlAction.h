@@ -3,7 +3,7 @@
 #include "Scene.h"
 #include <queue>
 #include <GLFW/glfw3.h>
-namespace hograengine {
+namespace Hogra {
 
 	class ControlAction
 	{

@@ -1,7 +1,7 @@
 #pragma once
 #include "GlobalInclude.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	namespace Callbacks
 	{

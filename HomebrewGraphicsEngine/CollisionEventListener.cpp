@@ -1,4 +1,4 @@
 #include "CollisionEventListener.h"
 
-namespace hograengine {
+namespace Hogra {
 }

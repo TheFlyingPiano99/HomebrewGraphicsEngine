@@ -1,6 +1,6 @@
 #include "ControlActionManager.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	ControlActionManager* ControlActionManager::instance = nullptr;
 
@@ -80,7 +80,7 @@ namespace hograengine {
 		return instance;
 	}
 
-	void ControlActionManager::destroyInstance() {
+	void ControlActionManager::DestroyInstance() {
 		if (nullptr != instance) {
 			delete instance;
 			instance = nullptr;

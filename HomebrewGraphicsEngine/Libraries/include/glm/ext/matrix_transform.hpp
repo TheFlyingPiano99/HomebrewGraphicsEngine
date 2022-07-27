@@ -77,7 +77,7 @@ namespace glm
 	/// @see - rotate(T angle, vec<3, T, Q> const& v)
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glRotate.xml">glRotate man page</a>
 	template<typename T, qualifier Q>
-	GLM_FUNC_DECL mat<4, 4, T, Q> rotate(
+	GLM_FUNC_DECL mat<4, 4, T, Q> Rotate(
 		mat<4, 4, T, Q> const& m, T angle, vec<3, T, Q> const& axis);
 
 	/// Builds a scale 4 * 4 matrix created from 3 scalars.

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace hograengine {
+namespace Hogra {
 
 	/*
 	* Dual number representation.

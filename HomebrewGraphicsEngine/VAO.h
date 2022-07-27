@@ -2,7 +2,7 @@
 
 #include<glad/glad.h>
 #include"VBO.h"
-namespace hograengine {
+namespace Hogra {
 
 	class VAO
 	{

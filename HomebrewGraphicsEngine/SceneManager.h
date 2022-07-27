@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class SceneManager
 	{
@@ -9,24 +9,28 @@ namespace hograengine {
 
 		static SceneManager* getInstance();
 
-		static void destroyInstance() {
+		static void DestroyInstance() {
 			if (nullptr != instance) {
 				delete instance;
 				instance = nullptr;
 			}
 		}
 
-		void init(int contextWidth, int contextHeight);
+		void Init(int contextWidth, int contextHeight);
 
-		void draw();
+		void Draw();
 
 		Scene* getScene() {
-			return Scene::getInstance();
+			return currentScene;
 		}
+
+		void UpdateAndControl(float dt);
 
 	private:
 		SceneManager() = default;
 		static SceneManager* instance;
+
+		Scene* currentScene;
 	};
 }
 

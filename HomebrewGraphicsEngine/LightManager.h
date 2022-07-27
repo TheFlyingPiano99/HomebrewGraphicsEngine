@@ -4,15 +4,15 @@
 #include "UniformBuffer.h"
 #include "DeferredLightingSystem.h" 
 
-namespace hograengine {
+namespace Hogra {
 	class LightManager
 	{
 	public:
 		LightManager();
 		~LightManager();
-		void exportData();
+		void ExportData();
 		
-		void addLight(Light* _light) {
+		void AddLight(Light* _light) {
 			lights.push_back(_light);
 		}
 
@@ -36,9 +36,11 @@ namespace hograengine {
 
 		void drawDebug();
 
+		void Clear();
+
 	private:
 		std::vector<Light*> lights;
-		UniformBufferObject* ubo = nullptr;
+		UniformBufferObject ubo;
 		DeferredLightingSystem deferredLightingSystem;
 		Mesh* debugLightVolumeMesh = nullptr;
 		ShaderProgram* shaderProgram = nullptr;

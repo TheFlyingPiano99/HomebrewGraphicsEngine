@@ -2,12 +2,12 @@
 #include "Animation.h"
 #include "Camera.h"
 
-namespace hograengine {
+namespace Hogra {
 	class CameraAnimation : public Animation
 	{
 	public:
 
-		Camera* getCamera() const {
+		Camera* GetCamera() const {
 			return camera;
 		}
 
@@ -26,7 +26,7 @@ namespace hograengine {
 
 
 
-		Camera* getCamera() const {
+		Camera* GetCamera() const {
 			return camera;
 		}
 

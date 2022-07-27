@@ -6,7 +6,7 @@
 #include "SceneManager.h"
 #include <iostream>
 
-namespace hograengine {
+namespace Hogra {
 
 	// Prevents the camera from jumping around when first clicking left click
 	bool firstClick = true;
@@ -32,7 +32,7 @@ namespace hograengine {
 		// Set control layout
 		ControlActionManager::getInstance()->registerDefault();
 
-		SceneManager::getInstance()->init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
+		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 		GUI::getInstance()->initGUI(window);
 	}
 
@@ -41,10 +41,10 @@ namespace hograengine {
 	{
 		GUI::getInstance()->preDrawInit();
 
-		SceneManager::getInstance()->draw();
+		SceneManager::getInstance()->Draw();
 
 		GUI::getInstance()->configToScene(*SceneManager::getInstance()->getScene());
-		GUI::getInstance()->draw();
+		GUI::getInstance()->Draw();
 
 		glfwSwapBuffers(window);
 	}
@@ -86,7 +86,7 @@ namespace hograengine {
 			float ndcDeltaY = (float)mouseY / (float)GlobalVariables::windowHeight * 2.0f - 1.0f;
 			auto* avatarControl = SceneManager::getInstance()->getScene()->getAvatarControl();
 			if (avatarControl != nullptr) {
-				avatarControl->rotate(-ndcDeltaX, -ndcDeltaY);
+				avatarControl->Rotate(-ndcDeltaX, -ndcDeltaY);
 			}
 
 			// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
@@ -103,7 +103,7 @@ namespace hograengine {
 
 	void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
 	{
-		SceneManager::getInstance()->getScene()->getCamera()->moveForward(yoffset * 10.0f);
+		SceneManager::getInstance()->getScene()->GetCamera().moveForward(yoffset * 10.0f);
 	}
 
 	void Callbacks::onMouseClick(GLFWwindow* window, int button, int action, int mods)
@@ -115,7 +115,7 @@ namespace hograengine {
 			glm::vec2 ndcCoords;
 			ndcCoords.x = (float)xpos / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
 			ndcCoords.y = 1.0f - (float)ypos / (float)GlobalVariables::windowHeight * 2.0f;
-			SceneManager::getInstance()->getScene()->pokeObject(ndcCoords);
+			SceneManager::getInstance()->getScene()->PokeObject(ndcCoords);
 		}
 	}
 

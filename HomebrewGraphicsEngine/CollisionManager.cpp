@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "GeometryFactory.h"
 
-void hograengine::CollisionManager::addCollider(Collider* collider, const std::string& colliderGroupName) {
+void Hogra::CollisionManager::AddCollider(Collider* collider, const std::string& colliderGroupName) {
 	const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
 	if (colliders.end() != iter) {	// Prevent from adding the same collider
 		return;
@@ -13,46 +13,46 @@ void hograengine::CollisionManager::addCollider(Collider* collider, const std::s
 		bool groupAlreadyExists = false;
 		for (int i = 0; i < names.size(); i++) {
 			if (colliderGroupName.compare(names[i]) == 0) {
-				collider->addToColliderGroup(i);
+				collider->AddToColliderGroup(i);
 				groupAlreadyExists = true;
 				break;
 			}
 		}
 		if (!groupAlreadyExists) {
 			names.push_back(colliderGroupName);
-			collider->addToColliderGroup(names.size() - 1);
+			collider->AddToColliderGroup(names.size() - 1);
 		}
 	}
-	root.addCollider(collider);
+	root.AddCollider(collider);
 }
 
-void hograengine::CollisionManager::removeCollider(Collider* collider) {
+void Hogra::CollisionManager::RemoveCollider(Collider* collider) {
 	const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
 	if (colliders.end() != iter) {
 		colliders.erase(iter);
-		root.removeCollider(collider);
+		root.RemoveCollider(collider);
 	}
 }
 
-void hograengine::CollisionManager::collide() {
+void Hogra::CollisionManager::Collide() {
 	if (useSpatialTree) {
-		root.selfCollide();
+		root.SelfCollide();
 	}
 	else {
 		for (int i = 0; i < colliders.size() - 1; i++) {
 			for (int j = i + 1; j < colliders.size(); j++) {
-				colliders[i]->collide(colliders[j]);
+				colliders[i]->Collide(colliders[j]);
 			}
 		}
 	}
 }
 
 
-void hograengine::CollisionManager::update() {
+void Hogra::CollisionManager::Update() {
 	static int counter0 = 0;
 	static int counter1 = 0;
 	if (counter0 == 1) {
-		root.updateAABB();
+		root.UpdateAABB();
 		counter0 = 0;
 	}
 	else {
@@ -60,12 +60,12 @@ void hograengine::CollisionManager::update() {
 	}
 	if (counter1 == 1000) {
 		struct {
-			bool operator()(const Collider* a, const Collider* b) const { return length(a->getAABBMax() - a->getAABBMin()) < length(b->getAABBMax() - b->getAABBMin()); }
+			bool operator()(const Collider* a, const Collider* b) const { return length(a->GetAABBMax() - a->GetAABBMin()) < length(b->GetAABBMax() - b->GetAABBMin()); }
 		} customLess;
-		root.clear();
+		root.Clear();
 		std::sort(colliders.begin(), colliders.end(), customLess);
 		for (auto* collider : colliders) {
-			root.addCollider(collider);
+			root.AddCollider(collider);
 		}
 		counter1 = 0;
 	}
@@ -74,11 +74,11 @@ void hograengine::CollisionManager::update() {
 	}
 }
 
-void hograengine::CollisionManager::setUseSpatialTree(bool b) {
+void Hogra::CollisionManager::SetUseSpatialTree(bool b) {
 	useSpatialTree = b;
 }
 
-void hograengine::CollisionManager::initDebug()
+void Hogra::CollisionManager::InitDebug()
 {
 	auto* shaderProgram = new ShaderProgram(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"), 
@@ -92,10 +92,10 @@ void hograengine::CollisionManager::initDebug()
 	instanceGroup.addObject(obj);
 }
 
-void hograengine::CollisionManager::drawDebug()
+void Hogra::CollisionManager::DrawDebug()
 {
 	std::vector<Geometry::InstanceData> data;
-	root.gatherInstanceDataForDebug(data);
+	root.GatherInstanceDataForDebug(data);
 	instanceGroup.injectInstanceData(data);
-	instanceGroup.draw();
+	instanceGroup.Draw();
 }

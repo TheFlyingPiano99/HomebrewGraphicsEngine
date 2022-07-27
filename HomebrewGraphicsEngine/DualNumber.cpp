@@ -1,5 +1,5 @@
 #include "DualNumber.h"
 
-namespace hograengine {
+namespace Hogra {
 
 }

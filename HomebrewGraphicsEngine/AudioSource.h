@@ -1,7 +1,7 @@
 #pragma once
 
 #include "openAL/al.h"
-namespace hograengine {
+namespace Hogra {
 
 	class AudioSource
 	{

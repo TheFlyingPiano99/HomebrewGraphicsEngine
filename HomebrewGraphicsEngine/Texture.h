@@ -1,7 +1,7 @@
 #pragma once
 #include "glad/glad.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Texture
 	{

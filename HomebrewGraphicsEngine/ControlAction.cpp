@@ -4,7 +4,7 @@
 #include <iostream>
 #include "FirstPersonControl.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	void MoveAvatarForward::execute(Scene* scene, float dt)
 	{
@@ -61,17 +61,17 @@ namespace hograengine {
 
 	void FastForward::execute(Scene* scene, float dt)
 	{
-		scene->update(dt * 100.0f);
+		scene->Update(dt * 100.0f);
 	}
 
 	void Rewind::execute(Scene* scene, float dt)
 	{
-		scene->update(dt * -100.0f);
+		scene->Update(dt * -100.0f);
 	}
 
 	void TogglePause::execute(Scene* scene, float dt)
 	{
-		scene->togglePause();
+		scene->TogglePause();
 	}
 
 	void ToggleFullScreenMode::execute(Scene* scene, float dt)

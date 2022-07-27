@@ -1,5 +1,5 @@
 #include "Mesh.h"
-namespace hograengine {
+namespace Hogra {
 
 	Mesh::Mesh(Material* material, Geometry* geometry) : material(material), geometry(geometry)
 	{

@@ -2,7 +2,7 @@
 #include "Geometry.h"
 #include <string>
 
-namespace hograengine {
+namespace Hogra {
 	class GeometryLoader
 	{
 	public:
@@ -10,7 +10,7 @@ namespace hograengine {
 		class GeometryLoadingException : public std::exception {
 		};
 
-		Geometry* load(const std::string& path);
+		Geometry* Load(const std::string& path);
 	};
 }
 

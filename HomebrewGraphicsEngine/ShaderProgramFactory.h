@@ -2,21 +2,21 @@
 #include "ShaderProgram.h"
 #include "AssetFolderPathManager.h"
 
-namespace hograengine {
+namespace Hogra {
 	class ShaderProgramFactory
 	{
 	public:
 		static ShaderProgramFactory* getInstance();
 
-		static void destroyInstance();
+		static void DestroyInstance();
 
-		ShaderProgram* getDefaultPBRProgramWithMapping();
+		ShaderProgram* GetDefaultPBRProgramWithMapping();
 
-		ShaderProgram* getGlyphProgram();
+		ShaderProgram* GetGlyphProgram();
 
-		ShaderProgram* getCaptionProgram();
+		ShaderProgram* GetCaptionProgram();
 
-		ShaderProgram* getEmissiveMaterialProgram();
+		ShaderProgram* GetEmissiveMaterialProgram();
 
 
 	private:

@@ -2,7 +2,7 @@
 #include "UserControl.h"
 #include "Collider.h"
 
-namespace hograengine {
+namespace Hogra {
 	class FirstPersonControl : public UserControl
 	{
 	public:
@@ -10,13 +10,13 @@ namespace hograengine {
 			allowRotate = true;
 		}
 
-		void update(float dt) override;
+		void Update(float dt) override;
 
 		void moveForward(float dt);
 		void moveBackward(float dt);
 		void moveLeft(float dt);
 		void moveRight(float dt);
-		void rotate(float mouseX, float mouseY) override;
+		void Rotate(float mouseX, float mouseY) override;
 		
 		void jump();
 

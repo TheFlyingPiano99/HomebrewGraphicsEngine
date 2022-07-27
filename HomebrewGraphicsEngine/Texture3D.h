@@ -7,7 +7,7 @@
 #include <vector>
 
 #include"ShaderProgram.h"
-namespace hograengine {
+namespace Hogra {
 
 	struct Dimensions {
 		int width, height, depth, bytesPerVoxel;

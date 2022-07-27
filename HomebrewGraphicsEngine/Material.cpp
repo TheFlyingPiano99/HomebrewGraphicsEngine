@@ -1,5 +1,5 @@
 #include "Material.h"
-namespace hograengine {
+namespace Hogra {
 
 	void Material::Bind() const
 	{

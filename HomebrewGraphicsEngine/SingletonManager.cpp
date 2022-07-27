@@ -10,21 +10,20 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	/*
 	* Needs to be called before closing program!
 	*/
 	void Singleton::destroyAllInstances() {
-		GUI::destroyInstance();
-		Scene::destroyInstance();
-		AssetFolderPathManager::destroyInstance();
-		ControlActionManager::destroyInstance();
-		SceneEventManager::destroyInstance();
-		MaterialFactory::destroyInstance();
-		GeometryFactory::destroyInstance();
-		ShaderProgramFactory::destroyInstance();
-		SceneManager::destroyInstance();
-		SceneFactory::destroyInstance();
+		GUI::DestroyInstance();
+		AssetFolderPathManager::DestroyInstance();
+		ControlActionManager::DestroyInstance();
+		SceneEventManager::DestroyInstance();
+		MaterialFactory::DestroyInstance();
+		GeometryFactory::DestroyInstance();
+		ShaderProgramFactory::DestroyInstance();
+		SceneManager::DestroyInstance();
+		SceneFactory::DestroyInstance();
 	}
 }

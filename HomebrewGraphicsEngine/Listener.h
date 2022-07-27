@@ -2,7 +2,7 @@
 #include "openAL/al.h"
 #include "openAL/alc.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class Listener
 	{

@@ -1,4 +1,4 @@
 #include "SceneEventImplementation.h"
 
-namespace hograengine {
+namespace Hogra {
 }

@@ -3,7 +3,7 @@
 #include "ControlAction.h"
 #include <map>
 #include <iostream>
-namespace hograengine {
+namespace Hogra {
 
 	class ControlActionManager
 	{
@@ -11,7 +11,7 @@ namespace hograengine {
 
 		static ControlActionManager* getInstance();
 
-		static void destroyInstance();
+		static void DestroyInstance();
 
 		/*
 		* Process key event

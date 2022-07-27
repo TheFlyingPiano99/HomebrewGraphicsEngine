@@ -1,7 +1,7 @@
 #include "InstanceGroup.h"
 #include <algorithm>
 
-void hograengine::InstanceGroup::gatherInstanceData()
+void Hogra::InstanceGroup::gatherInstanceData()
 {
 	unsigned int count = objects.size();
 	if (instanceData.size() != count) {
@@ -14,12 +14,12 @@ void hograengine::InstanceGroup::gatherInstanceData()
 	}
 }
 
-void hograengine::InstanceGroup::injectInstanceData(const std::vector<Geometry::InstanceData>& data)
+void Hogra::InstanceGroup::injectInstanceData(const std::vector<Geometry::InstanceData>& data)
 {
 	instanceData = data;
 }
 
-void hograengine::InstanceGroup::draw()
+void Hogra::InstanceGroup::Draw()
 {
 	if (objects.size() == 0) {
 		return;
@@ -29,7 +29,7 @@ void hograengine::InstanceGroup::draw()
 	mesh->DrawInstanced(instanceData);
 }
 
-void hograengine::InstanceGroup::drawShadow()
+void Hogra::InstanceGroup::drawShadow()
 {
 	if (objects.size() == 0) {
 		return;
@@ -38,13 +38,13 @@ void hograengine::InstanceGroup::drawShadow()
 	mesh->DrawInstanced(instanceData);
 }
 
-void hograengine::InstanceGroup::optimalize(const Camera& camera)
+void Hogra::InstanceGroup::optimalize(const Camera& camera)
 {
 	if (optimalizationCounter > 500) {
 		optimalizationCounter = 0;
 
 		std::sort(objects.begin(), objects.end(), [&camera](SceneObject const* obj1, SceneObject const* obj2) {
-			return glm::length(obj1->getPosition() - camera.getEyePos()) < glm::length(obj2->getPosition() - camera.getEyePos());
+			return glm::length(obj1->GetPosition() - camera.getEyePos()) < glm::length(obj2->GetPosition() - camera.getEyePos());
 		});
 	}
 	else {

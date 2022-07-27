@@ -1,6 +1,6 @@
 #include "Texture1D.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	Texture1D::Texture1D(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType)
 		: bytes(bytes), width(width)

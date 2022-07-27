@@ -15,7 +15,7 @@
 #include "OrientationProvider.h"
 #include "ScaleProvider.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider
 	{
@@ -24,11 +24,11 @@ namespace hograengine {
 
 		~SceneObject() = default;
 
-		void control(float dt);
+		void Control(float dt);
 
-		void update(float dt, const Camera& camera);
+		void Update(float dt, const Camera& camera);
 
-		void draw();
+		void Draw();
 
 		void drawShadow(const ShadowCaster& shadowCaster);
 
@@ -40,19 +40,19 @@ namespace hograengine {
 			mesh = _mesh;
 		}
 
-		const glm::vec3& getPosition() const override {
+		const glm::vec3& GetPosition() const override {
 			return position;
 		}
 
-		void setPosition(const glm::vec3 pos) {
+		void SetPosition(const glm::vec3 pos) {
 			position = pos;
 		}
 
-		const glm::vec3& getScale() const override {
+		const glm::vec3& GetScale() const override {
 			return scale;
 		}
 
-		void setScale(const glm::vec3 s) {
+		void SetScale(const glm::vec3 s) {
 			scale = s;
 		}
 
@@ -71,11 +71,11 @@ namespace hograengine {
 			useEulerAngles = b;
 		}
 
-		const glm::quat& getOrientation() const override {
+		const glm::quat& GetOrientation() const override {
 			return orientation;
 		}
 
-		void setOrientation(const glm::quat _orientation) {
+		void SetOrientation(const glm::quat _orientation) {
 			orientation = _orientation;
 		}
 

@@ -3,7 +3,7 @@
 #include <queue>
 #include <iostream>
 
-namespace hograengine {
+namespace Hogra {
 
 	class SceneEventManager
 	{
@@ -21,7 +21,7 @@ namespace hograengine {
 			return instance;
 		}
 
-		static void destroyInstance() {
+		static void DestroyInstance() {
 			if (nullptr != instance) {
 				delete instance;
 				instance = nullptr;

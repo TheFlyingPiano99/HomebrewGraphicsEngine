@@ -1,10 +1,10 @@
 #pragma once
 #include <glm/ext/quaternion_float.hpp>
 
-namespace hograengine {
+namespace Hogra {
 	class OrientationProvider
 	{
 	public:
-		virtual const glm::quat& getOrientation() const = 0;
+		virtual const glm::quat& GetOrientation() const = 0;
 	};
 }

@@ -1,6 +1,6 @@
 #include "Texture2D.h"
 
-namespace hograengine {
+namespace Hogra {
 
 	Texture2D::Texture2D(const std::string& path, GLuint unit, GLenum format, GLenum pixelType)
 	{

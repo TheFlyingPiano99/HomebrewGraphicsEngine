@@ -5,7 +5,7 @@
 #include<iostream>
 #include<cerrno>
 
-namespace hograengine {
+namespace Hogra {
 
 	// Reads a text file and outputs a string with everything in the text file
 	std::string ShaderProgram::getFileContent(const std::string& filename) const
