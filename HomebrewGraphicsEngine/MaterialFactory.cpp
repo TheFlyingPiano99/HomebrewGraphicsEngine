@@ -61,17 +61,18 @@ namespace Hogra {
 		fbo.Init();
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *roughnessMetallicAO);
 		fbo.Bind();
-		auto* combinationProgram = new ShaderProgram(
+		ShaderProgram combinationProgram;
+		combinationProgram.Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("roughnessMetallicAOCombination.frag")
 			);
-		combinationProgram->Activate();
+		combinationProgram.Activate();
 		roughnessMap->Bind();
 		metallicMap->Bind();
 		aoMap->Bind();
 		glm::mat4 projection(1.0f);
-		glUniformMatrix4fv(glGetUniformLocation(combinationProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(combinationProgram.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glDisable(GL_BLEND);
 		glDisable(GL_DEPTH_TEST);
 		vao.Bind();
@@ -91,7 +92,6 @@ namespace Hogra {
 		aoMap->Unbind();
 		aoMap->Delete();
 		delete aoMap;
-		delete combinationProgram;
 
 		auto* shader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
 		auto* material = new Material(shader);

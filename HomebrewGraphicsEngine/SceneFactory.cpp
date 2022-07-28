@@ -286,7 +286,8 @@ namespace Hogra {
 	
 	void SceneFactory::InitSkyBox(Scene* scene)
 	{
-		ShaderProgram* skyboxShader = new ShaderProgram(
+		ShaderProgram* skyboxShader = new ShaderProgram();
+		skyboxShader->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("skybox.frag")

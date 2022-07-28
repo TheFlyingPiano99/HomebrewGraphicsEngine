@@ -27,6 +27,7 @@ namespace Hogra {
 		std::vector<Collider*> colliders;
 		bool useSpatialTree = true;
 		InstanceGroup instanceGroup;
+		ShaderProgram shaderProgram;
 	};
 }
 

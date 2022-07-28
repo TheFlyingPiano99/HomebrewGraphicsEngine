@@ -10,8 +10,7 @@ namespace Hogra {
 		// Reference ID of the Shader Program
 		GLuint ID;
 
-		// Constructor that build the Shader Program from 2 different shaders
-		ShaderProgram(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile);
+		void Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile);
 
 		~ShaderProgram();
 

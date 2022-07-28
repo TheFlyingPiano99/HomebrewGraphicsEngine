@@ -14,7 +14,7 @@ namespace Hogra {
 		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		shadowMap->Unbind();
-		program = new ShaderProgram(
+		program.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.frag")

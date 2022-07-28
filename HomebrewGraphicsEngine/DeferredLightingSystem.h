@@ -20,9 +20,7 @@ namespace Hogra {
 				delete gRoughnessMetallicAO;
 				delete depthTexture;
 			}
-			if (lightVolumeProgram != nullptr) {
-				delete fullScreenProgram;
-				delete lightVolumeProgram;
+			if (materialFullScreen != nullptr) {
 				delete materialFullScreen;
 				delete meshFullScreen;
 				delete material;
@@ -32,20 +30,20 @@ namespace Hogra {
 
 		void Init(int width, int height) {
 			gBuffer.Init();
-			fullScreenProgram = new ShaderProgram(
+			fullScreenProgram.Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshading.frag"));
-			materialFullScreen = new Material(fullScreenProgram);
+			materialFullScreen = new Material(&fullScreenProgram);
 			meshFullScreen = new Mesh(materialFullScreen, GeometryFactory::getInstance()->getFullScreenQuad());
 			meshFullScreen->setDepthTest(false);
 			meshFullScreen->setStencilTest(false);
 
-			lightVolumeProgram = new ShaderProgram(
+			lightVolumeProgram.Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingLightVolume.frag"));
-			material = new Material(lightVolumeProgram);
+			material = new Material(&lightVolumeProgram);
 			material->setAlphaBlend(true);
 			material->setBlendFunc(GL_ONE, GL_ONE);
 			mesh = new Mesh(material, GeometryFactory::getInstance()->getLightVolumeSphere());
@@ -103,8 +101,8 @@ namespace Hogra {
 			meshFullScreen->Bind();
 			glm::vec4 pos = lights[0]->GetPosition();
 			glm::vec3 pow = lights[0]->getPowerDensity();
-			glUniform4f(glGetUniformLocation(fullScreenProgram->ID, "light.position"), pos.x , pos.y, pos.z, pos.w);
-			glUniform3f(glGetUniformLocation(fullScreenProgram->ID, "light.powerDensity"), pow.x, pow.y, pow.z);
+			glUniform4f(glGetUniformLocation(fullScreenProgram.ID, "light.position"), pos.x , pos.y, pos.z, pos.w);
+			glUniform3f(glGetUniformLocation(fullScreenProgram.ID, "light.powerDensity"), pow.x, pow.y, pow.z);
 			meshFullScreen->Draw();
 
 			mesh->Bind();
@@ -118,8 +116,8 @@ namespace Hogra {
 
 	private:
 		FBO gBuffer;
-		ShaderProgram* fullScreenProgram = nullptr;
-		ShaderProgram* lightVolumeProgram = nullptr;
+		ShaderProgram fullScreenProgram;
+		ShaderProgram lightVolumeProgram;
 		Texture2D* gPosition = nullptr;
 		Texture2D* gNormal = nullptr;
 		Texture2D* gAlbedo = nullptr;

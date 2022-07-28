@@ -2,7 +2,7 @@
 
 namespace Hogra {
 
-	RBO::RBO(GLenum internalformat, GLsizei width, GLsizei height)
+	void RBO::Init(GLenum internalformat, GLsizei width, GLsizei height)
 	{
 		glGenRenderbuffers(1, &ID);
 		glBindRenderbuffer(GL_RENDERBUFFER, ID);

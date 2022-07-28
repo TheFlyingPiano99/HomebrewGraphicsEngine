@@ -16,9 +16,6 @@ namespace Hogra {
 		ShadowCaster(glm::vec3 position, glm::vec3 direction);
 
 		~ShadowCaster() {
-			if (program != nullptr) {
-				delete program;
-			}
 		}
 
 		const Texture2D* getShadowMap() const {
@@ -31,7 +28,7 @@ namespace Hogra {
 			glClear(GL_DEPTH_BUFFER_BIT);
 			glEnable(GL_DEPTH_TEST);
 			glDepthFunc(GL_LESS);
-			program->Activate();
+			program.Activate();
 			ExportData();
 		}
 
@@ -48,7 +45,7 @@ namespace Hogra {
 		}
 
 		const ShaderProgram& getProgram() const {
-			return *program;
+			return program;
 		}
 
 		void ExportData() {
@@ -76,7 +73,7 @@ namespace Hogra {
 		FBO fbo;
 		UniformBufferObject ubo;
 		Texture2D* shadowMap = nullptr;	// Do not delete in this object
-		ShaderProgram* program = nullptr;
+		ShaderProgram program;
 		glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
 		PositionProvider* positionProvider = nullptr;
 		glm::vec3 positionOffsetToProvider = glm::vec3(0.0f);

@@ -30,10 +30,10 @@ namespace Hogra {
 		void Bind();
 
 	private:
-		ShaderProgram* prefilterProgram = nullptr;
-		ShaderProgram* downSampleProgram = nullptr;
-		ShaderProgram* upSampleProgram = nullptr;
-		ShaderProgram* recombineProgram = nullptr;
+		ShaderProgram prefilterProgram;
+		ShaderProgram downSampleProgram;
+		ShaderProgram upSampleProgram;
+		ShaderProgram recombineProgram;
 		Texture2D* hdrTexture = nullptr;
 		Texture2D* depthTexture = nullptr;
 		std::vector<Texture2D*> downScaledTextures;

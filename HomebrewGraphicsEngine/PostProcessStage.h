@@ -16,7 +16,6 @@ namespace Hogra {
 			delete mesh;
 			delete colorTexture;
 			delete depthTexture;
-			delete program;
 			delete material;
 		}
 
@@ -37,7 +36,7 @@ namespace Hogra {
 		Mesh* mesh;
 		Texture2D* colorTexture;
 		Texture2D* depthTexture;
-		ShaderProgram* program;
+		ShaderProgram program;
 		Material* material;
 		bool active = true;
 	};

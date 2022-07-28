@@ -23,8 +23,7 @@ namespace Hogra {
 		throw(errno);
 	}
 
-	// Constructor that build the Shader Program from 2 different shaders
-	ShaderProgram::ShaderProgram(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile)
+	void ShaderProgram::Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile)
 	{
 		// Read vertexFile and fragmentFile and store the strings
 		std::string vertexCode = getFileContent(vertexFile);

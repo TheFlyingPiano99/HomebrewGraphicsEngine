@@ -80,12 +80,12 @@ void Hogra::CollisionManager::SetUseSpatialTree(bool b) {
 
 void Hogra::CollisionManager::InitDebug()
 {
-	auto* shaderProgram = new ShaderProgram(
+	shaderProgram.Init(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"), 
 		"", 
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
 	auto* geometry = GeometryFactory::getInstance()->getWireframeCube();
-	auto* material = new Material(shaderProgram);
+	auto* material = new Material(&shaderProgram);
 	auto* mesh = new Mesh(material, geometry);
 	mesh->setDepthTest(false);
 	auto* obj = new SceneObject(mesh);

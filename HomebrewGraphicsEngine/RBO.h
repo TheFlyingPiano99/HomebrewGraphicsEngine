@@ -9,7 +9,7 @@ namespace Hogra {
 		friend class FBO;
 		GLuint ID;
 
-		RBO(GLenum internalformat, GLsizei width, GLsizei height);
+		void Init(GLenum internalformat, GLsizei width, GLsizei height);
 
 		void Bind();
 
