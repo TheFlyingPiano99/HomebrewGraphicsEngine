@@ -30,20 +30,26 @@ namespace Hogra {
 		if (iter != loadedPBRMaterials.end()) {
 			return iter->second;
 		}
-		const auto* albedoMap = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath()
+		Texture2D* albedoMap = new Texture2D();
+		albedoMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 		.append(materialName).append("/albedo.jpg"), ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		const auto* normalMap = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath()
+		Texture2D* normalMap = new Texture2D();
+		normalMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/normal.jpg"), NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		const auto* roughnessMap = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath()
+		Texture2D roughnessMap;
+		roughnessMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/roughness.jpg"), 0, GL_RGB, GL_UNSIGNED_BYTE);
-		const auto* metallicMap = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath()
+		Texture2D metallicMap; 
+		metallicMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/metallic.jpg"), 1, GL_RGB, GL_UNSIGNED_BYTE);
-		const auto* aoMap = new Texture2D(AssetFolderPathManager::getInstance()->getTextureFolderPath()
+		Texture2D aoMap;
+		aoMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/ao.jpg"), 2, GL_RGB, GL_UNSIGNED_BYTE);
 		
 		// Combining roughness, metallic and AO:
 		auto& dim = albedoMap->getDimensions();
-		auto* roughnessMetallicAO = new Texture2D(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		Texture2D* roughnessMetallicAO = new Texture2D();
+		roughnessMetallicAO->Init(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		VAO vao;
 		VBO* vbo;
 		vao.Bind();
@@ -68,9 +74,9 @@ namespace Hogra {
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("roughnessMetallicAOCombination.frag")
 			);
 		combinationProgram.Activate();
-		roughnessMap->Bind();
-		metallicMap->Bind();
-		aoMap->Bind();
+		roughnessMap.Bind();
+		metallicMap.Bind();
+		aoMap.Bind();
 		glm::mat4 projection(1.0f);
 		glUniformMatrix4fv(glGetUniformLocation(combinationProgram.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glDisable(GL_BLEND);
@@ -80,18 +86,10 @@ namespace Hogra {
 		vbo->Delete();
 		delete vbo;
 		vao.Unbind();
-		vao.Delete();
 		fbo.Unbind();
-		fbo.Delete();
-		roughnessMap->Unbind();
-		roughnessMap->Delete();
-		delete roughnessMap;
-		metallicMap->Unbind();
-		metallicMap->Delete();
-		delete metallicMap;
-		aoMap->Unbind();
-		aoMap->Delete();
-		delete aoMap;
+		roughnessMap.Unbind();
+		metallicMap.Unbind();
+		aoMap.Unbind();
 
 		auto* shader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
 		auto* material = new Material(shader);

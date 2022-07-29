@@ -7,6 +7,7 @@
 #include <glm/ext/vector_float4.hpp>
 #include "FirstPersonControl.h"
 #include "GeometryLoader.h"
+#include "ShaderProgramFactory.h"
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -244,13 +245,16 @@ namespace Hogra {
 		font->Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append("arial.ttf"));
 		scene->AddFont(font);
 
-		auto* caption1 = new Caption("Debug text", font, ShaderProgramFactory::getInstance()->GetCaptionProgram(),
+		Caption* caption1 = new Caption();
+		caption1->Init("Debug text", font,
 			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.9), 1.5f, glm::vec4(0, 1, 0, 1));
 		scene->AddCaption(caption1);
-		auto* caption2 = new Caption("Ékezetes karakterek: aá, eé, ií, üű, oó, öő !ľ", font, ShaderProgramFactory::getInstance()->GetCaptionProgram(),
+		Caption* caption2 = new Caption();
+		caption2->Init("Ékezetes karakterek: aá, eé, ií, üű, oó, öő !ľ", font,
 			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.8), 1.0f, glm::vec4(1, 1, 0, 0.5));
 		scene->AddCaption(caption2);
-		auto* caption3 = new Caption("Halvány szöveg", font, ShaderProgramFactory::getInstance()->GetCaptionProgram(),
+		Caption* caption3 = new Caption();
+		caption3->Init("Halvány szöveg", font,
 			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.7), 1.0f, glm::vec4(0, 1, 1, 0.2));
 		scene->AddCaption(caption3);
 

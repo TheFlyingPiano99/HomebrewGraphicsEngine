@@ -13,13 +13,6 @@ namespace Hogra {
 		DeferredLightingSystem() = default;
 			
 		~DeferredLightingSystem() {
-			if (gPosition != nullptr) {
-				delete gPosition;
-				delete gNormal;
-				delete gAlbedo;
-				delete gRoughnessMetallicAO;
-				delete depthTexture;
-			}
 			if (materialFullScreen != nullptr) {
 				delete materialFullScreen;
 				delete meshFullScreen;
@@ -53,36 +46,34 @@ namespace Hogra {
 		}
 
 		void Resize(int width, int height) {
-			if (gPosition != nullptr) {
-				delete gPosition;
-				delete gNormal;
-				delete gAlbedo;
-				delete gRoughnessMetallicAO;
-				delete depthTexture;
-			}
-			
-			gPosition = new Texture2D(GL_RGBA32F, glm::ivec2(width, height), 0, GL_RGBA, GL_FLOAT);
-			gNormal = new Texture2D(GL_RGBA16F, glm::ivec2(width, height), 1, GL_RGBA, GL_FLOAT);
-			gAlbedo = new Texture2D(GL_RGBA16F, glm::ivec2(width, height), 2, GL_RGBA, GL_FLOAT);
-			gRoughnessMetallicAO = new Texture2D(GL_RGBA8, glm::ivec2(width, height), 3, GL_RGBA, GL_UNSIGNED_BYTE);
-			depthTexture = new Texture2D(GL_DEPTH_COMPONENT, glm::ivec2(width, height), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
-			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0, *gPosition, 0);
-			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT1, *gNormal, 0);
-			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT2, *gAlbedo, 0);
-			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT3, *gRoughnessMetallicAO, 0);
-			gBuffer.LinkTexture(GL_DEPTH_ATTACHMENT, *depthTexture, 0);
+			gPosition.Delete();
+			gNormal.Delete();
+			gAlbedo.Delete();
+			gRoughnessMetallicAO.Delete();
+			depthTexture.Delete();
+
+			gPosition.Init(GL_RGBA32F, glm::ivec2(width, height), 0, GL_RGBA, GL_FLOAT);
+			gNormal.Init(GL_RGBA16F, glm::ivec2(width, height), 1, GL_RGBA, GL_FLOAT);
+			gAlbedo.Init(GL_RGBA16F, glm::ivec2(width, height), 2, GL_RGBA, GL_FLOAT);
+			gRoughnessMetallicAO.Init(GL_RGBA8, glm::ivec2(width, height), 3, GL_RGBA, GL_UNSIGNED_BYTE);
+			depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(width, height), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
+			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0, gPosition, 0);
+			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT1, gNormal, 0);
+			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT2, gAlbedo, 0);
+			gBuffer.LinkTexture(GL_COLOR_ATTACHMENT3, gRoughnessMetallicAO, 0);
+			gBuffer.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
 			unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 			glDrawBuffers(4, attachments);
 			material->clearTextures();
-			material->addTexture(gPosition);
-			material->addTexture(gNormal);
-			material->addTexture(gAlbedo);
-			material->addTexture(gRoughnessMetallicAO);
+			material->addTexture(&gPosition);
+			material->addTexture(&gNormal);
+			material->addTexture(&gAlbedo);
+			material->addTexture(&gRoughnessMetallicAO);
 			materialFullScreen->clearTextures();
-			materialFullScreen->addTexture(gPosition);
-			materialFullScreen->addTexture(gNormal);
-			materialFullScreen->addTexture(gAlbedo);
-			materialFullScreen->addTexture(gRoughnessMetallicAO);
+			materialFullScreen->addTexture(&gPosition);
+			materialFullScreen->addTexture(&gNormal);
+			materialFullScreen->addTexture(&gAlbedo);
+			materialFullScreen->addTexture(&gRoughnessMetallicAO);
 			gBuffer.Unbind();
 		}
 
@@ -118,11 +109,11 @@ namespace Hogra {
 		FBO gBuffer;
 		ShaderProgram fullScreenProgram;
 		ShaderProgram lightVolumeProgram;
-		Texture2D* gPosition = nullptr;
-		Texture2D* gNormal = nullptr;
-		Texture2D* gAlbedo = nullptr;
-		Texture2D* gRoughnessMetallicAO = nullptr;
-		Texture2D* depthTexture = nullptr;
+		Texture2D gPosition;
+		Texture2D gNormal;
+		Texture2D gAlbedo;
+		Texture2D gRoughnessMetallicAO;
+		Texture2D depthTexture;
 		Material* materialFullScreen = nullptr;
 		Mesh* meshFullScreen = nullptr;
 		Material* material = nullptr;

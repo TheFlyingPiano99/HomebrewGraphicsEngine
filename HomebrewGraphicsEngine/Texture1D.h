@@ -11,19 +11,12 @@ namespace Hogra {
 	{
 	public:
 		const char* type;
-		float shininess = 16.0f;	// Should be extracted to Material
-		unsigned char* bytes = nullptr;
 		unsigned int width = 0;
 
-		Texture1D(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType);
-		~Texture1D() {
-			if (bytes != nullptr) {
-				delete[] bytes;
-			}
-		}
+		void Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType);
 
-		const unsigned char* getBytes() {
-			return bytes;
+		~Texture1D() {
+			Delete();
 		}
 
 		const unsigned int getWidth() {

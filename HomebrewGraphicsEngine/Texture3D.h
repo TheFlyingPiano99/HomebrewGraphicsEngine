@@ -17,7 +17,6 @@ namespace Hogra {
 	class Texture3D : public Texture
 	{
 	public:
-		float shininess = 16.0f;	// Should be extracted to Material
 		std::vector<char> bytes;
 		const Dimensions dimensions;
 		int maxValue;

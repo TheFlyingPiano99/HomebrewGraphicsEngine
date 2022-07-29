@@ -28,7 +28,7 @@
 /* pi */
 # define M_PI 3.14159265358979323846
 
-#define MAX_LIGHT_COUNT 1024
+#define MAX_LIGHT_COUNT 2048
 
 namespace Hogra {
 	static struct GlobalVariables {

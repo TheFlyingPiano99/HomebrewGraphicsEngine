@@ -18,19 +18,11 @@ namespace Hogra {
 		~ShadowCaster() {
 		}
 
-		const Texture2D* getShadowMap() const {
+		const Texture2D& getShadowMap() const {
 			return shadowMap;
 		}
 
-		void Bind() {
-			fbo.Bind();
-			glClearDepth(1);
-			glClear(GL_DEPTH_BUFFER_BIT);
-			glEnable(GL_DEPTH_TEST);
-			glDepthFunc(GL_LESS);
-			program.Activate();
-			ExportData();
-		}
+		void Bind();
 
 		void Update() {
 			if (nullptr != positionProvider) {
@@ -48,15 +40,7 @@ namespace Hogra {
 			return program;
 		}
 
-		void ExportData() {
-			ubo.Bind();
-			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[0]), 0);
-			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[1]), 1);
-			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[2]), 2);
-			ubo.UploadSubData((void*)glm::value_ptr(lightSpaceMatrix[3]), 3);
-			ubo.Unbind();
-			shadowMap->Bind();
-		}
+		void ExportData();
 
 		void SetPositionProvider(PositionProvider* provider) {
 			positionProvider = provider;
@@ -72,7 +56,7 @@ namespace Hogra {
 
 		FBO fbo;
 		UniformBufferObject ubo;
-		Texture2D* shadowMap = nullptr;	// Do not delete in this object
+		Texture2D shadowMap;	// Do not delete in this object
 		ShaderProgram program;
 		glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
 		PositionProvider* positionProvider = nullptr;

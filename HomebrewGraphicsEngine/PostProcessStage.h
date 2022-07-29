@@ -14,8 +14,6 @@ namespace Hogra {
 		~PostProcessStage() {
 			fbo.Delete();
 			delete mesh;
-			delete colorTexture;
-			delete depthTexture;
 			delete material;
 		}
 
@@ -27,15 +25,15 @@ namespace Hogra {
 
 		void setActive(bool _active);
 
-		Texture2D* getColorTexture() const {
+		const Texture2D& getColorTexture() const {
 			return colorTexture;
 		}
 
 	private:
 		FBO fbo;
 		Mesh* mesh;
-		Texture2D* colorTexture;
-		Texture2D* depthTexture;
+		Texture2D colorTexture;
+		Texture2D depthTexture;
 		ShaderProgram program;
 		Material* material;
 		bool active = true;

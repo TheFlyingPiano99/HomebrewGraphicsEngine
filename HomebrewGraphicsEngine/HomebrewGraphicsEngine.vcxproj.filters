@@ -515,9 +515,6 @@
     <ClInclude Include="HoGraEngineApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -532,6 +529,9 @@
     </ClInclude>
     <ClInclude Include="Bloom.h">
       <Filter>Header Files\Model\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFactory.h">
+      <Filter>Header Files\Model\Factories</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

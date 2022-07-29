@@ -2,9 +2,10 @@
 
 namespace Hogra {
 
-	Texture1D::Texture1D(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType)
-		: bytes(bytes), width(width)
+	void Texture1D::Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType)
 	{
+		this->width = width;
+
 		// Generates an OpenGL texture object
 		glGenTextures(1, &ID);
 		// Assigns the texture to a Texture Unit

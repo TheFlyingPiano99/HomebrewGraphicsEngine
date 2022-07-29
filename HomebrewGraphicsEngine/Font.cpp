@@ -3,11 +3,12 @@
 namespace Hogra {
     Texture2D* Font::RenderTextInTexture(const std::string& text) {
         if (nullptr == shaderProgram) {
-            throw new UnloadedFontException();
+            throw UnloadedFontException();
         }
         int baseline;
         glm::ivec2 dim = GetTextDimension(text, baseline);
-        Texture2D* texture = new Texture2D(GL_RGBA, dim, 0, GL_RGBA, GL_UNSIGNED_BYTE);
+        Texture2D* texture = new Texture2D();
+        texture->Init(GL_RGBA, dim, 0, GL_RGBA, GL_UNSIGNED_BYTE);
         FBO fbo;
         fbo.Init();
         fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *texture);

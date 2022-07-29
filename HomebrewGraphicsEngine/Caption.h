@@ -3,6 +3,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include "ShaderProgram.h"
+#include "ShaderProgramFactory.h"
 #include "FBO.h"
 #include "Component.h"
 #include "glm/gtx/transform.hpp"
@@ -14,9 +15,14 @@ namespace Hogra {
 	class Caption : public Component
 	{
 	public:
-		Caption(const std::string& text, Font* font, ShaderProgram* program, glm::vec2 sPos, float scale, const glm::vec4& color) 
-				: Component(), text(text), scale(scale), font(font), color(color), program(program), screenPosition(sPos) {
-			texture = font->RenderTextInTexture(text);
+		void Init(const std::string& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color) {
+			this->text = text;
+			this->scale = scale;
+			this->font = font;
+			this->color = color;
+			this->screenPosition = sPos;
+			this->program = ShaderProgramFactory::getInstance()->GetCaptionProgram();
+			this->texture = font->RenderTextInTexture(text);
 			vao.Bind();
 			std::vector<glm::vec4> vertices;
 			glm::ivec2 dim = texture->getDimensions();
@@ -31,10 +37,8 @@ namespace Hogra {
 		}
 		
 		~Caption() {
-			if (nullptr != texture) {
-				delete texture;
-			}
 			vbo->Delete();
+			delete texture;
 			delete vbo;
 			vao.Delete();
 		}
@@ -47,6 +51,7 @@ namespace Hogra {
 			glUniformMatrix4fv(glGetUniformLocation(program->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 			glUniform4f(glGetUniformLocation(program->ID, "textColor"), color.r, color.g, color.b, color.a);
 			glEnable(GL_BLEND);
+			glDisable(GL_CULL_FACE);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glDisable(GL_DEPTH_TEST);
 			vao.Bind();

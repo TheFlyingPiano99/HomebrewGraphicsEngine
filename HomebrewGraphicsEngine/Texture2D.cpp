@@ -2,7 +2,7 @@
 
 namespace Hogra {
 
-	Texture2D::Texture2D(const std::string& path, GLuint unit, GLenum format, GLenum pixelType)
+	void Texture2D::Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType)
 	{
 
 		// Stores the width, height, and the number of color channels of the image
@@ -46,10 +46,11 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	Texture2D::Texture2D(std::vector<glm::vec4> bytes, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType)
-		: bytes(bytes), dimensions(dimensions)
+	void Texture2D::Init(std::vector<glm::vec4> bytes, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType)
 	{
-		// Generates an OpenGL texture object
+		this->dimensions = dimensions;
+		
+			// Generates an OpenGL texture object
 		glGenTextures(1, &ID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + unit);
@@ -73,7 +74,7 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	Texture2D::Texture2D(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType)
+	void Texture2D::Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType)
 	{
 		// Generates an OpenGL texture object
 		glGenTextures(1, &ID);
@@ -112,27 +113,6 @@ namespace Hogra {
 
 	const glm::ivec2 Texture2D::getDimensions() const {
 		return dimensions;
-	}
-
-	const std::vector<glm::vec4>& Texture2D::getBytes() const {
-		return bytes;
-	}
-
-
-	glm::vec4& Texture2D::operator()(glm::ivec2 position)
-	{
-		if (position.x >= dimensions.x || position.x < 0
-			|| position.y >= dimensions.y || position.y < 0) {
-			return nullVector;
-		}
-		glm::vec4 v = bytes[position.y * dimensions.x + position.x];
-		return v;
-	}
-
-	glm::vec4& Texture2D::operator()(glm::vec2 normalisedPosition) {
-		return operator()(glm::ivec2(
-			normalisedPosition.x * (dimensions.x - 1),
-			normalisedPosition.y * (dimensions.y - 1)));
 	}
 
 	void Texture2D::Bind() const

@@ -5,6 +5,9 @@
 #include "VBO.h"
 #include "FBO.h"
 
+#define BLOOM_MIP_LEVELS 8
+
+
 namespace Hogra {
 	class Bloom
 	{
@@ -34,9 +37,9 @@ namespace Hogra {
 		ShaderProgram downSampleProgram;
 		ShaderProgram upSampleProgram;
 		ShaderProgram recombineProgram;
-		Texture2D* hdrTexture = nullptr;
-		Texture2D* depthTexture = nullptr;
-		std::vector<Texture2D*> downScaledTextures;
+		Texture2D hdrTexture;
+		Texture2D depthTexture;
+		Texture2D downScaledTextures[BLOOM_MIP_LEVELS];
 		VAO vao;
 		VBO* vbo = nullptr;
 		FBO fbo;

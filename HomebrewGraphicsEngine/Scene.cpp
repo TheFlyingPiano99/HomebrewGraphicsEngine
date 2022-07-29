@@ -25,7 +25,7 @@ namespace Hogra {
 			throw new std::exception("Shadowcaster already initialised! Only one allowed.");
 		}
 		shadowCaster = new ShadowCaster(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
-		textures.push_back(shadowCaster->getShadowMap());
+		textures.push_back(&shadowCaster->getShadowMap());
 	}
 
 	void Scene::initPostProcessStages()
