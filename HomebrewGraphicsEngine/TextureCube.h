@@ -19,7 +19,7 @@ namespace Hogra {
 
 		const char* type;
 
-		TextureCube(std::vector<std::string>& images, GLuint unit);
+		void Init(std::vector<std::string>& images, GLuint unit);
 
 		~TextureCube() {
 			this->Delete();

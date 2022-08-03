@@ -303,7 +303,8 @@ namespace Hogra {
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
-		auto* cubeMap = new TextureCube(imagePaths, SKYBOX_UNIT);
+		auto* cubeMap = new TextureCube();
+		cubeMap->Init(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = new Material(skyboxShader);
 		skyBoxMaterial->addTexture(cubeMap);
 		Geometry* fullscreenQuad = GeometryFactory::getInstance()->getFullScreenQuad();

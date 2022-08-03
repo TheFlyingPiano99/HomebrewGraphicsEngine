@@ -38,7 +38,7 @@ namespace Hogra {
 		void SetFaceCullingOrientation(int orientation);
 
 		void BindVAO() {
-			VAO.Bind();
+			vao.Bind();
 		}
 
 		void SetPrimitiveType(int type) {
@@ -54,7 +54,8 @@ namespace Hogra {
 		unsigned int instancedBuffer = 0;
 		std::vector <Vertex> vertices;
 		std::vector <GLint> indices;
-		VAO VAO;
+		VAO vao;
+		VBO vbo;
 
 		bool faceCulling = true;
 	};

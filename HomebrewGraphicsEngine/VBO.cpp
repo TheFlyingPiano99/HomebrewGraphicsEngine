@@ -3,7 +3,7 @@
 namespace Hogra {
 
 	// Constructor that generates a Vertex Buffer Object and links it to vertices
-	VBO::VBO(std::vector<Vertex>& vertices)
+	void VBO::Init(std::vector<Vertex>& vertices)
 	{
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_ARRAY_BUFFER, ID);
@@ -11,7 +11,7 @@ namespace Hogra {
 	}
 
 	// Constructor that generates a Vertex Buffer Object and links it to vertices
-	VBO::VBO(std::vector<glm::vec3>& vertices)
+	void VBO::Init(std::vector<glm::vec3>& vertices)
 	{
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_ARRAY_BUFFER, ID);
@@ -19,11 +19,15 @@ namespace Hogra {
 	}
 
 	// Constructor that generates a Vertex Buffer Object and links it to vertices
-	VBO::VBO(std::vector<glm::vec4>& vertices)
+	void VBO::Init(std::vector<glm::vec4>& vertices)
 	{
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_ARRAY_BUFFER, ID);
 		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec4), vertices.data(), GL_STATIC_DRAW);
+	}
+
+	VBO::~VBO() {
+		this->Delete();
 	}
 
 	// Binds the VBO

@@ -18,19 +18,15 @@ namespace Hogra {
 	{
 	public:
 		std::vector<char> bytes;
-		const Dimensions dimensions;
-		int maxValue;
-		Texture3D(const char* directory, const Dimensions dimensions, GLuint slot, GLenum format);
+		Dimensions dimensions;
+		
+		void Init(const char* directory, const Dimensions dimensions, GLuint slot, GLenum format);
+		
 		~Texture3D();
 
 		const Dimensions& getDimensions() {
 			return dimensions;
 		}
-
-		const float operator()(glm::ivec3 position);
-
-		const glm::vec4 resampleGradientAndDensity(glm::ivec3 position);
-
 
 		// Inherited via Texture
 		void Bind() const override;

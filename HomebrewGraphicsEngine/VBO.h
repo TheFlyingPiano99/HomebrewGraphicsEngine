@@ -29,10 +29,14 @@ namespace Hogra {
 	public:
 		// Reference ID of the Vertex Buffer Object
 		GLuint ID;
-		// Constructor that generates a Vertex Buffer Object and links it to vertices
-		VBO(std::vector<Vertex>& vertices);
-		VBO(std::vector<glm::vec3>& vertices);
-		VBO(std::vector<glm::vec4>& vertices);
+
+		void Init(std::vector<Vertex>& vertices);
+
+		void Init(std::vector<glm::vec3>& vertices);
+
+		void Init(std::vector<glm::vec4>& vertices);
+
+		~VBO();
 
 		// Binds the VBO
 		void Bind();

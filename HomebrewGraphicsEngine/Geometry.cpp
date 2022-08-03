@@ -4,21 +4,22 @@ namespace Hogra {
 
 	Geometry::Geometry(std::vector<Vertex>& vertices, std::vector<GLint>& indices) : vertices(vertices), indices(indices)
 	{
-		VAO.Bind();
+		vao.Init();
+		vao.Bind();
 		// Generates Vertex Buffer Object and links it to vertices
-		VBO VBO(vertices);
+		vbo.Init(vertices);
 		// Generates Element Buffer Object and links it to indices
 		EBO ebo;
 		ebo.Init(indices);
 		// Links VBO attributes such as coordinates and colors to VAO
-		VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);	// pos
-		VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));	// normal
-		VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));	// tangent
-		VAO.LinkAttrib(VBO, 3, 3, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));	// bitangent
-		VAO.LinkAttrib(VBO, 4, 2, GL_FLOAT, sizeof(Vertex), (void*)(12 * sizeof(float)));	// uv
+		vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);	// pos
+		vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));	// normal
+		vao.LinkAttrib(vbo, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));	// tangent
+		vao.LinkAttrib(vbo, 3, 3, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));	// bitangent
+		vao.LinkAttrib(vbo, 4, 2, GL_FLOAT, sizeof(Vertex), (void*)(12 * sizeof(float)));	// uv
 		// Unbind all to prevent accidentally modifying them
-		VAO.Unbind();
-		VBO.Unbind();
+		vao.Unbind();
+		vbo.Unbind();
 		ebo.Unbind();
 	}
 
@@ -94,7 +95,7 @@ namespace Hogra {
 
 	void Geometry::Draw()
 	{
-		VAO.Bind();
+		vao.Bind();
 		if (faceCulling) {
 			glEnable(GL_CULL_FACE);
 			glFrontFace(faceCullingOrietation);
@@ -108,7 +109,7 @@ namespace Hogra {
 
 	void Geometry::DrawInstanced(const std::vector<InstanceData>& instanceData)
 	{
-		VAO.Bind();
+		vao.Bind();
 		if (0 == instancedBuffer) {
 			initInstancedBuffer();
 		}
@@ -129,7 +130,7 @@ namespace Hogra {
 
 	void Geometry::DrawInstanced(const std::vector<LightInstancedData>& instanceData)
 	{
-		VAO.Bind();
+		vao.Bind();
 		if (0 == instancedBuffer) {
 			initLightInstancedBuffer();
 		}

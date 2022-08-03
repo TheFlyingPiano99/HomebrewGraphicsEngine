@@ -51,7 +51,9 @@ namespace Hogra {
 		Texture2D* roughnessMetallicAO = new Texture2D();
 		roughnessMetallicAO->Init(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		VAO vao;
-		VBO* vbo;
+		VBO vbo;
+		vao.Init();
+		vao.Bind();
 		vao.Bind();
 		std::vector<glm::vec4> vertices;
 		vertices.push_back(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));	//6
@@ -60,8 +62,8 @@ namespace Hogra {
 		vertices.push_back(glm::vec4(1.0f, -1.0f, 1.0f, 0.0f));	//3
 		vertices.push_back(glm::vec4(-1.0f, -1.0f, 0.0f, 0.0f));//2
 		vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //1
-		vbo = new VBO(vertices);
-		vao.LinkAttrib(*vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
+		vbo.Init(vertices);
+		vao.LinkAttrib(vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
 
 		FBO fbo;
 		fbo.Init();
@@ -83,8 +85,6 @@ namespace Hogra {
 		glDisable(GL_DEPTH_TEST);
 		vao.Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		vbo->Delete();
-		delete vbo;
 		vao.Unbind();
 		fbo.Unbind();
 		roughnessMap.Unbind();

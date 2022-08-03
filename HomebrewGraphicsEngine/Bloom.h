@@ -14,8 +14,6 @@ namespace Hogra {
 	public:
 		Bloom();
 
-		~Bloom();
-
 		void Init(unsigned int width, unsigned int height);
 
 		void Draw(const FBO& outFBO);
@@ -41,7 +39,7 @@ namespace Hogra {
 		Texture2D depthTexture;
 		Texture2D downScaledTextures[BLOOM_MIP_LEVELS];
 		VAO vao;
-		VBO* vbo = nullptr;
+		VBO vbo;
 		FBO fbo;
 		float treshold;
 		float falloff;

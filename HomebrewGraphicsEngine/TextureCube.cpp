@@ -2,7 +2,7 @@
 
 namespace Hogra {
 
-	TextureCube::TextureCube(std::vector<std::string>& images, GLuint unit)
+	void TextureCube::Init(std::vector<std::string>& images, GLuint unit)
 	{
 		glGenTextures(1, &ID);
 		glActiveTexture(GL_TEXTURE0 + unit);

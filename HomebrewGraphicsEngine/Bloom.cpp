@@ -10,10 +10,6 @@ Hogra::Bloom::Bloom() {
 	falloff = 0.9f;
 }
 
-Hogra::Bloom::~Bloom() {
-	delete vbo;
-}
-
 void Hogra::Bloom::Init(unsigned int width, unsigned int height) {
 	prefilterProgram.Init(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
@@ -36,6 +32,7 @@ void Hogra::Bloom::Init(unsigned int width, unsigned int height) {
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomRecombine.frag")
 	);
 	fbo.Init();
+	vao.Init();
 	vao.Bind();
 	std::vector<glm::vec4> vertices;
 	vertices.push_back(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));	//6
@@ -44,8 +41,8 @@ void Hogra::Bloom::Init(unsigned int width, unsigned int height) {
 	vertices.push_back(glm::vec4(1.0f, -1.0f, 1.0f, 0.0f));	//3
 	vertices.push_back(glm::vec4(-1.0f, -1.0f, 0.0f, 0.0f));//2
 	vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //1
-	vbo = new VBO(vertices);
-	vao.LinkAttrib(*vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
+	vbo.Init(vertices);
+	vao.LinkAttrib(vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
 	onResize(width, height);
 }
 

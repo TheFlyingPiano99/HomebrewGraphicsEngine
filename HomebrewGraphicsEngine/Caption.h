@@ -23,6 +23,7 @@ namespace Hogra {
 			this->screenPosition = sPos;
 			this->program = ShaderProgramFactory::getInstance()->GetCaptionProgram();
 			this->texture = font->RenderTextInTexture(text);
+			vao.Init();
 			vao.Bind();
 			std::vector<glm::vec4> vertices;
 			glm::ivec2 dim = texture->getDimensions();
@@ -32,14 +33,12 @@ namespace Hogra {
 			vertices.push_back(glm::vec4(dim.x, 0.0f, 1.0f, 0.0f));	//3
 			vertices.push_back(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));	//2
 			vertices.push_back(glm::vec4(0.0f, dim.y, 0.0f, 1.0f)); //1
-			vbo = new VBO(vertices);
-			vao.LinkAttrib(*vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
+			vbo.Init(vertices);
+			vao.LinkAttrib(vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
 		}
 		
 		~Caption() {
-			vbo->Delete();
 			delete texture;
-			delete vbo;
 			vao.Delete();
 		}
 
@@ -74,7 +73,7 @@ namespace Hogra {
 
 	private:
 		VAO vao;
-		VBO* vbo;
+		VBO vbo;
 		std::string text;
 		glm::vec2 screenPosition;
 		float scale;
