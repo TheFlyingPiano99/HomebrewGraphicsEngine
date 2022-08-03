@@ -88,20 +88,24 @@ namespace Hogra {
 		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
 
 		Camera camera;
-		std::vector<Light*> lights;
 		LightManager lightManager;
 		Bloom bloom;
-
+		
+		//To deallocate:
+		std::vector<Light*> lights;
 		std::vector<ShaderProgram*> shaders;
 		std::vector<Geometry*> geometries;
 		std::vector<Material*> materials;
 		std::vector<Mesh*> meshes;
+		std::vector<const Texture*> textures;
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Component*> components;
 		std::vector<Font*> fonts;
 		std::vector<Caption*> captions;
 		UserControl* userControl = nullptr;
+		ShadowCaster* shadowCaster = nullptr;
+		std::vector<PostProcessStage*> postProcessStages;
 
 		CollisionManager collisionManager;
 
@@ -111,10 +115,6 @@ namespace Hogra {
 		bool drawDebug = false;
 
 		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-		std::vector<const Texture*> textures;
-		std::vector<PostProcessStage*> postProcessStages;
-		ShadowCaster* shadowCaster = nullptr;
 
 		void Destroy();
 

@@ -73,66 +73,97 @@ namespace Hogra {
 
 	void Scene::Destroy()
 	{
-		for (auto* light : lights) {
+		/*
+ 		std::vector<Light*> lights;				//1
+		std::vector<ShaderProgram*> shaders;	//2
+		std::vector<Geometry*> geometries;		//3
+		std::vector<Material*> materials;		//4
+		std::vector<Mesh*> meshes;				//5
+		std::vector<const Texture*> textures;	//6
+		std::vector<SceneObject*> sceneObjects;	//7
+		std::map<std::string, InstanceGroup*> instanceGroups;	//8
+		std::vector<Component*> components;		//9
+		std::vector<Font*> fonts;				//10
+		std::vector<Caption*> captions;			//11
+		UserControl* userControl = nullptr;		//12
+		ShadowCaster* shadowCaster = nullptr;	//13
+		std::vector<PostProcessStage*> postProcessStages;	//14
+		*/
+
+		for (auto* light : lights) {	//1
 			delete light;
 		}
 		lights.clear();
 		lightManager.Clear();
 
-		for (auto sh : shaders) {
+		for (auto sh : shaders) {		//2
 			sh->Delete();
 			delete sh;
 		}
 		shaders.clear();
-		for (auto& material : materials) {
-			delete material;
-		}
-		materials.clear();
 
-		for (auto& geometry : geometries) {
+		for (auto& geometry : geometries) {	//3
 			delete geometry;
 		}
 		geometries.clear();
 
-		for (auto& mesh : meshes) {
+		for (auto& material : materials) {	//4
+			delete material;
+		}
+		materials.clear();
+
+
+		for (auto& mesh : meshes) {			//5
 			delete mesh;
 		}
 		meshes.clear();
 
-		for (auto& obj : sceneObjects) {
-			delete obj;
-		}
-		sceneObjects.clear();
-
-		for (auto texture : textures) {
+		for (auto texture : textures) {		//6
 			delete texture;
 		}
 		textures.clear();
 
-		for (auto& postProcStage : postProcessStages) {
-			delete postProcStage;
+		for (auto& obj : sceneObjects) {	//7
+			delete obj;
 		}
-		postProcessStages.clear();
+		sceneObjects.clear();
+		
 
-		for (auto& component : components) {
+		for (auto instanceGroup : instanceGroups) {	//8
+			delete instanceGroup.second;
+		}
+		instanceGroups.clear();
+
+		for (auto& component : components) {		//9
 			delete component;
 		}
 		components.clear();
 
-		if (shadowCaster != nullptr) {
-			delete shadowCaster;
-		}
-
-		instanceGroups.clear();
-
-		for (auto& font : fonts) {
+		for (auto& font : fonts) {				//10
 			delete font;
 		}
 		fonts.clear();
-		for (auto& caption : captions) {
+
+		for (auto& caption : captions) {		//11
 			delete caption;
 		}
 		captions.clear();
+
+		if (nullptr != userControl) {			//12
+			delete userControl;
+			userControl = nullptr;
+		}
+
+		if (nullptr != shadowCaster) {			//13
+			delete shadowCaster;
+			shadowCaster = nullptr;
+		}
+
+
+		for (auto& postProcStage : postProcessStages) {	//14
+			delete postProcStage;
+		}
+		postProcessStages.clear();
 	}
 
 	//-----------------------------------------------------------------------------
