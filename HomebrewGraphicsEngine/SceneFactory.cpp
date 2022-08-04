@@ -310,7 +310,7 @@ namespace Hogra {
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
-		auto* cubeMap = new TextureCube();
+		auto* cubeMap = TextureCube::Instantiate();
 		cubeMap->Init(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = Material::Instantiate();
 		skyBoxMaterial->Init(skyboxShader);
@@ -380,7 +380,7 @@ namespace Hogra {
 		collider->SetPhysics(physics);
 		collider->SetPositionProvider(avatar);
 		scene->AddCollider(collider, "avatar");
-		FirstPersonControl* control = new FirstPersonControl();
+		FirstPersonControl* control = FirstPersonControl::Instantiate();
 		control->setPhysics(physics);
 		control->setCamera(&scene->GetCamera());
 		control->setInitialDirection(glm::normalize(glm::vec3(1, 0, 1)));

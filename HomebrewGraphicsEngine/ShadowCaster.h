@@ -13,12 +13,13 @@ namespace Hogra {
 	class ShadowCaster
 	{
 	public:
+
 		ShadowCaster(glm::vec3 position, glm::vec3 direction);
 
 		~ShadowCaster() {
 		}
 
-		const Texture2D& getShadowMap() const {
+		Texture2D& getShadowMap() {
 			return shadowMap;
 		}
 

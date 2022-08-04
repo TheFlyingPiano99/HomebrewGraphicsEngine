@@ -7,7 +7,7 @@ namespace Hogra {
         }
         int baseline;
         glm::ivec2 dim = GetTextDimension(text, baseline);
-        Texture2D* texture = new Texture2D();
+        Texture2D* texture = Texture2D::Instantiate();
         texture->Init(GL_RGBA, dim, 0, GL_RGBA, GL_UNSIGNED_BYTE);
         FBO fbo;
         fbo.Init();

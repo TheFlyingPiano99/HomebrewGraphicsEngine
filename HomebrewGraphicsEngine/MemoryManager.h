@@ -1,10 +1,19 @@
 #pragma once
+#include <vector>
 
-namespace Hogra::Memory {
+namespace Hogra {
 
+	class MemoryManager {
+	public:
+		/*
+		* Needs to be called before closing program!
+		*/
+		static void DeallocateAll();
 
-	/*
-	* Needs to be called before closing program!
-	*/
-	void destroyAllInstances();
+		static void Deallocate(void* instance);
+
+		static std::vector<void*> heapAllocatedInstances;
+
+	};
+
 }

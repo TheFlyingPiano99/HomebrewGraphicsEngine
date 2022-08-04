@@ -30,10 +30,10 @@ namespace Hogra {
 		if (iter != loadedPBRMaterials.end()) {
 			return iter->second;
 		}
-		Texture2D* albedoMap = new Texture2D();
+		Texture2D* albedoMap = Texture2D::Instantiate();
 		albedoMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 		.append(materialName).append("/albedo.jpg"), ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		Texture2D* normalMap = new Texture2D();
+		Texture2D* normalMap = Texture2D::Instantiate();
 		normalMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/normal.jpg"), NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D roughnessMap;
@@ -48,7 +48,7 @@ namespace Hogra {
 		
 		// Combining roughness, metallic and AO:
 		auto& dim = albedoMap->getDimensions();
-		Texture2D* roughnessMetallicAO = new Texture2D();
+		Texture2D* roughnessMetallicAO = Texture2D::Instantiate();
 		roughnessMetallicAO->Init(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		VAO vao;
 		VBO vbo;

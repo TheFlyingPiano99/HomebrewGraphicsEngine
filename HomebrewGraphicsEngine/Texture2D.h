@@ -13,13 +13,15 @@ namespace Hogra {
 	{
 	public:
 
+		static Texture2D* Instantiate();
+
 		void Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType);
 
 		void Init(std::vector<glm::vec4> bytes, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
 
 		void Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
 
-		~Texture2D() {
+		~Texture2D() override {
 			this->Delete();
 		}
 

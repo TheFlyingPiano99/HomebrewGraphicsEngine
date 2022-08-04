@@ -1,7 +1,13 @@
 #include "TextureCube.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
-
+	
+	TextureCube* TextureCube::Instantiate() {
+		auto* instance = new TextureCube();
+		MemoryManager::heapAllocatedInstances.push_back(instance);
+		return instance;
+	}
 	void TextureCube::Init(std::vector<std::string>& images, GLuint unit)
 	{
 		glGenTextures(1, &ID);

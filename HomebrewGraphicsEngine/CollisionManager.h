@@ -8,6 +8,8 @@ namespace Hogra {
 	public:
 		CollisionManager() = default;
 
+		~CollisionManager();
+
 		void AddCollider(Collider* collider, const std::string& colliderGroupName);
 
 		void RemoveCollider(Collider* collider);
@@ -28,6 +30,10 @@ namespace Hogra {
 		bool useSpatialTree = true;
 		InstanceGroup instanceGroup;
 		ShaderProgram shaderProgram;
+		SceneObject debugObj;
+		Mesh debugMesh;
+		Geometry* debugGeometry;
+		Material debugMaterial;
 	};
 }
 

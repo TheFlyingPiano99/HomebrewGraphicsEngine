@@ -1,26 +1,15 @@
 #include "Geometry.h"
 #include "GlobalInclude.h"
+#include "MemoryManager.h"
 #include <iostream>
 
 namespace Hogra {
 
-	int Geometry::instanceCount = 0;
-
 	Geometry* Geometry::Instantiate()
 	{
-		instanceCount++;
-		return new Geometry();
-	}
-
-	void Geometry::Deallocate(Geometry* instance)
-	{
-		instanceCount--;
-		delete instance;
-	}
-
-	void Geometry::PrintInstanceCount()
-	{
-		std::cout << "Geometry instance count: " << instanceCount << std::endl;
+		auto* instance = new Geometry();
+		MemoryManager::heapAllocatedInstances.push_back(instance);
+		return instance;
 	}
 
 	void Geometry::Init(std::vector<Vertex>& _vertices, std::vector<GLint>& _indices)

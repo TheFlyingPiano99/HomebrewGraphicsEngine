@@ -9,7 +9,9 @@ namespace Hogra {
 	{
 	public:
 		LightManager();
+
 		~LightManager();
+
 		void ExportData();
 		
 		void AddLight(Light* _light) {
@@ -44,7 +46,7 @@ namespace Hogra {
 		DeferredLightingSystem deferredLightingSystem;
 		Mesh* debugLightVolumeMesh = nullptr;
 		ShaderProgram shaderProgram;
-		Material* debugMaterial = nullptr;
+		Material debugMaterial;
 		Geometry* debugGeometry = nullptr;
 	};
 }

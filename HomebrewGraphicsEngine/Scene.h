@@ -99,7 +99,7 @@ namespace Hogra {
 		std::vector<Geometry*> geometries;
 		std::vector<Material*> materials;
 		std::vector<Mesh*> meshes;
-		std::vector<const Texture*> textures;
+		std::vector<Texture*> textures;
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Component*> components;

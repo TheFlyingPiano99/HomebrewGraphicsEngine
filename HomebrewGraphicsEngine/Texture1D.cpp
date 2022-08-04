@@ -1,6 +1,13 @@
 #include "Texture1D.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
+	
+	Texture1D* Texture1D::Instantiate() {
+		auto* instance = new Texture1D();
+		MemoryManager::heapAllocatedInstances.push_back(instance);
+		return instance;
+	}
 
 	void Texture1D::Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType)
 	{

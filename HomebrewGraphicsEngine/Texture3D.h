@@ -17,12 +17,15 @@ namespace Hogra {
 	class Texture3D : public Texture
 	{
 	public:
+
+		static Texture3D* Instantiate();
+
 		std::vector<char> bytes;
 		Dimensions dimensions;
 		
 		void Init(const char* directory, const Dimensions dimensions, GLuint slot, GLenum format);
 		
-		~Texture3D();
+		~Texture3D() override;
 
 		const Dimensions& getDimensions() {
 			return dimensions;

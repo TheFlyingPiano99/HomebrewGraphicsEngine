@@ -1,6 +1,7 @@
 #include "FirstPersonControl.h"
 #include <iostream>
 #include "CameraAnimation.h"
+#include "MemoryManager.h"
 
 void Hogra::FirstPersonControl::moveForward(float dt)
 {
@@ -52,6 +53,13 @@ void Hogra::FirstPersonControl::moveRight(float dt)
 		camera->setAnimation(a);
 	}
 	tSinceLastInput = 0.0f;
+}
+
+Hogra::FirstPersonControl* Hogra::FirstPersonControl::Instantiate()
+{
+	auto* instance = new FirstPersonControl();
+	MemoryManager::heapAllocatedInstances.push_back(instance);
+	return instance;
 }
 
 Hogra::FirstPersonControl::~FirstPersonControl()

@@ -148,6 +148,6 @@ namespace Hogra {
 	{
 		// Delete all the objects we've created
 
-		Memory::destroyAllInstances();
+		MemoryManager::DeallocateAll();
 	}
 }

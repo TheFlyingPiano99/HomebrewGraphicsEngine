@@ -13,12 +13,6 @@ namespace Hogra {
 		DeferredLightingSystem() = default;
 			
 		~DeferredLightingSystem() {
-			if (materialFullScreen != nullptr) {
-				Material::Deallocate(materialFullScreen);
-				Mesh::Deallocate(meshFullScreen);
-				Material::Deallocate(material);
-				Mesh::Deallocate(mesh);
-			}
 		};
 
 		void Init(int width, int height) {

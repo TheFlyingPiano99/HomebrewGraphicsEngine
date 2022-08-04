@@ -122,8 +122,5 @@ namespace Hogra {
 		glfwDestroyWindow(window);
 		// Terminate GLFW before ending the program
 		glfwTerminate();
-		Material::PrintInstanceCount();
-		Mesh::PrintInstanceCount();
-		SceneObject::PrintInstanceCount();
 	}
 }

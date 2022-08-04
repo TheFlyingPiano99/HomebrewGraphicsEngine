@@ -219,7 +219,7 @@
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgramFactory.cpp" />
     <ClCompile Include="ShadowCaster.cpp" />
-    <ClCompile Include="SingletonManager.cpp" />
+    <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="SphericalCollider.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Texture.cpp" />

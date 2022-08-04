@@ -1,25 +1,15 @@
 #include "Mesh.h"
+#include "MemoryManager.h"
 #include <iostream>
 
 namespace Hogra {
 
-	int Mesh::instanceCount = 0;
 
 	Mesh* Mesh::Instantiate()
 	{
-		instanceCount++;
-		return new Mesh();
-	}
-
-	void Mesh::Deallocate(Mesh* instance)
-	{
-		instanceCount--;
-		delete instance;
-	}
-
-	void Mesh::PrintInstanceCount()
-	{
-		std::cout << "Mesh instance count: " << instanceCount << std::endl;
+		auto* instance = new Mesh();
+		MemoryManager::heapAllocatedInstances.push_back(instance);
+		return instance;
 	}
 
 	void Mesh::Init(Material* _material, Geometry* _geometry)

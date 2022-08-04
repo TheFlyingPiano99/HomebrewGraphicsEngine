@@ -102,32 +102,6 @@ namespace Hogra {
 		}
 		shaders.clear();
 
-		for (auto& geometry : geometries) {	//3
-			Geometry::Deallocate(geometry);
-		}
-		geometries.clear();
-
-		for (auto& material : materials) {	//4
-			Material::Deallocate(material);
-		}
-		materials.clear();
-
-		for (auto& mesh : meshes) {			//5
-			Mesh::Deallocate(mesh);
-		}
-		meshes.clear();
-
-		for (auto& texture : textures) {		//6
-			delete texture;
-		}
-		textures.clear();
-
-		for (auto& obj : sceneObjects) {	//7
-			SceneObject::Deallocate(obj);
-		}
-		sceneObjects.clear();
-		
-
 		for (auto& instanceGroup : instanceGroups) {	//8
 			delete instanceGroup.second;
 		}
@@ -147,11 +121,6 @@ namespace Hogra {
 			delete caption;
 		}
 		captions.clear();
-
-		if (nullptr != userControl) {			//12
-			delete userControl;
-			userControl = nullptr;
-		}
 
 		if (nullptr != shadowCaster) {			//13
 			delete shadowCaster;

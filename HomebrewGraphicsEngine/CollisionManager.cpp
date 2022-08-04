@@ -2,6 +2,10 @@
 #include <algorithm>
 #include "GeometryFactory.h"
 
+Hogra::CollisionManager::~CollisionManager()
+{
+}
+
 void Hogra::CollisionManager::AddCollider(Collider* collider, const std::string& colliderGroupName) {
 	const auto& iter = std::find(colliders.begin(), colliders.end(), collider);
 	if (colliders.end() != iter) {	// Prevent from adding the same collider
@@ -84,15 +88,12 @@ void Hogra::CollisionManager::InitDebug()
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"), 
 		"", 
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
-	auto* geometry = GeometryFactory::getInstance()->getWireframeCube();
-	auto* material = Material::Instantiate();
-	material->Init(&shaderProgram);
-	auto* mesh = Mesh::Instantiate();
-	mesh->Init(material, geometry);
-	mesh->setDepthTest(false);
-	auto* obj = SceneObject::Instantiate();
-	obj->Init(mesh);
-	instanceGroup.addObject(obj);
+	debugGeometry = GeometryFactory::getInstance()->getWireframeCube();
+	debugMaterial.Init(&shaderProgram);
+	debugMesh.Init(&debugMaterial, debugGeometry);
+	debugMesh.setDepthTest(false);
+	debugObj.Init(&debugMesh);
+	instanceGroup.addObject(&debugObj);
 }
 
 void Hogra::CollisionManager::DrawDebug()

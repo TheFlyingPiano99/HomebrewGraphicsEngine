@@ -12,19 +12,17 @@ namespace Hogra {
 	public:
 
 		static Material* Instantiate();
-		static void Deallocate(Material* instance);
-		static void PrintInstanceCount();
 
 		void Init(ShaderProgram* program);
 
 		void Bind() const;
 
-		void addTexture(const Texture* texture);
+		void addTexture(Texture* texture);
 		void clearTextures();
 
 		ShaderProgram* getShaderProgram() const;
 
-		std::span<const Texture* const> getTextures() const;
+		std::span<Texture*> getTextures();
 
 		glm::vec3 getAlbedo() const {
 			return albedo;
@@ -65,7 +63,7 @@ namespace Hogra {
 
 	private:
 		ShaderProgram* program;
-		std::vector <const Texture*> textures;
+		std::vector<Texture*> textures;
 		glm::vec3 albedo = glm::vec3(0.95f, 0.95f, 0.95f);
 		float roughness = 0.3f;
 		float metallic = 0.0f;
@@ -78,8 +76,6 @@ namespace Hogra {
 		class ShaderProgramIsNullptr : public std::exception {};
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); };
-		inline void operator delete (void* ptr) { free(ptr); };
-		static int instanceCount;
 	};
 
 }

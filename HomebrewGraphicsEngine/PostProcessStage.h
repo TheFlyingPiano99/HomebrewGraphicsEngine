@@ -13,8 +13,6 @@ namespace Hogra {
 
 		~PostProcessStage() {
 			fbo.Delete();
-			Mesh::Deallocate(mesh);
-			Material::Deallocate(material);
 		}
 
 		void Bind() const;

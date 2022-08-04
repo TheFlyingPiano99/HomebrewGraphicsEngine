@@ -38,7 +38,6 @@ namespace Hogra {
 		}
 		
 		~Caption() {
-			delete texture;
 			vao.Delete();
 		}
 

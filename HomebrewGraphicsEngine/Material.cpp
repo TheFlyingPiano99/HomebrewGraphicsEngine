@@ -1,25 +1,14 @@
 #include "Material.h"
+#include "MemoryManager.h"
 #include <iostream>
 
 namespace Hogra {
 
-	int Material::instanceCount = 0;
-
 	Material* Material::Instantiate()
 	{
-		instanceCount++;
-		return new Material();
-	}
-
-	void Material::Deallocate(Material* instance)
-	{
-		instanceCount--;
-		delete instance;
-	}
-
-	void Material::PrintInstanceCount()
-	{
-		std::cout << "Material instance count: " << instanceCount << std::endl;
+		auto* instance = new Material();
+		MemoryManager::heapAllocatedInstances.push_back(instance);
+		return instance;
 	}
 
 	void Material::Init(ShaderProgram* program)
@@ -50,7 +39,7 @@ namespace Hogra {
 		}
 	}
 
-	void Material::addTexture(const Texture* texture) { textures.push_back(texture); }
+	void Material::addTexture(Texture* texture) { textures.push_back(texture); }
 
 	void Material::clearTextures()
 	{
@@ -62,7 +51,7 @@ namespace Hogra {
 		return program;
 	}
 
-	std::span<const Texture* const> Material::getTextures() const
+	std::span<Texture*> Material::getTextures()
 	{
 		return textures;
 	}

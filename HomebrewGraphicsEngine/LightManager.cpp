@@ -15,9 +15,6 @@ namespace Hogra {
 
 	LightManager::~LightManager()
 	{
-		Material::Deallocate(debugMaterial);
-		Geometry::Deallocate(debugGeometry);
-		Mesh::Deallocate(debugLightVolumeMesh);
 	}
 
 	void LightManager::ExportData()
@@ -41,11 +38,10 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
-		debugMaterial = Material::Instantiate();
-		debugMaterial->Init(&shaderProgram);
+		debugMaterial.Init(&shaderProgram);
 		debugGeometry = GeometryFactory::getInstance()->getWireFrameSphere();
 		debugLightVolumeMesh = Mesh::Instantiate();
-		debugLightVolumeMesh->Init(debugMaterial, debugGeometry);
+		debugLightVolumeMesh->Init(&debugMaterial, debugGeometry);
 		debugLightVolumeMesh->setDepthTest(false);
 	}
 

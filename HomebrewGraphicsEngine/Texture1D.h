@@ -13,9 +13,11 @@ namespace Hogra {
 		const char* type;
 		unsigned int width = 0;
 
+		static Texture1D* Instantiate();
+
 		void Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType);
 
-		~Texture1D() {
+		~Texture1D() override {
 			Delete();
 		}
 

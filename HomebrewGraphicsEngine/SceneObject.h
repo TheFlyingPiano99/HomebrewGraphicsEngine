@@ -23,10 +23,6 @@ namespace Hogra {
 
 		static SceneObject* Instantiate();
 
-		static void Deallocate(SceneObject* instance);
-
-		static void PrintInstanceCount();
-
 		void Init(Mesh* _mesh = nullptr) {
 			this->mesh = _mesh;
 		}
@@ -145,8 +141,6 @@ namespace Hogra {
 		void exportMatrices(const ShaderProgram& program);
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); }
-		inline void operator delete (void* ptr) { free(ptr); };
-		static int instanceCount;
 	};
 
 }

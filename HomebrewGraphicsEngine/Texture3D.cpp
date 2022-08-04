@@ -1,9 +1,15 @@
 #include "Texture3D.h"
 #include <iomanip>
 #include <sstream>
+#include "MemoryManager.h"
 
 namespace Hogra {
-
+	
+	Texture3D* Texture3D::Instantiate() {
+		auto* instance = new Texture3D();
+		MemoryManager::heapAllocatedInstances.push_back(instance);
+		return instance;
+	}
 	void Texture3D::Init(const char* directory, const Dimensions dimensions, GLuint slot, GLenum format)
 	{
 		this->dimensions = dimensions;

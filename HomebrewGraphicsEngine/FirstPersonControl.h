@@ -6,9 +6,13 @@ namespace Hogra {
 	class FirstPersonControl : public UserControl
 	{
 	public:
+
+		static FirstPersonControl* Instantiate();
+
 		FirstPersonControl() {
 			allowRotate = true;
 		}
+
 		~FirstPersonControl();
 
 		void Update(float dt) override;
