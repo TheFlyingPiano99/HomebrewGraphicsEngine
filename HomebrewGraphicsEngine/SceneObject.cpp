@@ -1,8 +1,28 @@
 #include "SceneObject.h"
 #include<glm/gtc/type_ptr.hpp>
 #include<glm/gtx/rotate_vector.hpp>
+#include <iostream>
 
 namespace Hogra {
+
+	int SceneObject::instanceCount = 0;
+
+	SceneObject* SceneObject::Instantiate()
+	{
+		instanceCount++;
+		return new SceneObject();
+	}
+
+	void SceneObject::Deallocate(SceneObject* instance)
+	{
+		instanceCount--;
+		delete instance;
+	}
+
+	void SceneObject::PrintInstanceCount()
+	{
+		std::cout << "SceneObject instance count: " << instanceCount << std::endl;
+	}
 
 	void SceneObject::Control(float dt) {
 		for (auto& component : components) {

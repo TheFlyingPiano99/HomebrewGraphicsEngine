@@ -14,10 +14,10 @@ namespace Hogra {
 			
 		~DeferredLightingSystem() {
 			if (materialFullScreen != nullptr) {
-				delete materialFullScreen;
-				delete meshFullScreen;
-				delete material;
-				delete mesh;
+				Material::Deallocate(materialFullScreen);
+				Mesh::Deallocate(meshFullScreen);
+				Material::Deallocate(material);
+				Mesh::Deallocate(mesh);
 			}
 		};
 
@@ -27,8 +27,10 @@ namespace Hogra {
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshading.frag"));
-			materialFullScreen = new Material(&fullScreenProgram);
-			meshFullScreen = new Mesh(materialFullScreen, GeometryFactory::getInstance()->getFullScreenQuad());
+			materialFullScreen = Material::Instantiate();
+			materialFullScreen->Init(&fullScreenProgram);
+			meshFullScreen = Mesh::Instantiate();
+			meshFullScreen->Init(materialFullScreen, GeometryFactory::getInstance()->getFullScreenQuad());
 			meshFullScreen->setDepthTest(false);
 			meshFullScreen->setStencilTest(false);
 
@@ -36,10 +38,12 @@ namespace Hogra {
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingLightVolume.frag"));
-			material = new Material(&lightVolumeProgram);
+			material = Material::Instantiate();
+			material->Init(&lightVolumeProgram);
 			material->setAlphaBlend(true);
 			material->setBlendFunc(GL_ONE, GL_ONE);
-			mesh = new Mesh(material, GeometryFactory::getInstance()->getLightVolumeSphere());
+			mesh = Mesh::Instantiate();
+			mesh->Init(material, GeometryFactory::getInstance()->getLightVolumeSphere());
 			mesh->setDepthTest(false);
 			mesh->setStencilTest(false);
 			Resize(width, height);

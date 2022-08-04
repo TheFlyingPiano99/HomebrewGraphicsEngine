@@ -6,6 +6,7 @@
 #include "GUI.h"
 #include "ControlActionManager.h"
 #include "SceneManager.h"
+#include "Material.h"
 
 namespace Hogra {
 	void HoGraEngineApplication::setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {
@@ -121,5 +122,8 @@ namespace Hogra {
 		glfwDestroyWindow(window);
 		// Terminate GLFW before ending the program
 		glfwTerminate();
+		Material::PrintInstanceCount();
+		Mesh::PrintInstanceCount();
+		SceneObject::PrintInstanceCount();
 	}
 }

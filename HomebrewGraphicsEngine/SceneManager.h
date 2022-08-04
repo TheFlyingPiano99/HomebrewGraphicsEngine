@@ -28,6 +28,13 @@ namespace Hogra {
 
 	private:
 		SceneManager() = default;
+
+		~SceneManager() {
+			if (nullptr != currentScene) {
+				delete currentScene;
+			}
+		}
+
 		static SceneManager* instance;
 
 		Scene* currentScene;

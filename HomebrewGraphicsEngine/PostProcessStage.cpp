@@ -13,10 +13,12 @@ namespace Hogra {
 		program.Activate();
 		colorTexture.Init(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
 		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(contextWidth, contextHeight), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
-		material = new Material(&program);
+		material = Material::Instantiate();
+		material->Init(&program);
 		material->addTexture(&colorTexture);
 		material->addTexture(&depthTexture);
-		mesh = new Mesh(material, GeometryFactory::getInstance()->getFullScreenQuad());
+		mesh = Mesh::Instantiate();
+		mesh->Init(material, GeometryFactory::getInstance()->getFullScreenQuad());
 		mesh->setDepthTest(false);
 		mesh->setStencilTest(false);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);

@@ -1,6 +1,31 @@
 #include "Material.h"
+#include <iostream>
+
 namespace Hogra {
 
+	int Material::instanceCount = 0;
+
+	Material* Material::Instantiate()
+	{
+		instanceCount++;
+		return new Material();
+	}
+
+	void Material::Deallocate(Material* instance)
+	{
+		instanceCount--;
+		delete instance;
+	}
+
+	void Material::PrintInstanceCount()
+	{
+		std::cout << "Material instance count: " << instanceCount << std::endl;
+	}
+
+	void Material::Init(ShaderProgram* program)
+	{
+		this->program = program;
+	}
 	void Material::Bind() const
 	{
 		if (nullptr == program) {

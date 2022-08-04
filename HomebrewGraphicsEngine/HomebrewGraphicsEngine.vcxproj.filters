@@ -440,7 +440,7 @@
     <ClInclude Include="CollisionEventListener.h">
       <Filter>Header Files\Controler</Filter>
     </ClInclude>
-    <ClInclude Include="SingletonManager.h">
+    <ClInclude Include="MemoryManager.h">
       <Filter>Header Files\Controler</Filter>
     </ClInclude>
     <ClInclude Include="SceneEventManager.h">

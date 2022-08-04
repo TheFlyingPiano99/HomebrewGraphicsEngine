@@ -1,8 +1,31 @@
 #include "Mesh.h"
+#include <iostream>
+
 namespace Hogra {
 
-	Mesh::Mesh(Material* material, Geometry* geometry) : material(material), geometry(geometry)
+	int Mesh::instanceCount = 0;
+
+	Mesh* Mesh::Instantiate()
 	{
+		instanceCount++;
+		return new Mesh();
+	}
+
+	void Mesh::Deallocate(Mesh* instance)
+	{
+		instanceCount--;
+		delete instance;
+	}
+
+	void Mesh::PrintInstanceCount()
+	{
+		std::cout << "Mesh instance count: " << instanceCount << std::endl;
+	}
+
+	void Mesh::Init(Material* _material, Geometry* _geometry)
+	{
+		this->material = _material;
+		this->geometry = _geometry;
 	}
 
 	void Mesh::Bind() const

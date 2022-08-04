@@ -13,7 +13,7 @@ layout (location = 10) in vec4 lightPowerDensity;	// Instanced array
 out VS_OUT {
 vec4 ndc;
 vec4 lightPosition;
-vec3 lightPowerDansity;
+vec3 lightPowerDensity;
 } vs_out;
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
@@ -33,5 +33,5 @@ void main()
 	vs_out.ndc = viewProjMatrix * modelMatrix * vec4(aPos, 1.0);
     gl_Position = vs_out.ndc;
 	vs_out.lightPosition = lightPosition;
-	vs_out.lightPowerDansity = lightPowerDensity.rgb;
+	vs_out.lightPowerDensity = lightPowerDensity.rgb;
 }

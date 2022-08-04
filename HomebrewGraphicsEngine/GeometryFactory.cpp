@@ -64,7 +64,8 @@ namespace Hogra {
 					indices.push_back(zRes + yRes + 0);
 				}
 			}
-			wireFrameSphere = new Geometry(vertices, indices);
+			wireFrameSphere = Geometry::Instantiate();
+			wireFrameSphere->Init(vertices, indices);
 			wireFrameSphere->SetPrimitiveType(GL_LINES);
 			wireFrameSphere->SetFaceCulling(false);
 		}
@@ -170,8 +171,9 @@ namespace Hogra {
 			vert.texUV = glm::vec2(horizontal.x * 0.5f + 0.5f, vert.normal.y * 0.5f + 0.5f);
 			vertices.push_back(vert);
 		}
-
-		return new Geometry(vertices, indices);
+		auto* geom = Geometry::Instantiate();
+		geom->Init(vertices, indices);
+		return geom;
 	}
 
 	void GeometryFactory::generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLint>* indices)
@@ -318,7 +320,8 @@ Geometry* GeometryFactory::getFullScreenQuad()
 	indices.push_back(3);
 	indices.push_back(4);
 	indices.push_back(5);
-	fullScreenQuad = new Geometry(vertices, indices);
+	fullScreenQuad = Geometry::Instantiate();
+	fullScreenQuad->Init(vertices, indices);
 	fullScreenQuad->SetFaceCulling(false);
 	return fullScreenQuad;
 }
@@ -614,7 +617,8 @@ Geometry* GeometryFactory::getCube()
 	for (int i = 0; i < 36; i++) {
 		indices.push_back(i);
 	}
-	cube = new Geometry(vertices, indices);
+	cube = Geometry::Instantiate();
+	cube->Init(vertices, indices);
 	return cube;
 }
 
@@ -671,7 +675,8 @@ Geometry* GeometryFactory::getWireframeCube()
 	indices.push_back(3);
 	indices.push_back(7);
 
-	wireframeCube = new Geometry(vertices, indices);
+	wireframeCube = Geometry::Instantiate();
+	wireframeCube->Init(vertices, indices);
 	wireframeCube->SetPrimitiveType(GL_LINES);
 	wireframeCube->SetFaceCulling(false);
 	return wireframeCube;

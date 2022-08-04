@@ -92,7 +92,8 @@ namespace Hogra {
 		aoMap.Unbind();
 
 		auto* shader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
-		auto* material = new Material(shader);
+		auto* material = Material::Instantiate();
+		material->Init(shader);
 		material->addTexture(albedoMap);
 		material->addTexture(normalMap);
 		material->addTexture(roughnessMetallicAO);
@@ -103,7 +104,8 @@ namespace Hogra {
 	Material* MaterialFactory::getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity)
 	{
 		ShaderProgram* program = ShaderProgramFactory::getInstance()->GetEmissiveMaterialProgram();
-		Material* material = new Material(program);
+		auto* material = Material::Instantiate();
+		material->Init(program);
 		material->setAlbedo(color * intensity);
 		material->setAlphaBlend(false);
 		return material;

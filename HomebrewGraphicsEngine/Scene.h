@@ -33,7 +33,9 @@ namespace Hogra {
 		void Init(int contextWidth, int contextHeight);
 
 		void Control(float dt);
+
 		void Update(float dt);
+
 		void Draw();
 
 		void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "");

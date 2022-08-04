@@ -1,12 +1,13 @@
 #version 420 core
 
-layout (location = 0) out vec4 FragColor;
-
 in VS_OUT {
 vec4 ndc;
 vec4 lightPosition;
 vec3 lightPowerDensity;
 } fs_in;
+
+layout (location = 0) out vec4 FragColor;
+
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 	vec3 cameraPosition;			// 16				0

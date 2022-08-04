@@ -85,10 +85,13 @@ void Hogra::CollisionManager::InitDebug()
 		"", 
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
 	auto* geometry = GeometryFactory::getInstance()->getWireframeCube();
-	auto* material = new Material(&shaderProgram);
-	auto* mesh = new Mesh(material, geometry);
+	auto* material = Material::Instantiate();
+	material->Init(&shaderProgram);
+	auto* mesh = Mesh::Instantiate();
+	mesh->Init(material, geometry);
 	mesh->setDepthTest(false);
-	auto* obj = new SceneObject(mesh);
+	auto* obj = SceneObject::Instantiate();
+	obj->Init(mesh);
 	instanceGroup.addObject(obj);
 }
 

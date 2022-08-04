@@ -54,6 +54,10 @@ void Hogra::FirstPersonControl::moveRight(float dt)
 	tSinceLastInput = 0.0f;
 }
 
+Hogra::FirstPersonControl::~FirstPersonControl()
+{
+}
+
 void Hogra::FirstPersonControl::Update(float dt)
 {
 	if (jumpCollider != nullptr) {

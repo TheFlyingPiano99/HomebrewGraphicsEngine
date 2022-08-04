@@ -78,7 +78,8 @@ namespace Hogra {
 	
 	ForceField* SceneFactory::InitGravitation(Scene* scene)
 	{
-		SceneObject* obj = new SceneObject();
+		SceneObject* obj = SceneObject::Instantiate();
+		obj->Init();
 		auto* field = new HomogeneForceField();
 		field->SetStrength(9.8f);
 
@@ -170,8 +171,10 @@ namespace Hogra {
 		ShaderProgram* cubeShader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
 		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl");
 		Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
-		auto* cubeMesh = new Mesh(material, cubeGeometry);
-		auto* obj = new SceneObject(cubeMesh);
+		auto* cubeMesh = Mesh::Instantiate();
+		cubeMesh->Init(material, cubeGeometry);
+		auto* obj = SceneObject::Instantiate();
+		obj->Init(cubeMesh);
 		obj->SetPosition(pos);
 		obj->SetScale(glm::vec3(10.0f, 0.5f, 10.0f));
 
@@ -211,8 +214,10 @@ namespace Hogra {
 			material = MaterialFactory::getInstance()->getPBRMaterial(materialName);
 		}
 		Geometry* geometry = GeometryFactory::getInstance()->getSphere();
-		auto* mesh = new Mesh(material, geometry);
-		auto* obj = new SceneObject(mesh);
+		auto* mesh = Mesh::Instantiate();
+		mesh->Init(material, geometry);
+		auto* obj = SceneObject::Instantiate();
+		obj->Init(mesh);
 		obj->SetPosition(pos);
 		obj->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
@@ -266,8 +271,10 @@ namespace Hogra {
 			for (int j = 0; j < 10; j++) {
 				auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl");
 				Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
-				auto* cubeMesh = new Mesh(material, cubeGeometry);
-				auto* obj = new SceneObject(cubeMesh);
+				auto* cubeMesh = Mesh::Instantiate();
+				cubeMesh->Init(material, cubeGeometry);
+				auto* obj = SceneObject::Instantiate();
+				obj->Init(cubeMesh);
 				obj->SetPosition(glm::vec3(i * 100.0f - 500.0f, 0.0f, j * 100.0f - 500.0f));
 				obj->SetScale(glm::vec3(50.0f, 1.0f, 50.0f));
 
@@ -305,13 +312,17 @@ namespace Hogra {
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
 		auto* cubeMap = new TextureCube();
 		cubeMap->Init(imagePaths, SKYBOX_UNIT);
-		auto* skyBoxMaterial = new Material(skyboxShader);
+		auto* skyBoxMaterial = Material::Instantiate();
+		skyBoxMaterial->Init(skyboxShader);
 		skyBoxMaterial->addTexture(cubeMap);
 		Geometry* fullscreenQuad = GeometryFactory::getInstance()->getFullScreenQuad();
-		auto* skyBoxMesh = new Mesh(skyBoxMaterial, fullscreenQuad);
+		auto* skyBoxMesh = Mesh::Instantiate();
+		skyBoxMesh->Init(skyBoxMaterial, fullscreenQuad);
 		skyBoxMesh->setDepthTest(false);
 		skyBoxMesh->setStencilTest(false);
-		scene->AddSceneObject(new SceneObject(skyBoxMesh));
+		auto* obj = SceneObject::Instantiate();
+		obj->Init(skyBoxMesh);
+		scene->AddSceneObject(obj);
 	}
 	
 	void SceneFactory::InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field)
@@ -323,8 +334,10 @@ namespace Hogra {
 		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks");
 		Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->SetFaceCulling(false);
-		auto* mesh = new Mesh(material, geometry);
-		auto* obj = new SceneObject(mesh);
+		auto* mesh = Mesh::Instantiate();
+		mesh->Init(material, geometry);
+		auto* obj = SceneObject::Instantiate();
+		obj->Init(mesh);
 		obj->SetPosition(pos);
 		obj->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 		collider->SetPositionProvider(obj);
@@ -350,7 +363,8 @@ namespace Hogra {
 	
 	void SceneFactory::InitAvatar(Scene* scene, ForceField* gravitation)
 	{
-		auto* avatar = new SceneObject();
+		auto* avatar = SceneObject::Instantiate();
+		avatar->Init();
 		avatar->SetPosition(glm::vec3(-60.0f, 2.0f, -60.0f));
 		scene->GetCamera().SetPositionProvider(avatar);
 		scene->GetCamera().setPositionInProvidersSpace(glm::vec3(0.0f, 0.8f, 0.0f));

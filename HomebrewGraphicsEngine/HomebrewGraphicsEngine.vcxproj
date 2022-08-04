@@ -300,7 +300,7 @@
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShaderProgramFactory.h" />
     <ClInclude Include="ShadowCaster.h" />
-    <ClInclude Include="SingletonManager.h" />
+    <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="SphericalCollider.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Texture1D.h" />

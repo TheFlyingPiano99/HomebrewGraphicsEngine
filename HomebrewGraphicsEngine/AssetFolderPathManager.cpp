@@ -15,7 +15,7 @@ namespace Hogra {
 				std::string errorMessage = "Folder <";
 				errorMessage.append(folderName);
 				errorMessage.append("> not found!");
-				throw new AssetFolderNotFound(errorMessage.c_str());
+				throw AssetFolderNotFound(errorMessage.c_str());
 			}
 			path.clear();
 			for (int j = 0; j < i; j++) {

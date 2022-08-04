@@ -13,8 +13,8 @@ namespace Hogra {
 
 		~PostProcessStage() {
 			fbo.Delete();
-			delete mesh;
-			delete material;
+			Mesh::Deallocate(mesh);
+			Material::Deallocate(material);
 		}
 
 		void Bind() const;
@@ -31,7 +31,7 @@ namespace Hogra {
 
 	private:
 		FBO fbo;
-		Mesh* mesh;
+		Mesh* mesh = nullptr;
 		Texture2D colorTexture;
 		Texture2D depthTexture;
 		ShaderProgram program;

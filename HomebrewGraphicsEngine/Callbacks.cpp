@@ -1,6 +1,6 @@
 #include "Callbacks.h"
 #include "ControlActionManager.h"
-#include "SingletonManager.h"
+#include "MemoryManager.h"
 #include "GlobalInclude.h"
 #include "GUI.h"
 #include "SceneManager.h"
@@ -148,6 +148,6 @@ namespace Hogra {
 	{
 		// Delete all the objects we've created
 
-		Singleton::destroyAllInstances();
+		Memory::destroyAllInstances();
 	}
 }

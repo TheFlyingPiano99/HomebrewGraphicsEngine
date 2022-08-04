@@ -20,7 +20,16 @@ namespace Hogra {
 	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider
 	{
 	public:
-		SceneObject(Mesh* _mesh = nullptr) : mesh(_mesh) {}
+
+		static SceneObject* Instantiate();
+
+		static void Deallocate(SceneObject* instance);
+
+		static void PrintInstanceCount();
+
+		void Init(Mesh* _mesh = nullptr) {
+			this->mesh = _mesh;
+		}
 
 		~SceneObject() = default;
 
@@ -134,6 +143,10 @@ namespace Hogra {
 		* Exports model matrix and inverse model matrix into shader uniform
 		*/
 		void exportMatrices(const ShaderProgram& program);
+
+		inline void* operator new(std::size_t size) { return ::operator new(size); }
+		inline void operator delete (void* ptr) { free(ptr); };
+		static int instanceCount;
 	};
 
 }

@@ -10,7 +10,12 @@ namespace Hogra {
 	class Material
 	{
 	public:
-		Material(ShaderProgram* program) : program(program) {};
+
+		static Material* Instantiate();
+		static void Deallocate(Material* instance);
+		static void PrintInstanceCount();
+
+		void Init(ShaderProgram* program);
 
 		void Bind() const;
 
@@ -71,6 +76,10 @@ namespace Hogra {
 		int destBlendFunc = GL_ONE;
 
 		class ShaderProgramIsNullptr : public std::exception {};
+
+		inline void* operator new(std::size_t size) { return ::operator new(size); };
+		inline void operator delete (void* ptr) { free(ptr); };
+		static int instanceCount;
 	};
 
 }

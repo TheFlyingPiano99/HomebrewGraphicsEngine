@@ -14,6 +14,13 @@ namespace Hogra {
 
 	public:
 
+		~SceneEventManager() {
+			while (!events.empty()) {
+				auto* e = popNextEvent();
+				delete e;
+			}
+		}
+
 		static SceneEventManager* getInstance() {
 			if (nullptr == instance) {
 				instance = new SceneEventManager();

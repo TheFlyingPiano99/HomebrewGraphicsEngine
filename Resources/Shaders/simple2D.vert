@@ -1,4 +1,4 @@
-#version 330 core
+#version 420 core
 /*
 *   Vertex shader for rendering simple 2D sprites in screen-space
 *   No depth information is considered

@@ -7,7 +7,14 @@ namespace Hogra {
 	class Geometry
 	{
 	public:
-		Geometry(std::vector <Vertex>& vertices, std::vector <GLint>& indices);
+
+		static Geometry* Instantiate();
+
+		static void Deallocate(Geometry* instance);
+
+		static void PrintInstanceCount();
+
+		void Init(std::vector <Vertex>& vertices, std::vector <GLint>& indices);
 
 		~Geometry() {
 			if (0 != instancedBuffer) {
@@ -58,6 +65,10 @@ namespace Hogra {
 		VBO vbo;
 
 		bool faceCulling = true;
+
+		inline void* operator new(std::size_t size) { return ::operator new(size); }
+		inline void operator delete (void* ptr) { free(ptr); };
+		static int instanceCount;
 	};
 
 }

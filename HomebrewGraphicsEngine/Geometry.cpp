@@ -1,9 +1,33 @@
 #include "Geometry.h"
 #include "GlobalInclude.h"
+#include <iostream>
+
 namespace Hogra {
 
-	Geometry::Geometry(std::vector<Vertex>& vertices, std::vector<GLint>& indices) : vertices(vertices), indices(indices)
+	int Geometry::instanceCount = 0;
+
+	Geometry* Geometry::Instantiate()
 	{
+		instanceCount++;
+		return new Geometry();
+	}
+
+	void Geometry::Deallocate(Geometry* instance)
+	{
+		instanceCount--;
+		delete instance;
+	}
+
+	void Geometry::PrintInstanceCount()
+	{
+		std::cout << "Geometry instance count: " << instanceCount << std::endl;
+	}
+
+	void Geometry::Init(std::vector<Vertex>& _vertices, std::vector<GLint>& _indices)
+	{
+		this->vertices = _vertices;
+		this->indices = _indices;
+
 		vao.Init();
 		vao.Bind();
 		// Generates Vertex Buffer Object and links it to vertices

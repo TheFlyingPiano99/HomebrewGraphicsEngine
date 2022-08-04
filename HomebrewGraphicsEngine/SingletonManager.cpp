@@ -1,4 +1,4 @@
-#include "SingletonManager.h"
+#include "MemoryManager.h"
 
 #include "ControlActionManager.h"
 #include "Scene.h"
@@ -10,12 +10,11 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
 
-namespace Hogra {
 
 	/*
 	* Needs to be called before closing program!
 	*/
-	void Singleton::destroyAllInstances() {
+	void Hogra::Memory::destroyAllInstances() {
 		GUI::DestroyInstance();
 		AssetFolderPathManager::DestroyInstance();
 		ControlActionManager::DestroyInstance();
@@ -26,4 +25,3 @@ namespace Hogra {
 		SceneManager::DestroyInstance();
 		SceneFactory::DestroyInstance();
 	}
-}
