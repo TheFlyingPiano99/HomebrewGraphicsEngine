@@ -6,10 +6,12 @@
 
 namespace Hogra {
 
+	std::vector<SceneObject*> SceneObject::heapAllocatedInstances = std::vector<SceneObject*>();
+
 	SceneObject* SceneObject::Instantiate()
 	{
 		auto* instance = new SceneObject();
-		MemoryManager::heapAllocatedInstances.push_back(instance);
+		heapAllocatedInstances.push_back(instance);
 		return instance;
 	}
 

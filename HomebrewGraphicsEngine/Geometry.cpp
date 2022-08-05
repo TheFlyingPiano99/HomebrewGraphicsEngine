@@ -5,10 +5,12 @@
 
 namespace Hogra {
 
+	std::vector<Geometry*> Geometry::heapAllocatedInstances = std::vector<Geometry*>();
+
 	Geometry* Geometry::Instantiate()
 	{
 		auto* instance = new Geometry();
-		MemoryManager::heapAllocatedInstances.push_back(instance);
+		heapAllocatedInstances.push_back(instance);
 		return instance;
 	}
 

@@ -7,6 +7,24 @@ namespace Hogra {
 	class UserControl : public Component
 	{
 	public:
+		virtual ~UserControl() = default;
+
+		static void Deallocate(UserControl* instance)
+		{
+			auto iter = std::ranges::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
+			if (iter != heapAllocatedInstances.end()) {
+				heapAllocatedInstances.erase(iter);
+				delete instance;
+			}
+		}
+
+		static void DeallocateAll() {
+			for (auto* instance : heapAllocatedInstances) {
+				delete instance;
+			}
+			heapAllocatedInstances.clear();
+		}
+
 		virtual void moveForward(float dt);
 		virtual void moveBackward(float dt);
 		virtual void moveLeft(float dt);
@@ -66,6 +84,7 @@ namespace Hogra {
 
 		PositionProvider* positionProvider = nullptr;
 		OrientationProvider* orientationProvider = nullptr;
+		static std::vector<UserControl*> heapAllocatedInstances;
 
 	};
 }

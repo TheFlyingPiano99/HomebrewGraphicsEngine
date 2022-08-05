@@ -5,7 +5,7 @@ namespace Hogra {
 	
 	Texture1D* Texture1D::Instantiate() {
 		auto* instance = new Texture1D();
-		MemoryManager::heapAllocatedInstances.push_back(instance);
+		heapAllocatedInstances.push_back(instance);
 		return instance;
 	}
 

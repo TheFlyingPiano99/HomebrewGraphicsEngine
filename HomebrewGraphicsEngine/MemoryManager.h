@@ -10,10 +10,6 @@ namespace Hogra {
 		*/
 		static void DeallocateAll();
 
-		static void Deallocate(void* instance);
-
-		static std::vector<void*> heapAllocatedInstances;
-
 	};
 
 }

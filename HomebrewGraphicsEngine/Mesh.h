@@ -16,6 +16,22 @@ namespace Hogra {
 
 		static Mesh* Instantiate();
 
+		static void Deallocate(Mesh* instance)
+		{
+			auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
+			if (iter != heapAllocatedInstances.end()) {
+				heapAllocatedInstances.erase(iter);
+				delete instance;
+			}
+		}
+
+		static void DeallocateAll() {
+			for (auto& instance : heapAllocatedInstances) {
+				delete instance;
+			}
+			heapAllocatedInstances.clear();
+		}
+
 		enum DepthTestFunc {
 			less_func,
 			greater_func
@@ -48,5 +64,6 @@ namespace Hogra {
 		DepthTestFunc depthTestFunc = DepthTestFunc::less_func;
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); }
+		static std::vector<Mesh*> heapAllocatedInstances;
 	};
 }

@@ -18,6 +18,22 @@ namespace Hogra {
 			}
 		}
 
+		static void Deallocate(Geometry* instance)
+		{
+			auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
+			if (iter != heapAllocatedInstances.end()) {
+				heapAllocatedInstances.erase(iter);
+				delete instance;
+			}
+		}
+
+		static void DeallocateAll() {
+			for (auto& instance : heapAllocatedInstances) {
+				delete instance;
+			}
+			heapAllocatedInstances.clear();
+		}
+
 		// Bind the VAO to the currently active GPU program
 		void Draw();
 
@@ -63,6 +79,7 @@ namespace Hogra {
 		bool faceCulling = true;
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); }
+		static std::vector<Geometry*> heapAllocatedInstances;
 	};
 
 }

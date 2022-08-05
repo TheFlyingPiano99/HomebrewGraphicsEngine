@@ -4,10 +4,12 @@
 
 namespace Hogra {
 
+	std::vector<Material*> Material::heapAllocatedInstances = std::vector<Material*>();
+
 	Material* Material::Instantiate()
 	{
 		auto* instance = new Material();
-		MemoryManager::heapAllocatedInstances.push_back(instance);
+		heapAllocatedInstances.push_back(instance);
 		return instance;
 	}
 

@@ -10,9 +10,6 @@
 #include "SceneManager.h"
 #include "SceneFactory.h"
 
-
-std::vector<void*> Hogra::MemoryManager::heapAllocatedInstances = std::vector<void*>();
-
 	/*
 	* Needs to be called before closing program!
 	*/
@@ -27,17 +24,11 @@ std::vector<void*> Hogra::MemoryManager::heapAllocatedInstances = std::vector<vo
 		SceneManager::DestroyInstance();
 		SceneFactory::DestroyInstance();
 
-		for (auto& instance : heapAllocatedInstances) {
-			delete instance;
-		}
-		heapAllocatedInstances.clear();
+		Material::DeallocateAll();
+		Geometry::DeallocateAll();
+		SceneObject::DeallocateAll();
+		Texture::DeallocateAll();
+		UserControl::DeallocateAll();
+
 	}
 
-	void Hogra::MemoryManager::Deallocate(void* instance)
-	{
-		auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
-		if (iter != heapAllocatedInstances.end()) {
-			heapAllocatedInstances.erase(iter);
-			delete instance;
-		}
-	}

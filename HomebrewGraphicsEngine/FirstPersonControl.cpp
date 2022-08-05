@@ -58,7 +58,7 @@ void Hogra::FirstPersonControl::moveRight(float dt)
 Hogra::FirstPersonControl* Hogra::FirstPersonControl::Instantiate()
 {
 	auto* instance = new FirstPersonControl();
-	MemoryManager::heapAllocatedInstances.push_back(instance);
+	heapAllocatedInstances.push_back((UserControl*)instance);
 	return instance;
 }
 

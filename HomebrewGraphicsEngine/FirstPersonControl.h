@@ -13,7 +13,7 @@ namespace Hogra {
 			allowRotate = true;
 		}
 
-		~FirstPersonControl();
+		~FirstPersonControl() override;
 
 		void Update(float dt) override;
 

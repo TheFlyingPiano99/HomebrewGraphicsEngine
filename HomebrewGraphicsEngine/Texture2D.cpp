@@ -5,7 +5,7 @@ namespace Hogra {
 	
 	Texture2D* Texture2D::Instantiate() {
 		auto* instance = new Texture2D();
-		MemoryManager::heapAllocatedInstances.push_back(instance);
+		heapAllocatedInstances.push_back(instance);
 		return instance;
 	}
 	void Texture2D::Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType)
