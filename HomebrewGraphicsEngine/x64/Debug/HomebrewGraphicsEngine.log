@@ -1,1 +1,34 @@
-﻿  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe
+﻿  Callbacks.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Callbacks.cpp(106,76): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  ColliderGroup.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.cpp(88,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  CollisionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.cpp(27,49): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  ControlAction.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+  ControlActionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+  GUI.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+  HoGraEngineApplication.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(106,51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Light.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+  MemoryManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+  Scene.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(47,13): warning C4101: 'intersectionNormal': unreferenced local variable
+  SceneFactory.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(290,18): warning C4566: character represented by universal-character-name '\u0171' cannot be represented in the current code page (1252)
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(290,18): warning C4566: character represented by universal-character-name '\u0151' cannot be represented in the current code page (1252)
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(290,18): warning C4566: character represented by universal-character-name '\u013E' cannot be represented in the current code page (1252)
+  SceneManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
+  Generating Code...
+  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

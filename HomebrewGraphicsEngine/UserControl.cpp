@@ -1,7 +1,5 @@
 #include "UserControl.h"
 
-std::vector<Hogra::UserControl*> Hogra::UserControl::heapAllocatedInstances = std::vector<Hogra::UserControl*>();
-
 void Hogra::UserControl::moveForward(float dt)
 {
 	if (physics == nullptr || !allowMove) {

@@ -20,7 +20,7 @@ namespace Hogra {
 	void Material::Bind() const
 	{
 		if (nullptr == program) {
-			throw new ShaderProgramIsNullptr();
+			throw ShaderProgramIsNullptr();
 		}
 		program->Activate();
 		for (auto& texture : textures)

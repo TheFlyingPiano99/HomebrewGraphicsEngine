@@ -13,8 +13,6 @@ namespace Hogra {
 	{
 	public:
 
-		Collider(Physics* physics = nullptr) : physics(physics) {}
-
 		/*
 		* Called from scene.
 		*/

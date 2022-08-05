@@ -22,10 +22,9 @@ namespace Hogra {
 	void Scene::initShadowMap()
 	{
 		if (shadowCaster != nullptr) {
-			throw new std::exception("Shadowcaster already initialised! Only one allowed.");
+			throw std::exception("Shadowcaster already initialised! Only one allowed.");
 		}
 		shadowCaster = new ShadowCaster(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
-		textures.push_back(&shadowCaster->getShadowMap());
 	}
 
 	void Scene::initPostProcessStages()
@@ -90,43 +89,17 @@ namespace Hogra {
 		std::vector<PostProcessStage*> postProcessStages;	//14
 		*/
 
-		for (auto* light : lights) {	//1
-			delete light;
-		}
-		lights.clear();
 		lightManager.Clear();
-
-		for (auto sh : shaders) {		//2
-			sh->Delete();
-			delete sh;
-		}
-		shaders.clear();
 
 		for (auto& instanceGroup : instanceGroups) {	//8
 			delete instanceGroup.second;
 		}
 		instanceGroups.clear();
 
-		for (auto& component : components) {		//9
-			delete component;
-		}
-		components.clear();
-
-		for (auto& font : fonts) {				//10
-			delete font;
-		}
-		fonts.clear();
-
-		for (auto& caption : captions) {		//11
-			delete caption;
-		}
-		captions.clear();
-
 		if (nullptr != shadowCaster) {			//13
 			delete shadowCaster;
 			shadowCaster = nullptr;
 		}
-
 
 		for (auto& postProcStage : postProcessStages) {	//14
 			delete postProcStage;
@@ -231,40 +204,7 @@ namespace Hogra {
 			material = mesh->getMaterial();
 			geometry = mesh->getGeometry();
 			ShaderProgram* program = material->getShaderProgram();
-			auto _textures = material->getTextures();
-
-			auto meshIter = std::find(meshes.begin(), meshes.end(), mesh);
-			if (meshIter == meshes.end()) {	// If does not contain
-				meshes.push_back(mesh);
-			}
-
-			if (auto materialIter = std::find(materials.begin(), materials.end(), material); materialIter == materials.end()) { // If does not contain
-				materials.push_back(material);
-			}
-
-			if (auto geometryIter = std::find(geometries.begin(), geometries.end(), geometry); geometryIter == geometries.end()) { // If does not contain
-				geometries.push_back(geometry);
-			}
-			if (auto programIter = std::find(shaders.begin(), shaders.end(), program); programIter == shaders.end()) { // If does not contain
-				shaders.push_back(program);
-			}
-
-			for (auto* texture : _textures) {
-				auto textureIter = std::find(this->textures.begin(), this->textures.end(), texture);
-				if (textureIter == this->textures.end()) { // If does not contain
-					this->textures.push_back(texture);
-				}
-			}
 		}
-		auto objComponents = object->getComponents();
-
-		for (auto* comp : objComponents) {
-			auto compIter = std::find(this->components.begin(), this->components.end(), comp);
-			if (compIter == this->components.end()) { // If does not contain
-				this->components.push_back(comp);
-			}
-		}
-
 		sceneObjects.push_back(object);
 
 		static int defaultName = 0;
@@ -300,20 +240,6 @@ namespace Hogra {
 	void Scene::AddLight(Light* light)
 	{
 		lightManager.AddLight(light);
-	}
-
-
-	void Scene::AddFont(Font* font)
-	{
-		if (!fonts.empty() && std::find(fonts.begin(), fonts.end(), font) != fonts.end()) {
-			return;
-		}
-		auto* shader = font->getShaderProgram();
-		auto shaderIter = std::find(shaders.begin(), shaders.end(), shader);
-		if (shader != nullptr && shaderIter == shaders.end()) {
-			shaders.push_back(shader);
-		}
-		fonts.push_back(font);
 	}
 
 	void Scene::AddCaption(Caption* caption)

@@ -15,7 +15,9 @@ namespace Hogra {
 	class ColliderGroup
 	{
 	public:
-		ColliderGroup(ColliderGroup* _parent, int _level = 0) : parent(_parent), level(_level) {}
+		ColliderGroup(ColliderGroup* _parent, int _level = 0) : parent(_parent), level(_level) {
+			aabb.Init();
+		}
 		
 		~ColliderGroup() {
 			for (auto& group : subGroups) {

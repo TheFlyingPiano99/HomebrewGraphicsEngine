@@ -46,8 +46,6 @@ namespace Hogra {
 
 		void AddLight(Light* light);
 
-		void AddFont(Font* font);
-
 		void AddCaption(Caption* caption);
 
 		void SetUserControl(UserControl* uc);
@@ -96,14 +94,8 @@ namespace Hogra {
 		//To deallocate:
 		std::vector<Light*> lights;
 		std::vector<ShaderProgram*> shaders;
-		std::vector<Geometry*> geometries;
-		std::vector<Material*> materials;
-		std::vector<Mesh*> meshes;
-		std::vector<Texture*> textures;
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
-		std::vector<Component*> components;
-		std::vector<Font*> fonts;
 		std::vector<Caption*> captions;
 		UserControl* userControl = nullptr;
 		ShadowCaster* shadowCaster = nullptr;

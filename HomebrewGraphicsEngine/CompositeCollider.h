@@ -8,17 +8,15 @@ namespace Hogra {
         public Collider
     {
     public:
-        CompositeCollider(Physics* physics = nullptr) : Collider(physics) {
+
+        static CompositeCollider* Instantiate();
+
+        void Init(Physics* physics = nullptr) {
+            this->physics = physics;
             type = ColliderType::compositeColliderType;
         }
 
         ~CompositeCollider() {
-            for (auto& collider : parts) {
-                delete collider;
-            }
-            for (auto& pos : positionsInOrigo) {
-                delete pos;
-            }
         }
 
         void Control(float dt) override {
@@ -33,7 +31,7 @@ namespace Hogra {
                 bool isMinSet = false;
                 bool isMaxSet = false;
                 for (int i = 0; i < parts.size(); i++) {
-                    parts[i]->SetPosition(orientation * *positionsInOrigo[i] + position);
+                    parts[i]->SetPosition(orientation * positionsInOrigo[i] + position);
                     parts[i]->SetScale(scale);
                     parts[i]->SetOrientation(orientation);
                     parts[i]->Update(dt);
@@ -96,7 +94,7 @@ namespace Hogra {
 
         void addSubCollider(Collider* collider, const glm::vec3& positionInOrigo) {
             parts.push_back(collider);
-            positionsInOrigo.push_back(new glm::vec3(positionInOrigo));
+            positionsInOrigo.push_back(glm::vec3(positionInOrigo));
             ExpandAABB(collider->GetAABBMin(), collider->GetAABBMax());
         }
 
@@ -127,7 +125,7 @@ namespace Hogra {
         }
 
         std::vector<Collider*> parts;
-        std::vector<glm::vec3*> positionsInOrigo;  // Reference positions of colliders parts
+        std::vector<glm::vec3> positionsInOrigo;  // Reference positions of colliders parts
 
         bool IterateParts(std::function<bool(const Collider* collider1, const Collider* collider2, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal)>&& lambda,
             const Collider* collider, glm::vec3& wCollisionPoint, glm::vec3& wCollisionNormal, float& overlapAlongNormal) const;

@@ -7,7 +7,13 @@ namespace Hogra {
 	class Physics : public Component
 	{
 	public:
-		explicit Physics(SceneObject* _owner) : Component(), owner(_owner) {}
+
+		static Physics* Instantiate();
+
+		void Init(SceneObject* _owner) {
+			owner = _owner;
+		}
+		
 		~Physics() override = default;
 
 		// Inherited via Component
@@ -191,11 +197,11 @@ namespace Hogra {
 		void Collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal);
 
 		void forcePositionOffset(const glm::vec3& offset) {
-			forcedPositionOffsets.push_back(new glm::vec3(offset));
+			forcedPositionOffsets.push_back(glm::vec3(offset));
 		}
 
 		void forceOrientationOffset(const glm::quat& offset) {
-			forcedOrientationOffsets.push_back(new glm::quat(offset));
+			forcedOrientationOffsets.push_back(glm::quat(offset));
 		}
 
 		/*
@@ -259,9 +265,10 @@ namespace Hogra {
 		glm::vec3 rotationalDrag = glm::vec3(0.0f);
 		float elasticity = 0.0f;	// From [0..1] interval: 1 ~ fully elastic; 0 ~ inelastic. 
 		float friction = 0.5f;
-		std::vector<glm::vec3*> forcedPositionOffsets;
-		std::vector<glm::quat*> forcedOrientationOffsets;
+		std::vector<glm::vec3> forcedPositionOffsets;
+		std::vector<glm::quat> forcedOrientationOffsets;
 		float positionForcingLevel = 0; // [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
+
 	};
 
 }

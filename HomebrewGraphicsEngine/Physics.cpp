@@ -2,6 +2,12 @@
 #include <math.h>
 #include <iostream>
 namespace Hogra {
+	Physics* Physics::Instantiate()
+	{
+		auto* instance = new Physics();
+		heapAllocatedInstances.push_back(instance);
+		return instance;
+	}
 
 	void Physics::Control(float dtSec)
 	{
@@ -14,8 +20,7 @@ namespace Hogra {
 			glm::vec3 sumOffset = glm::vec3(0.0f);	// Position offset constraints
 			float n = (float)forcedPositionOffsets.size();
 			for (auto& offset : forcedPositionOffsets) {
-				sumOffset += *offset;
-				delete offset;
+				sumOffset += offset;
 			}
 			forcedPositionOffsets.clear();
 			owner->SetPosition(owner->GetPosition() + sumOffset / n);
@@ -24,8 +29,7 @@ namespace Hogra {
 			glm::quat cumOffset = angleAxis(0.0f, glm::vec3(0.0f, 0.0f, 0.0f));	// Orientation offset constraints
 			float n = (float)forcedOrientationOffsets.size();
 			for (auto& offset : forcedOrientationOffsets) {
-				cumOffset *= *offset;
-				delete offset;
+				cumOffset *= offset;
 			}
 			forcedOrientationOffsets.clear();
 			owner->SetOrientation(cumOffset * owner->GetOrientation());

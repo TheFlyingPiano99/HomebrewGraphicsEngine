@@ -9,7 +9,11 @@ namespace Hogra {
         public Collider
     {
     public:
-        explicit AABBCollider(Physics* physics = nullptr) : Collider(physics) {
+
+        static AABBCollider* Instantiate();
+
+        void Init(Physics* physics = nullptr) {
+            this->physics = physics;
             type = ColliderType::AABBColliderType;
         }
 

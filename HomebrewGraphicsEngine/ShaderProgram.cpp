@@ -23,6 +23,16 @@ namespace Hogra {
 		throw(errno);
 	}
 
+	std::vector<ShaderProgram*> ShaderProgram::heapAllocatedInstances = std::vector<ShaderProgram*>();
+
+
+	ShaderProgram* ShaderProgram::Instantiate()
+	{
+		auto* instance = new ShaderProgram();
+		heapAllocatedInstances.push_back(instance);
+		return instance;
+	}
+
 	void ShaderProgram::Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile)
 	{
 		// Read vertexFile and fragmentFile and store the strings

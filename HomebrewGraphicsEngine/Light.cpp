@@ -2,8 +2,17 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
 namespace Hogra {
-	Light::Light(glm::vec4 position, glm::vec3 powerDensity)
-		: position(position), powerDensity(powerDensity) {
+	Light* Light::Instantiate()
+	{
+		auto* instance = new Light();
+		heapAllocatedInstances.push_back(instance);
+		return instance;
+	}
+
+	void Light::Init(glm::vec4 position, glm::vec3 powerDensity)
+	{
+		this->position = position;
+		this->powerDensity = powerDensity;
 		effectiveRadius = getEffectiveRadius();
 		volumeModelMatrix = glm::translate(glm::vec3(GetPosition())) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}

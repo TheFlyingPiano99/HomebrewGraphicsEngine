@@ -28,7 +28,9 @@
 		Geometry::DeallocateAll();
 		SceneObject::DeallocateAll();
 		Texture::DeallocateAll();
-		UserControl::DeallocateAll();
+		Component::DeallocateAll();
+		Font::DeallocateAll();
+		ShaderProgram::DeallocateAll();
 
 	}
 

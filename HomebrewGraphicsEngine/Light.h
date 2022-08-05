@@ -10,7 +10,10 @@ namespace Hogra {
 
 	class Light : public Component {
 	public:
-		Light(glm::vec4 position, glm::vec3 powerDensity);
+
+		static Light* Instantiate();
+
+		void Init(glm::vec4 position, glm::vec3 powerDensity);
 
 		~Light() = default;
 

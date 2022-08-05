@@ -4,7 +4,12 @@
 #include "CompositeCollider.h"
 
 namespace Hogra {
-
+	SphericalCollider* SphericalCollider::Instantiate()
+	{
+		auto* instance = new SphericalCollider();
+		heapAllocatedInstances.push_back(instance);
+		return instance;
+	}
 	bool SphericalCollider::TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
 	{
 		glm::vec3 a = ray.GetPosition() - position;

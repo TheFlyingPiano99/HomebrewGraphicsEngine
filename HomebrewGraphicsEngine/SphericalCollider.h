@@ -10,9 +10,14 @@ namespace Hogra {
         public Collider
     {
     public:
-        explicit SphericalCollider(Physics* physics = nullptr) : Collider(physics) {
+
+        static SphericalCollider* Instantiate();
+        
+        void Init(Physics* physics = nullptr) {
+            this->physics = physics;
             type = ColliderType::sphericalColliderType;
         }
+
         ~SphericalCollider() = default;
 
         // Inherited via Collider

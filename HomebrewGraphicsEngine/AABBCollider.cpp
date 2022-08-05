@@ -2,7 +2,12 @@
 
 #include "SphericalCollider.h"
 namespace Hogra {
-
+    AABBCollider* AABBCollider::Instantiate()
+    {
+        auto* instance = new AABBCollider();
+        heapAllocatedInstances.push_back(instance);
+        return instance;
+    }
     bool AABBCollider::TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
     {
         float tmin = (min.x - ray.GetPosition().x) / ray.getDirection().x;
