@@ -10,7 +10,7 @@ namespace Hogra {
 
 		int Init(const char* windowName);
 
-		void loop();
+		void Loop();
 
 		void Destroy();
 

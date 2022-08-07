@@ -297,6 +297,9 @@
     <ClCompile Include="Bloom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneChangeEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -515,9 +518,6 @@
     <ClInclude Include="HoGraEngineApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Header Files\View\Text</Filter>
     </ClInclude>
@@ -532,6 +532,12 @@
     </ClInclude>
     <ClInclude Include="SceneFactory.h">
       <Filter>Header Files\Model\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneChangeEvent.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

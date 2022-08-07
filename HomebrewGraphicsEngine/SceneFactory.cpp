@@ -41,7 +41,7 @@ namespace Hogra {
 		light->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f));
 		scene->AddLight(light);
 		std::srand(0);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10; i++) {
 			auto* instance = Light::Instantiate();
 			instance->Init(glm::vec4(std::rand() % 1000 - 500, 2.0f, std::rand() % 1000 - 500, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
 			scene->AddLight(instance);
@@ -65,13 +65,13 @@ namespace Hogra {
 		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "planks");
 		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "planks");
 		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "planks");
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 5; i++) {
 			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "planks");
 		}
-		for (int i = 100; i < 200; i++) {
+		for (int i = 5; i < 10; i++) {
 			InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "gold");
 		}
-		for (int i = 200; i < 250; i++) {
+		for (int i = 10; i < 15; i++) {
 			auto* obj = InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "glowing");
 			auto* light = Light::Instantiate();
 			light->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.0f, 10.0f));
@@ -82,7 +82,7 @@ namespace Hogra {
 		InitSkyBox(scene);
 		InitLoadedGeometry(scene, glm::vec3(-10.0f, 3.0f, -30.0f), field);
 		InitAvatar(scene, field);
-
+		InitCaptions(scene);
 
 		return scene;
 	}
@@ -274,7 +274,7 @@ namespace Hogra {
 		return obj;
 	}
 	
-	void SceneFactory::InitFonts(Scene* scene)
+	void SceneFactory::InitCaptions(Scene* scene)
 	{
 		auto* shader = ShaderProgramFactory::getInstance()->GetGlyphProgram();
 		auto* font = Font::Instantiate();
@@ -330,7 +330,7 @@ namespace Hogra {
 	
 	void SceneFactory::InitSkyBox(Scene* scene)
 	{
-		ShaderProgram* skyboxShader = new ShaderProgram();
+		ShaderProgram* skyboxShader = ShaderProgram::Instantiate();
 		skyboxShader->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 			"",

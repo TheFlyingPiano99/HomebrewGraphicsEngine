@@ -24,6 +24,7 @@ namespace Hogra {
 	public:
 		ControlAction(int _key, TriggerType trigger = TriggerType::triggerOnPress) : key(_key), triggerType(trigger) {
 		}
+
 		virtual ~ControlAction() = default;
 
 		int getKey() const;
@@ -139,4 +140,13 @@ namespace Hogra {
 
 		void execute(Scene* scene, float dt) override;
 	};
+
+	class PrimaryAction : public ControlAction {
+	public:
+		PrimaryAction() : ControlAction(GLFW_MOUSE_BUTTON_LEFT) {
+		}
+
+		void execute(Scene* scene, float dt) override;
+	};
+
 }

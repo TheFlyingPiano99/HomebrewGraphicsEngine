@@ -23,6 +23,10 @@ namespace Hogra {
 		*/
 		void onRelease(const int _key, const int _scancode, const int _mods);
 
+		void OnMouseLeftButtonPress(const glm::vec2& ndcCoords);
+
+		void OnMouseLeftButtonRelease(const glm::vec2& ndcCoords);
+
 		/*
 		* Register new controlAction
 		*/
@@ -63,17 +67,22 @@ namespace Hogra {
 
 	private:
 		static ControlActionManager* instance;
-		std::map<const int, ControlAction*> registeredActions;
+		std::map<const int, ControlAction*> registeredKeyActions;
+		ControlAction* leftMouseButtonAction = nullptr;
+		ControlAction* rightMouseButtonAction = nullptr;
 		std::queue<ControlAction*> queuedActions;
 
 		ControlActionManager() = default;
 
 		~ControlActionManager() {
 			clearQueue();
-			for (auto& act : registeredActions) {
+			for (auto& act : registeredKeyActions) {
 				delete act.second;
 			}
-			registeredActions.clear();
+			registeredKeyActions.clear();
+			if (nullptr != leftMouseButtonAction) {
+				delete leftMouseButtonAction;
+			}
 		}
 
 		/*

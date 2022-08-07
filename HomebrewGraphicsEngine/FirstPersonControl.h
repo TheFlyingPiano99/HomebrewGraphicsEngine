@@ -25,6 +25,10 @@ namespace Hogra {
 		
 		void jump();
 
+		void primaryAction();
+
+		void secondaryAction();
+
 		void setCamera(Camera* cam) {
 			camera = cam;
 		}

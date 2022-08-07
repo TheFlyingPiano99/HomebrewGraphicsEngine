@@ -18,13 +18,17 @@ namespace Hogra {
 
 		void Init(int contextWidth, int contextHeight);
 
+		void RestartScene();
+
+		void LoadScene(int sceneId);
+
 		void Draw();
 
 		Scene* getScene() {
 			return currentScene;
 		}
 
-		void UpdateAndControl(float dt);
+		int ControlAndUpdate(float dt);
 
 	private:
 		SceneManager() = default;

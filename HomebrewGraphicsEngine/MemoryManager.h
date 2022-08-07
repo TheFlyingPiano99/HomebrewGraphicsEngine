@@ -10,6 +10,8 @@ namespace Hogra {
 		*/
 		static void DeallocateAll();
 
+		static void DeallocateSceneResources();
+
 	};
 
 }

@@ -103,19 +103,24 @@ namespace Hogra {
 
 	void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
 	{
-		SceneManager::getInstance()->getScene()->GetCamera().moveForward(yoffset * 10.0f);
+		//TODO
 	}
 
 	void Callbacks::onMouseClick(GLFWwindow* window, int button, int action, int mods)
 	{
-		if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		glm::vec2 ndcCoords;
+		ndcCoords.x = (float)xpos / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
+		ndcCoords.y = 1.0f - (float)ypos / (float)GlobalVariables::windowHeight * 2.0f;
+		if (button == GLFW_MOUSE_BUTTON_LEFT)
 		{
-			double xpos, ypos;
-			glfwGetCursorPos(window, &xpos, &ypos);
-			glm::vec2 ndcCoords;
-			ndcCoords.x = (float)xpos / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
-			ndcCoords.y = 1.0f - (float)ypos / (float)GlobalVariables::windowHeight * 2.0f;
-			SceneManager::getInstance()->getScene()->PokeObject(ndcCoords);
+			if (GLFW_PRESS == action) {
+				ControlActionManager::getInstance()->OnMouseLeftButtonPress(ndcCoords);
+			}
+			else if (GLFW_RELEASE == action) {
+				ControlActionManager::getInstance()->OnMouseLeftButtonRelease(ndcCoords);
+			}
 		}
 	}
 

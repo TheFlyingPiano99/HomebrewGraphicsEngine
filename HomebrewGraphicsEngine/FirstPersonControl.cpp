@@ -109,3 +109,13 @@ void Hogra::FirstPersonControl::jump() {
 	physics->applyImpulse(up * jumpImpulse, glm::vec3(0.0f));
 	jumpCoolDown = 1.0f;
 }
+
+void Hogra::FirstPersonControl::primaryAction()
+{
+	std::cout << "Boom!" << std::endl;
+}
+
+void Hogra::FirstPersonControl::secondaryAction()
+{
+
+}

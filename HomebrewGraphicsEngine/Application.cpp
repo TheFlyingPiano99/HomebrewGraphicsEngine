@@ -10,7 +10,7 @@ int main()
 	if (-1 == app.Init(WINDOW_NAME)) {
 		return -1;
 	}
-	app.loop();
+	app.Loop();
 	app.Destroy();
 	return 0;
 }

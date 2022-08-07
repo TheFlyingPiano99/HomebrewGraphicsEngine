@@ -21,7 +21,7 @@ namespace Hogra {
 
 		SceneObject* InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName);
 
-		void InitFonts(Scene* scene);
+		void InitCaptions(Scene* scene);
 
 		void InitGroud(Scene* scene);
 

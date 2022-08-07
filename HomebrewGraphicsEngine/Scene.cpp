@@ -57,6 +57,11 @@ namespace Hogra {
 		}
 	}
 
+	SceneChangeEvent Scene::GetNextScene()
+	{
+		return sceneChangeEvent;
+	}
+
 	void Scene::Init(int contextWidth, int contextHeight)
 	{
 		this->contextWidth = contextWidth;
@@ -182,12 +187,15 @@ namespace Hogra {
 				postProcessStages[i]->Draw(FBO::getDefault());
 			}
 		}
-		if (drawDebug) {
+
+		// Text pass:
+		for (auto* caption : captions) {
+			caption->Draw();
+		}
+
+		if (debugMode) {
 			collisionManager.DrawDebug();
 			lightManager.drawDebug();
-			for (auto* caption : captions) {
-				caption->Draw();
-			}
 		}
 	}
 

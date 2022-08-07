@@ -21,7 +21,7 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetDefaultPBRProgramWithMapping() {
 		if (nullptr == defaultBPRProgramWithMapping) {
 			defaultBPRProgramWithMapping
-				= new ShaderProgram();
+				= ShaderProgram::Instantiate();
 			defaultBPRProgramWithMapping->Init(
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 					"",
@@ -35,7 +35,7 @@ namespace Hogra {
 	{
 		if (nullptr == glyphProgram) {
 			glyphProgram
-				= new ShaderProgram();
+				= ShaderProgram::Instantiate();
 			glyphProgram->Init(
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 					"",
@@ -48,7 +48,7 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetCaptionProgram()
 	{
 		if (nullptr == captionProgram) {
-			captionProgram = new ShaderProgram();
+			captionProgram = ShaderProgram::Instantiate();
 			captionProgram->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 				"",
@@ -61,13 +61,12 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetEmissiveMaterialProgram()
 	{
 		if (nullptr == emissiveMaterial) {
-			emissiveMaterial = new ShaderProgram();
+			emissiveMaterial = ShaderProgram::Instantiate();
 			emissiveMaterial->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("emissive.frag")
 			);
-
 		}
 		return emissiveMaterial;
 	}

@@ -6,19 +6,31 @@ namespace Hogra {
 
 	void ControlActionManager::onPress(const int _key, const int _scancode, const int _mods)
 	{
-		auto iter = registeredActions.find(_key);
-		if (iter != registeredActions.end()) {
-			bool trigger = false;
+		auto iter = registeredKeyActions.find(_key);
+		if (iter != registeredKeyActions.end()) {
 			iter->second->onPress(_key, _scancode, _mods);
 		}
 	}
 
 	void ControlActionManager::onRelease(const int _key, const int _scancode, const int _mods)
 	{
-		auto iter = registeredActions.find(_key);
-		if (iter != registeredActions.end()) {
-			bool trigger = false;
+		auto iter = registeredKeyActions.find(_key);
+		if (iter != registeredKeyActions.end()) {
 			iter->second->onRelease(_key, _scancode, _mods);
+		}
+	}
+
+	void ControlActionManager::OnMouseLeftButtonPress(const glm::vec2& ndcCoords)
+	{
+		if (nullptr != leftMouseButtonAction) {
+			leftMouseButtonAction->onPress(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+		}
+	}
+
+	void ControlActionManager::OnMouseLeftButtonRelease(const glm::vec2& ndcCoords)
+	{
+		if (nullptr != leftMouseButtonAction) {
+			leftMouseButtonAction->onRelease(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
 		}
 	}
 
@@ -31,10 +43,13 @@ namespace Hogra {
 
 	void ControlActionManager::queueTriggeringActions()
 	{
-		for (auto& pair : registeredActions) {
+		for (auto& pair : registeredKeyActions) {
 			if (pair.second->isTriggering()) {
 				queuedActions.push(pair.second);
 			}
+		}
+		if (nullptr!= leftMouseButtonAction && leftMouseButtonAction->isTriggering()) {
+			queuedActions.push(leftMouseButtonAction);
 		}
 	}
 
@@ -51,16 +66,18 @@ namespace Hogra {
 		registerAction(new ToggleFullScreenMode());
 		registerAction(new JumpAvatar());
 		registerAction(new ToggleDebugInfo());
+
+		leftMouseButtonAction = new PrimaryAction();
 	}
 
 	void ControlActionManager::registerAction(ControlAction* toRegister)
 	{
-		registeredActions.emplace(toRegister->getKey(), toRegister);
+		registeredKeyActions.emplace(toRegister->getKey(), toRegister);
 	}
 
 	void ControlActionManager::deregisterAction(ControlAction* toDeregister)
 	{
-		registeredActions.erase(toDeregister->getKey());
+		registeredKeyActions.erase(toDeregister->getKey());
 	}
 
 	ControlAction* ControlActionManager::popNextQueuedAction()

@@ -126,4 +126,11 @@ namespace Hogra {
 	{
 		scene->setDrawDebug(!scene->getDrawDebug());
 	}
+	void PrimaryAction::execute(Scene* scene, float dt)
+	{
+		auto* control = (FirstPersonControl*)scene->getAvatarControl();
+		if (nullptr != control) {
+			control->primaryAction();
+		}
+	}
 }

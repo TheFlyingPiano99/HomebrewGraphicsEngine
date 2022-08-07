@@ -21,6 +21,7 @@
 #include "Font.h"
 #include "Caption.h"
 #include "Bloom.h"
+#include "SceneChangeEvent.h"
 
 namespace Hogra {
 
@@ -72,16 +73,18 @@ namespace Hogra {
 		}
 
 		bool getDrawDebug() const {
-			return drawDebug;
+			return debugMode;
 		}
 
 		void setDrawDebug(bool b) {
-			drawDebug = b;
+			debugMode = b;
 		}
 
 		ShadowCaster* getShadowCaster() const {
 			return shadowCaster;
 		}
+
+		SceneChangeEvent GetNextScene();
 
 	private:
 
@@ -106,7 +109,8 @@ namespace Hogra {
 		bool pause = true;
 		unsigned int contextWidth;
 		unsigned int contextHeight;
-		bool drawDebug = false;
+		bool debugMode = false;
+		SceneChangeEvent sceneChangeEvent;
 
 		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -114,8 +118,6 @@ namespace Hogra {
 
 		void initShadowMap();
 
-		CompositeCollider* initCompositeCollider();
-		ForceField* InitGravitation();
 		void initPostProcessStages();
 		class SceneNotInstanciatedException : public std::exception {
 

@@ -57,7 +57,7 @@ namespace Hogra {
 		return 0;
 	}
 	
-	void HoGraEngineApplication::loop() {
+	void HoGraEngineApplication::Loop() {
 		// Variables to create periodic event for FPS displaying
 		double prevTime = 0.0;
 		double crntTime = 0.0;
@@ -93,6 +93,7 @@ namespace Hogra {
 
 			double dt = 0.0;
 			double realDelta = crntTime - prevIterTime;
+			int retVal = 0;
 			while (realDelta > 0.0) {
 				if (realDelta > dtLimit) {
 					dt = dtLimit;
@@ -103,7 +104,13 @@ namespace Hogra {
 					realDelta = 0.0;
 				}
 				ControlActionManager::getInstance()->queueTriggeringActions();
-				SceneManager::getInstance()->UpdateAndControl(dt);
+				retVal = SceneManager::getInstance()->ControlAndUpdate(dt);
+				if (-1 == retVal) {
+					break;
+				}
+			}
+			if (-1 == retVal) {
+				break;
 			}
 			prevIterTime = crntTime;
 
