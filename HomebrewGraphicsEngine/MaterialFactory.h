@@ -8,12 +8,14 @@ namespace Hogra {
 	class MaterialFactory
 	{
 	public:
-		static MaterialFactory* getInstance();
+		static MaterialFactory* GetInstance();
 		static void DestroyInstance();
 
 		Material* getPBRMaterial(const char* materialName);
 
 		Material* getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity);
+
+		void ForgetPointers();
 
 	private:
 		MaterialFactory() = default;

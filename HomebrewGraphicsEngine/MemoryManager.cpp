@@ -24,7 +24,13 @@
 		SceneManager::DestroyInstance();
 		SceneFactory::DestroyInstance();
 
-		DeallocateSceneResources();
+		ShaderProgram::DeallocateAll();
+		Material::DeallocateAll();
+		Geometry::DeallocateAll();
+		SceneObject::DeallocateAll();
+		Texture::DeallocateAll();
+		Component::DeallocateAll();
+		Font::DeallocateAll();
 	}
 
 	void Hogra::MemoryManager::DeallocateSceneResources()
@@ -36,5 +42,9 @@
 		Texture::DeallocateAll();
 		Component::DeallocateAll();
 		Font::DeallocateAll();
+
+		MaterialFactory::GetInstance()->ForgetPointers();
+		GeometryFactory::GetInstance()->ForgetPointers();
+		ShaderProgramFactory::GetInstance()->ForgetPointers();
 	}
 

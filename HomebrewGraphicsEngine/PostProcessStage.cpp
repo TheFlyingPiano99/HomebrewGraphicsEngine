@@ -18,7 +18,7 @@ namespace Hogra {
 		material->addTexture(&colorTexture);
 		material->addTexture(&depthTexture);
 		mesh = Mesh::Instantiate();
-		mesh->Init(material, GeometryFactory::getInstance()->getFullScreenQuad());
+		mesh->Init(material, GeometryFactory::GetInstance()->getFullScreenQuad());
 		mesh->setDepthTest(false);
 		mesh->setStencilTest(false);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);

@@ -210,7 +210,7 @@
     <ClCompile Include="RBO.cpp" />
     <ClCompile Include="ScaleProvider.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneChangeEvent.cpp" />
+    <ClCompile Include="SceneChange.cpp" />
     <ClCompile Include="SceneEvent.cpp" />
     <ClCompile Include="SceneEventImplementation.cpp" />
     <ClCompile Include="SceneEventManager.cpp" />
@@ -292,7 +292,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScaleProvider.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneChangeEvent.h" />
+    <ClInclude Include="SceneChange.h" />
     <ClInclude Include="SceneEvent.h" />
     <ClInclude Include="SceneEventImplementation.h" />
     <ClInclude Include="SceneEventManager.h" />

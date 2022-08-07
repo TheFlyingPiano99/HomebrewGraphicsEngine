@@ -39,7 +39,7 @@ namespace Hogra {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
 		debugMaterial.Init(&shaderProgram);
-		debugGeometry = GeometryFactory::getInstance()->getWireFrameSphere();
+		debugGeometry = GeometryFactory::GetInstance()->getWireFrameSphere();
 		debugLightVolumeMesh = Mesh::Instantiate();
 		debugLightVolumeMesh->Init(&debugMaterial, debugGeometry);
 		debugLightVolumeMesh->setDepthTest(false);
@@ -55,7 +55,7 @@ namespace Hogra {
 		for (int i = 1; i < lights.size(); i++) {
 			data.push_back({ lights[i]->getVolumeModelMatrix(), glm::mat4(1.0f)});
 		}
-		debugLightVolumeMesh->DrawInstanced(data);
+		debugLightVolumeMesh->DrawInstanced(data, data.size());
 
 	}
 	void LightManager::Clear()

@@ -48,7 +48,7 @@ namespace Hogra {
 			glm::vec4 lightPowerDensity;
 		};
 
-		void DrawInstanced(const std::vector<InstanceData>& instanceData);
+		void DrawInstanced(const std::vector<InstanceData>& instanceData, int visibleCount);
 
 		void DrawInstanced(const std::vector<LightInstancedData>& instanceData);
 

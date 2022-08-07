@@ -2,13 +2,15 @@
 #include <iostream>
 #include "CameraAnimation.h"
 #include "MemoryManager.h"
+#include "SceneEventManager.h"
+#include "SceneEventImplementation.h"
 
 void Hogra::FirstPersonControl::moveForward(float dt)
 {
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(ahead * (orientationProvider->GetOrientation() * propellingForce));
+	physics->applyTransientForce(ahead * propellingForce);
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -21,7 +23,7 @@ void Hogra::FirstPersonControl::moveBackward(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-ahead * (orientationProvider->GetOrientation() * propellingForce));
+	physics->applyTransientForce(-ahead * propellingForce);
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -34,7 +36,7 @@ void Hogra::FirstPersonControl::moveLeft(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-right * (orientationProvider->GetOrientation() * propellingForce));
+	physics->applyTransientForce(-right * propellingForce);
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -47,7 +49,7 @@ void Hogra::FirstPersonControl::moveRight(float dt)
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(right * (orientationProvider->GetOrientation() * propellingForce));
+	physics->applyTransientForce(right * propellingForce);
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -106,13 +108,15 @@ void Hogra::FirstPersonControl::jump() {
 	if (physics == nullptr || !allowMove || !isGrounded || jumpCoolDown > 0.0f) {
 		return;
 	}
-	physics->applyImpulse(up * jumpImpulse, glm::vec3(0.0f));
+	physics->ApplyImpulse(up * jumpImpulse, glm::vec3(0.0f));
 	jumpCoolDown = 1.0f;
 }
 
 void Hogra::FirstPersonControl::primaryAction()
 {
-	std::cout << "Boom!" << std::endl;
+	if (nullptr != scene) {
+		scene->PokeObject(glm::vec2(0.0f, 0.0f));
+	}
 }
 
 void Hogra::FirstPersonControl::secondaryAction()

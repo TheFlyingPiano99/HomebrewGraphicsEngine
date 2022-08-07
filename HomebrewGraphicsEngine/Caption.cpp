@@ -13,7 +13,7 @@ void Hogra::Caption::Init(const std::string& text, Font* font, glm::vec2 sPos, f
 	this->font = font;
 	this->color = color;
 	this->screenPosition = sPos;
-	this->program = ShaderProgramFactory::getInstance()->GetCaptionProgram();
+	this->program = ShaderProgramFactory::GetInstance()->GetCaptionProgram();
 	this->texture = font->RenderTextInTexture(text);
 	vao.Init();
 	vao.Bind();

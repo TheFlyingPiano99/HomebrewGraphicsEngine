@@ -152,8 +152,11 @@ namespace Hogra {
 		glm::quat rotXQuat = angleAxis(rotY, right);
 		glm::quat rotYQuat = angleAxis(rotX, prefUp);
 
-		lookDir = normalize(rotYQuat * rotXQuat * lookDir);
-		center = eye + lookDir;
+		auto possibleLookDir = normalize(rotYQuat * rotXQuat * lookDir);
+		if (abs(glm::dot(possibleLookDir, prefUp)) < 0.9f) {
+			lookDir = possibleLookDir;
+			center = eye + lookDir;
+		}
 	}
 
 	void Camera::approachCenter(float delta)

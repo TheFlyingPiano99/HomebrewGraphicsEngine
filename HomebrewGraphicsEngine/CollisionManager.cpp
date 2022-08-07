@@ -88,7 +88,7 @@ void Hogra::CollisionManager::InitDebug()
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"), 
 		"", 
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
-	debugGeometry = GeometryFactory::getInstance()->getWireframeCube();
+	debugGeometry = GeometryFactory::GetInstance()->getWireframeCube();
 	debugMaterial.Init(&shaderProgram);
 	debugMesh.Init(&debugMaterial, debugGeometry);
 	debugMesh.setDepthTest(false);
@@ -100,6 +100,29 @@ void Hogra::CollisionManager::DrawDebug()
 {
 	std::vector<Geometry::InstanceData> data;
 	root.GatherInstanceDataForDebug(data);
-	instanceGroup.injectInstanceData(data);
+	instanceGroup.InjectInstanceData(data);
 	instanceGroup.Draw();
+}
+
+Hogra::Collider* Hogra::CollisionManager::IntersectRay(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal)
+{
+	float minT = -1.0f;
+	Collider* selected = nullptr;
+
+	for (auto collider : colliders) {
+		glm::vec3 intersectionPoint;
+		glm::vec3 intersectionNormal;
+		if (collider->TestRayIntersection(ray, intersectionPoint, intersectionNormal)) {
+			glm::vec3 dist = intersectionPoint - ray.GetPosition();
+			float t = glm::dot(dist, ray.getDirection());
+			if (t > 0.0f && (0.0f > minT || t < minT)) {
+				minT = t;
+				wIntersectionPoint = intersectionPoint;
+				wIntersectionNormal = intersectionNormal;
+				selected = collider;
+			}
+		}
+	}
+
+	return selected;
 }

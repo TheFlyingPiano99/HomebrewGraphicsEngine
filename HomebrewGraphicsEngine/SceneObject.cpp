@@ -43,7 +43,7 @@ namespace Hogra {
 
 	void SceneObject::Draw()
 	{
-		if (nullptr == mesh) {
+		if (nullptr == mesh || !isVisible) {
 			return;
 		}
 		mesh->Bind();

@@ -82,6 +82,16 @@ namespace Hogra {
 		return lightVolumeSphere;
 	}
 
+	void GeometryFactory::ForgetPointers()
+	{
+		fullScreenQuad = nullptr;
+		cube = nullptr;
+		wireframeCube = nullptr;
+		sphere = nullptr;
+		lightVolumeSphere = nullptr;
+		wireFrameSphere = nullptr;
+	}
+
 	Geometry* GeometryFactory::generateSphere()
 	{
 		// ------------------- ICOSAHEDRON SPHERE -------------------
@@ -165,7 +175,9 @@ namespace Hogra {
 			Vertex vert;
 			vert.position = glm::vec4(positions.at(i), 1.0f);
 			vert.normal = normalize(positions.at(i));
-			vert.tangent = normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), vert.normal));
+			float d = abs(glm::dot(vert.normal, glm::vec3(0.0f, 1.0f, 0.0f)));
+			glm::vec3 up = (d < 0.99999f) ? glm::vec3(0.0f, 1.0f, 0.0f) : glm::vec3(0.0f, 0.0f, 1.0f);
+			vert.tangent = normalize(glm::cross(up, vert.normal));
 			vert.bitangent = normalize(glm::cross(vert.normal, vert.tangent));
 			glm::vec2 horizontal = glm::normalize(glm::vec2(vert.position.x, vert.position.z));
 			vert.texUV = glm::vec2(horizontal.x * 0.5f + 0.5f, vert.normal.y * 0.5f + 0.5f);
@@ -232,7 +244,7 @@ namespace Hogra {
 		}
 	}
 
-GeometryFactory* GeometryFactory::getInstance()
+GeometryFactory* GeometryFactory::GetInstance()
 {
 	if (nullptr == instance) {
 		instance = new GeometryFactory();

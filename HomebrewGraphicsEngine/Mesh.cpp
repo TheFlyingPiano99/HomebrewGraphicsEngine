@@ -52,9 +52,9 @@ namespace Hogra {
 		geometry->Draw();
 	}
 
-	void Mesh::DrawInstanced(const std::vector<Geometry::InstanceData>& data) const
+	void Mesh::DrawInstanced(const std::vector<Geometry::InstanceData>& data, int visibleCount) const
 	{
-		geometry->DrawInstanced(data);
+		geometry->DrawInstanced(data, visibleCount);
 	}
 
 	void Mesh::DrawInstanced(const std::vector<Geometry::LightInstancedData>& data) const

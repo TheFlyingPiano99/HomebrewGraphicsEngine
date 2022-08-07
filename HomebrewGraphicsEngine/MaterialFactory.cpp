@@ -8,7 +8,7 @@ namespace Hogra {
 
 	MaterialFactory* MaterialFactory::instance = nullptr;
 
-	MaterialFactory* MaterialFactory::getInstance()
+	MaterialFactory* MaterialFactory::GetInstance()
 	{
 		if (nullptr == instance) {
 			instance = new MaterialFactory();
@@ -91,7 +91,7 @@ namespace Hogra {
 		metallicMap.Unbind();
 		aoMap.Unbind();
 
-		auto* shader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
+		auto* shader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
 		auto* material = Material::Instantiate();
 		material->Init(shader);
 		material->addTexture(albedoMap);
@@ -103,12 +103,17 @@ namespace Hogra {
 	
 	Material* MaterialFactory::getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity)
 	{
-		ShaderProgram* program = ShaderProgramFactory::getInstance()->GetEmissiveMaterialProgram();
+		ShaderProgram* program = ShaderProgramFactory::GetInstance()->GetEmissiveMaterialProgram();
 		auto* material = Material::Instantiate();
 		material->Init(program);
 		material->setAlbedo(color * intensity);
 		material->setAlphaBlend(false);
 		return material;
+	}
+
+	void MaterialFactory::ForgetPointers()
+	{
+		loadedPBRMaterials.clear();
 	}
 	
 	MaterialFactory::~MaterialFactory()

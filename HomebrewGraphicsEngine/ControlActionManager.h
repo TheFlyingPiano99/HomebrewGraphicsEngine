@@ -63,7 +63,7 @@ namespace Hogra {
 		/*
 		* Init default control scheme
 		*/
-		void registerDefault();
+		void RegisterDefault();
 
 	private:
 		static ControlActionManager* instance;

@@ -10,7 +10,7 @@ namespace Hogra {
 	class GeometryFactory
 	{
 	public:
-		static GeometryFactory* getInstance();
+		static GeometryFactory* GetInstance();
 		static void DestroyInstance();
 
 		Geometry* getFullScreenQuad();
@@ -27,6 +27,8 @@ namespace Hogra {
 		* The Front face is the opposite (uses counter-clockwise as front facing)
 		*/
 		Geometry* getLightVolumeSphere();
+
+		void ForgetPointers();
 
 	private:
 		Geometry* generateSphere();

@@ -25,7 +25,7 @@ namespace Hogra {
 			initialUp = _up;
 		}
 
-		void setPropellingForce(const glm::vec3& f) {
+		void setPropellingForce(float f) {
 			propellingForce = f;
 		}
 
@@ -55,7 +55,7 @@ namespace Hogra {
 		glm::vec3 right;
 
 		bool allowMove = true;
-		glm::vec3 propellingForce;
+		float propellingForce;
 		bool allowRotate = false;
 		bool directRotation = true;
 		glm::vec3 rotatingTorque;

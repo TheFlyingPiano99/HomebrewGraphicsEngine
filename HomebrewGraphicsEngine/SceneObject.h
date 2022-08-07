@@ -53,7 +53,7 @@ namespace Hogra {
 
 		void drawShadow(const ShadowCaster& shadowCaster);
 
-		Mesh* getMesh() const {
+		Mesh* GetMesh() const {
 			return mesh;
 		}
 
@@ -135,6 +135,14 @@ namespace Hogra {
 			return invModelMatrix;
 		}
 
+		bool IsVisible() const {
+			return isVisible;
+		}
+
+		void SetIsVisible(bool v) {
+			isVisible = v;
+		}
+
 	private:
 		Mesh* mesh = nullptr;		// Don't delete from this object!
 		std::vector<Component*> components;
@@ -150,6 +158,8 @@ namespace Hogra {
 		glm::mat4 scaleMatrix = glm::mat4(1.0f);
 		glm::mat4 modelMatrix = glm::mat4(1.0f);
 		glm::mat4 invModelMatrix = glm::mat4(1.0f);
+
+		bool isVisible = true;
 
 		/*
 		* Exports model matrix and inverse model matrix into shader uniform

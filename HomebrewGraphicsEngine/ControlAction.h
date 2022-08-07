@@ -149,4 +149,20 @@ namespace Hogra {
 		void execute(Scene* scene, float dt) override;
 	};
 
+	class RestartAction : public ControlAction {
+	public:
+		RestartAction() : ControlAction(GLFW_KEY_R) {
+		}
+
+		void execute(Scene* scene, float dt) override;
+	};
+
+	class QuitAction : public ControlAction {
+	public:
+		QuitAction() : ControlAction(GLFW_KEY_ESCAPE) {
+		}
+
+		void execute(Scene* scene, float dt) override;
+	};
+
 }

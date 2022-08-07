@@ -53,7 +53,7 @@ namespace Hogra {
 		}
 	}
 
-	void ControlActionManager::registerDefault()
+	void ControlActionManager::RegisterDefault()
 	{
 		registerAction(new MoveAvatarForward());
 		registerAction(new MoveAvatarBackward());
@@ -66,6 +66,8 @@ namespace Hogra {
 		registerAction(new ToggleFullScreenMode());
 		registerAction(new JumpAvatar());
 		registerAction(new ToggleDebugInfo());
+		registerAction(new RestartAction());
+		registerAction(new QuitAction());
 
 		leftMouseButtonAction = new PrimaryAction();
 	}

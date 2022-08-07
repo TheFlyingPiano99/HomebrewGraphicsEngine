@@ -30,7 +30,7 @@ namespace Hogra {
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
 		// Set control layout
-		ControlActionManager::getInstance()->registerDefault();
+		ControlActionManager::getInstance()->RegisterDefault();
 
 		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 		GUI::getInstance()->initGUI(window);

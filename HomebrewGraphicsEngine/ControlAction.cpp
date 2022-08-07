@@ -133,4 +133,18 @@ namespace Hogra {
 			control->primaryAction();
 		}
 	}
+
+	void RestartAction::execute(Scene* scene, float dt)
+	{
+		SceneChange change;
+		change.changeType = SceneChange::ChangeType::restartScene;
+		scene->SetSceneChange(change);
+	}
+
+	void QuitAction::execute(Scene* scene, float dt)
+	{
+		SceneChange change;
+		change.changeType = SceneChange::ChangeType::quit;
+		scene->SetSceneChange(change);
+	}
 }

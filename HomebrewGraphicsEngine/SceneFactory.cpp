@@ -196,9 +196,9 @@ namespace Hogra {
 	
 	void SceneFactory::InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
-		ShaderProgram* cubeShader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
-		auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl");
-		Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
+		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
+		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
+		Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
 		auto* cubeMesh = Mesh::Instantiate();
 		cubeMesh->Init(material, cubeGeometry);
 		auto* obj = SceneObject::Instantiate();
@@ -238,12 +238,12 @@ namespace Hogra {
 		scene->AddCollider(collider);
 		Material* material;
 		if (std::string(materialName) == std::string("glowing")) {
-			material = MaterialFactory::getInstance()->getEmissiveMaterial("glowing", glm::vec3(0, 0, 1), 100.0f);
+			material = MaterialFactory::GetInstance()->getEmissiveMaterial("glowing", glm::vec3(0, 0, 1), 100.0f);
 		}
 		else {
-			material = MaterialFactory::getInstance()->getPBRMaterial(materialName);
+			material = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
 		}
-		Geometry* geometry = GeometryFactory::getInstance()->getSphere();
+		Geometry* geometry = GeometryFactory::GetInstance()->getSphere();
 		auto* mesh = Mesh::Instantiate();
 		mesh->Init(material, geometry);
 		auto* obj = SceneObject::Instantiate();
@@ -276,7 +276,7 @@ namespace Hogra {
 	
 	void SceneFactory::InitCaptions(Scene* scene)
 	{
-		auto* shader = ShaderProgramFactory::getInstance()->GetGlyphProgram();
+		auto* shader = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
 		auto* font = Font::Instantiate();
 		font->Init(shader);
 		font->Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append("arial.ttf"));
@@ -300,8 +300,8 @@ namespace Hogra {
 	{
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				auto* material = MaterialFactory::getInstance()->getPBRMaterial("vinyl");
-				Geometry* cubeGeometry = GeometryFactory::getInstance()->getCube();
+				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
+				Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
 				auto* cubeMesh = Mesh::Instantiate();
 				cubeMesh->Init(material, cubeGeometry);
 				auto* obj = SceneObject::Instantiate();
@@ -348,7 +348,7 @@ namespace Hogra {
 		auto* skyBoxMaterial = Material::Instantiate();
 		skyBoxMaterial->Init(skyboxShader);
 		skyBoxMaterial->addTexture(cubeMap);
-		Geometry* fullscreenQuad = GeometryFactory::getInstance()->getFullScreenQuad();
+		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
 		auto* skyBoxMesh = Mesh::Instantiate();
 		skyBoxMesh->Init(skyBoxMaterial, fullscreenQuad);
 		skyBoxMesh->setDepthTest(false);
@@ -364,8 +364,8 @@ namespace Hogra {
 		collider->Init();
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
-		ShaderProgram* shader = ShaderProgramFactory::getInstance()->GetDefaultPBRProgramWithMapping();
-		auto* material = MaterialFactory::getInstance()->getPBRMaterial("planks");
+		ShaderProgram* shader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
+		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("planks");
 		Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->SetFaceCulling(false);
 		auto* mesh = Mesh::Instantiate();
@@ -418,12 +418,13 @@ namespace Hogra {
 		collider->SetPositionProvider(avatar);
 		scene->AddCollider(collider, "avatar");
 		FirstPersonControl* control = FirstPersonControl::Instantiate();
+		control->SetScene(scene);
 		control->setPhysics(physics);
 		control->setCamera(&scene->GetCamera());
 		control->setInitialDirection(glm::normalize(glm::vec3(1, 0, 1)));
 		control->setInitialUp(scene->getPreferedUp());
 		control->setJumpImpulse(600.0f);
-		control->setPropellingForce(glm::vec3(2000.0f, 0.0f, 2000.0f));
+		control->setPropellingForce(2000.0f);
 		auto* jumpCollider = AABBCollider::Instantiate();
 		jumpCollider->Init();
 		jumpCollider->setMinRelToPosition(glm::vec3(-0.2f, -1.1f, -0.2f));

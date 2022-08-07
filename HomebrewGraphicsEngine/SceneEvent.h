@@ -1,4 +1,5 @@
 #pragma once
+#include "Scene.h"
 
 namespace Hogra {
 
@@ -7,7 +8,7 @@ namespace Hogra {
 	public:
 		virtual ~SceneEvent() = default;
 
-		virtual void execute(float dt) = 0;
+		virtual void execute(Scene* scene, float dt) = 0;
 
 	};
 }

@@ -24,6 +24,8 @@ namespace Hogra {
 
 		void DrawDebug();
 
+		Collider* IntersectRay(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal);
+
 	private:
 		ColliderGroup root = ColliderGroup(nullptr);
 		std::vector<Collider*> colliders;

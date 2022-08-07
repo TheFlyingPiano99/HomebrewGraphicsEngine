@@ -21,7 +21,7 @@
 #include "Font.h"
 #include "Caption.h"
 #include "Bloom.h"
-#include "SceneChangeEvent.h"
+#include "SceneChange.h"
 
 namespace Hogra {
 
@@ -40,6 +40,11 @@ namespace Hogra {
 		void Draw();
 
 		void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "");
+
+		/*
+		* Not complete!
+		*/
+		void RemoveSceneObejct(SceneObject* object);
 
 		void AddCollider(Collider* collider, const std::string& colliderGroupName = "");
 
@@ -84,7 +89,11 @@ namespace Hogra {
 			return shadowCaster;
 		}
 
-		SceneChangeEvent GetNextScene();
+		const SceneChange& GetSceneChange();
+
+		void SetSceneChange(const SceneChange& change) {
+			this->sceneChange = change;
+		}
 
 	private:
 
@@ -110,7 +119,7 @@ namespace Hogra {
 		unsigned int contextWidth;
 		unsigned int contextHeight;
 		bool debugMode = false;
-		SceneChangeEvent sceneChangeEvent;
+		SceneChange sceneChange;
 
 		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
 

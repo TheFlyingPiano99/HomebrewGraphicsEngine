@@ -6,7 +6,7 @@ namespace Hogra {
 	class ShaderProgramFactory
 	{
 	public:
-		static ShaderProgramFactory* getInstance();
+		static ShaderProgramFactory* GetInstance();
 
 		static void DestroyInstance();
 
@@ -18,6 +18,7 @@ namespace Hogra {
 
 		ShaderProgram* GetEmissiveMaterialProgram();
 
+		void ForgetPointers();
 
 	private:
 		ShaderProgramFactory() = default;

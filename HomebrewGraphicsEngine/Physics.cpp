@@ -93,12 +93,12 @@ namespace Hogra {
 				+ glm::dot(tangent, glm::cross(this->getInvInertiaTensor() * glm::cross(ka, tangent), ka))
 				+ glm::dot(tangent, glm::cross(b.getInvInertiaTensor() * glm::cross(kb, tangent), kb))
 				);
-			this->applyImpulse(j * normal + frictionJ * tangent, ka);
-			b.applyImpulse(j * -normal - frictionJ * tangent, kb);
+			this->ApplyImpulse(j * normal + frictionJ * tangent, ka);
+			b.ApplyImpulse(j * -normal - frictionJ * tangent, kb);
 		}
 		else {	// Impulse without friction
-			this->applyImpulse(j * normal, ka);
-			b.applyImpulse(j * -normal, kb);
+			this->ApplyImpulse(j * normal, ka);
+			b.ApplyImpulse(j * -normal, kb);
 		}
 
 		float pfl0 = positionForcingLevel;

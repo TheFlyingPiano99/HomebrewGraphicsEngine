@@ -41,7 +41,7 @@ namespace Hogra {
 			appliedForce += additionalForce;
 		}
 
-		void applyImpulse(const glm::vec3& _impulse, const glm::vec3& momentArm) {
+		void ApplyImpulse(const glm::vec3& _impulse, const glm::vec3& momentArm) {
 			impulse += _impulse;
 			impulseAsIntegratedTorque += glm::cross(momentArm, _impulse);
 		}

@@ -45,21 +45,17 @@ namespace Hogra {
 		glm::vec3 intersectionPoint;
 		glm::vec3 intersectionNormal;
 		Ray ray;
-		ray.SetPosition(camera.getEyePos());
+		ray.SetPosition(camera.getEyePos() + dir * 1.0f);
 		ray.setDirection(dir);
-		float minT = -1.0f;
-		Collider* selected = nullptr;
-
-		//TODO: Collide
-
-		if (nullptr != selected) {
-			selected->GetPhysics()->applyImpulse(dir * 100.0f, intersectionPoint - selected->GetPhysics()->getOwnerPosition());
+		const auto* selected = collisionManager.IntersectRay(ray, intersectionPoint, intersectionNormal);
+		if (nullptr != selected && nullptr != selected->GetPhysics()) {
+			selected->GetPhysics()->ApplyImpulse(dir * 100.0f, intersectionPoint - selected->GetPhysics()->getOwnerPosition());
 		}
 	}
 
-	SceneChangeEvent Scene::GetNextScene()
+	const SceneChange& Scene::GetSceneChange()
 	{
-		return sceneChangeEvent;
+		return sceneChange;
 	}
 
 	void Scene::Init(int contextWidth, int contextHeight)
@@ -119,10 +115,10 @@ namespace Hogra {
 		collisionManager.Collide();
 
 		ControlActionManager::getInstance()->executeQueue(this, dt);
-		SceneEventManager::getInstance()->executeQueue(dt);
 		for (auto& obj : sceneObjects) {
 			obj->Control(dt);
 		}
+		SceneEventManager::getInstance()->executeQueue(this, dt);
 	}
 
 	void Scene::Update(float dt)
@@ -137,7 +133,7 @@ namespace Hogra {
 		}
 		collisionManager.Update();
 		for (auto& group : instanceGroups) {
-			group.second->optimalize(camera);
+			group.second->Optimalize(camera);
 		}
 	}
 
@@ -145,7 +141,7 @@ namespace Hogra {
 	{
 		// Init and export data:
 		for (auto& group : instanceGroups) {
-			group.second->gatherInstanceData();
+			group.second->GatherInstanceData();
 		}
 		camera.ExportData();
 		lightManager.ExportData();
@@ -154,7 +150,7 @@ namespace Hogra {
 		if (nullptr != shadowCaster) {
 			shadowCaster->Bind();
 			for (auto& group : instanceGroups) {
-				group.second->drawShadow();
+				group.second->DrawShadow();
 			}
 		}
 
@@ -205,18 +201,10 @@ namespace Hogra {
 			return;
 		}
 
-		Mesh* mesh = object->getMesh();
-		Material* material = nullptr;
-		Geometry* geometry = nullptr;
-		if (mesh != nullptr) {
-			material = mesh->getMaterial();
-			geometry = mesh->getGeometry();
-			ShaderProgram* program = material->getShaderProgram();
-		}
 		sceneObjects.push_back(object);
 
 		static int defaultName = 0;
-		if (mesh != nullptr) {
+		if (object->GetMesh() != nullptr) {
 			if (instanceGroupName.length() > 0) {
 				const auto& iter = instanceGroups.find(instanceGroupName);
 				if (iter != instanceGroups.end()) {
@@ -234,6 +222,17 @@ namespace Hogra {
 				instanceGroups.emplace(std::to_string(defaultName++), group);
 			}
 		}
+	}
+
+	void Scene::RemoveSceneObejct(SceneObject* object)
+	{
+		auto iter = std::ranges::find(sceneObjects.begin(), sceneObjects.end(), object);
+		if (sceneObjects.end() != iter) {
+			sceneObjects.erase(iter);
+		}
+		//TODO
+		//Remove from instance group
+		//Remove Collider
 	}
 
 	void Scene::AddCollider(Collider* collider, const std::string& colliderGroupName)

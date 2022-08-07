@@ -11,15 +11,15 @@ namespace Hogra{
 		~InstanceGroup() {
 		}
 
-		void gatherInstanceData();
+		void GatherInstanceData();
 
-		void injectInstanceData(const std::vector<Geometry::InstanceData>& data);
+		void InjectInstanceData(const std::vector<Geometry::InstanceData>& data);
 
 		void Draw();
 
-		void drawShadow();
+		void DrawShadow();
 
-		void optimalize(const Camera& camera);
+		void Optimalize(const Camera& camera);
 
 		void addObject(SceneObject* object) {
 			objects.push_back(object);
@@ -34,6 +34,7 @@ namespace Hogra{
 		std::vector<SceneObject*> objects;
 		std::vector<Geometry::InstanceData> instanceData;
 		int optimalizationCounter = 0;
+		int visibleCount = 0;
 	};
 }
 

@@ -4,7 +4,7 @@ namespace Hogra {
 
 	ShaderProgramFactory* ShaderProgramFactory::instance = nullptr;
 
-	ShaderProgramFactory* ShaderProgramFactory::getInstance() {
+	ShaderProgramFactory* ShaderProgramFactory::GetInstance() {
 		if (nullptr == instance) {
 			instance = new ShaderProgramFactory();
 		}
@@ -69,6 +69,14 @@ namespace Hogra {
 			);
 		}
 		return emissiveMaterial;
+	}
+
+	void ShaderProgramFactory::ForgetPointers()
+	{
+		defaultBPRProgramWithMapping = nullptr;
+		emissiveMaterial = nullptr;
+		glyphProgram = nullptr;
+		captionProgram = nullptr;
 	}
 
 }

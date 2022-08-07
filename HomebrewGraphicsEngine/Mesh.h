@@ -43,7 +43,7 @@ namespace Hogra {
 		void Bind() const;
 		void Draw() const;
 
-		void DrawInstanced(const std::vector<Geometry::InstanceData>& data) const;
+		void DrawInstanced(const std::vector<Geometry::InstanceData>& data, int visibleCount) const;
 
 		void DrawInstanced(const std::vector<Geometry::LightInstancedData>& data) const;
 

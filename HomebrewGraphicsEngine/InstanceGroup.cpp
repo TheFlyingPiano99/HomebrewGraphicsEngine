@@ -1,44 +1,50 @@
 #include "InstanceGroup.h"
 #include <algorithm>
 
-void Hogra::InstanceGroup::gatherInstanceData()
+void Hogra::InstanceGroup::GatherInstanceData()
 {
 	unsigned int count = objects.size();
 	if (instanceData.size() != count) {
 		instanceData.clear();
 		instanceData.resize(count);
 	}
+	visibleCount = 0;
 	for (int i = 0; i < count; i++) {
-		instanceData[i].modelMatrix = objects[i]->getModelMatrix();
-		instanceData[i].invModelMatrix = objects[i]->getInvModelMatrix();
+		if (objects[i]->IsVisible()) {
+			instanceData[visibleCount].modelMatrix = objects[i]->getModelMatrix();
+			instanceData[visibleCount].invModelMatrix = objects[i]->getInvModelMatrix();
+			visibleCount++;
+		}
 	}
 }
 
-void Hogra::InstanceGroup::injectInstanceData(const std::vector<Geometry::InstanceData>& data)
+void Hogra::InstanceGroup::InjectInstanceData(const std::vector<Geometry::InstanceData>& data)
 {
 	instanceData = data;
+	visibleCount = data.size();
 }
 
 void Hogra::InstanceGroup::Draw()
 {
-	if (objects.size() == 0) {
+	if (0 == visibleCount) {
 		return;
 	}
-	Mesh* mesh = objects[0]->getMesh();
+	Mesh* mesh = objects[0]->GetMesh();
 	mesh->Bind();
-	mesh->DrawInstanced(instanceData);
+	mesh->DrawInstanced(instanceData, visibleCount);
 }
 
-void Hogra::InstanceGroup::drawShadow()
+void Hogra::InstanceGroup::DrawShadow()
 {
 	if (objects.size() == 0) {
 		return;
 	}
-	Mesh* mesh = objects[0]->getMesh();
-	mesh->DrawInstanced(instanceData);
+	Mesh* mesh = objects[0]->GetMesh();
+	// Not binding the mesh, to allow use of other program!
+	mesh->DrawInstanced(instanceData, visibleCount);
 }
 
-void Hogra::InstanceGroup::optimalize(const Camera& camera)
+void Hogra::InstanceGroup::Optimalize(const Camera& camera)
 {
 	if (optimalizationCounter > 500) {
 		optimalizationCounter = 0;

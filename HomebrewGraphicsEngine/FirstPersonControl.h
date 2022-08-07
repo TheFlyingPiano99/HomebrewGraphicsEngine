@@ -1,6 +1,7 @@
 #pragma once
 #include "UserControl.h"
 #include "Collider.h"
+#include "Scene.h"
 
 namespace Hogra {
 	class FirstPersonControl : public UserControl
@@ -41,7 +42,12 @@ namespace Hogra {
 			jumpCollider = collider;
 		}
 
+		void SetScene(Scene* scene) {
+			this->scene = scene;
+		}
+
 	private:
+		Scene* scene = nullptr;
 		bool isGrounded = false;
 		float jumpCoolDown = 0.0f;
 		Collider* jumpCollider = nullptr;

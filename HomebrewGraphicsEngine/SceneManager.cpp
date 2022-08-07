@@ -42,18 +42,18 @@ namespace Hogra {
 	int SceneManager::ControlAndUpdate(float dt)
 	{
 		currentScene->Control(dt);
-		SceneChangeEvent change = currentScene->GetNextScene();
+		SceneChange change = currentScene->GetSceneChange();
 		switch (change.changeType)
 		{
-		case SceneChangeEvent::ChangeType::noChange:
+		case SceneChange::ChangeType::noChange:
 			break;
-		case SceneChangeEvent::ChangeType::quit:
+		case SceneChange::ChangeType::quit:
 			return -1;
-		case SceneChangeEvent::ChangeType::restartScene:
+		case SceneChange::ChangeType::restartScene:
 			RestartScene();
 			return 0;
 			break;
-		case SceneChangeEvent::ChangeType::nextScene:
+		case SceneChange::ChangeType::nextScene:
 			LoadScene(change.nextSceneId);
 			return 0;
 			break;

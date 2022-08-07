@@ -11,11 +11,21 @@ namespace Hogra {
 
 		~CollisionEvent() override = default;
 
-		void execute(float dt) override;
+		void execute(Scene* scene, float dt) override;
 
 	private:
 
 		const Collider* collider1;
 		const Collider* collider2;
 	};
+
+	class RestartSceneEvent : public SceneEvent
+	{
+	public:
+
+		void execute(Scene* scene, float dt) override;
+
+	private:
+	};
+
 }

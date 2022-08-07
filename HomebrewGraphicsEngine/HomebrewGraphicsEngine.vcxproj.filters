@@ -297,7 +297,7 @@
     <ClCompile Include="Bloom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SceneChangeEvent.cpp">
+    <ClCompile Include="SceneChange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -533,7 +533,7 @@
     <ClInclude Include="SceneFactory.h">
       <Filter>Header Files\Model\Factories</Filter>
     </ClInclude>
-    <ClInclude Include="SceneChangeEvent.h">
+    <ClInclude Include="SceneChange.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
