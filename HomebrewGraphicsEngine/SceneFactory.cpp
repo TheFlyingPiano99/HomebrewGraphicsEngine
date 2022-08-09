@@ -32,13 +32,13 @@ namespace Hogra {
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
 		light = Light::Instantiate();
-		light->Init(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(1000.0f, 100.0f, 100.0f));
+		light->Init(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
 		scene->AddLight(light);
 		light = Light::Instantiate();
-		light->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(100.0f, 1000.0f, 100.0f));
+		light->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(50.0f, 250.0f, 50.0f));
 		scene->AddLight(light);
 		light = Light::Instantiate();
-		light->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(100.0f, 100.0f, 1000.0f));
+		light->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(50.0f, 50.0f, 250.0f));
 		scene->AddLight(light);
 		std::srand(0);
 		for (int i = 0; i < 10; i++) {
@@ -293,7 +293,6 @@ namespace Hogra {
 		caption3->Init("Halvány szöveg", font,
 			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.7), 1.0f, glm::vec4(0, 1, 1, 0.2));
 		scene->AddCaption(caption3);
-
 	}
 	
 	void SceneFactory::InitGroud(Scene* scene)

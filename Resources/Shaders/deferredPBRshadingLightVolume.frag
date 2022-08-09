@@ -110,30 +110,24 @@ void main()
 	float metallic = roughnessMetallicAO.g;
 	float ao = roughnessMetallicAO.b;
 	vec3 viewDir = normalize(cameraPosition - wp);
-	float shadow = 0.0;
-	vec3 Lo = vec3(0, 0, 0);
-	vec3 F0 = vec3(0.04); 
+	//float shadow = 0.0;
 
 	vec3 lightDiff = fs_in.lightPosition.xyz - wp * fs_in.lightPosition.w;
 	float lightDistance = length(lightDiff);
 	vec3 lightDir = lightDiff / lightDistance;
 	vec3 halfway = normalize(viewDir + lightDir);
-	float attenuation = 1.0 / (lightDistance * lightDistance);
-    vec3 radiance     = fs_in.lightPowerDensity * attenuation * (1.0 - shadow);	// ! radiance !
-	F0      = mix(F0, albedo, metallic);
-	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), F0);
-	float NDF = DistributionGGX(n, halfway, roughness);       
-	float G   = GeometrySmith(n, viewDir, lightDir, roughness);
-	vec3 numerator    = NDF * G * F;
-	float denominator = 4.0 * max(dot(n, viewDir), 0.0) * max(dot(n, lightDir), 0.0)  + 0.0001;
-	vec3 specular     = numerator / denominator; 
-	vec3 kS = F;
-	vec3 kD = vec3(1.0) - kS;
-	kD *= 1.0 - metallic;
-	float NdotL = max(dot(n, lightDir), 0.0);        
-	Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), mix(vec3(0.04), albedo, metallic));
 
-    vec3 color = Lo;
-
-    FragColor = vec4(color, 0.0);
+    FragColor = vec4(
+					((vec3(1.0) - F) * (1.0 - metallic) * albedo / PI + DistributionGGX(n, halfway, roughness) 
+					* GeometrySmith(n, viewDir, lightDir, roughness) 
+					* F 
+					/ (4.0 * max(dot(n, viewDir), 0.0) 
+					* max(dot(n, lightDir), 0.0)  + 0.0001)) 
+					* fs_in.lightPowerDensity 
+					* 1.0 / (lightDistance * lightDistance) 
+					//* (1.0 - shadow) 
+					* max(dot(n, lightDir), 0.0),
+					0.0
+					);
 }

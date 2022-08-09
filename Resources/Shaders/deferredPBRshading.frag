@@ -113,30 +113,30 @@ void main()
 	float ao = roughnessMetallicAO.b;
 	vec3 viewDir = normalize(cameraPosition - wp);
 	float shadow = calculateShadow(wp);
-	vec3 Lo = vec3(0, 0, 0);
-	vec3 F0 = vec3(0.04); 
-
 	vec3 lightDiff = light.position.xyz - wp * light.position.w;
 	float lightDistance = length(lightDiff);
 	vec3 lightDir = lightDiff / lightDistance;
 	vec3 halfway = normalize(viewDir + lightDir);
-	float attenuation = 1.0 / (lightDistance * lightDistance);
-    vec3 radiance     = light.powerDensity * attenuation * (1.0 - shadow);	// ! radiance !
-	F0      = mix(F0, albedo, metallic);
-	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), F0);
-	float NDF = DistributionGGX(n, halfway, roughness);       
-	float G   = GeometrySmith(n, viewDir, lightDir, roughness);
-	vec3 numerator    = NDF * G * F;
-	float denominator = 4.0 * max(dot(n, viewDir), 0.0) * max(dot(n, lightDir), 0.0)  + 0.0001;
-	vec3 specular     = numerator / denominator; 
-	vec3 kS = F;
-	vec3 kD = vec3(1.0) - kS;
-	kD *= 1.0 - metallic;
-	float NdotL = max(dot(n, lightDir), 0.0);        
-	Lo += (kD * albedo / PI + specular) * radiance * NdotL;
+	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), mix(vec3(0.04), albedo, metallic));
 
-    vec3 ambient = vec3(0.001) * albedo * ao;
-    vec3 color = ambient + Lo;
-
-    FragColor = vec4(color, 1.0);
+    FragColor = vec4(
+					vec3(0.001) * albedo * ao													// ambient
+																								// Lo: {
+					+ ((vec3(1.0) - F) * (1.0 - metallic)										// kD 
+						* albedo / PI 
+																									// Specular: {
+						+ DistributionGGX(n, halfway, roughness)									// specular (nominator) {NDF * G * F}
+						* GeometrySmith(n, viewDir, lightDir, roughness) 
+						* F						
+						/ 4.0 * max(dot(n, viewDir), 0.0) * max(dot(n, lightDir), 0.0)  + 0.0001)	// specular (denominator) 
+																									// }
+																								//		Radiance {
+					* light.powerDensity 
+					* 1.0 / (lightDistance * lightDistance)										//			attenuation
+					* (1.0 - shadow)								
+																								//		}
+					* max(dot(n, lightDir), 0.0),												// NdotL
+																								//	   }
+					1.0
+					);
 }
