@@ -23,6 +23,8 @@ namespace Hogra {
 
 		Geometry* getWireFrameSphere();
 
+		Geometry* getCilinder();
+
 		/*
 		* The Front face is the opposite (uses counter-clockwise as front facing)
 		*/
@@ -42,5 +44,6 @@ namespace Hogra {
 		Geometry* sphere = nullptr;
 		Geometry* lightVolumeSphere = nullptr;
 		Geometry* wireFrameSphere = nullptr;
+		Geometry* cilinder = nullptr;
 	};
 }

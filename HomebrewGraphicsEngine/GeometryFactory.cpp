@@ -72,6 +72,53 @@ namespace Hogra {
 		return wireFrameSphere;
 	}
 
+	Geometry* GeometryFactory::getCilinder()
+	{
+		if (nullptr == cilinder) {
+			int resolution = 20;
+			std::vector<Vertex> vertices;
+			std::vector<int> indices;
+
+			//Lower circle:
+			for (int i = 0; i < resolution; i++) {
+				Vertex v;
+				v.position = glm::vec3(cosf((float)i / resolution * 2 * M_PI), -1.0f, sinf((float)i / resolution * 2 * M_PI));
+				vertices.push_back(v);
+			}
+			//Upper circle:
+			for (int i = 0; i < resolution; i++) {
+				Vertex v;
+				v.position = glm::vec3(cosf((float)i / resolution * 2 * M_PI), 1.0f, sinf((float)i / resolution * 2 * M_PI));
+				vertices.push_back(v);
+			}
+			// Indices:
+			for (int i = 0; i < resolution; i++) {
+				if (i < resolution - 1) {
+					indices.push_back(i);
+					indices.push_back(i + resolution);
+					indices.push_back(i + 1);
+
+					indices.push_back(i + 1);
+					indices.push_back(i + resolution);
+					indices.push_back(i + resolution + 1);
+				}
+				else {
+					indices.push_back(i);
+					indices.push_back(i + resolution);
+					indices.push_back(0);
+
+					indices.push_back(0);
+					indices.push_back(resolution);
+					indices.push_back(resolution + 1);
+				}
+			}
+
+			cilinder = Geometry::Instantiate();
+			cilinder->Init(vertices, indices);
+		}
+		return cilinder;
+	}
+
 	Geometry* GeometryFactory::getLightVolumeSphere()
 	{
 		if (nullptr == lightVolumeSphere) {
@@ -90,6 +137,7 @@ namespace Hogra {
 		sphere = nullptr;
 		lightVolumeSphere = nullptr;
 		wireFrameSphere = nullptr;
+		cilinder = nullptr;
 	}
 
 	Geometry* GeometryFactory::generateSphere()
