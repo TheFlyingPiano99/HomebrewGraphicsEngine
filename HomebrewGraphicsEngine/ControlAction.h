@@ -143,7 +143,7 @@ namespace Hogra {
 
 	class PrimaryAction : public ControlAction {
 	public:
-		PrimaryAction() : ControlAction(GLFW_MOUSE_BUTTON_LEFT) {
+		PrimaryAction() : ControlAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerContinuosly) {
 		}
 
 		void execute(Scene* scene, float dt) override;

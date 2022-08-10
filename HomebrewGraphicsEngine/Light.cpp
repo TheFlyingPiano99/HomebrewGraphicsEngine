@@ -29,8 +29,8 @@ namespace Hogra {
 	{
 		if (positionProvider != nullptr) {
 			position = glm::vec4(positionProvider->GetPosition(), 1.0f);
-			volumeModelMatrix = glm::translate(glm::vec3(position)) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 		}
+		volumeModelMatrix = glm::translate(glm::vec3(position)) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}
 	
 	float Light::getEffectiveRadius() const {

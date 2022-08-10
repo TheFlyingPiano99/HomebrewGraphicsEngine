@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Scene.h"
+#include "FirstPersonControl.h"
 #include<glm/glm.hpp>
 
 namespace Hogra {
@@ -31,6 +32,7 @@ namespace Hogra {
 
 		void InitAvatar(Scene* scene, ForceField* gravitation);
 
+		void InitLaserBeam(Scene* scene, FirstPersonControl* control);
 
 	private:
 		SceneFactory() = default;

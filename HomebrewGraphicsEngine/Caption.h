@@ -44,6 +44,12 @@ namespace Hogra {
 			isVisible = b;
 		}
 
+		enum CaptionPlacing {
+			centeredText,
+			leftAligned,
+			rightAligned
+		};
+
 	private:
 		VAO vao;
 		VBO vbo;
@@ -55,6 +61,7 @@ namespace Hogra {
 		ShaderProgram* program = nullptr;
 		Texture2D* texture = nullptr;
 		bool isVisible = true;
+		CaptionPlacing placing = CaptionPlacing::centeredText;
 
 	};
 

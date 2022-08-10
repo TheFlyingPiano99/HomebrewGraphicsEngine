@@ -27,6 +27,10 @@ namespace Hogra {
 
 		void OnMouseLeftButtonRelease(const glm::vec2& ndcCoords);
 
+		void OnMouseRightButtonPress(const glm::vec2& ndcCoords);
+
+		void OnMouseRightButtonRelease(const glm::vec2& ndcCoords);
+
 		/*
 		* Register new controlAction
 		*/
@@ -46,7 +50,7 @@ namespace Hogra {
 		* Push on the execution queue the currently triggering control actions.
 		* Should be called from main loop.
 		*/
-		void queueTriggeringActions();
+		void QueueTriggeringActions();
 
 
 		/*

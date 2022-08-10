@@ -96,6 +96,14 @@ void Hogra::FirstPersonControl::Update(float dt)
 	}
 }
 
+void Hogra::FirstPersonControl::PreUserInputControl(float dt)
+{
+	if (nullptr != laser) {
+		laser->SetIsVisible(false);
+		laserInpactLight->SetIsActive(false);
+	}
+}
+
 void Hogra::FirstPersonControl::Rotate(float mouseX, float mouseY)
 {
 	if (camera == nullptr || !allowRotate) {
@@ -112,14 +120,55 @@ void Hogra::FirstPersonControl::jump() {
 	jumpCoolDown = 1.0f;
 }
 
-void Hogra::FirstPersonControl::primaryAction()
+void Hogra::FirstPersonControl::primaryAction(float dt)
 {
+	glm::vec3 point;
+	bool isPoke = false;
 	if (nullptr != scene) {
-		scene->PokeObject(glm::vec2(0.0f, 0.0f));
+		isPoke = PokeObject(glm::vec2(0.0f, 0.0f), point);
+	}
+
+	if (nullptr != laser) {
+		laser->SetIsVisible(true);
+		glm::vec3 start = camera->getEyePos() - glm::vec3(0.0f, 0.5f, 0.0f);
+		glm::vec3 end;
+		if (isPoke) {
+			end = point;
+		}
+		else {
+			end = start + camera->getLookDir() * 1000.0f;
+		}
+		glm::vec3 center = (start + end) / 2.0f;
+		laser->SetPosition(center);
+		float beamLength = glm::length(start - end);
+		laser->SetScale(glm::vec3(0.05f, 0.5f * beamLength, 0.05f));
+		auto dir = glm::normalize(end - start);
+		laser->SetOrientation(glm::rotation(glm::vec3(0.0f, 1.0f, 0.0f), dir));
+		laserInpactLight->SetIsActive(true);
+		laserInpactLight->SetPosition(end - dir * 0.1f);
 	}
 }
 
 void Hogra::FirstPersonControl::secondaryAction()
 {
+	//TODO
+}
 
+bool Hogra::FirstPersonControl::PokeObject(const glm::vec2& ndcCoords, glm::vec3& pokePoint)
+{
+	glm::vec4 wDir = camera->getRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
+	wDir /= wDir.w;
+	glm::vec3 dir = glm::normalize(glm::vec3(wDir));
+	glm::vec3 intersectionPoint;
+	glm::vec3 intersectionNormal;
+	Ray ray;
+	ray.SetPosition(camera->getEyePos() + dir * 1.0f);
+	ray.setDirection(dir);
+	const auto* selected = scene->IntersectRay(ray, intersectionPoint, intersectionNormal);
+	if (nullptr != selected && nullptr != selected->GetPhysics()) {
+		selected->GetPhysics()->ApplyImpulse(dir * 10.0f, intersectionPoint - selected->GetPhysics()->getOwnerPosition());
+		pokePoint = intersectionPoint;
+		return true;
+	}
+	return false;
 }

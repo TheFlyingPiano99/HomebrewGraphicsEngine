@@ -97,8 +97,10 @@ namespace Hogra {
 			mesh->Bind();
 			instanceData.clear();
 			for (int i = 1; i < lights.size(); i++) {
-				Geometry::LightInstancedData d = { lights[i]->getVolumeModelMatrix(), lights[i]->GetPosition(), glm::vec4(lights[i]->getPowerDensity(), 0.0)};
-				instanceData.push_back(d);
+				if (lights[i]->IsActive()) {
+					Geometry::LightInstancedData d = { lights[i]->getVolumeModelMatrix(), lights[i]->GetPosition(), glm::vec4(lights[i]->getPowerDensity(), 0.0) };
+					instanceData.push_back(d);
+				}
 			}
 			mesh->DrawInstanced(instanceData);
 		}

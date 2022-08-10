@@ -130,7 +130,7 @@ namespace Hogra {
 	{
 		auto* control = (FirstPersonControl*)scene->getAvatarControl();
 		if (nullptr != control) {
-			control->primaryAction();
+			control->primaryAction(dt);
 		}
 	}
 

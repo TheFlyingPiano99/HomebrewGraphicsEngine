@@ -45,6 +45,8 @@ namespace Hogra {
 
 		~SceneObject() = default;
 
+		void PreUserInputControl(float dt);
+
 		void Control(float dt);
 
 		void Update(float dt, const Camera& camera);
@@ -143,6 +145,14 @@ namespace Hogra {
 			isVisible = v;
 		}
 
+		void SetIsCastingShadow(bool v) {
+			isCastingShadow = v;
+		}
+
+		bool IsCastingShadow() const {
+			return isCastingShadow;
+		}
+
 	private:
 		Mesh* mesh = nullptr;		// Don't delete from this object!
 		std::vector<Component*> components;
@@ -160,6 +170,7 @@ namespace Hogra {
 		glm::mat4 invModelMatrix = glm::mat4(1.0f);
 
 		bool isVisible = true;
+		bool isCastingShadow = true;
 
 		/*
 		* Exports model matrix and inverse model matrix into shader uniform

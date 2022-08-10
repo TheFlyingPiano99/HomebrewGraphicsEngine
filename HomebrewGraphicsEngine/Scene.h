@@ -71,8 +71,6 @@ namespace Hogra {
 			Destroy();
 		}
 
-		void PokeObject(const glm::vec2& ndcCoords);
-
 		UserControl* getAvatarControl() {
 			return userControl;
 		}
@@ -94,6 +92,8 @@ namespace Hogra {
 		void SetSceneChange(const SceneChange& change) {
 			this->sceneChange = change;
 		}
+
+		Collider* IntersectRay(const Ray& ray, glm::vec3& intersectionPoint, glm::vec3& intersectionNormal);
 
 	private:
 

@@ -21,7 +21,7 @@ namespace Hogra {
 		glfwSetMouseButtonCallback(window, Callbacks::onMouseClick);
 		glfwSetWindowSizeCallback(window, Callbacks::onWindowSize);
 	}
-
+	
 	void Callbacks::onWindowInit(GLFWwindow* window)
 	{
 		int width, height;
@@ -120,6 +120,15 @@ namespace Hogra {
 			}
 			else if (GLFW_RELEASE == action) {
 				ControlActionManager::getInstance()->OnMouseLeftButtonRelease(ndcCoords);
+			}
+		}
+		if (button == GLFW_MOUSE_BUTTON_RIGHT)
+		{
+			if (GLFW_PRESS == action) {
+				ControlActionManager::getInstance()->OnMouseRightButtonPress(ndcCoords);
+			}
+			else if (GLFW_RELEASE == action) {
+				ControlActionManager::getInstance()->OnMouseRightButtonRelease(ndcCoords);
 			}
 		}
 	}

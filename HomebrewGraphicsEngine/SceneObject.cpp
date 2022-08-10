@@ -15,6 +15,12 @@ namespace Hogra {
 		return instance;
 	}
 
+	void SceneObject::PreUserInputControl(float dt) {
+		for (auto& component : components) {
+			component->PreUserInputControl(dt);
+		}
+	}
+
 	void SceneObject::Control(float dt) {
 		for (auto& component : components) {
 			component->Control(dt);

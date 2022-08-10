@@ -35,8 +35,15 @@ void Hogra::Caption::Draw() {
 	}
 	program->Activate();
 	texture->Bind();
+	glm::vec2 pos = screenPosition;
+	if (placing == CaptionPlacing::centeredText) {
+		pos.x -= scale * texture->getDimensions().x / 2.0f;
+	}
+	else if (placing == CaptionPlacing::rightAligned) {
+		pos.x -= scale * texture->getDimensions().x;
+	}
 	glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::renderResolutionWidth, 0.0f, (float)GlobalVariables::renderResolutionHeight)
-		* glm::translate(glm::vec3(screenPosition, 0.0f)) * glm::scale(glm::vec3(scale));
+		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(glm::vec3(scale));
 	glUniformMatrix4fv(glGetUniformLocation(program->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniform4f(glGetUniformLocation(program->ID, "textColor"), color.r, color.g, color.b, color.a);
 	glEnable(GL_BLEND);

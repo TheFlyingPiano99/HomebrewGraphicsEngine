@@ -103,7 +103,7 @@ namespace Hogra {
 					dt = realDelta;
 					realDelta = 0.0;
 				}
-				ControlActionManager::getInstance()->queueTriggeringActions();
+				ControlActionManager::getInstance()->QueueTriggeringActions();
 				retVal = SceneManager::getInstance()->ControlAndUpdate(dt);
 				if (-1 == retVal) {
 					break;

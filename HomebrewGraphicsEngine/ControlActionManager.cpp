@@ -34,6 +34,16 @@ namespace Hogra {
 		}
 	}
 
+	void ControlActionManager::OnMouseRightButtonPress(const glm::vec2& ndcCoords)
+	{
+
+	}
+
+	void ControlActionManager::OnMouseRightButtonRelease(const glm::vec2& ndcCoords)
+	{
+
+	}
+
 	void ControlActionManager::clearQueue()
 	{
 		while (!queuedActions.empty()) {
@@ -41,7 +51,7 @@ namespace Hogra {
 		}
 	}
 
-	void ControlActionManager::queueTriggeringActions()
+	void ControlActionManager::QueueTriggeringActions()
 	{
 		for (auto& pair : registeredKeyActions) {
 			if (pair.second->isTriggering()) {

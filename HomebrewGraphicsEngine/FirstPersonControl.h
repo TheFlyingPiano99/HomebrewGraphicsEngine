@@ -18,6 +18,8 @@ namespace Hogra {
 
 		void Update(float dt) override;
 
+		void PreUserInputControl(float dt) override;
+
 		void moveForward(float dt);
 		void moveBackward(float dt);
 		void moveLeft(float dt);
@@ -26,7 +28,7 @@ namespace Hogra {
 		
 		void jump();
 
-		void primaryAction();
+		void primaryAction(float dt);
 
 		void secondaryAction();
 
@@ -46,8 +48,21 @@ namespace Hogra {
 			this->scene = scene;
 		}
 
+		void SetLaserObject(SceneObject* object) {
+			laser = object;
+		}
+
+		void SetLaserInpactLight(Light* light) {
+			laserInpactLight = light;
+		}
+
+		bool PokeObject(const glm::vec2& ndcCoords, glm::vec3& pokePoint);
+
 	private:
 		Scene* scene = nullptr;
+		SceneObject* laser = nullptr;
+		glm::vec3 laserAlbedo;
+		Light* laserInpactLight = nullptr;
 		bool isGrounded = false;
 		float jumpCoolDown = 0.0f;
 		Collider* jumpCollider = nullptr;

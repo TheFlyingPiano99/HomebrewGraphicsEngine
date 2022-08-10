@@ -36,6 +36,12 @@ namespace Hogra {
 			return position;
 		}
 
+		void SetPosition(const glm::vec3& pos) {
+			position.x = pos.x;
+			position.y = pos.y;
+			position.z = pos.z;
+		}
+
 		const glm::vec3& getPowerDensity() const {
 			return powerDensity;
 		}
@@ -46,11 +52,20 @@ namespace Hogra {
 			return volumeModelMatrix;
 		}
 
+		bool IsActive() const {
+			return isActive;
+		}
+
+		void SetIsActive(bool b) {
+			isActive = b;
+		}
+
 	private:
 		glm::vec4 position;
 		glm::vec3 powerDensity;
 		glm::mat4 volumeModelMatrix;
 		PositionProvider* positionProvider;
 		float effectiveRadius;
+		bool isActive = true;
 	};
 }

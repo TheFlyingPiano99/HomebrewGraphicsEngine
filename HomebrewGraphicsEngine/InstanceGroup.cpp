@@ -18,6 +18,23 @@ void Hogra::InstanceGroup::GatherInstanceData()
 	}
 }
 
+void Hogra::InstanceGroup::GatherInstanceDataForShadow()
+{
+	unsigned int count = objects.size();
+	if (instanceData.size() != count) {
+		instanceData.clear();
+		instanceData.resize(count);
+	}
+	visibleCount = 0;
+	for (int i = 0; i < count; i++) {
+		if (objects[i]->IsVisible() && objects[i]->IsCastingShadow()) {
+			instanceData[visibleCount].modelMatrix = objects[i]->getModelMatrix();
+			instanceData[visibleCount].invModelMatrix = objects[i]->getInvModelMatrix();
+			visibleCount++;
+		}
+	}
+}
+
 void Hogra::InstanceGroup::InjectInstanceData(const std::vector<Geometry::InstanceData>& data)
 {
 	instanceData = data;

@@ -26,6 +26,8 @@ namespace Hogra {
 
 		virtual ~Component() = default;
 
+		virtual void PreUserInputControl(float dt) {}
+
 		virtual void Control(float dt) = 0;
 
 		virtual void Update(float dt) = 0;

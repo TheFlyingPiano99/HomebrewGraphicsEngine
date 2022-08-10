@@ -39,6 +39,8 @@ namespace Hogra {
 		void drawDebug();
 
 		void Clear();
+		
+		void Update();
 
 	private:
 		std::vector<Light*> lights;

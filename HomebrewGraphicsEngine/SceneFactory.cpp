@@ -5,7 +5,6 @@
 #include "ShaderProgramFactory.h"
 #include <glm/ext/vector_float3.hpp>
 #include <glm/ext/vector_float4.hpp>
-#include "FirstPersonControl.h"
 #include "GeometryLoader.h"
 #include "ShaderProgramFactory.h"
 
@@ -282,17 +281,9 @@ namespace Hogra {
 		font->Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append("arial.ttf"));
 
 		Caption* caption1 = Caption::Instantiate();
-		caption1->Init("Debug text", font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.9), 1.5f, glm::vec4(0, 1, 0, 1));
+		caption1->Init("Homebrew Graphics Engine Demo", font,
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.95), 1.5f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
-		Caption* caption2 = Caption::Instantiate();
-		caption2->Init("Ékezetes karakterek: aá, eé, ií, üű, oó, öő !ľ", font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.8), 1.0f, glm::vec4(1, 1, 0, 0.5));
-		scene->AddCaption(caption2);
-		Caption* caption3 = Caption::Instantiate();
-		caption3->Init("Halvány szöveg", font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.7), 1.0f, glm::vec4(0, 1, 1, 0.2));
-		scene->AddCaption(caption3);
 	}
 	
 	void SceneFactory::InitGroud(Scene* scene)
@@ -441,5 +432,24 @@ namespace Hogra {
 		scene->getShadowCaster()->SetPositionProvider(avatar);
 		scene->getShadowCaster()->setPositionOffsetToProvider(glm::vec3(-20, 20, -20));
 		scene->AddSceneObject(avatar);
+		InitLaserBeam(scene, control);
+	}
+	
+	void SceneFactory::InitLaserBeam(Hogra::Scene* scene, Hogra::FirstPersonControl* control)
+	{
+		auto obj = SceneObject::Instantiate();
+		auto geom = GeometryFactory::GetInstance()->getCilinder();
+		auto material = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 100.0f);
+		auto mesh = Mesh::Instantiate();
+		mesh->Init(material, geom);
+		obj->Init(mesh);
+		obj->SetIsVisible(false);
+		obj->SetIsCastingShadow(false);
+		scene->AddSceneObject(obj);
+		control->SetLaserObject(obj);
+		Light* laserInpactLight = Light::Instantiate();
+		laserInpactLight->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(25.0f, 20.0f, 10.0f));
+		scene->AddLight(laserInpactLight);
+		control->SetLaserInpactLight(laserInpactLight);
 	}
 }

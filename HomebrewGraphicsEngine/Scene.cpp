@@ -37,25 +37,14 @@ namespace Hogra {
 		//postProcessStages.push_back(stage1);
 	}
 
-	void Scene::PokeObject(const glm::vec2& ndcCoords)
-	{
-		glm::vec4 wDir = camera.getRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
-		wDir /= wDir.w;
-		glm::vec3 dir = glm::normalize(glm::vec3(wDir));
-		glm::vec3 intersectionPoint;
-		glm::vec3 intersectionNormal;
-		Ray ray;
-		ray.SetPosition(camera.getEyePos() + dir * 1.0f);
-		ray.setDirection(dir);
-		const auto* selected = collisionManager.IntersectRay(ray, intersectionPoint, intersectionNormal);
-		if (nullptr != selected && nullptr != selected->GetPhysics()) {
-			selected->GetPhysics()->ApplyImpulse(dir * 100.0f, intersectionPoint - selected->GetPhysics()->getOwnerPosition());
-		}
-	}
-
 	const SceneChange& Scene::GetSceneChange()
 	{
 		return sceneChange;
+	}
+
+	Collider* Scene::IntersectRay(const Ray& ray, glm::vec3& intersectionPoint, glm::vec3& intersectionNormal)
+	{
+		return collisionManager.IntersectRay(ray, intersectionPoint, intersectionNormal);
 	}
 
 	void Scene::Init(int contextWidth, int contextHeight)
@@ -114,6 +103,9 @@ namespace Hogra {
 	{
 		collisionManager.Collide();
 
+		for (auto& obj : sceneObjects) {
+			obj->PreUserInputControl(dt);
+		}
 		ControlActionManager::getInstance()->executeQueue(this, dt);
 		for (auto& obj : sceneObjects) {
 			obj->Control(dt);
@@ -135,23 +127,27 @@ namespace Hogra {
 		for (auto& group : instanceGroups) {
 			group.second->Optimalize(camera);
 		}
+		lightManager.Update();
 	}
 
 	void Scene::Draw()
 	{
 		// Init and export data:
-		for (auto& group : instanceGroups) {
-			group.second->GatherInstanceData();
-		}
 		camera.ExportData();
 		lightManager.ExportData();
 
 		// Shadow pass:
+		for (auto& group : instanceGroups) {
+			group.second->GatherInstanceDataForShadow();
+		}
 		if (nullptr != shadowCaster) {
 			shadowCaster->Bind();
 			for (auto& group : instanceGroups) {
 				group.second->DrawShadow();
 			}
+		}
+		for (auto& group : instanceGroups) {
+			group.second->GatherInstanceData();
 		}
 
 		// Geometry pass:

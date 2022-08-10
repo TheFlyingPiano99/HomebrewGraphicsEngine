@@ -53,7 +53,9 @@ namespace Hogra {
 		debugLightVolumeMesh->Bind();
 		std::vector<Geometry::InstanceData> data;
 		for (int i = 1; i < lights.size(); i++) {
-			data.push_back({ lights[i]->getVolumeModelMatrix(), glm::mat4(1.0f)});
+			if (lights[i]->IsActive()) {
+				data.push_back({ lights[i]->getVolumeModelMatrix(), glm::mat4(1.0f) });
+			}
 		}
 		debugLightVolumeMesh->DrawInstanced(data, data.size());
 
@@ -62,5 +64,11 @@ namespace Hogra {
 	{
 		lights.clear();
 
+	}
+	void LightManager::Update()
+	{
+		for (auto& light : lights) {
+			light->Update(0.0f);
+		}
 	}
 }
