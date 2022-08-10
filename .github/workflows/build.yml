@@ -24,6 +24,8 @@ jobs:
           java-version: 11
       - name: Set up msbuild
         uses: microsoft/setup-msbuild@v1.0.2
+        with:
+          msbuild-architecture: x64
       - name: Cache SonarCloud packages
         uses: actions/cache@v1
         with:
