@@ -42,14 +42,14 @@ jobs:
           echo "$HOME\.sonar\sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-windows\bin" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
       - name: Download and set up build-wrapper
         env:
-           BUILD_WRAPPER_DOWNLOAD_URL: ${{ env.SONAR_SERVER_URL }}/static/cpp/build-wrapper-win-x64.zip
+           BUILD_WRAPPER_DOWNLOAD_URL: ${{ env.SONAR_SERVER_URL }}/static/cpp/build-wrapper-win-x86.zip
         run: |
           curl -sSLo $HOME\.sonar\build-wrapper.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }} 
           unzip -o $HOME\.sonar\build-wrapper.zip -d $HOME\.sonar\
-          echo "$HOME\.sonar\build-wrapper-win-x64" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
+          echo "$HOME\.sonar\build-wrapper-win-x86" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
       - name: Run build-wrapper
         run: |
-          build-wrapper-win-x64-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} msbuild HomebrewGraphicsEngine/HomebrewGraphicsEngine.vcxproj /t:rebuild /nodeReuse:false
+          build-wrapper-win-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} msbuild HomebrewGraphicsEngine/HomebrewGraphicsEngine.vcxproj /t:rebuild /nodeReuse:false
       - name: Run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
