@@ -64,4 +64,11 @@ namespace Hogra {
 		}
 		return fontsFolderPath;
 	}
+	std::string AssetFolderPathManager::getSoundsFolderPath()
+	{
+		if (soundsFolderPath.empty()) {
+			soundsFolderPath = findPathIntoFolder("Resources/Sounds");
+		}
+		return soundsFolderPath;
+	}
 }

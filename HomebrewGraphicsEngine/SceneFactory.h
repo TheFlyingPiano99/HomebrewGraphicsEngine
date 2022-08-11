@@ -30,9 +30,11 @@ namespace Hogra {
 
 		void InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field);
 
-		void InitAvatar(Scene* scene, ForceField* gravitation);
+		void InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control);
 
 		void InitLaserBeam(Scene* scene, FirstPersonControl* control);
+
+		void InitAudio(Scene* scene, FirstPersonControl* control);
 
 	private:
 		SceneFactory() = default;

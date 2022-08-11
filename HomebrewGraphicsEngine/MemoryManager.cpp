@@ -9,6 +9,9 @@
 #include "ShaderProgramFactory.h"
 #include "SceneManager.h"
 #include "SceneFactory.h"
+#include "AudioBuffer.h"
+#include "AudioSource.h"
+#include "AudioListener.h"
 
 	/*
 	* Needs to be called before closing program!
@@ -31,6 +34,10 @@
 		Texture::DeallocateAll();
 		Component::DeallocateAll();
 		Font::DeallocateAll();
+
+		AudioBuffer::DeallocateAll();
+		AudioSource::DeallocateAll();
+		AudioListener::DeallocateAll();
 	}
 
 	void Hogra::MemoryManager::DeallocateSceneResources()
@@ -42,6 +49,10 @@
 		Texture::DeallocateAll();
 		Component::DeallocateAll();
 		Font::DeallocateAll();
+
+		AudioBuffer::DeallocateAll();
+		AudioSource::DeallocateAll();
+		AudioListener::DeallocateAll();
 
 		MaterialFactory::GetInstance()->ForgetPointers();
 		GeometryFactory::GetInstance()->ForgetPointers();

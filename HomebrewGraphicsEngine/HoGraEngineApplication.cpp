@@ -7,6 +7,7 @@
 #include "ControlActionManager.h"
 #include "SceneManager.h"
 #include "Material.h"
+#include <Windows.h>
 
 namespace Hogra {
 	void HoGraEngineApplication::setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {
@@ -22,6 +23,16 @@ namespace Hogra {
 	}
 
 	int HoGraEngineApplication::Init(const char* _windowName) {
+
+		auto consoleHandle = GetConsoleWindow();
+		if (GlobalVariables::hideConsoleWindow) {
+			// Hide native console
+			ShowWindow(consoleHandle, SW_HIDE);
+		}
+		else {
+			ShowWindow(consoleHandle, SW_SHOW);
+		}
+
 		windowName = _windowName;
 		// Initialize GLFW
 		glfwInit();
@@ -43,6 +54,11 @@ namespace Hogra {
 			return -1;
 		}
 		GlobalVariables::window = window;
+
+		// Init audio
+		audioContext.Init();
+		audioContext.MakeCurrent();
+
 		// Introduce the window into the current context
 		glfwMakeContextCurrent(window);
 
@@ -54,6 +70,7 @@ namespace Hogra {
 		gladLoadGL();
 
 		Callbacks::onWindowInit(window);
+
 		return 0;
 	}
 	

@@ -22,6 +22,8 @@
 #include "Caption.h"
 #include "Bloom.h"
 #include "SceneChange.h"
+#include "AudioManager.h"
+#include "SceneAudioSource.h"
 
 namespace Hogra {
 
@@ -53,6 +55,8 @@ namespace Hogra {
 		void AddLight(Light* light);
 
 		void AddCaption(Caption* caption);
+
+		void AddSceneAudioSource(SceneAudioSource* source);
 
 		void SetUserControl(UserControl* uc);
 
@@ -102,6 +106,7 @@ namespace Hogra {
 		Camera camera;
 		LightManager lightManager;
 		Bloom bloom;
+		AudioManager audioManager;
 		
 		//To deallocate:
 		std::vector<Light*> lights;

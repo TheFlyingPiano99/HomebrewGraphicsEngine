@@ -2,6 +2,7 @@
 #include "UserControl.h"
 #include "Collider.h"
 #include "Scene.h"
+#include "SceneAudioSource.h"
 
 namespace Hogra {
 	class FirstPersonControl : public UserControl
@@ -56,13 +57,17 @@ namespace Hogra {
 			laserInpactLight = light;
 		}
 
+		void SetJumpAudioSource(SceneAudioSource* source) {
+			jumpAudioSource = source;
+		}
+
 		bool PokeObject(const glm::vec2& ndcCoords, glm::vec3& pokePoint);
 
 	private:
 		Scene* scene = nullptr;
 		SceneObject* laser = nullptr;
-		glm::vec3 laserAlbedo;
 		Light* laserInpactLight = nullptr;
+		SceneAudioSource* jumpAudioSource = nullptr;
 		bool isGrounded = false;
 		float jumpCoolDown = 0.0f;
 		Collider* jumpCollider = nullptr;

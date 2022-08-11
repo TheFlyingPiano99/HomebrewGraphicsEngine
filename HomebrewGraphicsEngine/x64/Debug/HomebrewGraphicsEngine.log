@@ -1,4 +1,4 @@
-﻿  Scene.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GlobalInclude.h(42,3): warning C4091: 'static ': ignored on left of 'Hogra::GlobalVariables' when no variable is declared
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(46,13): warning C4101: 'intersectionNormal': unreferenced local variable
+﻿  AudioBuffer.cpp
+  SceneFactory.cpp
+  Generating Code...
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

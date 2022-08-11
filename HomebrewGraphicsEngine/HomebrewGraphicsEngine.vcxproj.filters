@@ -186,7 +186,7 @@
     <ClCompile Include="AudioSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Listener.cpp">
+    <ClCompile Include="AudioListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
@@ -298,6 +298,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneChange.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneAudioSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -413,7 +431,7 @@
     <ClInclude Include="AudioSource.h">
       <Filter>Header Files\OpenALObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Listener.h">
+    <ClInclude Include="AudioListener.h">
       <Filter>Header Files\OpenALObjects</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
@@ -537,6 +555,24 @@
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioBuffer.h">
+      <Filter>Header Files\OpenALObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioDevice.h">
+      <Filter>Header Files\OpenALObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioUtils.h">
+      <Filter>Header Files\OpenALObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioContext.h">
+      <Filter>Header Files\OpenALObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneAudioSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>

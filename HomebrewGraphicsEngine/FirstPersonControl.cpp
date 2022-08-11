@@ -118,6 +118,7 @@ void Hogra::FirstPersonControl::jump() {
 	}
 	physics->ApplyImpulse(up * jumpImpulse, glm::vec3(0.0f));
 	jumpCoolDown = 1.0f;
+	jumpAudioSource->Play();
 }
 
 void Hogra::FirstPersonControl::primaryAction(float dt)

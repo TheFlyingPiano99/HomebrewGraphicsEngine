@@ -7,6 +7,13 @@
 #include <glm/ext/vector_float4.hpp>
 #include "GeometryLoader.h"
 #include "ShaderProgramFactory.h"
+#include "AudioDevice.h"
+
+#include "AudioBuffer.h"
+#include "AudioSource.h"
+#include "AudioListener.h"
+
+#include "SceneAudioSource.h"
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -80,8 +87,11 @@ namespace Hogra {
 		}
 		InitSkyBox(scene);
 		InitLoadedGeometry(scene, glm::vec3(-10.0f, 3.0f, -30.0f), field);
-		InitAvatar(scene, field);
+		FirstPersonControl* control = nullptr;
+		InitAvatar(scene, field, control);
 		InitCaptions(scene);
+
+		InitAudio(scene, control);
 
 		return scene;
 	}
@@ -386,7 +396,7 @@ namespace Hogra {
 		scene->AddSceneObject(obj);
 	}
 	
-	void SceneFactory::InitAvatar(Scene* scene, ForceField* gravitation)
+	void SceneFactory::InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control)
 	{
 		auto* avatar = SceneObject::Instantiate();
 		avatar->Init();
@@ -407,7 +417,7 @@ namespace Hogra {
 		collider->SetPhysics(physics);
 		collider->SetPositionProvider(avatar);
 		scene->AddCollider(collider, "avatar");
-		FirstPersonControl* control = FirstPersonControl::Instantiate();
+		control = FirstPersonControl::Instantiate();
 		control->SetScene(scene);
 		control->setPhysics(physics);
 		control->setCamera(&scene->GetCamera());
@@ -451,5 +461,22 @@ namespace Hogra {
 		laserInpactLight->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(25.0f, 20.0f, 10.0f));
 		scene->AddLight(laserInpactLight);
 		control->SetLaserInpactLight(laserInpactLight);
+	}
+
+	void SceneFactory::InitAudio(Scene* scene, FirstPersonControl* control)
+	{
+
+
+		auto buffer = AudioBuffer::Instantiate();
+		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("human-impact.wav"));
+
+		auto source = AudioSource::Instantiate();
+		source->Init(buffer);
+		source->SetGain(0.1f);
+
+		auto sceneSource = SceneAudioSource::Instantiate();
+		sceneSource->Init(source);
+		scene->AddSceneAudioSource(sceneSource);
+		control->SetJumpAudioSource(sceneSource);
 	}
 }

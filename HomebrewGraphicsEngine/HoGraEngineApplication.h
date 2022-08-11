@@ -1,6 +1,7 @@
 #pragma once
 #include "GlobalInclude.h"
 #include <string>
+#include "AudioContext.h"
 
 namespace Hogra {
 	class HoGraEngineApplication
@@ -19,6 +20,7 @@ namespace Hogra {
 		void setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode);
 
 		GLFWwindow* window = nullptr;
+		AudioContext audioContext;
 		std::string windowName;
 	};
 }

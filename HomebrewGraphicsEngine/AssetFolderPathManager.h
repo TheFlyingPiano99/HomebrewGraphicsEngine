@@ -15,6 +15,7 @@ namespace Hogra {
 		std::string geometryFolderPath;
 		std::string fontsFolderPath;
 		std::string savesFolderPath;
+		std::string soundsFolderPath;
 
 
 		class AssetFolderNotFound : public std::exception {
@@ -56,5 +57,7 @@ namespace Hogra {
 		std::string getSavesFolderPath();
 
 		std::string getFontsFolderPath();
+
+		std::string getSoundsFolderPath();
 	};
 }

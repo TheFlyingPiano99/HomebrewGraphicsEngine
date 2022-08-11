@@ -2,6 +2,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+
 #define DEFAULT_WINDOW_WIDTH 1280
 #define DEFAULT_WINDOW_HEIGHT 720
 
@@ -31,11 +32,12 @@
 #define MAX_LIGHT_COUNT 2048
 
 namespace Hogra {
-	static struct GlobalVariables {
+	struct GlobalVariables {
 		static GLFWwindow* window;
 		static int windowWidth;
 		static int windowHeight;
 		static bool fullScreenMode;
+		static bool hideConsoleWindow;
 
 		static int renderResolutionWidth;
 		static int renderResolutionHeight;
