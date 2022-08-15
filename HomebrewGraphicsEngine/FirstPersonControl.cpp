@@ -8,6 +8,7 @@
 void Hogra::FirstPersonControl::moveForward(float dt)
 {
 	if (physics == nullptr || !allowMove) {
+		footstepsAudioSource->Stop();
 		return;
 	}
 	physics->applyTransientForce(ahead * propellingForce);
@@ -15,12 +16,19 @@ void Hogra::FirstPersonControl::moveForward(float dt)
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
 	}
+	if (isGrounded) {
+		if (!footstepsAudioSource->IsPlaying()) {
+			footstepsAudioSource->Play();
+		}
+		isWalking = true;
+	}
 	tSinceLastInput = 0.0f;
 }
 
 void Hogra::FirstPersonControl::moveBackward(float dt)
 {
 	if (physics == nullptr || !allowMove) {
+		footstepsAudioSource->Stop();
 		return;
 	}
 	physics->applyTransientForce(-ahead * propellingForce);
@@ -28,12 +36,19 @@ void Hogra::FirstPersonControl::moveBackward(float dt)
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
 	}
+	if (isGrounded) {
+		if (!footstepsAudioSource->IsPlaying()) {
+			footstepsAudioSource->Play();
+		}
+		isWalking = true;
+	}
 	tSinceLastInput = 0.0f;
 }
 
 void Hogra::FirstPersonControl::moveLeft(float dt)
 {
 	if (physics == nullptr || !allowMove) {
+		footstepsAudioSource->Stop();
 		return;
 	}
 	physics->applyTransientForce(-right * propellingForce);
@@ -41,18 +56,31 @@ void Hogra::FirstPersonControl::moveLeft(float dt)
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
 	}
+	if (isGrounded) {
+		if (!footstepsAudioSource->IsPlaying()) {
+			footstepsAudioSource->Play();
+		}
+		isWalking = true;
+	}
 	tSinceLastInput = 0.0f;
 }
 
 void Hogra::FirstPersonControl::moveRight(float dt)
 {
 	if (physics == nullptr || !allowMove) {
+		footstepsAudioSource->Stop();
 		return;
 	}
 	physics->applyTransientForce(right * propellingForce);
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
+	}
+	if (isGrounded) {
+		if (!footstepsAudioSource->IsPlaying()) {
+			footstepsAudioSource->Play();
+		}
+		isWalking = true;
 	}
 	tSinceLastInput = 0.0f;
 }
@@ -96,12 +124,33 @@ void Hogra::FirstPersonControl::Update(float dt)
 	}
 }
 
-void Hogra::FirstPersonControl::PreUserInputControl(float dt)
+void Hogra::FirstPersonControl::FrameBeginningControl()
 {
 	if (nullptr != laser) {
 		laser->SetIsVisible(false);
 		laserInpactLight->SetIsActive(false);
 	}
+	isWalking = false;
+	isFiringLaser = false;
+	if (wasFiringLaser) {
+		laserCoolDownAudioSource->Play();
+	}
+}
+
+void Hogra::FirstPersonControl::FrameEndingControl()
+{
+	if (!isWalking) {
+		footstepsAudioSource->Stop();
+	}
+	if (!isFiringLaser) {
+		laserAudioSource->Stop();
+		laserChargeupAudioSource->Stop();
+	}
+	wasFiringLaser = isFiringLaser;
+}
+
+void Hogra::FirstPersonControl::Control(float dt)
+{
 }
 
 void Hogra::FirstPersonControl::Rotate(float mouseX, float mouseY)
@@ -112,13 +161,14 @@ void Hogra::FirstPersonControl::Rotate(float mouseX, float mouseY)
 	camera->Rotate(mouseX, mouseY);
 }
 
-void Hogra::FirstPersonControl::jump() {
+void Hogra::FirstPersonControl::Jump() {
 	if (physics == nullptr || !allowMove || !isGrounded || jumpCoolDown > 0.0f) {
 		return;
 	}
 	physics->ApplyImpulse(up * jumpImpulse, glm::vec3(0.0f));
 	jumpCoolDown = 1.0f;
 	jumpAudioSource->Play();
+	footstepsAudioSource->Stop();
 }
 
 void Hogra::FirstPersonControl::primaryAction(float dt)
@@ -147,6 +197,14 @@ void Hogra::FirstPersonControl::primaryAction(float dt)
 		laser->SetOrientation(glm::rotation(glm::vec3(0.0f, 1.0f, 0.0f), dir));
 		laserInpactLight->SetIsActive(true);
 		laserInpactLight->SetPosition(end - dir * 0.1f);
+		if (!laserAudioSource->IsPlaying()) {
+			laserAudioSource->Play();
+		}
+		if (!wasFiringLaser) {
+			laserChargeupAudioSource->Play();
+		}
+		laserCoolDownAudioSource->Stop();
+		isFiringLaser = true;
 	}
 }
 

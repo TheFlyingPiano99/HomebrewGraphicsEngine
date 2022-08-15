@@ -33,15 +33,30 @@ namespace Hogra {
 		ALuint ID;
 		static std::vector<AudioBuffer*> heapAllocatedInstances;
 
-		std::int32_t convert_to_int(char const* buffer, std::size_t len);
+		/*
+		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
+		* Published on the website indiegamedev.net
+		* URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
+		*/
+		std::int32_t ConvertToInt(char const* buffer, std::size_t len);
 
-        bool load_wav_file_header(std::ifstream& file,
+		/*
+		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
+		* Published on the website indiegamedev.net
+		* URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
+		*/
+		bool LoadWavFileHeader(std::ifstream& file,
             std::uint8_t& channels,
             std::int32_t& sampleRate,
             std::uint8_t& bitsPerSample,
             ALsizei& size);
 
-        bool load_wav(const std::string& path,
+		/*
+		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
+		* Published on the website indiegamedev.net
+		* URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
+		*/
+		bool LoadWav(const std::string& path,
             std::uint8_t& channels,
             std::int32_t& sampleRate,
             std::uint8_t& bitsPerSample,

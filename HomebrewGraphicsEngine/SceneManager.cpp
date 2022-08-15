@@ -39,6 +39,20 @@ namespace Hogra {
 	{
 		currentScene->Draw();
 	}
+	void SceneManager::FrameBeginningControl()
+	{
+		if (nullptr != currentScene) {
+			currentScene->FrameBeginningControl();
+		}
+	}
+
+	void SceneManager::FrameEndingControl()
+	{
+		if (nullptr != currentScene) {
+			currentScene->FrameEndingControl();
+		}
+	}
+
 	int SceneManager::ControlAndUpdate(float dt)
 	{
 		currentScene->Control(dt);

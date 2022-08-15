@@ -62,6 +62,12 @@ namespace Hogra {
 		collisionManager.InitDebug();
 	}
 
+	void Scene::FrameBeginningControl() {
+		for (auto& obj : sceneObjects) {
+			obj->FrameBeginningControl();
+		}
+	}
+
 	void Scene::Destroy()
 	{
 		/*
@@ -105,9 +111,6 @@ namespace Hogra {
 	{
 		collisionManager.Collide();
 
-		for (auto& obj : sceneObjects) {
-			obj->PreUserInputControl(dt);
-		}
 		ControlActionManager::getInstance()->executeQueue(this, dt);
 		for (auto& obj : sceneObjects) {
 			obj->Control(dt);
@@ -130,6 +133,14 @@ namespace Hogra {
 			group.second->Optimalize(camera);
 		}
 		lightManager.Update();
+		audioManager.Update(dt);
+	}
+
+	void Scene::FrameEndingControl()
+	{
+		for (auto& obj : sceneObjects) {
+			obj->FrameEndingControl();
+		}
 	}
 
 	void Scene::Draw()

@@ -472,11 +472,61 @@ namespace Hogra {
 
 		auto source = AudioSource::Instantiate();
 		source->Init(buffer);
-		source->SetGain(0.1f);
+		source->SetGain(0.3f);
 
 		auto sceneSource = SceneAudioSource::Instantiate();
 		sceneSource->Init(source);
 		scene->AddSceneAudioSource(sceneSource);
 		control->SetJumpAudioSource(sceneSource);
+		
+		// Steps:
+		auto footstepsBuffer = AudioBuffer::Instantiate();
+		footstepsBuffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("footsteps.wav"));
+		auto footstepsSource = AudioSource::Instantiate();
+		footstepsSource->Init(footstepsBuffer);
+		auto footstepsSceneAudioSource = SceneAudioSource::Instantiate();
+		footstepsSceneAudioSource->Init(footstepsSource);
+		scene->AddSceneAudioSource(footstepsSceneAudioSource);
+		control->SetFootstepAudioSource(footstepsSceneAudioSource);
+
+		// Laser:
+		auto laserBuffer = AudioBuffer::Instantiate();
+		laserBuffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("bruteLaser.wav"));
+		auto laserSource = AudioSource::Instantiate();
+		laserSource->Init(laserBuffer);
+		auto laserSceneAudioSource = SceneAudioSource::Instantiate();
+		laserSceneAudioSource->Init(laserSource);
+		scene->AddSceneAudioSource(laserSceneAudioSource);
+		control->SetLaserAudioSource(laserSceneAudioSource);
+
+		auto laserCooldown = buildAudioSource("laserCooldown.wav");
+		scene->AddSceneAudioSource(laserCooldown);
+		control->SetLaserCooldownAudioSource(laserCooldown);
+
+		auto laserChargeup = buildAudioSource("laserChargeup.wav");
+		laserChargeup->SetGain(5.0f);
+		scene->AddSceneAudioSource(laserChargeup);
+		control->SetLaserChargeupAudioSource(laserChargeup);
+
+		// Ambient:
+		auto ambientBuffer = AudioBuffer::Instantiate();
+		ambientBuffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("wind.wav"));
+		auto ambientSource = AudioSource::Instantiate();
+		ambientSource->Init(ambientBuffer);
+		auto ambientSceneSource = SceneAudioSource::Instantiate();
+		ambientSceneSource->Init(ambientSource);
+		scene->AddSceneAudioSource(ambientSceneSource);
+		ambientSceneSource->SetLoop(true);
+		ambientSceneSource->Play();
+	}
+	
+	SceneAudioSource* SceneFactory::buildAudioSource(const std::string& fileName) {
+		auto buffer = AudioBuffer::Instantiate();
+		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append(fileName));
+		auto source = AudioSource::Instantiate();
+		source->Init(buffer);
+		auto sceneSource = SceneAudioSource::Instantiate();
+		sceneSource->Init(source);
+		return sceneSource;
 	}
 }

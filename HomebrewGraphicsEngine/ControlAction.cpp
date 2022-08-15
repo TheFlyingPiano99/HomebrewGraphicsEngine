@@ -119,7 +119,7 @@ namespace Hogra {
 	{
 		auto* control = (FirstPersonControl*)scene->getAvatarControl();
 		if (nullptr != control) {
- 			control->jump();
+ 			control->Jump();
 		}
 	}
 	void ToggleDebugInfo::execute(Scene* scene, float dt)

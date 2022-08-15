@@ -28,7 +28,11 @@ namespace Hogra {
 			return currentScene;
 		}
 
+		void FrameBeginningControl();
+
 		int ControlAndUpdate(float dt);
+
+		void FrameEndingControl();
 
 	private:
 		SceneManager() = default;

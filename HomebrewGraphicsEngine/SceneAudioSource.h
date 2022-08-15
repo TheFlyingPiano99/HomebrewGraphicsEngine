@@ -34,6 +34,10 @@ namespace Hogra {
 
 		void Update(float dt) override;
 
+		bool IsPlaying() const {
+			return isPlaying;
+		}
+
 	private:
 		AudioSource* audioSource;
 

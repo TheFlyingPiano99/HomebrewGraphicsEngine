@@ -26,11 +26,13 @@ namespace Hogra {
 
 		virtual ~Component() = default;
 
-		virtual void PreUserInputControl(float dt) {}
+		virtual void FrameBeginningControl() {}
 
 		virtual void Control(float dt) = 0;
 
 		virtual void Update(float dt) = 0;
+
+		virtual void FrameEndingControl() {}
 
 	protected:
 		static std::vector<Component*> heapAllocatedInstances;

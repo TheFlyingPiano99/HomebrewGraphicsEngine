@@ -19,7 +19,11 @@ namespace Hogra {
 
 		void Update(float dt) override;
 
-		void PreUserInputControl(float dt) override;
+		void FrameBeginningControl() override;
+
+		void FrameEndingControl() override;
+
+		void Control(float dt) override;
 
 		void moveForward(float dt);
 		void moveBackward(float dt);
@@ -27,7 +31,7 @@ namespace Hogra {
 		void moveRight(float dt);
 		void Rotate(float mouseX, float mouseY) override;
 		
-		void jump();
+		void Jump();
 
 		void primaryAction(float dt);
 
@@ -61,6 +65,22 @@ namespace Hogra {
 			jumpAudioSource = source;
 		}
 
+		void SetFootstepAudioSource(SceneAudioSource* source) {
+			footstepsAudioSource = source;
+		}
+
+		void SetLaserAudioSource(SceneAudioSource* source) {
+			laserAudioSource = source;
+		}
+
+		void SetLaserCooldownAudioSource(SceneAudioSource* source) {
+			laserCoolDownAudioSource = source;
+		}
+
+		void SetLaserChargeupAudioSource(SceneAudioSource* source) {
+			laserChargeupAudioSource = source;
+		}
+
 		bool PokeObject(const glm::vec2& ndcCoords, glm::vec3& pokePoint);
 
 	private:
@@ -68,12 +88,20 @@ namespace Hogra {
 		SceneObject* laser = nullptr;
 		Light* laserInpactLight = nullptr;
 		SceneAudioSource* jumpAudioSource = nullptr;
+		SceneAudioSource* footstepsAudioSource = nullptr;
+
+		SceneAudioSource* laserAudioSource = nullptr;
+		SceneAudioSource* laserCoolDownAudioSource = nullptr;
+		SceneAudioSource* laserChargeupAudioSource = nullptr;
 		bool isGrounded = false;
 		float jumpCoolDown = 0.0f;
 		Collider* jumpCollider = nullptr;
 		float jumpImpulse = 1000.0f;
 		Camera* camera = nullptr;
 		float tSinceLastInput = 0.0f;
+		bool isWalking = false;
+		bool wasFiringLaser = false;
+		bool isFiringLaser = false;
 	};
 }
 

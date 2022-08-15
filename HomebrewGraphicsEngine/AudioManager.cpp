@@ -24,3 +24,10 @@ void Hogra::AudioManager::AddSource(SceneAudioSource* source)
 	}
 	sceneAudioSources.push_back(source);
 }
+
+void Hogra::AudioManager::Update(float dt)
+{
+	for (auto& source : sceneAudioSources) {
+		source->Update(dt);
+	}
+}

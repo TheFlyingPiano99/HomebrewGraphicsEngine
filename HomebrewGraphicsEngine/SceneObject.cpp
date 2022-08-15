@@ -15,9 +15,9 @@ namespace Hogra {
 		return instance;
 	}
 
-	void SceneObject::PreUserInputControl(float dt) {
+	void SceneObject::FrameBeginningControl() {
 		for (auto& component : components) {
-			component->PreUserInputControl(dt);
+			component->FrameBeginningControl();
 		}
 	}
 
@@ -45,6 +45,12 @@ namespace Hogra {
 		scaleMatrix = glm::scale(scale);
 		modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 		invModelMatrix = glm::inverse(modelMatrix);
+	}
+
+	void SceneObject::FrameEndingControl() {
+		for (auto& component : components) {
+			component->FrameEndingControl();
+		}
 	}
 
 	void SceneObject::Draw()

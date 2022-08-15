@@ -108,6 +108,11 @@ namespace Hogra {
 				frameCounter = 0;
 			}
 
+			
+
+			// Special controll events triggering per frame
+			SceneManager::getInstance()->FrameBeginningControl();
+
 			double dt = 0.0;
 			double realDelta = crntTime - prevIterTime;
 			int retVal = 0;
@@ -126,6 +131,9 @@ namespace Hogra {
 					break;
 				}
 			}
+			// Special controll events triggering per frame
+			SceneManager::getInstance()->FrameEndingControl();
+
 			if (-1 == retVal) {
 				break;
 			}

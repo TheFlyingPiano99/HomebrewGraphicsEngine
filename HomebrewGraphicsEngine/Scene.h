@@ -35,9 +35,13 @@ namespace Hogra {
 	public:
 		void Init(int contextWidth, int contextHeight);
 
+		void FrameBeginningControl();
+
 		void Control(float dt);
 
 		void Update(float dt);
+
+		void FrameEndingControl();
 
 		void Draw();
 

@@ -32,9 +32,9 @@ namespace Hogra {
         std::uint8_t bitsPerSample;
         std::vector<char> soundData;
         
-        if (!load_wav(path, numChannels, sampleRate, bitsPerSample, soundData))
+        if (!LoadWav(path, numChannels, sampleRate, bitsPerSample, soundData))
         {
-            std::cerr << "ERRsoundDataOR: Could not load wav" << std::endl;
+            std::cerr << "ERROR: Could not load wav" << std::endl;
         }
         ALenum format;
         if (numChannels == 1 && bitsPerSample == 8) {
@@ -60,7 +60,7 @@ namespace Hogra {
         }
 
         alGenBuffers(1, &ID);
-        alBufferData(ID, format, &soundData[0], (ALsizei)soundData.size(), (ALsizei)sampleRate);
+        alBufferData(ID, format, &soundData[0], (ALsizei)soundData.size(), sampleRate);
     }
 
     AudioBuffer::~AudioBuffer()
@@ -72,7 +72,7 @@ namespace Hogra {
         return ID;
     }
     
-    std::int32_t AudioBuffer::convert_to_int(char const* buffer, std::size_t len)
+    std::int32_t AudioBuffer::ConvertToInt(char const* buffer, std::size_t len)
     {
         std::int32_t a = 0;
         if (std::endian::native == std::endian::little)
@@ -83,7 +83,7 @@ namespace Hogra {
         return a;
     }
 
-    bool AudioBuffer::load_wav_file_header(std::ifstream& file, std::uint8_t& channels, std::int32_t& sampleRate, std::uint8_t& bitsPerSample, ALsizei& size)
+    bool AudioBuffer::LoadWavFileHeader(std::ifstream& file, std::uint8_t& channels, std::int32_t& sampleRate, std::uint8_t& bitsPerSample, ALsizei& size)
     {
         char buffer[4];
         if (!file.is_open())
@@ -147,7 +147,7 @@ namespace Hogra {
             std::cerr << "ERROR: could not read number of channels" << std::endl;
             return false;
         }
-        channels = convert_to_int(buffer, 2);
+        channels = ConvertToInt(buffer, 2);
 
         // sample rate
         if (!file.read(buffer, 4))
@@ -155,7 +155,7 @@ namespace Hogra {
             std::cerr << "ERROR: could not read sample rate" << std::endl;
             return false;
         }
-        sampleRate = convert_to_int(buffer, 4);
+        sampleRate = ConvertToInt(buffer, 4);
 
         // (sampleRate * bitsPerSample * channels) / 8
         if (!file.read(buffer, 4))
@@ -177,7 +177,7 @@ namespace Hogra {
             std::cerr << "ERROR: could not read bits per sample" << std::endl;
             return false;
         }
-        bitsPerSample = convert_to_int(buffer, 2);
+        bitsPerSample = ConvertToInt(buffer, 2);
 
         // data chunk header "data"
         if (!file.read(buffer, 4))
@@ -197,7 +197,7 @@ namespace Hogra {
             std::cerr << "ERROR: could not read data size" << std::endl;
             return false;
         }
-        size = convert_to_int(buffer, 4);
+        size = ConvertToInt(buffer, 4);
 
         /* cannot be at the end of file */
         if (file.eof())
@@ -214,7 +214,7 @@ namespace Hogra {
         return true;
     }
     
-    bool AudioBuffer::load_wav(const std::string& path, std::uint8_t& channels, std::int32_t& sampleRate, std::uint8_t& bitsPerSample, std::vector<char>& soundData)
+    bool AudioBuffer::LoadWav(const std::string& path, std::uint8_t& channels, std::int32_t& sampleRate, std::uint8_t& bitsPerSample, std::vector<char>& soundData)
     {
         int size = 0;
         std::ifstream in(path, std::ios::binary);
@@ -223,7 +223,7 @@ namespace Hogra {
             std::cerr << "ERROR: Could not open \"" << path << "\"" << std::endl;
             return false;
         }
-        if (!load_wav_file_header(in, channels, sampleRate, bitsPerSample, size))
+        if (!LoadWavFileHeader(in, channels, sampleRate, bitsPerSample, size))
         {
             std::cerr << "ERROR: Could not load wav header of \"" << path << "\"" << std::endl;
             return false;

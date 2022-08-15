@@ -45,11 +45,13 @@ namespace Hogra {
 
 		~SceneObject() = default;
 
-		void PreUserInputControl(float dt);
+		void FrameBeginningControl();
 
 		void Control(float dt);
 
 		void Update(float dt, const Camera& camera);
+
+		void FrameEndingControl();
 
 		void Draw();
 

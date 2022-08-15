@@ -15,6 +15,8 @@ namespace Hogra {
 
 		void AddSource(SceneAudioSource* source);
 
+		void Update(float dt);
+
 	private:
 		std::vector<SceneAudioSource*> sceneAudioSources;
 	};

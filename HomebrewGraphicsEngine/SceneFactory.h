@@ -36,6 +36,8 @@ namespace Hogra {
 
 		void InitAudio(Scene* scene, FirstPersonControl* control);
 
+		SceneAudioSource* buildAudioSource(const std::string& fileName);
+
 	private:
 		SceneFactory() = default;
 		static SceneFactory* instance;
