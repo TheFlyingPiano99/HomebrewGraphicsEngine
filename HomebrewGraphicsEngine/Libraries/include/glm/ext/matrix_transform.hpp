@@ -107,7 +107,7 @@ namespace glm
 	/// @see - frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal) frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal)
 	template<typename T, qualifier Q>
 	GLM_FUNC_DECL mat<4, 4, T, Q> lookAtRH(
-		vec<3, T, Q> const& eye, vec<3, T, Q> const& center, vec<3, T, Q> const& up);
+		vec<3, T, Q> const& eye, vec<3, T, Q> const& lookAt, vec<3, T, Q> const& up);
 
 	/// Build a left handed look at view matrix.
 	///
@@ -121,7 +121,7 @@ namespace glm
 	/// @see - frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal) frustum(T const& left, T const& right, T const& bottom, T const& top, T const& nearVal, T const& farVal)
 	template<typename T, qualifier Q>
 	GLM_FUNC_DECL mat<4, 4, T, Q> lookAtLH(
-		vec<3, T, Q> const& eye, vec<3, T, Q> const& center, vec<3, T, Q> const& up);
+		vec<3, T, Q> const& eye, vec<3, T, Q> const& lookAt, vec<3, T, Q> const& up);
 
 	/// Build a look at view matrix based on the default handedness.
 	///
@@ -136,7 +136,7 @@ namespace glm
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluLookAt.xml">gluLookAt man page</a>
 	template<typename T, qualifier Q>
 	GLM_FUNC_DECL mat<4, 4, T, Q> lookAt(
-		vec<3, T, Q> const& eye, vec<3, T, Q> const& center, vec<3, T, Q> const& up);
+		vec<3, T, Q> const& eye, vec<3, T, Q> const& lookAt, vec<3, T, Q> const& up);
 
 	/// @}
 }//namespace glm

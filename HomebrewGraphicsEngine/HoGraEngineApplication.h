@@ -19,6 +19,8 @@ namespace Hogra {
 
 		void setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode);
 
+		void SetIcon();
+
 		GLFWwindow* window = nullptr;
 		AudioContext audioContext;
 		std::string windowName;

@@ -9,13 +9,13 @@ namespace Hogra {
 	public:
 		virtual ~UserControl() = default;
 
-		virtual void moveForward(float dt);
-		virtual void moveBackward(float dt);
-		virtual void moveLeft(float dt);
-		virtual void moveRight(float dt);
-		virtual void moveUp(float dt);
-		virtual void moveDown(float dt);
-		virtual void Rotate(float mouseX, float mouseY);
+		virtual void MoveForward();
+		virtual void MoveBackward();
+		virtual void MoveLeft();
+		virtual void MoveRight();
+		virtual void MoveUp();
+		virtual void MoveDown();
+		virtual void Rotate(const glm::vec2& delta);
 
 		void setInitialDirection(const glm::vec3& dir) {
 			initialDirection = dir;
@@ -63,8 +63,8 @@ namespace Hogra {
 		Physics* physics;
 
 		// Inherited via Component
-		void Control(float dt) override;
-		void Update(float dt) override;
+		void EarlyPhysicsUpdate(float dt) override;
+		void Update() override;
 
 		PositionProvider* positionProvider = nullptr;
 		OrientationProvider* orientationProvider = nullptr;

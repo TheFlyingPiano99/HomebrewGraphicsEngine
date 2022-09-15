@@ -813,15 +813,15 @@ bool ImGui::CloseButton(ImGuiID id, const ImVec2& pos)
     // Render
     // FIXME: Clarify this mess
     ImU32 col = GetColorU32(held ? ImGuiCol_ButtonActive : ImGuiCol_ButtonHovered);
-    ImVec2 center = bb.GetCenter();
+    ImVec2 lookAt = bb.GetCenter();
     if (hovered)
-        window->DrawList->AddCircleFilled(center, ImMax(2.0f, g.FontSize * 0.5f + 1.0f), col, 12);
+        window->DrawList->AddCircleFilled(lookAt, ImMax(2.0f, g.FontSize * 0.5f + 1.0f), col, 12);
 
     float cross_extent = g.FontSize * 0.5f * 0.7071f - 1.0f;
     ImU32 cross_col = GetColorU32(ImGuiCol_Text);
-    center -= ImVec2(0.5f, 0.5f);
-    window->DrawList->AddLine(center + ImVec2(+cross_extent, +cross_extent), center + ImVec2(-cross_extent, -cross_extent), cross_col, 1.0f);
-    window->DrawList->AddLine(center + ImVec2(+cross_extent, -cross_extent), center + ImVec2(-cross_extent, +cross_extent), cross_col, 1.0f);
+    lookAt -= ImVec2(0.5f, 0.5f);
+    window->DrawList->AddLine(lookAt + ImVec2(+cross_extent, +cross_extent), lookAt + ImVec2(-cross_extent, -cross_extent), cross_col, 1.0f);
+    window->DrawList->AddLine(lookAt + ImVec2(+cross_extent, -cross_extent), lookAt + ImVec2(-cross_extent, +cross_extent), cross_col, 1.0f);
 
     return pressed;
 }
@@ -839,9 +839,9 @@ bool ImGui::CollapseButton(ImGuiID id, const ImVec2& pos)
     // Render
     ImU32 bg_col = GetColorU32((held && hovered) ? ImGuiCol_ButtonActive : hovered ? ImGuiCol_ButtonHovered : ImGuiCol_Button);
     ImU32 text_col = GetColorU32(ImGuiCol_Text);
-    ImVec2 center = bb.GetCenter();
+    ImVec2 lookAt = bb.GetCenter();
     if (hovered || held)
-        window->DrawList->AddCircleFilled(center/*+ ImVec2(0.0f, -0.5f)*/, g.FontSize * 0.5f + 1.0f, bg_col, 12);
+        window->DrawList->AddCircleFilled(lookAt/*+ ImVec2(0.0f, -0.5f)*/, g.FontSize * 0.5f + 1.0f, bg_col, 12);
     RenderArrow(window->DrawList, bb.Min + g.Style.FramePadding, text_col, window->Collapsed ? ImGuiDir_Right : ImGuiDir_Down, 1.0f);
 
     // Switch to moving the window after mouse is moved beyond the initial drag threshold
@@ -1192,9 +1192,9 @@ bool ImGui::RadioButton(const char* label, bool active)
     if (!ItemAdd(total_bb, id))
         return false;
 
-    ImVec2 center = check_bb.GetCenter();
-    center.x = IM_ROUND(center.x);
-    center.y = IM_ROUND(center.y);
+    ImVec2 lookAt = check_bb.GetCenter();
+    lookAt.x = IM_ROUND(lookAt.x);
+    lookAt.y = IM_ROUND(lookAt.y);
     const float radius = (square_sz - 1.0f) * 0.5f;
 
     bool hovered, held;
@@ -1203,17 +1203,17 @@ bool ImGui::RadioButton(const char* label, bool active)
         MarkItemEdited(id);
 
     RenderNavHighlight(total_bb, id);
-    window->DrawList->AddCircleFilled(center, radius, GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), 16);
+    window->DrawList->AddCircleFilled(lookAt, radius, GetColorU32((held && hovered) ? ImGuiCol_FrameBgActive : hovered ? ImGuiCol_FrameBgHovered : ImGuiCol_FrameBg), 16);
     if (active)
     {
         const float pad = ImMax(1.0f, IM_FLOOR(square_sz / 6.0f));
-        window->DrawList->AddCircleFilled(center, radius - pad, GetColorU32(ImGuiCol_CheckMark), 16);
+        window->DrawList->AddCircleFilled(lookAt, radius - pad, GetColorU32(ImGuiCol_CheckMark), 16);
     }
 
     if (style.FrameBorderSize > 0.0f)
     {
-        window->DrawList->AddCircle(center + ImVec2(1, 1), radius, GetColorU32(ImGuiCol_BorderShadow), 16, style.FrameBorderSize);
-        window->DrawList->AddCircle(center, radius, GetColorU32(ImGuiCol_Border), 16, style.FrameBorderSize);
+        window->DrawList->AddCircle(lookAt + ImVec2(1, 1), radius, GetColorU32(ImGuiCol_BorderShadow), 16, style.FrameBorderSize);
+        window->DrawList->AddCircle(lookAt, radius, GetColorU32(ImGuiCol_Border), 16, style.FrameBorderSize);
     }
 
     ImVec2 label_pos = ImVec2(check_bb.Max.x + style.ItemInnerSpacing.x, check_bb.Min.y + style.FramePadding.y);

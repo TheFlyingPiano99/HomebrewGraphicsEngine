@@ -11,7 +11,7 @@ namespace Hogra {
 
 		~CollisionEvent() override = default;
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 
 	private:
 
@@ -23,7 +23,7 @@ namespace Hogra {
 	{
 	public:
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 
 	private:
 	};

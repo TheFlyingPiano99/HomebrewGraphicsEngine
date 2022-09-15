@@ -1,6 +1,6 @@
 #include "UserControl.h"
 
-void Hogra::UserControl::moveForward(float dt)
+void Hogra::UserControl::MoveForward()
 {
 	if (physics == nullptr || !allowMove) {
 		return;
@@ -8,7 +8,7 @@ void Hogra::UserControl::moveForward(float dt)
 	physics->applyTransientForce(ahead * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void Hogra::UserControl::moveBackward(float dt)
+void Hogra::UserControl::MoveBackward()
 {
 	if (physics == nullptr || !allowMove) {
 		return;
@@ -16,7 +16,7 @@ void Hogra::UserControl::moveBackward(float dt)
 	physics->applyTransientForce(-ahead * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void Hogra::UserControl::moveLeft(float dt)
+void Hogra::UserControl::MoveLeft()
 {
 	if (physics == nullptr || !allowMove) {
 		return;
@@ -24,7 +24,7 @@ void Hogra::UserControl::moveLeft(float dt)
 	physics->applyTransientForce(-right * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void Hogra::UserControl::moveRight(float dt)
+void Hogra::UserControl::MoveRight()
 {
 	if (physics == nullptr || !allowMove) {
 		return;
@@ -32,7 +32,7 @@ void Hogra::UserControl::moveRight(float dt)
 	physics->applyTransientForce(right * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void Hogra::UserControl::moveUp(float dt)
+void Hogra::UserControl::MoveUp()
 {
 	if (physics == nullptr || !allowMove) {
 		return;
@@ -40,7 +40,7 @@ void Hogra::UserControl::moveUp(float dt)
 	physics->applyTransientForce(up * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void Hogra::UserControl::moveDown(float dt)
+void Hogra::UserControl::MoveDown()
 {
 	if (physics == nullptr || !allowMove) {
 		return;
@@ -48,20 +48,20 @@ void Hogra::UserControl::moveDown(float dt)
 	physics->applyTransientForce(-up * (orientationProvider->GetOrientation() * propellingForce));
 }
 
-void Hogra::UserControl::Rotate(float mouseX, float mouseY)
+void Hogra::UserControl::Rotate(const glm::vec2& ndcDelta)
 {
 	if (physics == nullptr || !allowRotate) {
 		return;
 	}
-	physics->applyTransientTorque(rotatingTorque * glm::vec3(mouseY, mouseX, 0.0f));
+	physics->applyTransientTorque(rotatingTorque * glm::vec3(ndcDelta.y, ndcDelta.x, 0.0f));
 }
 
-void Hogra::UserControl::Control(float dt)
+void Hogra::UserControl::EarlyPhysicsUpdate(float dt)
 {
 
 }
 
-void Hogra::UserControl::Update(float dt)
+void Hogra::UserControl::Update()
 {
 	if (nullptr == physics) {
 		return;

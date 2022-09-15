@@ -141,7 +141,7 @@ namespace glm
 	/// @see <a href="https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluPickMatrix.xml">gluPickMatrix man page</a>
 	template<typename T, qualifier Q, typename U>
 	GLM_FUNC_DECL mat<4, 4, T, Q> pickMatrix(
-		vec<2, T, Q> const& center, vec<2, T, Q> const& delta, vec<4, U, Q> const& viewport);
+		vec<2, T, Q> const& lookAt, vec<2, T, Q> const& delta, vec<4, U, Q> const& viewport);
 
 	/// @}
 }//namespace glm

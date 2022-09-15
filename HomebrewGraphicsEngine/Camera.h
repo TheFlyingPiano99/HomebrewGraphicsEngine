@@ -16,10 +16,13 @@ namespace Hogra {
 	{
 	public:
 
-		void Init(float aspectRatio, glm::vec3 eye, glm::vec3 center);
+		void Init(float aspectRatio, glm::vec3 eye, glm::vec3 lookAt);
 			
 		// Updates the camera matrix to the Vertex Shader
-		bool Update(float dt);
+		bool Update();
+
+		// Updates the camera matrix to the Vertex Shader
+		void LatePhysicsUpdate(float dt);
 
 		void updateOrientation(glm::vec3 prefUp);
 
@@ -28,14 +31,14 @@ namespace Hogra {
 		*/
 		void ExportData();
 
-		void moveForward(float dt);
-		void moveBackward(float dt);
-		void moveLeft(float dt);
-		void moveRight(float dt);
-		void moveUp(float dt);
-		void moveDown(float dt);
+		void MoveForward(float dt);
+		void MoveBackward(float dt);
+		void MoveLeft(float dt);
+		void MoveRight(float dt);
+		void MoveUp(float dt);
+		void MoveDown(float dt);
 
-		void Rotate(float mouseX, float mouseY);
+		void Rotate(const glm::vec2& deltaAngle);
 		void approachCenter(float delta);
 
 		void setAspectRatio(float ratio) {
@@ -122,7 +125,7 @@ namespace Hogra {
 		UniformBufferObject ubo;
 		// Stores the main vectors of the camera
 		glm::vec3 eye;
-		glm::vec3 center = glm::vec3(0.0f, 0.0f, 0.0f);
+		glm::vec3 lookAt = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 prefUp = glm::vec3(0.0f, 1.0f, 0.0f);
 		glm::vec3 lookDir = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);

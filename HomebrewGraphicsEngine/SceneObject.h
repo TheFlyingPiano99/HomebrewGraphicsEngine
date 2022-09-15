@@ -45,13 +45,15 @@ namespace Hogra {
 
 		~SceneObject() = default;
 
-		void FrameBeginningControl();
+		void BeforePhysicsLoopUpdate();
 
-		void Control(float dt);
+		void EarlyPhysicsUpdate(float dt);
 
-		void Update(float dt, const Camera& camera);
+		void LatePhysicsUpdate(float dt);
 
-		void FrameEndingControl();
+		void Update();
+
+		void AfterPhysicsLoopUpdate();
 
 		void Draw();
 

@@ -96,9 +96,9 @@ namespace glm
 	}
 
 	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> lookAtRH(vec<3, T, Q> const& eye, vec<3, T, Q> const& center, vec<3, T, Q> const& up)
+	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> lookAtRH(vec<3, T, Q> const& eye, vec<3, T, Q> const& lookAt, vec<3, T, Q> const& up)
 	{
-		vec<3, T, Q> const f(normalize(center - eye));
+		vec<3, T, Q> const f(normalize(lookAt - eye));
 		vec<3, T, Q> const s(normalize(cross(f, up)));
 		vec<3, T, Q> const u(cross(s, f));
 
@@ -119,9 +119,9 @@ namespace glm
 	}
 
 	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> lookAtLH(vec<3, T, Q> const& eye, vec<3, T, Q> const& center, vec<3, T, Q> const& up)
+	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> lookAtLH(vec<3, T, Q> const& eye, vec<3, T, Q> const& lookAt, vec<3, T, Q> const& up)
 	{
-		vec<3, T, Q> const f(normalize(center - eye));
+		vec<3, T, Q> const f(normalize(lookAt - eye));
 		vec<3, T, Q> const s(normalize(cross(up, f)));
 		vec<3, T, Q> const u(cross(f, s));
 
@@ -142,11 +142,11 @@ namespace glm
 	}
 
 	template<typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> lookAt(vec<3, T, Q> const& eye, vec<3, T, Q> const& center, vec<3, T, Q> const& up)
+	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> lookAt(vec<3, T, Q> const& eye, vec<3, T, Q> const& lookAt, vec<3, T, Q> const& up)
 	{
 		GLM_IF_CONSTEXPR(GLM_CONFIG_CLIP_CONTROL & GLM_CLIP_CONTROL_LH_BIT)
-			return lookAtLH(eye, center, up);
+			return lookAtLH(eye, lookAt, up);
 		else
-			return lookAtRH(eye, center, up);
+			return lookAtRH(eye, lookAt, up);
 	}
 }//namespace glm

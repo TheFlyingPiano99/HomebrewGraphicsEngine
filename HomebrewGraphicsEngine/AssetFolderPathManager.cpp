@@ -5,7 +5,7 @@ namespace Hogra {
 
 	AssetFolderPathManager* AssetFolderPathManager::instance = nullptr;
 
-	inline std::string AssetFolderPathManager::findPathIntoFolder(std::string folderName) {
+	inline std::string AssetFolderPathManager::FindPathIntoFolder(std::string folderName) {
 		std::string path = folderName;
 		path.append("/");
 		std::filesystem::path p = std::filesystem::path(folderName.c_str());
@@ -31,14 +31,14 @@ namespace Hogra {
 
 	std::string AssetFolderPathManager::getShaderFolderPath() {
 		if (shaderFolderPath.empty()) {
-			shaderFolderPath = findPathIntoFolder("Resources/Shaders");
+			shaderFolderPath = FindPathIntoFolder("Resources/Shaders");
 		}
 		return shaderFolderPath;
 	}
 
 	std::string AssetFolderPathManager::getTextureFolderPath() {
 		if (textureFolderPath.empty()) {
-			textureFolderPath = findPathIntoFolder("Resources/Textures");
+			textureFolderPath = FindPathIntoFolder("Resources/Textures");
 		}
 		return textureFolderPath;
 	}
@@ -46,29 +46,43 @@ namespace Hogra {
 	std::string AssetFolderPathManager::getGeometryFolderPath()
 	{
 		if (geometryFolderPath.empty()) {
-			geometryFolderPath = findPathIntoFolder("Resources/Geometries");
+			geometryFolderPath = FindPathIntoFolder("Resources/Geometries");
 		}
 		return geometryFolderPath;
 	}
 
 	std::string AssetFolderPathManager::getSavesFolderPath() {
 		if (savesFolderPath.empty()) {
-			savesFolderPath = findPathIntoFolder("Saves");
+			savesFolderPath = FindPathIntoFolder("Saves");
 		}
 		return savesFolderPath;
 	}
 	std::string AssetFolderPathManager::getFontsFolderPath()
 	{
 		if (fontsFolderPath.empty()) {
-			fontsFolderPath = findPathIntoFolder("Resources/Fonts");
+			fontsFolderPath = FindPathIntoFolder("Resources/Fonts");
 		}
 		return fontsFolderPath;
 	}
 	std::string AssetFolderPathManager::getSoundsFolderPath()
 	{
 		if (soundsFolderPath.empty()) {
-			soundsFolderPath = findPathIntoFolder("Resources/Sounds");
+			soundsFolderPath = FindPathIntoFolder("Resources/Sounds");
 		}
 		return soundsFolderPath;
+	}
+	std::string AssetFolderPathManager::getIconsFolderPath()
+	{
+		if (iconsFolderPath.empty()) {
+			iconsFolderPath = FindPathIntoFolder("Resources/Icons");
+		}
+		return iconsFolderPath;
+	}
+	std::string AssetFolderPathManager::getScenesFolderPath()
+	{
+		if (scenesFolderPath.empty()) {
+			scenesFolderPath = FindPathIntoFolder("Resources/Scenes");
+		}
+		return scenesFolderPath;
 	}
 }

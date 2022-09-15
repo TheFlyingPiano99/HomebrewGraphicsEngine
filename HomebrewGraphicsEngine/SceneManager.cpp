@@ -39,23 +39,23 @@ namespace Hogra {
 	{
 		currentScene->Draw();
 	}
-	void SceneManager::FrameBeginningControl()
+	void SceneManager::BeforePhysicsLoopUpdate()
 	{
 		if (nullptr != currentScene) {
-			currentScene->FrameBeginningControl();
+			currentScene->BeforePhysicsLoopUpdate();
 		}
 	}
 
-	void SceneManager::FrameEndingControl()
+	void SceneManager::AfterPhysicsLoopUpdate()
 	{
 		if (nullptr != currentScene) {
-			currentScene->FrameEndingControl();
+			currentScene->AfterPhysicsLoopUpdate();
 		}
 	}
 
-	int SceneManager::ControlAndUpdate(float dt)
+	int SceneManager::PhysicsUpdate(float dt)
 	{
-		currentScene->Control(dt);
+		currentScene->PhysicsUpdate(dt);
 		SceneChange change = currentScene->GetSceneChange();
 		switch (change.changeType)
 		{
@@ -74,7 +74,6 @@ namespace Hogra {
 		default:
 			break;
 		}
-		currentScene->Update(dt);
 		return 0;
 	}
 }

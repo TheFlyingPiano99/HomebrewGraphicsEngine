@@ -7,7 +7,7 @@ namespace Hogra {
 		heapAllocatedInstances.push_back(instance);
 		return instance;
 	}
-	void HomogeneForceField::Control(float dt)
+	void HomogeneForceField::EarlyPhysicsUpdate(float dt)
 	{
 		for (auto& listener : listeners) {
 			float m = listener->getMass();
@@ -18,7 +18,7 @@ namespace Hogra {
 		}
 	}
 
-	void HomogeneForceField::Update(float dt)
+	void HomogeneForceField::Update()
 	{
 	}
 
@@ -29,11 +29,11 @@ namespace Hogra {
 		return instance;
 	}
 
-	void CentralForceField::Control(float dt)
+	void CentralForceField::EarlyPhysicsUpdate(float dt)
 	{
 	}
 
-	void CentralForceField::Update(float dt)
+	void CentralForceField::Update()
 	{
 	}
 }

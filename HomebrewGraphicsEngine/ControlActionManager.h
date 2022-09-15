@@ -16,35 +16,37 @@ namespace Hogra {
 		/*
 		* Process key event
 		*/
-		void onPress(const int _key, const int _scancode, const int _mods);
+		void OnPress(const int _key, const int _scancode, const int _mods);
 
 		/*
 		* Process key event
 		*/
-		void onRelease(const int _key, const int _scancode, const int _mods);
+		void OnRelease(const int _key, const int _scancode, const int _mods);
 
-		void OnMouseLeftButtonPress(const glm::vec2& ndcCoords);
+		void OnMouseLeftButtonPress(const glm::vec2& pixCoords);
 
-		void OnMouseLeftButtonRelease(const glm::vec2& ndcCoords);
+		void OnMouseLeftButtonRelease(const glm::vec2& pixCoords);
 
-		void OnMouseRightButtonPress(const glm::vec2& ndcCoords);
+		void OnMouseRightButtonPress(const glm::vec2& pixCoords);
 
-		void OnMouseRightButtonRelease(const glm::vec2& ndcCoords);
+		void OnMouseRightButtonRelease(const glm::vec2& pixCoords);
+
+		void OnMouseMove(const glm::vec2& pixCoords);
 
 		/*
 		* Register new controlAction
 		*/
-		void registerAction(ControlAction* toRegister);
+		void RegisterAction(ButtonKeyAction* toRegister);
 
 		/*
-		* Deregister controlAction
+		* Unregister controlAction
 		*/
-		void deregisterAction(ControlAction* toDeregister);
+		void UnregisterAction(ButtonKeyAction* toDeregister);
 
 		/*
 		* Remove all queued actions
 		*/
-		void clearQueue();
+		void ClearQueue();
 
 		/*
 		* Push on the execution queue the currently triggering control actions.
@@ -56,11 +58,11 @@ namespace Hogra {
 		/*
 		* Execute queued actions
 		*/
-		void executeQueue(Scene* scene, float dt) {
-			ControlAction* action = popNextQueuedAction();
+		void ExecuteQueue(Scene& scene) {
+			auto* action = PopNextQueuedAction();
 			while (nullptr != action) {
-				action->execute(scene, dt);
-				action = popNextQueuedAction();
+				action->Execute(scene);
+				action = PopNextQueuedAction();
 			}
 		}
 
@@ -69,17 +71,24 @@ namespace Hogra {
 		*/
 		void RegisterDefault();
 
+		void SetCursorVisible(bool b);
+
+		bool IsCursorVisible();
+
 	private:
 		static ControlActionManager* instance;
-		std::map<const int, ControlAction*> registeredKeyActions;
-		ControlAction* leftMouseButtonAction = nullptr;
-		ControlAction* rightMouseButtonAction = nullptr;
-		std::queue<ControlAction*> queuedActions;
+		std::map<const int, ButtonKeyAction*> registeredKeyActions;
+		ButtonKeyAction* leftMouseButtonAction = nullptr;
+		ButtonKeyAction* rightMouseButtonAction = nullptr;
+		AxisMoveAction* mouseMoveAction = nullptr;
+		bool isCursorVisible = false;
+
+		std::queue<AbstractControlAction*> queuedActions;
 
 		ControlActionManager() = default;
 
 		~ControlActionManager() {
-			clearQueue();
+			ClearQueue();
 			for (auto& act : registeredKeyActions) {
 				delete act.second;
 			}
@@ -87,12 +96,18 @@ namespace Hogra {
 			if (nullptr != leftMouseButtonAction) {
 				delete leftMouseButtonAction;
 			}
+			if (nullptr != rightMouseButtonAction) {
+				delete rightMouseButtonAction;
+			}
+			if (nullptr != mouseMoveAction) {
+				delete mouseMoveAction;
+			}
 		}
 
 		/*
 		* Get next action for execution
 		*/
-		ControlAction* popNextQueuedAction();
+		AbstractControlAction* PopNextQueuedAction();
 	};
 
 }

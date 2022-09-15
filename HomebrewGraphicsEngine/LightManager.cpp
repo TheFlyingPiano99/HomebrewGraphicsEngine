@@ -68,7 +68,7 @@ namespace Hogra {
 	void LightManager::Update()
 	{
 		for (auto& light : lights) {
-			light->Update(0.0f);
+			light->Update();
 		}
 	}
 }

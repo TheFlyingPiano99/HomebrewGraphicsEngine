@@ -1050,11 +1050,11 @@ void ImDrawList::AddConvexPolyFilled(const ImVec2* points, const int points_coun
     }
 }
 
-void ImDrawList::_PathArcToFastEx(const ImVec2& center, float radius, int a_min_sample, int a_max_sample, int a_step)
+void ImDrawList::_PathArcToFastEx(const ImVec2& lookAt, float radius, int a_min_sample, int a_max_sample, int a_step)
 {
     if (radius <= 0.0f)
     {
-        _Path.push_back(center);
+        _Path.push_back(lookAt);
         return;
     }
 
@@ -1107,8 +1107,8 @@ void ImDrawList::_PathArcToFastEx(const ImVec2& center, float radius, int a_min_
                 sample_index -= IM_DRAWLIST_ARCFAST_SAMPLE_MAX;
 
             const ImVec2 s = _Data->ArcFastVtx[sample_index];
-            out_ptr->x = center.x + s.x * radius;
-            out_ptr->y = center.y + s.y * radius;
+            out_ptr->x = lookAt.x + s.x * radius;
+            out_ptr->y = lookAt.y + s.y * radius;
             out_ptr++;
         }
     }
@@ -1121,8 +1121,8 @@ void ImDrawList::_PathArcToFastEx(const ImVec2& center, float radius, int a_min_
                 sample_index += IM_DRAWLIST_ARCFAST_SAMPLE_MAX;
 
             const ImVec2 s = _Data->ArcFastVtx[sample_index];
-            out_ptr->x = center.x + s.x * radius;
-            out_ptr->y = center.y + s.y * radius;
+            out_ptr->x = lookAt.x + s.x * radius;
+            out_ptr->y = lookAt.y + s.y * radius;
             out_ptr++;
         }
     }
@@ -1134,19 +1134,19 @@ void ImDrawList::_PathArcToFastEx(const ImVec2& center, float radius, int a_min_
             normalized_max_sample += IM_DRAWLIST_ARCFAST_SAMPLE_MAX;
 
         const ImVec2 s = _Data->ArcFastVtx[normalized_max_sample];
-        out_ptr->x = center.x + s.x * radius;
-        out_ptr->y = center.y + s.y * radius;
+        out_ptr->x = lookAt.x + s.x * radius;
+        out_ptr->y = lookAt.y + s.y * radius;
         out_ptr++;
     }
 
     IM_ASSERT_PARANOID(_Path.Data + _Path.Size == out_ptr);
 }
 
-void ImDrawList::_PathArcToN(const ImVec2& center, float radius, float a_min, float a_max, int num_segments)
+void ImDrawList::_PathArcToN(const ImVec2& lookAt, float radius, float a_min, float a_max, int num_segments)
 {
     if (radius <= 0.0f)
     {
-        _Path.push_back(center);
+        _Path.push_back(lookAt);
         return;
     }
 
@@ -1156,32 +1156,32 @@ void ImDrawList::_PathArcToN(const ImVec2& center, float radius, float a_min, fl
     for (int i = 0; i <= num_segments; i++)
     {
         const float a = a_min + ((float)i / (float)num_segments) * (a_max - a_min);
-        _Path.push_back(ImVec2(center.x + ImCos(a) * radius, center.y + ImSin(a) * radius));
+        _Path.push_back(ImVec2(lookAt.x + ImCos(a) * radius, lookAt.y + ImSin(a) * radius));
     }
 }
 
 // 0: East, 3: South, 6: West, 9: North, 12: East
-void ImDrawList::PathArcToFast(const ImVec2& center, float radius, int a_min_of_12, int a_max_of_12)
+void ImDrawList::PathArcToFast(const ImVec2& lookAt, float radius, int a_min_of_12, int a_max_of_12)
 {
     if (radius <= 0.0f)
     {
-        _Path.push_back(center);
+        _Path.push_back(lookAt);
         return;
     }
-    _PathArcToFastEx(center, radius, a_min_of_12 * IM_DRAWLIST_ARCFAST_SAMPLE_MAX / 12, a_max_of_12 * IM_DRAWLIST_ARCFAST_SAMPLE_MAX / 12, 0);
+    _PathArcToFastEx(lookAt, radius, a_min_of_12 * IM_DRAWLIST_ARCFAST_SAMPLE_MAX / 12, a_max_of_12 * IM_DRAWLIST_ARCFAST_SAMPLE_MAX / 12, 0);
 }
 
-void ImDrawList::PathArcTo(const ImVec2& center, float radius, float a_min, float a_max, int num_segments)
+void ImDrawList::PathArcTo(const ImVec2& lookAt, float radius, float a_min, float a_max, int num_segments)
 {
     if (radius <= 0.0f)
     {
-        _Path.push_back(center);
+        _Path.push_back(lookAt);
         return;
     }
 
     if (num_segments > 0)
     {
-        _PathArcToN(center, radius, a_min, a_max, num_segments);
+        _PathArcToN(lookAt, radius, a_min, a_max, num_segments);
         return;
     }
 
@@ -1206,18 +1206,18 @@ void ImDrawList::PathArcTo(const ImVec2& center, float radius, float a_min, floa
 
         _Path.reserve(_Path.Size + (a_mid_samples + 1 + (a_emit_start ? 1 : 0) + (a_emit_end ? 1 : 0)));
         if (a_emit_start)
-            _Path.push_back(ImVec2(center.x + ImCos(a_min) * radius, center.y + ImSin(a_min) * radius));
+            _Path.push_back(ImVec2(lookAt.x + ImCos(a_min) * radius, lookAt.y + ImSin(a_min) * radius));
         if (a_mid_samples > 0)
-            _PathArcToFastEx(center, radius, a_min_sample, a_max_sample, 0);
+            _PathArcToFastEx(lookAt, radius, a_min_sample, a_max_sample, 0);
         if (a_emit_end)
-            _Path.push_back(ImVec2(center.x + ImCos(a_max) * radius, center.y + ImSin(a_max) * radius));
+            _Path.push_back(ImVec2(lookAt.x + ImCos(a_max) * radius, lookAt.y + ImSin(a_max) * radius));
     }
     else
     {
         const float arc_length = ImAbs(a_max - a_min);
         const int circle_segment_count = _CalcCircleAutoSegmentCount(radius);
         const int arc_segment_count = ImMax((int)ImCeil(circle_segment_count * arc_length / (IM_PI * 2.0f)), (int)(2.0f * IM_PI / arc_length));
-        _PathArcToN(center, radius, a_min, a_max, arc_segment_count);
+        _PathArcToN(lookAt, radius, a_min, a_max, arc_segment_count);
     }
 }
 
@@ -1474,7 +1474,7 @@ void ImDrawList::AddTriangleFilled(const ImVec2& p1, const ImVec2& p2, const ImV
     PathFillConvex(col);
 }
 
-void ImDrawList::AddCircle(const ImVec2& center, float radius, ImU32 col, int num_segments, float thickness)
+void ImDrawList::AddCircle(const ImVec2& lookAt, float radius, ImU32 col, int num_segments, float thickness)
 {
     if ((col & IM_COL32_A_MASK) == 0 || radius <= 0.0f)
         return;
@@ -1482,7 +1482,7 @@ void ImDrawList::AddCircle(const ImVec2& center, float radius, ImU32 col, int nu
     if (num_segments <= 0)
     {
         // Use arc with automatic segment count
-        _PathArcToFastEx(center, radius - 0.5f, 0, IM_DRAWLIST_ARCFAST_SAMPLE_MAX, 0);
+        _PathArcToFastEx(lookAt, radius - 0.5f, 0, IM_DRAWLIST_ARCFAST_SAMPLE_MAX, 0);
         _Path.Size--;
     }
     else
@@ -1492,13 +1492,13 @@ void ImDrawList::AddCircle(const ImVec2& center, float radius, ImU32 col, int nu
 
         // Because we are filling a closed shape we remove 1 from the count of segments/points
         const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
-        PathArcTo(center, radius - 0.5f, 0.0f, a_max, num_segments - 1);
+        PathArcTo(lookAt, radius - 0.5f, 0.0f, a_max, num_segments - 1);
     }
 
     PathStroke(col, ImDrawFlags_Closed, thickness);
 }
 
-void ImDrawList::AddCircleFilled(const ImVec2& center, float radius, ImU32 col, int num_segments)
+void ImDrawList::AddCircleFilled(const ImVec2& lookAt, float radius, ImU32 col, int num_segments)
 {
     if ((col & IM_COL32_A_MASK) == 0 || radius <= 0.0f)
         return;
@@ -1506,7 +1506,7 @@ void ImDrawList::AddCircleFilled(const ImVec2& center, float radius, ImU32 col, 
     if (num_segments <= 0)
     {
         // Use arc with automatic segment count
-        _PathArcToFastEx(center, radius, 0, IM_DRAWLIST_ARCFAST_SAMPLE_MAX, 0);
+        _PathArcToFastEx(lookAt, radius, 0, IM_DRAWLIST_ARCFAST_SAMPLE_MAX, 0);
         _Path.Size--;
     }
     else
@@ -1516,33 +1516,33 @@ void ImDrawList::AddCircleFilled(const ImVec2& center, float radius, ImU32 col, 
 
         // Because we are filling a closed shape we remove 1 from the count of segments/points
         const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
-        PathArcTo(center, radius, 0.0f, a_max, num_segments - 1);
+        PathArcTo(lookAt, radius, 0.0f, a_max, num_segments - 1);
     }
 
     PathFillConvex(col);
 }
 
 // Guaranteed to honor 'num_segments'
-void ImDrawList::AddNgon(const ImVec2& center, float radius, ImU32 col, int num_segments, float thickness)
+void ImDrawList::AddNgon(const ImVec2& lookAt, float radius, ImU32 col, int num_segments, float thickness)
 {
     if ((col & IM_COL32_A_MASK) == 0 || num_segments <= 2)
         return;
 
     // Because we are filling a closed shape we remove 1 from the count of segments/points
     const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
-    PathArcTo(center, radius - 0.5f, 0.0f, a_max, num_segments - 1);
+    PathArcTo(lookAt, radius - 0.5f, 0.0f, a_max, num_segments - 1);
     PathStroke(col, ImDrawFlags_Closed, thickness);
 }
 
 // Guaranteed to honor 'num_segments'
-void ImDrawList::AddNgonFilled(const ImVec2& center, float radius, ImU32 col, int num_segments)
+void ImDrawList::AddNgonFilled(const ImVec2& lookAt, float radius, ImU32 col, int num_segments)
 {
     if ((col & IM_COL32_A_MASK) == 0 || num_segments <= 2)
         return;
 
     // Because we are filling a closed shape we remove 1 from the count of segments/points
     const float a_max = (IM_PI * 2.0f) * ((float)num_segments - 1.0f) / (float)num_segments;
-    PathArcTo(center, radius, 0.0f, a_max, num_segments - 1);
+    PathArcTo(lookAt, radius, 0.0f, a_max, num_segments - 1);
     PathFillConvex(col);
 }
 
@@ -3743,7 +3743,7 @@ void ImGui::RenderArrow(ImDrawList* draw_list, ImVec2 pos, ImU32 col, ImGuiDir d
 {
     const float h = draw_list->_Data->FontSize * 1.00f;
     float r = h * 0.40f * scale;
-    ImVec2 center = pos + ImVec2(h * 0.50f, h * 0.50f * scale);
+    ImVec2 lookAt = pos + ImVec2(h * 0.50f, h * 0.50f * scale);
 
     ImVec2 a, b, c;
     switch (dir)
@@ -3767,7 +3767,7 @@ void ImGui::RenderArrow(ImDrawList* draw_list, ImVec2 pos, ImU32 col, ImGuiDir d
         IM_ASSERT(0);
         break;
     }
-    draw_list->AddTriangleFilled(center + a, center + b, center + c, col);
+    draw_list->AddTriangleFilled(lookAt + a, lookAt + b, lookAt + c, col);
 }
 
 void ImGui::RenderBullet(ImDrawList* draw_list, ImVec2 pos, ImU32 col)

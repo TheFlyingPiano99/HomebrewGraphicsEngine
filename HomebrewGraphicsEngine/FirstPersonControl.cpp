@@ -5,13 +5,13 @@
 #include "SceneEventManager.h"
 #include "SceneEventImplementation.h"
 
-void Hogra::FirstPersonControl::moveForward(float dt)
+void Hogra::FirstPersonControl::MoveForward()
 {
 	if (physics == nullptr || !allowMove) {
 		footstepsAudioSource->Stop();
 		return;
 	}
-	physics->applyTransientForce(ahead * propellingForce);
+	walkForce += ahead * propellingForce;
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -25,13 +25,13 @@ void Hogra::FirstPersonControl::moveForward(float dt)
 	tSinceLastInput = 0.0f;
 }
 
-void Hogra::FirstPersonControl::moveBackward(float dt)
+void Hogra::FirstPersonControl::MoveBackward()
 {
 	if (physics == nullptr || !allowMove) {
 		footstepsAudioSource->Stop();
 		return;
 	}
-	physics->applyTransientForce(-ahead * propellingForce);
+	walkForce += -ahead * propellingForce;
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -45,13 +45,13 @@ void Hogra::FirstPersonControl::moveBackward(float dt)
 	tSinceLastInput = 0.0f;
 }
 
-void Hogra::FirstPersonControl::moveLeft(float dt)
+void Hogra::FirstPersonControl::MoveLeft()
 {
 	if (physics == nullptr || !allowMove) {
 		footstepsAudioSource->Stop();
 		return;
 	}
-	physics->applyTransientForce(-right * propellingForce);
+	walkForce += -right * propellingForce;
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -65,13 +65,13 @@ void Hogra::FirstPersonControl::moveLeft(float dt)
 	tSinceLastInput = 0.0f;
 }
 
-void Hogra::FirstPersonControl::moveRight(float dt)
+void Hogra::FirstPersonControl::MoveRight()
 {
 	if (physics == nullptr || !allowMove) {
 		footstepsAudioSource->Stop();
 		return;
 	}
-	physics->applyTransientForce(right * propellingForce);
+	walkForce += right * propellingForce;
 	if (camera->getAnimation() == nullptr) {
 		auto* a = new HeadBob();
 		camera->setAnimation(a);
@@ -96,7 +96,7 @@ Hogra::FirstPersonControl::~FirstPersonControl()
 {
 }
 
-void Hogra::FirstPersonControl::Update(float dt)
+void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
 {
 	if (jumpCollider != nullptr) {
 		isGrounded = jumpCollider->PopCollided();
@@ -110,10 +110,8 @@ void Hogra::FirstPersonControl::Update(float dt)
 	if (camera == nullptr) {
 		return;
 	}
-	ahead = camera->getLookDir();
-	up = camera->getPreferedUp();
-	right = glm::cross(ahead, up);
-	ahead = glm::cross(up, right);
+	
+	camera->Rotate(headRotationDelta * dt);
 	if (tSinceLastInput > 0.5f) {
 		auto* a = camera->getAnimation();
 		delete a;
@@ -122,9 +120,23 @@ void Hogra::FirstPersonControl::Update(float dt)
 	else {
 		tSinceLastInput += dt;
 	}
+	if (physics != nullptr) {
+		physics->applyTransientForce(walkForce);
+	}
 }
 
-void Hogra::FirstPersonControl::FrameBeginningControl()
+void Hogra::FirstPersonControl::Update()
+{
+	if (camera == nullptr) {
+		return;
+	}
+	ahead = camera->getLookDir();
+	up = camera->getPreferedUp();
+	right = glm::cross(ahead, up);
+	ahead = glm::cross(up, right);
+}
+
+void Hogra::FirstPersonControl::BeforePhysicsLoopUpdate()
 {
 	if (nullptr != laser) {
 		laser->SetIsVisible(false);
@@ -135,9 +147,11 @@ void Hogra::FirstPersonControl::FrameBeginningControl()
 	if (wasFiringLaser) {
 		laserCoolDownAudioSource->Play();
 	}
+	walkForce = glm::vec3(0.0f);
+	headRotationDelta *= rotationSlowDown;
 }
 
-void Hogra::FirstPersonControl::FrameEndingControl()
+void Hogra::FirstPersonControl::AfterPhysicsLoopUpdate()
 {
 	if (!isWalking) {
 		footstepsAudioSource->Stop();
@@ -149,16 +163,12 @@ void Hogra::FirstPersonControl::FrameEndingControl()
 	wasFiringLaser = isFiringLaser;
 }
 
-void Hogra::FirstPersonControl::Control(float dt)
-{
-}
-
-void Hogra::FirstPersonControl::Rotate(float mouseX, float mouseY)
+void Hogra::FirstPersonControl::Rotate(const glm::vec2& delta)
 {
 	if (camera == nullptr || !allowRotate) {
 		return;
 	}
-	camera->Rotate(mouseX, mouseY);
+	headRotationDelta += delta * rotationSpeed;
 }
 
 void Hogra::FirstPersonControl::Jump() {
@@ -171,7 +181,7 @@ void Hogra::FirstPersonControl::Jump() {
 	footstepsAudioSource->Stop();
 }
 
-void Hogra::FirstPersonControl::primaryAction(float dt)
+void Hogra::FirstPersonControl::primaryAction()
 {
 	glm::vec3 point;
 	bool isPoke = false;
@@ -189,8 +199,8 @@ void Hogra::FirstPersonControl::primaryAction(float dt)
 		else {
 			end = start + camera->getLookDir() * 1000.0f;
 		}
-		glm::vec3 center = (start + end) / 2.0f;
-		laser->SetPosition(center);
+		glm::vec3 lookAt = (start + end) / 2.0f;
+		laser->SetPosition(lookAt);
 		float beamLength = glm::length(start - end);
 		laser->SetScale(glm::vec3(0.05f, 0.5f * beamLength, 0.05f));
 		auto dir = glm::normalize(end - start);

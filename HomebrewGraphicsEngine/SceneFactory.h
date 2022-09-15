@@ -38,6 +38,8 @@ namespace Hogra {
 
 		SceneAudioSource* buildAudioSource(const std::string& fileName);
 
+		Scene* LoadSceneFromFile(const std::string& fileName);
+
 	private:
 		SceneFactory() = default;
 		static SceneFactory* instance;

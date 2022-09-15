@@ -56,12 +56,12 @@ void Hogra::Caption::Draw() {
 	texture->Unbind();
 }
 
-void Hogra::Caption::Control(float dt)
+void Hogra::Caption::EarlyPhysicsUpdate(float dt)
 {
 	;
 }
 
-void Hogra::Caption::Update(float dt)
+void Hogra::Caption::Update()
 {
 	;
 }

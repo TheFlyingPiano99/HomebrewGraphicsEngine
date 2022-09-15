@@ -62,10 +62,11 @@ namespace Hogra {
 		collisionManager.InitDebug();
 	}
 
-	void Scene::FrameBeginningControl() {
+	void Scene::BeforePhysicsLoopUpdate() {
 		for (auto& obj : sceneObjects) {
-			obj->FrameBeginningControl();
+			obj->BeforePhysicsLoopUpdate();
 		}
+		ControlActionManager::getInstance()->ExecuteQueue(*this);
 	}
 
 	void Scene::Destroy()
@@ -107,40 +108,41 @@ namespace Hogra {
 
 	//-----------------------------------------------------------------------------
 
-	void Scene::Control(float dt)
+	void Scene::PhysicsUpdate(float dt)
 	{
 		collisionManager.Collide();
 
-		ControlActionManager::getInstance()->executeQueue(this, dt);
 		for (auto& obj : sceneObjects) {
-			obj->Control(dt);
+			obj->EarlyPhysicsUpdate(dt);
 		}
-		SceneEventManager::getInstance()->executeQueue(this, dt);
+
+		SceneEventManager::getInstance()->ExecuteQueue(*this);
+
+		for (auto& obj : sceneObjects) {
+			obj->LatePhysicsUpdate(dt);
+		}
+
+		camera.LatePhysicsUpdate(dt);
+		for (auto& obj : sceneObjects) {
+			obj->Update();
+		}
+		collisionManager.Update();
 	}
 
-	void Scene::Update(float dt)
+	void Scene::AfterPhysicsLoopUpdate()
 	{
+		camera.Update();
 		for (auto& obj : sceneObjects) {
-			obj->Update(dt, camera);
+			obj->AfterPhysicsLoopUpdate();
 		}
-
-		camera.Update(dt);
 		if (shadowCaster != nullptr) {
 			shadowCaster->Update();
 		}
-		collisionManager.Update();
 		for (auto& group : instanceGroups) {
 			group.second->Optimalize(camera);
 		}
 		lightManager.Update();
-		audioManager.Update(dt);
-	}
-
-	void Scene::FrameEndingControl()
-	{
-		for (auto& obj : sceneObjects) {
-			obj->FrameEndingControl();
-		}
+		audioManager.Update();
 	}
 
 	void Scene::Draw()

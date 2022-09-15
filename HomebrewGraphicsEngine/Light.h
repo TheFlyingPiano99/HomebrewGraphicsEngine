@@ -20,9 +20,9 @@ namespace Hogra {
 		void ExportData(UniformBufferObject& ubo, unsigned int& idx);
 
 		// Inherited via Component
-		void Control(float dt);
+		void EarlyPhysicsUpdate(float dt) override;
 
-		void Update(float dt);
+		void Update() override;
 
 		PositionProvider* getPositionProvider() const {
 			return positionProvider;

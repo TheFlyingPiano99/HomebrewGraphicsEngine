@@ -35,13 +35,25 @@ namespace Hogra {
 	public:
 		void Init(int contextWidth, int contextHeight);
 
-		void FrameBeginningControl();
+		/*
+		* Calls SceneObject::BeforePhysicsLoopUpdate()
+		* and executes control actions
+		*/
+		void BeforePhysicsLoopUpdate();
 
-		void Control(float dt);
+		/*
+		* Performs collisions
+		* Calls SceneObject::EarlyPhysicsUpdate()
+		* Performs scene events
+		* Calls SceneObject::LatePhysicsUpdate()
+		* Calls SceneObject::Update()
+		*/
+		void PhysicsUpdate(float dt);
 
-		void Update(float dt);
-
-		void FrameEndingControl();
+		/*
+		* Calls SceneObject::AfterPhysicsLoopUpdate()
+		*/
+		void AfterPhysicsLoopUpdate();
 
 		void Draw();
 

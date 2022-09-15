@@ -3,7 +3,7 @@
 
 namespace Hogra {
 
-	void CollisionEvent::execute(Scene* scene, float dt)
+	void CollisionEvent::Execute(Scene& scene)
 	{
 		;
 	}

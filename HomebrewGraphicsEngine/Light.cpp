@@ -21,11 +21,11 @@ namespace Hogra {
 		ubo.UploadSubData(glm::value_ptr(powerDensity), idx++);
 	}
 
-	void Light::Control(float dt)
+	void Light::EarlyPhysicsUpdate(float dt)
 	{
 	}
 
-	void Light::Update(float dt)
+	void Light::Update()
 	{
 		if (positionProvider != nullptr) {
 			position = glm::vec4(positionProvider->GetPosition(), 1.0f);

@@ -26,13 +26,15 @@ namespace Hogra {
 
 		virtual ~Component() = default;
 
-		virtual void FrameBeginningControl() {}
+		virtual void BeforePhysicsLoopUpdate() {}
 
-		virtual void Control(float dt) = 0;
+		virtual void EarlyPhysicsUpdate(float dt) {};
 
-		virtual void Update(float dt) = 0;
+		virtual void Update() {};
 
-		virtual void FrameEndingControl() {}
+		virtual void LatePhysicsUpdate(float dt) {};
+
+		virtual void AfterPhysicsLoopUpdate() {}
 
 	protected:
 		static std::vector<Component*> heapAllocatedInstances;

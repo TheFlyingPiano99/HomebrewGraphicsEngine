@@ -50,17 +50,17 @@ namespace Hogra {
 			return e;
 		}
 
-		void clearQueue() {
+		void ClearQueue() {
 			while (!events.empty()) {
 				delete events.front();
 				events.pop();
 			}
 		}
 
-		void executeQueue(Scene* scene, float dt) {
+		void ExecuteQueue(Scene& scene) {
 			while (!empty()) {
 				SceneEvent* event = popNextEvent();
-				event->execute(scene, dt);
+				event->Execute(scene);
 				delete event;
 			}
 		}

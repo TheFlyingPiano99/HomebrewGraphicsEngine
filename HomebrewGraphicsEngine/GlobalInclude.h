@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <string>
 
 
 #define DEFAULT_WINDOW_WIDTH 1280
@@ -41,5 +42,7 @@ namespace Hogra {
 
 		static int renderResolutionWidth;
 		static int renderResolutionHeight;
+
+		static std::string windowIcon;
 	};
 }

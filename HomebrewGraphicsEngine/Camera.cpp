@@ -9,10 +9,10 @@
 namespace Hogra {
 
 
-	void Camera::Init(float aspectRatio, glm::vec3 eye, glm::vec3 center) {
+	void Camera::Init(float aspectRatio, glm::vec3 eye, glm::vec3 lookAt) {
 		this->aspectRatio = aspectRatio;
 		this->eye = eye;
-		this->center = center;
+		this->lookAt = lookAt;
 		std::vector<int> uniformDataSizes;
 		//eye:
 		uniformDataSizes.push_back(sizeof(glm::vec3));
@@ -29,29 +29,17 @@ namespace Hogra {
 		ubo.Init(uniformDataSizes, CAMERA_UBO_BINDING);
 	}
 
-	bool Camera::Update(float dt)
+	bool Camera::Update()
 	{
-		if (nullptr != animation) {
-			animation->perform(this, dt);
-		}
-		if (nullptr != positionProvider) {
-			lookDir = center - eye;
-			eye = positionProvider->GetPosition() + positionInProvidersSpace;
-			center = eye + lookDir;
-		}
-		if (nullptr != orientationProvider) {
-			lookDir = orientationProvider->GetOrientation() * lookDirInProvidersSpace;
-			center = eye + lookDir;
-		}
 		// Makes camera look in the right direction from the right position
-		view = glm::lookAt(eye + animationOffset, center + animationOffset, prefUp);
+		view = glm::lookAt(eye + animationOffset, lookAt + animationOffset, prefUp);
 		// Adds perspective to the scene
 		projection = glm::perspective(glm::radians(FOVdeg), aspectRatio, nearPlane, farPlane);
 
 		viewProjMatrix = projection * view;
 		invViewProjMatrix = glm::inverse(viewProjMatrix);
 		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye + animationOffset));
-		lookDir = normalize(center - eye);
+		lookDir = normalize(lookAt - eye);
 		right = normalize(cross(lookDir, prefUp));
 		up = normalize(cross(right, lookDir));
 
@@ -60,10 +48,26 @@ namespace Hogra {
 		return prevMooved;
 	}
 
+	void Camera::LatePhysicsUpdate(float dt)
+	{
+		if (nullptr != animation) {
+			animation->perform(this, dt);
+		}
+		if (nullptr != positionProvider) {
+			lookDir = lookAt - eye;
+			eye = positionProvider->GetPosition() + positionInProvidersSpace;
+			lookAt = eye + lookDir;
+		}
+		if (nullptr != orientationProvider) {
+			lookDir = orientationProvider->GetOrientation() * lookDirInProvidersSpace;
+			lookAt = eye + lookDir;
+		}
+	}
+
 	void Camera::updateOrientation(glm::vec3 newPrefUp)
 	{
-		right = glm::cross(normalize(center - eye), newPrefUp);
-		center = eye + glm::cross(newPrefUp, right);
+		right = glm::cross(normalize(lookAt - eye), newPrefUp);
+		lookAt = eye + glm::cross(newPrefUp, right);
 		prefUp = newPrefUp;
 	}
 
@@ -85,77 +89,77 @@ namespace Hogra {
 		ubo.Unbind();
 	}
 
-	void Camera::moveForward(float dt) {
+	void Camera::MoveForward(float dt) {
 		if (nullptr != positionProvider) {
 			return;
 		}
 		eye += dt * speed * lookDir;
-		center += dt * speed * lookDir;
+		lookAt += dt * speed * lookDir;
 		moved = true;
 	}
 
-	void Camera::moveBackward(float dt)
+	void Camera::MoveBackward(float dt)
 	{
 		if (nullptr != positionProvider) {
 			return;
 		}
 		eye += dt * speed * -lookDir;
-		center += dt * speed * -lookDir;
+		lookAt += dt * speed * -lookDir;
 		moved = true;
 	}
 
-	void Camera::moveLeft(float dt)
+	void Camera::MoveLeft(float dt)
 	{
 		if (nullptr != positionProvider) {
 			return;
 		}
 		eye += dt * speed * -right;
-		center += dt * speed * -right;
+		lookAt += dt * speed * -right;
 		moved = true;
 	}
 
-	void Camera::moveRight(float dt)
+	void Camera::MoveRight(float dt)
 	{
 		if (nullptr != positionProvider) {
 			return;
 		}
 		eye += dt * speed * right;
-		center += dt * speed * right;
+		lookAt += dt * speed * right;
 		moved = true;
 	}
 
-	void Camera::moveUp(float dt)
+	void Camera::MoveUp(float dt)
 	{
 		if (nullptr != positionProvider) {
 			return;
 		}
 		eye += dt * speed * up;
-		center += dt * speed * up;
+		lookAt += dt * speed * up;
 		moved = true;
 	}
 
-	void Camera::moveDown(float dt)
+	void Camera::MoveDown(float dt)
 	{
 		if (nullptr != positionProvider) {
 			return;
 		}
 		eye += dt * speed * -up;
-		center += dt * speed * -up;
+		lookAt += dt * speed * -up;
 		moved = true;
 	}
 
-	void Camera::Rotate(float rotX, float rotY)
+	void Camera::Rotate(const glm::vec2& deltaAngle)
 	{
 		if (nullptr != orientationProvider) {
 			return;
 		}
-		glm::quat rotXQuat = angleAxis(rotY, right);
-		glm::quat rotYQuat = angleAxis(rotX, prefUp);
+		glm::quat rotXQuat = angleAxis(deltaAngle.y, right);
+		glm::quat rotYQuat = angleAxis(deltaAngle.x, prefUp);
 
 		auto possibleLookDir = normalize(rotYQuat * rotXQuat * lookDir);
 		if (abs(glm::dot(possibleLookDir, prefUp)) < 0.9f) {
 			lookDir = possibleLookDir;
-			center = eye + lookDir;
+			lookAt = eye + lookDir;
 		}
 	}
 
@@ -164,9 +168,9 @@ namespace Hogra {
 		if (nullptr != positionProvider) {
 			return;
 		}
-		float l = length(center - eye);
+		float l = length(lookAt - eye);
 		if (l > delta) {
-			eye += delta * normalize(center - eye) * approachCenterSpeed;
+			eye += delta * normalize(lookAt - eye) * approachCenterSpeed;
 		}
 		moved = true;
 	}

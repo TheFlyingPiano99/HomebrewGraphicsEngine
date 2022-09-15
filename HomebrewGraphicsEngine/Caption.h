@@ -29,8 +29,8 @@ namespace Hogra {
 		}
 
 		// Inherited via Component
-		void Control(float dt) override;
-		void Update(float dt) override;
+		void EarlyPhysicsUpdate(float dt) override;
+		void Update() override;
 
 		ShaderProgram* getShaderProgram() const {
 			return program;

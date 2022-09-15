@@ -17,8 +17,9 @@ namespace Hogra {
 		~Physics() override = default;
 
 		// Inherited via Component
-		void Control(float dt) override;
-		void Update(float dtSec) override;
+		void EarlyPhysicsUpdate(float dt) override;
+		void LatePhysicsUpdate(float dt) override;
+		void Update() override;
 
 		/*
 		* return force applied to center of mass in Newtons

@@ -8,6 +8,9 @@
 #include "SceneManager.h"
 #include "Material.h"
 #include <Windows.h>
+#include <stb/stb_image.h>
+#include "AssetFolderPathManager.h"
+
 
 namespace Hogra {
 	void HoGraEngineApplication::setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {
@@ -20,6 +23,23 @@ namespace Hogra {
 			glfwSetWindowMonitor(window, nullptr, 50, 50, DEFAULT_WINDOW_WIDTH, DEFAULT_WINDOW_HEIGHT, 60);
 		}
 		glfwGetWindowSize(window, &GlobalVariables::windowWidth, &GlobalVariables::windowHeight);
+	}
+
+	void HoGraEngineApplication::SetIcon()
+	{
+		GLFWimage icons[1];
+		// Flips the image so it appears right side up
+		stbi_set_flip_vertically_on_load(true);
+		// Reads the image from a file and stores it in bytes
+		int channels = 0;
+		auto path = AssetFolderPathManager::getInstance()->getIconsFolderPath().append(GlobalVariables::windowIcon);
+		icons[0].pixels = stbi_load(
+			path.c_str(),
+			&(icons[0].width),
+			&(icons[0].height),
+			&channels,
+			4);
+		glfwSetWindowIcon(window, 1, icons);
 	}
 
 	int HoGraEngineApplication::Init(const char* _windowName) {
@@ -54,6 +74,9 @@ namespace Hogra {
 			return -1;
 		}
 		GlobalVariables::window = window;
+
+		//Set window icon
+		SetIcon();
 
 		// Init audio
 		audioContext.Init();
@@ -107,11 +130,11 @@ namespace Hogra {
 				prevTime = crntTime;
 				frameCounter = 0;
 			}
-
 			
+			ControlActionManager::getInstance()->QueueTriggeringActions();
 
 			// Special controll events triggering per frame
-			SceneManager::getInstance()->FrameBeginningControl();
+			SceneManager::getInstance()->BeforePhysicsLoopUpdate();
 
 			double dt = 0.0;
 			double realDelta = crntTime - prevIterTime;
@@ -125,14 +148,13 @@ namespace Hogra {
 					dt = realDelta;
 					realDelta = 0.0;
 				}
-				ControlActionManager::getInstance()->QueueTriggeringActions();
-				retVal = SceneManager::getInstance()->ControlAndUpdate(dt);
+				retVal = SceneManager::getInstance()->PhysicsUpdate(dt);
 				if (-1 == retVal) {
 					break;
 				}
 			}
 			// Special controll events triggering per frame
-			SceneManager::getInstance()->FrameEndingControl();
+			SceneManager::getInstance()->AfterPhysicsLoopUpdate();
 
 			if (-1 == retVal) {
 				break;

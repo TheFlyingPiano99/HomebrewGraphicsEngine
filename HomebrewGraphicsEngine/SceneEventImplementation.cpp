@@ -1,10 +1,10 @@
 #include "SceneEventImplementation.h"
 
 namespace Hogra {
-    void RestartSceneEvent::execute(Scene* scene, float dt)
+    void RestartSceneEvent::Execute(Scene& scene)
     {
         SceneChange change;
         change.changeType = SceneChange::ChangeType::restartScene;
-        scene->SetSceneChange(change);
+        scene.SetSceneChange(change);
     }
 }

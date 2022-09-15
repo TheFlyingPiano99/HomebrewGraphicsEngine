@@ -5,7 +5,15 @@
 #include <GLFW/glfw3.h>
 namespace Hogra {
 
-	class ControlAction
+	class AbstractControlAction {
+	public:
+		virtual ~AbstractControlAction() = default;
+		virtual bool PopIsTriggering() = 0;
+
+		virtual void Execute(Scene& scene) = 0;
+	};
+
+	class ButtonKeyAction : public AbstractControlAction
 	{
 	protected:
 		enum class TriggerType {
@@ -22,147 +30,178 @@ namespace Hogra {
 		TriggerType triggerType;
 
 	public:
-		ControlAction(int _key, TriggerType trigger = TriggerType::triggerOnPress) : key(_key), triggerType(trigger) {
+		ButtonKeyAction(int _key, TriggerType trigger = TriggerType::triggerOnPress) : key(_key), triggerType(trigger) {
 		}
 
-		virtual ~ControlAction() = default;
+		virtual ~ButtonKeyAction() = default;
 
 		int getKey() const;
 
-		void onPress(int _key, int _scancode, int _mods);
-		void onRelease(int _key, int _scancode, int _mods);
-		bool isTriggering();
+		void OnPress(int _key, int _scancode, int _mods);
+		void OnRelease(int _key, int _scancode, int _mods);
+		bool PopIsTriggering() override;
 
-		virtual void execute(Scene* scene, float dt) = 0;
 	};
 
-	class MoveAvatarForward : public ControlAction {
+	class AxisMoveAction : public AbstractControlAction {
 	public:
-		MoveAvatarForward() : ControlAction(GLFW_KEY_W, ControlAction::TriggerType::triggerContinuosly) {
+		AxisMoveAction() = default;
+
+		virtual ~AxisMoveAction() = default;
+
+		bool PopIsTriggering();
+
+		void OnMove(const glm::vec2& pixPos);
+
+	protected:
+		glm::vec2 pixDelta;
+		glm::vec2 pixPos;
+		bool movedInThisFrame;
+	};
+
+	class CameraMoveAction : public AxisMoveAction {
+	public:
+		CameraMoveAction() : AxisMoveAction() {}
+
+		void Execute(Scene& scene) override;
+	};
+
+
+	class MoveAvatarForward : public ButtonKeyAction {
+	public:
+		MoveAvatarForward() : ButtonKeyAction(GLFW_KEY_W, ButtonKeyAction::TriggerType::triggerContinuosly) {
 
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class MoveAvatarBackward : public ControlAction {
+	class MoveAvatarBackward : public ButtonKeyAction {
 	public:
-		MoveAvatarBackward() : ControlAction(GLFW_KEY_S, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarBackward() : ButtonKeyAction(GLFW_KEY_S, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class MoveAvatarRight : public ControlAction {
+	class MoveAvatarRight : public ButtonKeyAction {
 	public:
-		MoveAvatarRight() : ControlAction(GLFW_KEY_D, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarRight() : ButtonKeyAction(GLFW_KEY_D, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class MoveAvatarLeft : public ControlAction {
+	class MoveAvatarLeft : public ButtonKeyAction {
 	public:
-		MoveAvatarLeft() : ControlAction(GLFW_KEY_A, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarLeft() : ButtonKeyAction(GLFW_KEY_A, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class MoveAvatarUp : public ControlAction {
+	class MoveAvatarUp : public ButtonKeyAction {
 	public:
-		MoveAvatarUp() : ControlAction(GLFW_KEY_E, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarUp() : ButtonKeyAction(GLFW_KEY_E, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class MoveAvatarDown : public ControlAction {
+	class MoveAvatarDown : public ButtonKeyAction {
 	public:
-		MoveAvatarDown() : ControlAction(GLFW_KEY_Q, ControlAction::TriggerType::triggerContinuosly) {
+		MoveAvatarDown() : ButtonKeyAction(GLFW_KEY_Q, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class JumpAvatar : public ControlAction {
+	class JumpAvatar : public ButtonKeyAction {
 	public:
-		JumpAvatar() : ControlAction(GLFW_KEY_SPACE, ControlAction::TriggerType::triggerOnPress) {
+		JumpAvatar() : ButtonKeyAction(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerOnPress) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class ToggleGUI : public ControlAction {
+	class ToggleGUI : public ButtonKeyAction {
 	public:
-		ToggleGUI() : ControlAction(GLFW_KEY_O) {
+		ToggleGUI() : ButtonKeyAction(GLFW_KEY_O) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class FastForward : public ControlAction {
+	class FastForward : public ButtonKeyAction {
 	public:
-		FastForward() : ControlAction(GLFW_KEY_F, ControlAction::TriggerType::triggerContinuosly) {
+		FastForward() : ButtonKeyAction(GLFW_KEY_F, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class Rewind : public ControlAction {
+	class Rewind : public ButtonKeyAction {
 	public:
-		Rewind() : ControlAction(GLFW_KEY_R, ControlAction::TriggerType::triggerContinuosly) {
+		Rewind() : ButtonKeyAction(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class TogglePause : public ControlAction {
+	class TogglePause : public ButtonKeyAction {
 	public:
-		TogglePause() : ControlAction(GLFW_KEY_P) {
+		TogglePause() : ButtonKeyAction(GLFW_KEY_P) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class ToggleFullScreenMode : public ControlAction {
+	class ToggleFullScreenMode : public ButtonKeyAction {
 	public:
-		ToggleFullScreenMode() : ControlAction(GLFW_KEY_TAB) {
+		ToggleFullScreenMode() : ButtonKeyAction(GLFW_KEY_TAB) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class ToggleDebugInfo : public ControlAction {
+	class ToggleDebugInfo : public ButtonKeyAction {
 	public:
-		ToggleDebugInfo() : ControlAction(GLFW_KEY_I) {
+		ToggleDebugInfo() : ButtonKeyAction(GLFW_KEY_I) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class PrimaryAction : public ControlAction {
+	class PrimaryAction : public ButtonKeyAction {
 	public:
-		PrimaryAction() : ControlAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerContinuosly) {
+		PrimaryAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class RestartAction : public ControlAction {
+	class SecondaryAction : public ButtonKeyAction {
 	public:
-		RestartAction() : ControlAction(GLFW_KEY_R) {
+		SecondaryAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerContinuosly) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
 	};
 
-	class QuitAction : public ControlAction {
+	class RestartAction : public ButtonKeyAction {
 	public:
-		QuitAction() : ControlAction(GLFW_KEY_ESCAPE) {
+		RestartAction() : ButtonKeyAction(GLFW_KEY_R) {
 		}
 
-		void execute(Scene* scene, float dt) override;
+		void Execute(Scene& scene) override;
+	};
+
+	class QuitAction : public ButtonKeyAction {
+	public:
+		QuitAction() : ButtonKeyAction(GLFW_KEY_ESCAPE) {
+		}
+
+		void Execute(Scene& scene) override;
 	};
 
 }

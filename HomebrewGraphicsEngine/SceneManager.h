@@ -28,11 +28,13 @@ namespace Hogra {
 			return currentScene;
 		}
 
-		void FrameBeginningControl();
+		void BeforePhysicsLoopUpdate();
 
-		int ControlAndUpdate(float dt);
+		int PhysicsUpdate(float dt);
 
-		void FrameEndingControl();
+		void AfterPhysicsLoopUpdate();
+
+		void HandleControlActions();
 
 	private:
 		SceneManager() = default;

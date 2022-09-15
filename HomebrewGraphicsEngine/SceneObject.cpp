@@ -15,23 +15,28 @@ namespace Hogra {
 		return instance;
 	}
 
-	void SceneObject::FrameBeginningControl() {
+	void SceneObject::BeforePhysicsLoopUpdate() {
 		for (auto& component : components) {
-			component->FrameBeginningControl();
+			component->BeforePhysicsLoopUpdate();
 		}
 	}
 
-	void SceneObject::Control(float dt) {
+	void SceneObject::EarlyPhysicsUpdate(float dt) {
 		for (auto& component : components) {
-			component->Control(dt);
+			component->EarlyPhysicsUpdate(dt);
 		}
 	}
 
-	void SceneObject::Update(float dt, const Camera& camera) {
+	void SceneObject::LatePhysicsUpdate(float dt) {
 		for (auto& component : components) {
-			component->Update(dt);
+			component->LatePhysicsUpdate(dt);
 		}
+	}
 
+	void SceneObject::Update() {
+		for (auto& comp : components) {
+			comp->Update();
+		}
 		translationMatrix = glm::translate(position);
 		if (useEulerAngles) {
 			rotationMatrix = glm::mat4(1.0f)
@@ -47,9 +52,9 @@ namespace Hogra {
 		invModelMatrix = glm::inverse(modelMatrix);
 	}
 
-	void SceneObject::FrameEndingControl() {
+	void SceneObject::AfterPhysicsLoopUpdate() {
 		for (auto& component : components) {
-			component->FrameEndingControl();
+			component->AfterPhysicsLoopUpdate();
 		}
 	}
 

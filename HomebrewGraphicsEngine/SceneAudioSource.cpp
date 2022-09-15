@@ -54,12 +54,12 @@ namespace Hogra {
 		loop = _loop;
 	}
 
-	void SceneAudioSource::Control(float dt)
+	void SceneAudioSource::EarlyPhysicsUpdate(float dt)
 	{
 
 	}
 
-	void SceneAudioSource::Update(float dt)
+	void SceneAudioSource::Update()
 	{
 		if (nullptr != positionProvider) {
 			position = positionProvider->GetPosition();

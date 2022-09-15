@@ -3,98 +3,89 @@
 #include "GUI.h"
 #include <iostream>
 #include "FirstPersonControl.h"
+#include "ControlActionManager.h"
 
 namespace Hogra {
 
-	void MoveAvatarForward::execute(Scene* scene, float dt)
+	void MoveAvatarForward::Execute(Scene& scene)
 	{
-		auto* control = scene->getAvatarControl();
+		auto* control = scene.getAvatarControl();
 		if (nullptr != control) {
-			control->moveForward(dt);
+			control->MoveForward();
 		}
 	}
 
-	void MoveAvatarBackward::execute(Scene* scene, float dt)
+	void MoveAvatarBackward::Execute(Scene& scene)
 	{
-		auto* control = scene->getAvatarControl();
+		auto* control = scene.getAvatarControl();
 		if (nullptr != control) {
-			control->moveBackward(dt);
+			control->MoveBackward();
 		}
 	}
 
-	void MoveAvatarRight::execute(Scene* scene, float dt)
+	void MoveAvatarRight::Execute(Scene& scene)
 	{
-		auto* control = scene->getAvatarControl();
+		auto* control = scene.getAvatarControl();
 		if (nullptr != control) {
-			control->moveRight(dt);
+			control->MoveRight();
 		}
 	}
 
-	void MoveAvatarLeft::execute(Scene* scene, float dt)
+	void MoveAvatarLeft::Execute(Scene& scene)
 	{
-		auto* control = scene->getAvatarControl();
+		auto* control = scene.getAvatarControl();
 		if (nullptr != control) {
-			control->moveLeft(dt);
+			control->MoveLeft();
 		}
 	}
 
-	void MoveAvatarUp::execute(Scene* scene, float dt)
+	void MoveAvatarUp::Execute(Scene& scene)
 	{
-		auto* control = scene->getAvatarControl();
+		auto* control = scene.getAvatarControl();
 		if (nullptr != control) {
-			control->moveUp(dt);
+			control->MoveUp();
 		}
 	}
 
-	void MoveAvatarDown::execute(Scene* scene, float dt)
+	void MoveAvatarDown::Execute(Scene& scene)
 	{
-		auto* control = scene->getAvatarControl();
+		auto* control = scene.getAvatarControl();
 		if (nullptr != control) {
-			control->moveDown(dt);
+			control->MoveDown();
 		}
 	}
 
-	void ToggleGUI::execute(Scene* scene, float dt)
+	void ToggleGUI::Execute(Scene& scene)
 	{
 		GUI::getInstance()->setVisible(!(GUI::getInstance()->isVisible()));
 	}
 
-	void FastForward::execute(Scene* scene, float dt)
+	void TogglePause::Execute(Scene& scene)
 	{
-		scene->Update(dt * 100.0f);
+		scene.TogglePause();
 	}
 
-	void Rewind::execute(Scene* scene, float dt)
-	{
-		scene->Update(dt * -100.0f);
-	}
-
-	void TogglePause::execute(Scene* scene, float dt)
-	{
-		scene->TogglePause();
-	}
-
-	void ToggleFullScreenMode::execute(Scene* scene, float dt)
+	void ToggleFullScreenMode::Execute(Scene& scene)
 	{
 		Callbacks::toggleFullScreen();
 	}
 
-	int ControlAction::getKey() const
+	int ButtonKeyAction::getKey() const
 	{
 		return key;
 	}
 
-	void ControlAction::onPress(int _key, int _scancode, int _mods)
+	void ButtonKeyAction::OnPress(int _key, int _scancode, int _mods)
 	{
 		pressed = true;
 	}
 
-	void ControlAction::onRelease(int _key, int _scancode, int _mods)
+	void ButtonKeyAction::OnRelease(int _key, int _scancode, int _mods)
 	{
 		pressed = false;
 	}
 
-	bool ControlAction::isTriggering()
+	bool ButtonKeyAction::PopIsTriggering()
 	{
 		bool trigger;
 		switch (triggerType)
@@ -115,36 +106,58 @@ namespace Hogra {
 		pressedPreviously = pressed;
 		return trigger;
 	}
-	void JumpAvatar::execute(Scene* scene, float dt)
+	void JumpAvatar::Execute(Scene& scene)
 	{
-		auto* control = (FirstPersonControl*)scene->getAvatarControl();
+		auto* control = (FirstPersonControl*)scene.getAvatarControl();
 		if (nullptr != control) {
  			control->Jump();
 		}
 	}
-	void ToggleDebugInfo::execute(Scene* scene, float dt)
+	void ToggleDebugInfo::Execute(Scene& scene)
 	{
-		scene->setDrawDebug(!scene->getDrawDebug());
+		scene.setDrawDebug(!scene.getDrawDebug());
 	}
-	void PrimaryAction::execute(Scene* scene, float dt)
+	void PrimaryAction::Execute(Scene& scene)
 	{
-		auto* control = (FirstPersonControl*)scene->getAvatarControl();
+		auto* control = (FirstPersonControl*)scene.getAvatarControl();
 		if (nullptr != control) {
-			control->primaryAction(dt);
+			control->primaryAction();
 		}
 	}
 
-	void RestartAction::execute(Scene* scene, float dt)
+	void RestartAction::Execute(Scene& scene)
 	{
 		SceneChange change;
 		change.changeType = SceneChange::ChangeType::restartScene;
-		scene->SetSceneChange(change);
+		scene.SetSceneChange(change);
 	}
 
-	void QuitAction::execute(Scene* scene, float dt)
+	void QuitAction::Execute(Scene& scene)
 	{
 		SceneChange change;
 		change.changeType = SceneChange::ChangeType::quit;
-		scene->SetSceneChange(change);
+		scene.SetSceneChange(change);
+	}
+
+	bool AxisMoveAction::PopIsTriggering()
+	{
+		auto temp = movedInThisFrame;
+		movedInThisFrame = false;
+		return temp;
+	}
+
+	void AxisMoveAction::OnMove(const glm::vec2& _pixPos)
+	{
+		this->pixDelta = _pixPos - this->pixPos;
+		this->pixPos = _pixPos;
+		movedInThisFrame = true;
+	}
+	void CameraMoveAction::Execute(Scene& scene)
+	{
+		scene.getAvatarControl()->Rotate(-(pixPos - glm::vec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight) * 0.5f)* 0.01f);
+	}
+	void SecondaryAction::Execute(Scene& scene)
+	{
+		// Todo
 	}
 }

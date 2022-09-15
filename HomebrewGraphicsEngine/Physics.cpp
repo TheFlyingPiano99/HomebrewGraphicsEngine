@@ -9,12 +9,11 @@ namespace Hogra {
 		return instance;
 	}
 
-	void Physics::Control(float dtSec)
+	void Physics::EarlyPhysicsUpdate(float dtSec)
 	{
-
 	}
 
-	void Physics::Update(float dtSec)
+	void Physics::LatePhysicsUpdate(float dtSec)
 	{
 		if (!forcedPositionOffsets.empty()) {
 			glm::vec3 sumOffset = glm::vec3(0.0f);	// Position offset constraints
@@ -68,6 +67,10 @@ namespace Hogra {
 		appliedTransientTorque = glm::vec3(0.0f, 0.0f, 0.0f);
 		impulse = glm::vec3(0.0f, 0.0f, 0.0f);
 		impulseAsIntegratedTorque = glm::vec3(0.0f, 0.0f, 0.0f);
+	}
+
+	void Physics::Update()
+	{
 	}
 
 	void Physics::Collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal) {

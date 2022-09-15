@@ -234,7 +234,7 @@ namespace Hogra {
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
 		obj->addComponent(collider);
-		obj->Update(0.0f, scene->GetCamera());
+		obj->Update();
 		scene->AddCollider(collider);
 		scene->AddSceneObject(obj, "cube");
 	}
@@ -528,5 +528,16 @@ namespace Hogra {
 		auto sceneSource = SceneAudioSource::Instantiate();
 		sceneSource->Init(source);
 		return sceneSource;
+	}
+
+	Scene* SceneFactory::LoadSceneFromFile(const std::string& fileName)
+	{
+		// Not working source files missing!
+		//YAML::Node sceneNode = YAML::LoadFile(AssetFolderPathManager::getInstance()->getScenesFolderPath().append(fileName));
+		
+		// TODO
+
+		Scene* scene = new Scene();
+		return scene;
 	}
 }

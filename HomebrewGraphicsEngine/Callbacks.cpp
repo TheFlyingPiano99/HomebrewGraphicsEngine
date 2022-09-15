@@ -53,51 +53,28 @@ namespace Hogra {
 	void Callbacks::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-			ControlActionManager::getInstance()->onPress(key, scancode, mods);
+			ControlActionManager::getInstance()->OnPress(key, scancode, mods);
 		}
 		else if (action == GLFW_RELEASE) {
-			ControlActionManager::getInstance()->onRelease(key, scancode, mods);
+			ControlActionManager::getInstance()->OnRelease(key, scancode, mods);
 		}
 	}
 
 	void Callbacks::onMouseMove(GLFWwindow* window, double xpos, double ypos)
 	{
+		double pixMouseX;
+		double pixMouseY;
+		// Fetches the coordinates of the cursor
+		glfwGetCursorPos(window, &pixMouseX, &pixMouseY);
+		ControlActionManager::getInstance()->OnMouseMove(glm::vec2(pixMouseX, pixMouseY));
 
-		// Handles mouse inputs
-		if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-		{
-
-			// Hides mouse cursor
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
-			// Prevents camera from jumping on the first click
-			if (firstClick)
-			{
-				glfwSetCursorPos(window, (GlobalVariables::windowWidth / 2), (GlobalVariables::windowHeight / 2));
-				firstClick = false;
-			}
-			// Stores the coordinates of the cursor
-			double mouseX;
-			double mouseY;
-			// Fetches the coordinates of the cursor
-			glfwGetCursorPos(window, &mouseX, &mouseY);
-
-			float ndcDeltaX = (float)mouseX / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
-			float ndcDeltaY = (float)mouseY / (float)GlobalVariables::windowHeight * 2.0f - 1.0f;
-			auto* avatarControl = SceneManager::getInstance()->getScene()->getAvatarControl();
-			if (avatarControl != nullptr) {
-				avatarControl->Rotate(-ndcDeltaX, -ndcDeltaY);
-			}
-
+		if (!ControlActionManager::getInstance()->IsCursorVisible()) {
 			// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
 			glfwSetCursorPos(window, (GlobalVariables::windowWidth / 2), (GlobalVariables::windowHeight / 2));
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 		}
-		else if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_RELEASE)
-		{
-			// Unhides cursor since camera is not looking around anymore
+		else {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			// Makes sure the next time the camera looks around it doesn't jump
-			firstClick = true;
 		}
 	}
 
@@ -110,25 +87,23 @@ namespace Hogra {
 	{
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-		glm::vec2 ndcCoords;
-		ndcCoords.x = (float)xpos / (float)GlobalVariables::windowWidth * 2.0f - 1.0f;
-		ndcCoords.y = 1.0f - (float)ypos / (float)GlobalVariables::windowHeight * 2.0f;
+		glm::vec2 pixPos(xpos, ypos);
 		if (button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			if (GLFW_PRESS == action) {
-				ControlActionManager::getInstance()->OnMouseLeftButtonPress(ndcCoords);
+				ControlActionManager::getInstance()->OnMouseLeftButtonPress(pixPos);
 			}
 			else if (GLFW_RELEASE == action) {
-				ControlActionManager::getInstance()->OnMouseLeftButtonRelease(ndcCoords);
+				ControlActionManager::getInstance()->OnMouseLeftButtonRelease(pixPos);
 			}
 		}
 		if (button == GLFW_MOUSE_BUTTON_RIGHT)
 		{
 			if (GLFW_PRESS == action) {
-				ControlActionManager::getInstance()->OnMouseRightButtonPress(ndcCoords);
+				ControlActionManager::getInstance()->OnMouseRightButtonPress(pixPos);
 			}
 			else if (GLFW_RELEASE == action) {
-				ControlActionManager::getInstance()->OnMouseRightButtonRelease(ndcCoords);
+				ControlActionManager::getInstance()->OnMouseRightButtonRelease(pixPos);
 			}
 		}
 	}

@@ -4,47 +4,59 @@ namespace Hogra {
 
 	ControlActionManager* ControlActionManager::instance = nullptr;
 
-	void ControlActionManager::onPress(const int _key, const int _scancode, const int _mods)
+	void ControlActionManager::OnPress(const int _key, const int _scancode, const int _mods)
 	{
 		auto iter = registeredKeyActions.find(_key);
 		if (iter != registeredKeyActions.end()) {
-			iter->second->onPress(_key, _scancode, _mods);
+			iter->second->OnPress(_key, _scancode, _mods);
 		}
 	}
 
-	void ControlActionManager::onRelease(const int _key, const int _scancode, const int _mods)
+	void ControlActionManager::OnRelease(const int _key, const int _scancode, const int _mods)
 	{
 		auto iter = registeredKeyActions.find(_key);
 		if (iter != registeredKeyActions.end()) {
-			iter->second->onRelease(_key, _scancode, _mods);
+			iter->second->OnRelease(_key, _scancode, _mods);
 		}
 	}
 
-	void ControlActionManager::OnMouseLeftButtonPress(const glm::vec2& ndcCoords)
+	void ControlActionManager::OnMouseLeftButtonPress(const glm::vec2& pixCoords)
 	{
 		if (nullptr != leftMouseButtonAction) {
-			leftMouseButtonAction->onPress(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+			leftMouseButtonAction->OnPress(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
 		}
 	}
 
-	void ControlActionManager::OnMouseLeftButtonRelease(const glm::vec2& ndcCoords)
+	void ControlActionManager::OnMouseLeftButtonRelease(const glm::vec2& pixCoords)
 	{
 		if (nullptr != leftMouseButtonAction) {
-			leftMouseButtonAction->onRelease(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+			leftMouseButtonAction->OnRelease(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
 		}
 	}
 
-	void ControlActionManager::OnMouseRightButtonPress(const glm::vec2& ndcCoords)
+	void ControlActionManager::OnMouseRightButtonPress(const glm::vec2& pixCoords)
 	{
-
+		if (nullptr != rightMouseButtonAction) {
+			rightMouseButtonAction->OnPress(GLFW_MOUSE_BUTTON_RIGHT, 0, 0);
+		}
 	}
 
-	void ControlActionManager::OnMouseRightButtonRelease(const glm::vec2& ndcCoords)
+	void ControlActionManager::OnMouseRightButtonRelease(const glm::vec2& pixCoords)
 	{
-
+		if (nullptr != rightMouseButtonAction) {
+			rightMouseButtonAction->OnRelease(GLFW_MOUSE_BUTTON_RIGHT, 0, 0);
+		}
 	}
 
-	void ControlActionManager::clearQueue()
+	void ControlActionManager::OnMouseMove(const glm::vec2& pixPos)
+	{
+		if (nullptr == mouseMoveAction) {
+			return;
+		}
+		mouseMoveAction->OnMove(pixPos);
+	}
+
+	void ControlActionManager::ClearQueue()
 	{
 		while (!queuedActions.empty()) {
 			queuedActions.pop();
@@ -53,49 +65,71 @@ namespace Hogra {
 
 	void ControlActionManager::QueueTriggeringActions()
 	{
+
+		// Keyboard:
 		for (auto& pair : registeredKeyActions) {
-			if (pair.second->isTriggering()) {
+			if (pair.second->PopIsTriggering()) {
 				queuedActions.push(pair.second);
 			}
 		}
-		if (nullptr!= leftMouseButtonAction && leftMouseButtonAction->isTriggering()) {
+
+		// Mouse:
+		if (nullptr!= leftMouseButtonAction && leftMouseButtonAction->PopIsTriggering()) {
 			queuedActions.push(leftMouseButtonAction);
+		}
+		if (nullptr != rightMouseButtonAction && rightMouseButtonAction->PopIsTriggering()) {
+			queuedActions.push(rightMouseButtonAction);
+		}
+		if (nullptr != mouseMoveAction && mouseMoveAction->PopIsTriggering()) {
+			queuedActions.push(mouseMoveAction);
 		}
 	}
 
 	void ControlActionManager::RegisterDefault()
 	{
-		registerAction(new MoveAvatarForward());
-		registerAction(new MoveAvatarBackward());
-		registerAction(new MoveAvatarRight());
-		registerAction(new MoveAvatarLeft());
-		registerAction(new MoveAvatarUp());
-		registerAction(new MoveAvatarDown());
-		registerAction(new ToggleGUI());
-		registerAction(new TogglePause());
-		registerAction(new ToggleFullScreenMode());
-		registerAction(new JumpAvatar());
-		registerAction(new ToggleDebugInfo());
-		registerAction(new RestartAction());
-		registerAction(new QuitAction());
+		RegisterAction(new MoveAvatarForward());
+		RegisterAction(new MoveAvatarBackward());
+		RegisterAction(new MoveAvatarRight());
+		RegisterAction(new MoveAvatarLeft());
+		RegisterAction(new MoveAvatarUp());
+		RegisterAction(new MoveAvatarDown());
+		RegisterAction(new ToggleGUI());
+		RegisterAction(new TogglePause());
+		RegisterAction(new ToggleFullScreenMode());
+		RegisterAction(new JumpAvatar());
+		RegisterAction(new ToggleDebugInfo());
+		RegisterAction(new RestartAction());
+		RegisterAction(new QuitAction());
 
 		leftMouseButtonAction = new PrimaryAction();
+		rightMouseButtonAction = new SecondaryAction();
+		mouseMoveAction = new CameraMoveAction();
 	}
 
-	void ControlActionManager::registerAction(ControlAction* toRegister)
+	void ControlActionManager::SetCursorVisible(bool b)
+	{
+		isCursorVisible = b;
+	}
+
+	bool ControlActionManager::IsCursorVisible()
+	{
+		return isCursorVisible;
+	}
+
+	void ControlActionManager::RegisterAction(ButtonKeyAction* toRegister)
 	{
 		registeredKeyActions.emplace(toRegister->getKey(), toRegister);
 	}
 
-	void ControlActionManager::deregisterAction(ControlAction* toDeregister)
+	void ControlActionManager::UnregisterAction(ButtonKeyAction* toDeregister)
 	{
 		registeredKeyActions.erase(toDeregister->getKey());
 	}
 
-	ControlAction* ControlActionManager::popNextQueuedAction()
+	AbstractControlAction* ControlActionManager::PopNextQueuedAction()
 	{
 		if (!queuedActions.empty()) {
-			ControlAction* toReturn = queuedActions.front();
+			AbstractControlAction* toReturn = queuedActions.front();
 			queuedActions.pop();
 			return toReturn;
 		}

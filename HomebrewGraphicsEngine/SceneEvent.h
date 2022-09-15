@@ -8,7 +8,7 @@ namespace Hogra {
 	public:
 		virtual ~SceneEvent() = default;
 
-		virtual void execute(Scene* scene, float dt) = 0;
+		virtual void Execute(Scene& scene) = 0;
 
 	};
 }

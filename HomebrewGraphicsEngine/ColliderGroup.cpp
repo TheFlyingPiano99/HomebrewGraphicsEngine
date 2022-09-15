@@ -195,9 +195,9 @@ void Hogra::ColliderGroup::GatherInstanceDataForDebug(std::vector<Geometry::Inst
 {
 	glm::vec3 min = aabb.getMin();
 	glm::vec3 max = aabb.GetMax();
-	glm::vec3 center = (min + max) / 2.0f;
+	glm::vec3 lookAt = (min + max) / 2.0f;
 	Geometry::InstanceData d;
-	d.modelMatrix = glm::translate(center) * glm::scale((max - min) / 2.0f);
+	d.modelMatrix = glm::translate(lookAt) * glm::scale((max - min) / 2.0f);
 	data.push_back(d);
 	for (auto& group : subGroups) {
 		group->GatherInstanceDataForDebug(data);

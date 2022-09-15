@@ -84,7 +84,7 @@ namespace glm
 	}
 
 	template<typename T, qualifier Q, typename U>
-	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> pickMatrix(vec<2, T, Q> const& center, vec<2, T, Q> const& delta, vec<4, U, Q> const& viewport)
+	GLM_FUNC_QUALIFIER mat<4, 4, T, Q> pickMatrix(vec<2, T, Q> const& lookAt, vec<2, T, Q> const& delta, vec<4, U, Q> const& viewport)
 	{
 		assert(delta.x > static_cast<T>(0) && delta.y > static_cast<T>(0));
 		mat<4, 4, T, Q> Result(static_cast<T>(1));
@@ -93,8 +93,8 @@ namespace glm
 			return Result; // Error
 
 		vec<3, T, Q> Temp(
-			(static_cast<T>(viewport[2]) - static_cast<T>(2) * (center.x - static_cast<T>(viewport[0]))) / delta.x,
-			(static_cast<T>(viewport[3]) - static_cast<T>(2) * (center.y - static_cast<T>(viewport[1]))) / delta.y,
+			(static_cast<T>(viewport[2]) - static_cast<T>(2) * (lookAt.x - static_cast<T>(viewport[0]))) / delta.x,
+			(static_cast<T>(viewport[3]) - static_cast<T>(2) * (lookAt.y - static_cast<T>(viewport[1]))) / delta.y,
 			static_cast<T>(0));
 
 		// Translate and scale the picked region to the entire window
