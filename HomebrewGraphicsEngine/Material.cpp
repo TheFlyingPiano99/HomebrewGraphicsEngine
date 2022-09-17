@@ -48,7 +48,7 @@ namespace Hogra {
 		textures.clear();
 	}
 
-	ShaderProgram* Material::getShaderProgram() const
+	ShaderProgram* Material::GetShaderProgram() const
 	{
 		return program;
 	}

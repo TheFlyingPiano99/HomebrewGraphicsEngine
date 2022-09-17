@@ -36,7 +36,7 @@ namespace Hogra {
 		void addTexture(Texture* texture);
 		void clearTextures();
 
-		ShaderProgram* getShaderProgram() const;
+		ShaderProgram* GetShaderProgram() const;
 
 		std::span<Texture*> getTextures();
 

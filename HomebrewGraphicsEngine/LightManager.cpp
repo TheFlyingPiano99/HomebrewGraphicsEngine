@@ -71,4 +71,8 @@ namespace Hogra {
 			light->Update();
 		}
 	}
+	const Texture2D& LightManager::GetDepthTexture()
+	{
+		return deferredLightingSystem.GetDepthTexture();
+	}
 }

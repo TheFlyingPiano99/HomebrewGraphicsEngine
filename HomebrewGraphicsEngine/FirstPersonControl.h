@@ -108,8 +108,8 @@ namespace Hogra {
 
 		//Camera rotation:
 		glm::vec2 headRotationDelta;
-		float rotationSpeed = 5.0f;
-		float rotationSlowDown = 0.6f;
+		float rotationSpeed = 0.25f;
+		float rotationSlowDown = 0.4f;
 
 		float tSinceLastInput = 0.0f;
 	};

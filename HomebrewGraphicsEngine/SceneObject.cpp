@@ -64,7 +64,7 @@ namespace Hogra {
 			return;
 		}
 		mesh->Bind();
-		exportMatrices(*(mesh->getMaterial()->getShaderProgram()));
+		exportMatrices(*(mesh->getMaterial()->GetShaderProgram()));
 		mesh->Draw();
 	}
 

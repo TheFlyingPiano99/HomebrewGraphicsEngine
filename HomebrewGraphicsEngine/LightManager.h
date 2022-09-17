@@ -22,7 +22,7 @@ namespace Hogra {
 			deferredLightingSystem.Init(contextWidth, contextHeight);
 		}
 
-		void onResize(int contextWidth, int contextHeight) {
+		void OnResize(int contextWidth, int contextHeight) {
 			deferredLightingSystem.Resize(contextWidth, contextHeight);
 		}
 
@@ -41,6 +41,8 @@ namespace Hogra {
 		void Clear();
 		
 		void Update();
+
+		const Texture2D& GetDepthTexture();
 
 	private:
 		std::vector<Light*> lights;

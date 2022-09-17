@@ -37,10 +37,10 @@ void Hogra::Caption::Draw() {
 	texture->Bind();
 	glm::vec2 pos = screenPosition;
 	if (placing == CaptionPlacing::centeredText) {
-		pos.x -= scale * texture->getDimensions().x / 2.0f;
+		pos.x -= scale * (float)texture->getDimensions().x / 2.0f;
 	}
 	else if (placing == CaptionPlacing::rightAligned) {
-		pos.x -= scale * texture->getDimensions().x;
+		pos.x -= scale * (float)texture->getDimensions().x;
 	}
 	glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::renderResolutionWidth, 0.0f, (float)GlobalVariables::renderResolutionHeight)
 		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(glm::vec3(scale));
@@ -56,7 +56,16 @@ void Hogra::Caption::Draw() {
 	texture->Unbind();
 }
 
+const std::string& Hogra::Caption::GetText() {
+	return text;
+}
+
 void Hogra::Caption::EarlyPhysicsUpdate(float dt)
+{
+	;
+}
+
+void Hogra::Caption::LatePhysicsUpdate(float dt)
 {
 	;
 }
@@ -64,4 +73,16 @@ void Hogra::Caption::EarlyPhysicsUpdate(float dt)
 void Hogra::Caption::Update()
 {
 	;
+}
+
+Hogra::ShaderProgram* Hogra::Caption::GetShaderProgram() const {
+	return program;
+}
+
+bool Hogra::Caption::IsVisible() const {
+	return isVisible;
+}
+
+void Hogra::Caption::SetIsVisible(bool b) {
+	isVisible = b;
 }

@@ -31,7 +31,7 @@ namespace Hogra {
 
 		void OnMouseRightButtonRelease(const glm::vec2& pixCoords);
 
-		void OnMouseMove(const glm::vec2& pixCoords);
+		void OnMouseMove(const glm::vec2& pixPos, bool isFirst);
 
 		/*
 		* Register new controlAction

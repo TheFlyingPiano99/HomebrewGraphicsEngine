@@ -6,10 +6,10 @@ in VS_OUT {
     vec4 rayDir;
 } fs_in;
 
-uniform sampler2D screen;
+layout(binding=0) uniform sampler2D screenColor;
 
 
-vec3 ACESFilm(vec3 x)
+vec3 acesTonemap_simple(vec3 x)
 {
     float a = 2.51f;
     float b = 0.03f;
@@ -41,7 +41,7 @@ void main()
 {   
     const float gamma = 1.0;
     const float exposure = 1.0;
-    vec3 hdrColor = texture(screen, fs_in.texCoords).rgb;
+    vec3 hdrColor = texture(screenColor, fs_in.texCoords).rgb;
  	float brightness = dot(hdrColor, vec3(0.2126, 0.7152, 0.0722));
     // exposure and tone mapping:
     vec3 mapped = acesTonemap(hdrColor);

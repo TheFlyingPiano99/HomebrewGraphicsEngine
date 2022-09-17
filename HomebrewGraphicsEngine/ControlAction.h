@@ -51,11 +51,12 @@ namespace Hogra {
 
 		bool PopIsTriggering();
 
-		void OnMove(const glm::vec2& pixPos);
+		void OnMove(const glm::vec2& _pixPos, bool isFirst = false);
 
 	protected:
 		glm::vec2 pixDelta;
 		glm::vec2 pixPos;
+		glm::vec2 cumulatedDelta;
 		bool movedInThisFrame;
 	};
 

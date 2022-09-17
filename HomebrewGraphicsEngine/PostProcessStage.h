@@ -3,38 +3,42 @@
 #include "Mesh.h"
 #include "AssetFolderPathManager.h"
 #include "GeometryFactory.h"
+#include "UniformVariable.h"
 
 namespace Hogra {
 
 	class PostProcessStage
 	{
 	public:
+
+		PostProcessStage();
+
 		PostProcessStage(std::string& fragmentShaderPath, int contextWidth, int contextHeight);
 
-		~PostProcessStage() {
+		virtual ~PostProcessStage() {
 			fbo.Delete();
 		}
 
-		void Bind() const;
-		void Draw(const FBO& fbo) const;
-		const FBO& getFBO() const;
+		virtual void Bind();
+		virtual void Draw(const FBO& nextTargetFbo, const Texture2D& depthTexture);
+		virtual const FBO& GetFBO() const;
 
-		void onResize(int contextWidth, int contextHeight);
+		virtual void OnResize(unsigned int contextWidth, unsigned int contextHeight);
 
-		void setActive(bool _active);
+		void SetActive(bool _active);
 
-		const Texture2D& getColorTexture() const {
-			return colorTexture;
-		}
+		const Texture2D& GetColorTexture() const;
 
-	private:
+		void AddUniformVariable(AbstractUniformVariable* variable);
+
+	protected:
 		FBO fbo;
 		Mesh* mesh = nullptr;
 		Texture2D colorTexture;
-		Texture2D depthTexture;
 		ShaderProgram program;
 		Material* material;
 		bool active = true;
+		std::vector<AbstractUniformVariable*> uniformVariables;
 	};
 
 }

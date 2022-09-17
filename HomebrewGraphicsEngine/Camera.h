@@ -24,7 +24,7 @@ namespace Hogra {
 		// Updates the camera matrix to the Vertex Shader
 		void LatePhysicsUpdate(float dt);
 
-		void updateOrientation(glm::vec3 prefUp);
+		void UpdatePreferedUp(glm::vec3 prefUp);
 
 		/*
 		* Load data on GPU.
@@ -101,7 +101,7 @@ namespace Hogra {
 			return prefUp;
 		}
 
-		glm::quat GetOrientation() {
+		glm::quat GetOrientation() const {
 			return quat_cast(glm::inverse(view));
 		}
 
@@ -124,9 +124,9 @@ namespace Hogra {
 	private:
 		UniformBufferObject ubo;
 		// Stores the main vectors of the camera
-		glm::vec3 eye;
-		glm::vec3 lookAt = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 prefUp = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 eye;										// The position of the virtual viewers eye
+		glm::vec3 lookAt = glm::vec3(0.0f, 0.0f, 0.0f);		// A point in world-space that the camera is looking at
+		glm::vec3 prefUp = glm::vec3(0.0f, 1.0f, 0.0f);		// A unit vector pointing in the prefered "up" direction
 		glm::vec3 lookDir = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
 		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);

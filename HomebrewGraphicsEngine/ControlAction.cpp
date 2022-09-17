@@ -146,15 +146,19 @@ namespace Hogra {
 		return temp;
 	}
 
-	void AxisMoveAction::OnMove(const glm::vec2& _pixPos)
+	void AxisMoveAction::OnMove(const glm::vec2& _pixPos, bool isFirst)
 	{
+		if (isFirst) {
+			this->pixPos = glm::vec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight) / 2.0f;
+		}
 		this->pixDelta = _pixPos - this->pixPos;
 		this->pixPos = _pixPos;
 		movedInThisFrame = true;
 	}
 	void CameraMoveAction::Execute(Scene& scene)
 	{
-		scene.getAvatarControl()->Rotate(-(pixPos - glm::vec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight) * 0.5f)* 0.01f);
+		//scene.getAvatarControl()->Rotate(-(pixPos - glm::vec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight) * 0.5f)* 0.01f);
+		scene.getAvatarControl()->Rotate(-pixDelta);
 	}
 	void SecondaryAction::Execute(Scene& scene)
 	{

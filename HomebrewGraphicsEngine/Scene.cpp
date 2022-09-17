@@ -29,9 +29,21 @@ namespace Hogra {
 
 	void Scene::initPostProcessStages()
 	{
-		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+		timeSpent.Init("time", 0.0f);
+		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage0);
+		auto* bloom = new Bloom();
+		bloom->Init(contextWidth, contextHeight);
+		postProcessStages.push_back(bloom);
+		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+			contextWidth, contextHeight);
+		postProcessStages.push_back(stage1);
+		auto* stage2 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("tapeEffect.frag"),
+			contextWidth, contextHeight);
+		stage2->AddUniformVariable(&timeSpent);
+		postProcessStages.push_back(stage2);
+
 		//auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
 		//	contextWidth, contextHeight);
 		//postProcessStages.push_back(stage1);
@@ -57,7 +69,6 @@ namespace Hogra {
 		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(-9.0f, 10.0f, -9.0f));
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
 		lightManager.initDebug();
-		bloom.Init(contextWidth, contextHeight);
 		initPostProcessStages();
 		collisionManager.InitDebug();
 	}
@@ -111,7 +122,7 @@ namespace Hogra {
 	void Scene::PhysicsUpdate(float dt)
 	{
 		collisionManager.Collide();
-
+		timeSpent.Set(timeSpent.Get() + dt);
 		for (auto& obj : sceneObjects) {
 			obj->EarlyPhysicsUpdate(dt);
 		}
@@ -170,7 +181,7 @@ namespace Hogra {
 		for (auto& group : instanceGroups) {
 			group.second->Draw();
 		}
-		bloom.Bind();
+		postProcessStages[0]->Bind();
 		// Deferred lighting pass:
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 		glClearDepth(1);
@@ -182,16 +193,13 @@ namespace Hogra {
 		glStencilMask(0x00);
 
 		lightManager.renderDeferredLighting();
-
-		bloom.Draw(postProcessStages[0]->getFBO());
-
 		// Post-process pass:
 		for (int i = 0; i < postProcessStages.size(); i++) {
 			if (i < postProcessStages.size() - 1) {
-				postProcessStages[i]->Draw(postProcessStages[i + 1]->getFBO());
+				postProcessStages[i]->Draw(postProcessStages[i + 1]->GetFBO(), lightManager.GetDepthTexture());
 			}
 			else {
-				postProcessStages[i]->Draw(FBO::getDefault());
+				postProcessStages[i]->Draw(FBO::getDefault(), lightManager.GetDepthTexture());
 			}
 		}
 
@@ -265,7 +273,7 @@ namespace Hogra {
 		if (!captions.empty() && std::find(captions.begin(), captions.end(), caption) != captions.end()) {
 			return;
 		}
-		auto* shader = caption->getShaderProgram();
+		auto* shader = caption->GetShaderProgram();
 		auto shaderIter = std::find(shaders.begin(), shaders.end(), shader);
 		if (shader != nullptr && shaderIter == shaders.end()) {
 			shaders.push_back(shader);
@@ -301,11 +309,10 @@ namespace Hogra {
 		this->contextHeight = _contextHeight;
 		camera.setAspectRatio((float)_contextWidth / (float)_contextHeight);
 		for (auto& stage : postProcessStages) {
-			stage->onResize(_contextWidth, _contextHeight);
+			stage->OnResize(_contextWidth, _contextHeight);
 		}
 		camera.setMoved(true);
-		lightManager.onResize(_contextWidth, _contextHeight);
-		bloom.onResize(_contextWidth, _contextHeight);
+		lightManager.OnResize(_contextWidth, _contextHeight);
 	}
 
 	void Scene::Serialize()

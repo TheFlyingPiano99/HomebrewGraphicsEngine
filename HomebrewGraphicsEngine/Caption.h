@@ -24,25 +24,20 @@ namespace Hogra {
 
 		void Draw();
 
-		const std::string& getText() {
-			return text;
-		}
+		const std::string& GetText();
 
 		// Inherited via Component
 		void EarlyPhysicsUpdate(float dt) override;
+
+		void LatePhysicsUpdate(float dt) override;
+
 		void Update() override;
 
-		ShaderProgram* getShaderProgram() const {
-			return program;
-		}
+		ShaderProgram* GetShaderProgram() const;
 
-		bool IsVisible() const {
-			return isVisible;
-		}
+		bool IsVisible() const;
 
-		void setIsVisible(bool b) {
-			isVisible = b;
-		}
+		void SetIsVisible(bool b);
 
 		enum CaptionPlacing {
 			centeredText,

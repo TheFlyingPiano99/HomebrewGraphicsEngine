@@ -62,20 +62,27 @@ namespace Hogra {
 
 	void Callbacks::onMouseMove(GLFWwindow* window, double xpos, double ypos)
 	{
+		static bool prevCentered = false;
+		bool isFirst = false;
+		// Check if this is the first call with centered camera:
+		if (!ControlActionManager::getInstance()->IsCursorVisible() && !prevCentered) {
+			isFirst = true;
+			glfwSetCursorPos(window, (GlobalVariables::windowWidth / 2), (GlobalVariables::windowHeight / 2));
+		}
+		if (!ControlActionManager::getInstance()->IsCursorVisible()) {
+			// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			prevCentered = true;
+		}
+		else {
+			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			prevCentered = false;
+		}
 		double pixMouseX;
 		double pixMouseY;
 		// Fetches the coordinates of the cursor
 		glfwGetCursorPos(window, &pixMouseX, &pixMouseY);
-		ControlActionManager::getInstance()->OnMouseMove(glm::vec2(pixMouseX, pixMouseY));
-
-		if (!ControlActionManager::getInstance()->IsCursorVisible()) {
-			// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-			glfwSetCursorPos(window, (GlobalVariables::windowWidth / 2), (GlobalVariables::windowHeight / 2));
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-		}
-		else {
-			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
+		ControlActionManager::getInstance()->OnMouseMove(glm::vec2(pixMouseX, pixMouseY), isFirst);
 	}
 
 	void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)

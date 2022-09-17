@@ -18,7 +18,7 @@ namespace Hogra {
 		void Unbind() const;
 		void Delete();
 
-		void LinkTexture(GLenum attachment, Texture2D& texture, GLint level = 0);
+		void LinkTexture(GLenum attachment, const Texture2D& texture, GLint level = 0);
 
 		void LinkRBO(GLenum attachment, RBO& rbo);
 

@@ -28,7 +28,7 @@ namespace Hogra {
 		glDeleteFramebuffers(1, &ID);
 	}
 
-	void FBO::LinkTexture(GLenum attachment, Texture2D& texture, GLint level)
+	void FBO::LinkTexture(GLenum attachment, const Texture2D& texture, GLint level)
 	{
 		glm::ivec2 dim = texture.getDimensions() / (level + 1);
 		viewport = glm::vec4(0, 0, dim.x, dim.y);

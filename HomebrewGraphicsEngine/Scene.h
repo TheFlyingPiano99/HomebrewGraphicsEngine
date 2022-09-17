@@ -24,6 +24,8 @@
 #include "SceneChange.h"
 #include "AudioManager.h"
 #include "SceneAudioSource.h"
+#include "UniformVariable.h"
+
 
 namespace Hogra {
 
@@ -121,7 +123,6 @@ namespace Hogra {
 
 		Camera camera;
 		LightManager lightManager;
-		Bloom bloom;
 		AudioManager audioManager;
 		
 		//To deallocate:
@@ -135,6 +136,7 @@ namespace Hogra {
 		std::vector<PostProcessStage*> postProcessStages;
 
 		CollisionManager collisionManager;
+		UniformVariable<float> timeSpent;
 
 		bool pause = true;
 		unsigned int contextWidth;

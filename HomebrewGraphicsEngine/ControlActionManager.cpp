@@ -48,12 +48,12 @@ namespace Hogra {
 		}
 	}
 
-	void ControlActionManager::OnMouseMove(const glm::vec2& pixPos)
+	void ControlActionManager::OnMouseMove(const glm::vec2& pixPos, bool isFirst)
 	{
 		if (nullptr == mouseMoveAction) {
 			return;
 		}
-		mouseMoveAction->OnMove(pixPos);
+		mouseMoveAction->OnMove(pixPos, isFirst);
 	}
 
 	void ControlActionManager::ClearQueue()

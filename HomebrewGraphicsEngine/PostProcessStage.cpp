@@ -1,6 +1,9 @@
 #include "PostProcessStage.h"
 
 namespace Hogra {
+	PostProcessStage::PostProcessStage()
+	{
+	}
 
 	PostProcessStage::PostProcessStage(std::string& fragmentShaderPath, int contextWidth, int contextHeight) {
 		fbo.Init();
@@ -12,57 +15,63 @@ namespace Hogra {
 		);
 		program.Activate();
 		colorTexture.Init(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
-		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(contextWidth, contextHeight), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
 		material = Material::Instantiate();
 		material->Init(&program);
 		material->addTexture(&colorTexture);
-		material->addTexture(&depthTexture);
 		mesh = Mesh::Instantiate();
 		mesh->Init(material, GeometryFactory::GetInstance()->getFullScreenQuad());
 		mesh->setDepthTest(false);
 		mesh->setStencilTest(false);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);
-		fbo.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
 		fbo.Unbind();
 		//RBO stencilRBO(GL_STENCIL_COMPONENTS, contextWidth, contextHeight);
 		//fbo.LinkRBO(GL_STENCIL_ATTACHMENT, stencilRBO);
 	}
 
-	void PostProcessStage::Bind() const
+	void PostProcessStage::Bind()
 	{
 		fbo.Bind();
 	}
 
-	void PostProcessStage::Draw(const FBO& nextTargetFbo) const
+	void PostProcessStage::Draw(const FBO& nextTargetFbo, const Texture2D& depthTexture)
 	{
 		nextTargetFbo.Bind();
 		mesh->Bind();
 		glDisable(GL_BLEND);
+		depthTexture.Bind();
+		for (auto& var : uniformVariables) {
+			var->Bind(*(mesh->getMaterial()->GetShaderProgram()));
+		}
 		mesh->Draw();
 	}
 
-	const FBO& PostProcessStage::getFBO() const
+	const FBO& PostProcessStage::GetFBO() const
 	{
 		return fbo;
 	}
 
-	void PostProcessStage::onResize(int contextWidth, int contextHeight)
+	void PostProcessStage::OnResize(unsigned int contextWidth, unsigned int contextHeight)
 	{
 		material->clearTextures();
 		colorTexture.Delete();
-		depthTexture.Delete();
 		
 		colorTexture.Init(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
-		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(contextWidth, contextHeight), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
 		material->addTexture(&colorTexture);
-		material->addTexture(&depthTexture);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);
-		fbo.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
 		fbo.Unbind();
 	}
 
-	void PostProcessStage::setActive(bool _active) {
+	void PostProcessStage::SetActive(bool _active) {
 		active = _active;
+	}
+
+	const Texture2D& PostProcessStage::GetColorTexture() const {
+		return colorTexture;
+	}
+
+	void PostProcessStage::AddUniformVariable(AbstractUniformVariable* variable)
+	{
+		uniformVariables.push_back(variable);
 	}
 
 }

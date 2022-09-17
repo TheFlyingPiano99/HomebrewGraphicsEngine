@@ -1,22 +1,24 @@
 ﻿#pragma once
+#include "PostProcessStage.h"
 #include "UniformBuffer.h"
 #include "ShaderProgram.h"
 #include "VAO.h"
 #include "VBO.h"
 #include "FBO.h"
 
+
 #define BLOOM_MIP_LEVELS 8
 
 
 namespace Hogra {
-	class Bloom
+	class Bloom : public PostProcessStage
 	{
 	public:
 		Bloom();
 
 		void Init(unsigned int width, unsigned int height);
 
-		void Draw(const FBO& outFBO);
+		void Draw(const FBO& outFBO, const Texture2D& depthTexture) override;
 
 		float getTreshold() const {
 			return treshold;
@@ -26,9 +28,9 @@ namespace Hogra {
 			treshold = _treshold;
 		}
 		
-		void onResize(unsigned int width, unsigned int height);
+		void OnResize(unsigned int width, unsigned int height) override;
 
-		void Bind();
+		void Bind() override;
 
 	private:
 		ShaderProgram prefilterProgram;
@@ -36,11 +38,9 @@ namespace Hogra {
 		ShaderProgram upSampleProgram;
 		ShaderProgram recombineProgram;
 		Texture2D hdrTexture;
-		Texture2D depthTexture;
 		Texture2D downScaledTextures[BLOOM_MIP_LEVELS];
 		VAO vao;
 		VBO vbo;
-		FBO fbo;
 		float treshold;
 		float falloff;
 		float mixBloom;

@@ -202,7 +202,7 @@ namespace Hogra {
         return texture;
     }
     
-    ShaderProgram* Font::getShaderProgram() const {
+    ShaderProgram* Font::GetShaderProgram() const {
         return shaderProgram;
     }
     
@@ -241,6 +241,6 @@ namespace Hogra {
             }
             x += (ch.advance >> 6); // bitshift by 6 to get value in pixels (2^6 = 64)
         }
-        return max - min;
+        return max - min + glm::ivec2(1);
     }
 }

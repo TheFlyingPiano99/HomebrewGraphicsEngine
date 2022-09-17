@@ -34,7 +34,6 @@ namespace Hogra {
             heapAllocatedInstances.clear();
         }
 
-
         class UnloadedFontException : public std::exception {
         };
 
@@ -57,7 +56,7 @@ namespace Hogra {
 
         Texture2D* RenderTextInTexture(const std::string& text);
             
-        ShaderProgram* getShaderProgram() const;
+        ShaderProgram* GetShaderProgram() const;
 
         glm::ivec2 GetTextDimension(const std::string& text, int& maxBaseline);
 

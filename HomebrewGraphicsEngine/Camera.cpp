@@ -39,10 +39,6 @@ namespace Hogra {
 		viewProjMatrix = projection * view;
 		invViewProjMatrix = glm::inverse(viewProjMatrix);
 		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye + animationOffset));
-		lookDir = normalize(lookAt - eye);
-		right = normalize(cross(lookDir, prefUp));
-		up = normalize(cross(right, lookDir));
-
 		bool prevMooved = moved;
 		moved = false;
 		return prevMooved;
@@ -54,21 +50,22 @@ namespace Hogra {
 			animation->perform(this, dt);
 		}
 		if (nullptr != positionProvider) {
-			lookDir = lookAt - eye;
 			eye = positionProvider->GetPosition() + positionInProvidersSpace;
 			lookAt = eye + lookDir;
 		}
 		if (nullptr != orientationProvider) {
-			lookDir = orientationProvider->GetOrientation() * lookDirInProvidersSpace;
+			lookDir = glm::normalize(orientationProvider->GetOrientation() * lookDirInProvidersSpace);
+			right = glm::cross(lookDir, prefUp);
+			up = glm::cross(right, lookDir);
 			lookAt = eye + lookDir;
 		}
 	}
 
-	void Camera::updateOrientation(glm::vec3 newPrefUp)
+	void Camera::UpdatePreferedUp(glm::vec3 newPrefUp)
 	{
-		right = glm::cross(normalize(lookAt - eye), newPrefUp);
-		lookAt = eye + glm::cross(newPrefUp, right);
 		prefUp = newPrefUp;
+		right = glm::cross(lookDir, prefUp);
+		up = glm::cross(right, lookDir);
 	}
 
 	void Camera::ExportData()
@@ -159,8 +156,13 @@ namespace Hogra {
 		auto possibleLookDir = normalize(rotYQuat * rotXQuat * lookDir);
 		if (abs(glm::dot(possibleLookDir, prefUp)) < 0.9f) {
 			lookDir = possibleLookDir;
-			lookAt = eye + lookDir;
 		}
+		else {
+			lookDir = normalize(rotYQuat * lookDir);
+		}
+		lookAt = eye + lookDir;
+		right = glm::cross(lookDir, prefUp);
+		up = glm::cross(right, lookDir);
 	}
 
 	void Camera::approachCenter(float delta)
@@ -174,4 +176,5 @@ namespace Hogra {
 		}
 		moved = true;
 	}
+
 }
