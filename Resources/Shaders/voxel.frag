@@ -1,50 +1,44 @@
 #version 420 core
 
+in vec3 modelPos;
+
 layout (location = 0) out vec4 FragColor;
-layout (location = 1) out vec4 FragOpacity;
-in vec2 texCoords;
 
-layout (binding = 0) uniform sampler3D voxels;
-layout (binding = 1) uniform sampler2D colorAttenuationTransfer;
-layout (binding = 2) uniform sampler2D enterTexture;
-layout (binding = 3) uniform sampler2D exitTexture;
-layout (binding = 4) uniform sampler2D opacityTexture;
-layout (binding = 5) uniform samplerCube skybox;
-layout (binding = 6) uniform sampler2D targetDepthTexture;
-
-layout (binding = 7) uniform sampler2D lightExitTexture0;
-layout (binding = 8) uniform sampler2D lightExitTexture1;
-layout (binding = 9) uniform sampler2D lightExitTexture2;
-layout (binding = 10) uniform sampler2D lightExitTexture3;
-layout (binding = 11) uniform sampler2D lightExitTexture4;
-layout (binding = 12) uniform sampler2D lightExitTexture5;
-layout (binding = 13) uniform sampler2D lightExitTexture6;
+layout (binding = 0) uniform sampler2D colorTexture;
+layout (binding = 1) uniform sampler2D depthTexture;
+layout (binding = 2) uniform sampler2D attenuationTexture;
+layout (binding = 3) uniform sampler3D voxels;
 
 uniform vec3 resolution;
-uniform mat4 modelMatrix;
-uniform mat4 invModelMatrix;
+
+struct SceneObject {
+	mat4 modelMatrix;
+	mat4 invModelMatrix;
+};
+uniform SceneObject sceneObject;
 
 uniform float shininess;
 uniform vec3 specularColor;
 uniform vec3 ambientColor;
 
-uniform unsigned int shadowSamples;
-uniform bool opacityMode;
-uniform float depth;
-uniform unsigned int stepCount;
-
-struct Camera {
-	mat4 viewProjMatrix;
+layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
+	vec3 cameraPosition;			// 16				0
+	mat4 viewProjMatrix;			// 16				16				(column 0)
+									// 16				32				(column 1)
+									// 16				48				(column 2)
+									// 16				64				(column 3)
+	mat4 rayDirMatrix;				// 16				80				(column 0)
+									// 16				96				(column 1)
+									// 16				192				(column 2)
+									// 16				208				(column 3)
 };
-uniform Camera camera;
 
 struct Light {
-	vec4 position;
+	vec3 position;
 	vec3 powerDensity;
 	mat4 viewProjMatrix;
 };
-uniform Light lights[16];
-uniform unsigned int lightCount;
+uniform Light light;
 
 float rand(vec2 n) { 
 	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
@@ -106,7 +100,7 @@ vec4 resampleGradientAndDensity(vec3 position, float intensity)
 	return vec4(sample1 - sample0, intensity);
 }
 
-
+/*
 vec3 calculateLightLevel(int lightIdx, vec3 modelPos, vec3 diffuseColor, vec3 specularColor, float shininess, Light light, vec3 gradient, vec3 modelEyePos) {
 	vec4 lightCameraSpaceCoord = light.viewProjMatrix * modelMatrix * vec4(modelPos, 1);
 	vec2 tex = (lightCameraSpaceCoord.xy / lightCameraSpaceCoord.w + vec2(1, 1)) / vec2(2.0, 2.0);
@@ -156,13 +150,15 @@ vec3 calculateLightLevel(int lightIdx, vec3 modelPos, vec3 diffuseColor, vec3 sp
 	return diffuseColor * intensity * diffuseCos 
 		+ specularColor * intensity * specularCos * length(gradient);
 }
+*/
 
+/*
 vec4 calculateColor(vec3 cameraRayStart, vec3 cameraRay) {
 	float rayLength = length(cameraRay);
 	vec3 currentPos = cameraRayStart + depth * cameraRay;
 
 	//	Calculating depth
-	vec4 camSpace = camera.viewProjMatrix * modelMatrix * vec4(currentPos, 1);
+	vec4 camSpace = viewProjMatrix * modelMatrix * vec4(currentPos, 1);
 	camSpace = camSpace / camSpace.w;
 	camSpace.z = 0.5 * (camSpace.z + 1);
 
@@ -187,9 +183,25 @@ vec4 calculateColor(vec3 cameraRayStart, vec3 cameraRay) {
 		return vec4(0.0);
 	}
 }
+*/
+
+vec3 simpleTransfer(float g, float i) {
+	float t = min(pow(i * 0.1, 0.5), 1.0);
+	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(1,0,0)) * i * 1.5;
+}
 
 void main() {	
-	vec3 start = texture(enterTexture, texCoords).xyz;
-	vec3 ray = texture(exitTexture, texCoords).xyz - start;
-	FragColor = calculateColor(start, ray);
+	//vec3 start = texture(enterTexture, texCoords).xyz;
+	//vec3 ray = texture(exitTexture, texCoords).xyz - start;
+	vec3 currentPos = modelPos + resolution * 0.5;
+	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
+
+	vec3 color = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 m_camPos = sceneObject.invModelMatrix * vec4(cameraPosition, 1.0);
+	vec3 m_viewDir = normalize(m_camPos.xyz / m_camPos.w - modelPos);
+	vec4 m_lightPos = sceneObject.invModelMatrix * vec4(light.position, 1.0);
+	vec3 m_lightDir = normalize(m_lightPos.xyz / m_lightPos.w - modelPos);
+	vec3 halfway = (m_lightDir + m_viewDir) * 0.5;
+	color += vec3(1, 1, 1) * pow(max(dot(normalize(gradientIntesity.xyz), halfway), 0.0), 1.0) * length(gradientIntesity.xyz) * 2.0;
+	FragColor = vec4(color, gradientIntesity.w * 3.0);
 }

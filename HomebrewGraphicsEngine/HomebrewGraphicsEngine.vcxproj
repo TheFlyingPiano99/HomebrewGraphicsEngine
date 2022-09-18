@@ -239,6 +239,7 @@
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
+    <ClCompile Include="VolumeObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBCollider.h" />
@@ -327,12 +328,14 @@
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
+    <ClInclude Include="VolumeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
     <None Include="..\Resources\Shaders\bounding.frag" />
     <None Include="..\Resources\Shaders\bounding.vert" />
+    <None Include="..\Resources\Shaders\bypass.frag" />
     <None Include="..\Resources\Shaders\caption.frag" />
     <None Include="..\Resources\Shaders\debug.frag" />
     <None Include="..\Resources\Shaders\debug.vert" />

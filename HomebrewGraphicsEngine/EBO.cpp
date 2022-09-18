@@ -2,7 +2,7 @@
 namespace Hogra {
 
 	// Constructor that generates a Elements Buffer Object and links it to indices
-	void EBO::Init(std::vector<GLint>& indices)
+	void EBO::Init(std::vector<int>& indices)
 	{
 		glGenBuffers(1, &ID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ID);

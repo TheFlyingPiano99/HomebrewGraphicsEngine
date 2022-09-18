@@ -115,6 +115,10 @@ namespace Hogra {
 			delete postProcStage;
 		}
 		postProcessStages.clear();
+		for (auto& volumeObject : volumeObjects) {
+			delete volumeObject;
+		}
+		volumeObjects.clear();
 	}
 
 	//-----------------------------------------------------------------------------
@@ -152,6 +156,9 @@ namespace Hogra {
 		for (auto& group : instanceGroups) {
 			group.second->Optimalize(camera);
 		}
+		for (auto& volume : volumeObjects) {
+			volume->Update();
+		}
 		lightManager.Update();
 		audioManager.Update();
 	}
@@ -172,17 +179,18 @@ namespace Hogra {
 				group.second->DrawShadow();
 			}
 		}
+
+		// Geometry pass:
 		for (auto& group : instanceGroups) {
 			group.second->GatherInstanceData();
 		}
-
-		// Geometry pass:
 		lightManager.BindGBuffer();
 		for (auto& group : instanceGroups) {
 			group.second->Draw();
 		}
-		postProcessStages[0]->Bind();
+
 		// Deferred lighting pass:
+		postProcessStages[0]->Bind();
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 		glClearDepth(1);
 		glEnable(GL_DEPTH_TEST);
@@ -191,8 +199,12 @@ namespace Hogra {
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glStencilMask(0x00);
-
 		lightManager.renderDeferredLighting();
+
+		for (auto& volume : volumeObjects) {
+			volume->Draw(postProcessStages[0]->GetFBO(), camera, lightManager.GetDepthTexture());
+		}
+
 		// Post-process pass:
 		for (int i = 0; i < postProcessStages.size(); i++) {
 			if (i < postProcessStages.size() - 1) {
@@ -319,4 +331,9 @@ namespace Hogra {
 	{
 		//TODO
 	}
+
+	void Scene::AddVolumeObject(VolumeObject* object) {
+		volumeObjects.push_back(object);
+	}
+
 }

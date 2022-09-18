@@ -21,20 +21,20 @@ namespace Hogra {
 		static Texture3D* Instantiate();
 
 		std::vector<char> bytes;
-		Dimensions dimensions;
 		
-		void Init(const char* directory, const Dimensions dimensions, GLuint slot, GLenum format);
+		void Init(const std::string& directory, GLuint slot, GLenum format);
 		
 		~Texture3D() override;
-
-		const Dimensions& getDimensions() {
-			return dimensions;
-		}
 
 		// Inherited via Texture
 		void Bind() const override;
 
 		void Unbind() const override;
 
+		const Dimensions& GetDimensions() const;
+
+	private:
+		bool readDimensions(const char* path, std::string& name, Dimensions& dimensions);
+		Dimensions dimensions;
 	};
 }

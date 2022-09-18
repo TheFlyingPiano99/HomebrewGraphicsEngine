@@ -49,27 +49,27 @@ namespace Hogra {
 			moved = val;
 		}
 
-		const glm::mat4& getProjectionMatrix() const {
+		const glm::mat4& GetProjectionMatrix() const {
 			return projection;
 		}
 
-		const glm::mat4& getViewProjMatrix() const {
+		const glm::mat4& GetViewProjMatrix() const {
 			return viewProjMatrix;
 		}
 
-		const glm::mat4& getInvViewProjMatrix() const {
+		const glm::mat4& GetInvViewProjMatrix() const {
 			return invViewProjMatrix;
 		}
 
-		const glm::mat4& getRayDirMatrix() const {
+		const glm::mat4& GetRayDirMatrix() const {
 			return rayDirMatrix;
 		}
 
-		const glm::vec3& getLookDir() const {
+		const glm::vec3& GetLookDir() const {
 			return lookDir;
 		}
 
-		const glm::vec3& getEyePos() const {
+		const glm::vec3& GetEyePos() const {
 			return eye;
 		}
 

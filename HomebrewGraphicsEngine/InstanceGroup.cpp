@@ -67,7 +67,7 @@ void Hogra::InstanceGroup::Optimalize(const Camera& camera)
 		optimalizationCounter = 0;
 
 		std::sort(objects.begin(), objects.end(), [&camera](SceneObject const* obj1, SceneObject const* obj2) {
-			return glm::length(obj1->GetPosition() - camera.getEyePos()) < glm::length(obj2->GetPosition() - camera.getEyePos());
+			return glm::length(obj1->GetPosition() - camera.GetEyePos()) < glm::length(obj2->GetPosition() - camera.GetEyePos());
 		});
 	}
 	else {

@@ -130,7 +130,7 @@ void Hogra::FirstPersonControl::Update()
 	if (camera == nullptr) {
 		return;
 	}
-	ahead = camera->getLookDir();
+	ahead = camera->GetLookDir();
 	up = camera->getPreferedUp();
 	right = glm::cross(ahead, up);
 	ahead = glm::cross(up, right);
@@ -191,13 +191,13 @@ void Hogra::FirstPersonControl::primaryAction()
 
 	if (nullptr != laser) {
 		laser->SetIsVisible(true);
-		glm::vec3 start = camera->getEyePos() - glm::vec3(0.0f, 0.5f, 0.0f);
+		glm::vec3 start = camera->GetEyePos() - glm::vec3(0.0f, 0.5f, 0.0f);
 		glm::vec3 end;
 		if (isPoke) {
 			end = point;
 		}
 		else {
-			end = start + camera->getLookDir() * 1000.0f;
+			end = start + camera->GetLookDir() * 1000.0f;
 		}
 		glm::vec3 lookAt = (start + end) / 2.0f;
 		laser->SetPosition(lookAt);
@@ -225,13 +225,13 @@ void Hogra::FirstPersonControl::secondaryAction()
 
 bool Hogra::FirstPersonControl::PokeObject(const glm::vec2& ndcCoords, glm::vec3& pokePoint)
 {
-	glm::vec4 wDir = camera->getRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
+	glm::vec4 wDir = camera->GetRayDirMatrix() * glm::vec4(ndcCoords, 0.0, 1.0f);
 	wDir /= wDir.w;
 	glm::vec3 dir = glm::normalize(glm::vec3(wDir));
 	glm::vec3 intersectionPoint;
 	glm::vec3 intersectionNormal;
 	Ray ray;
-	ray.SetPosition(camera->getEyePos() + dir * 1.0f);
+	ray.SetPosition(camera->GetEyePos() + dir * 1.0f);
 	ray.setDirection(dir);
 	const auto* selected = scene->IntersectRay(ray, intersectionPoint, intersectionNormal);
 	if (nullptr != selected && nullptr != selected->GetPhysics()) {

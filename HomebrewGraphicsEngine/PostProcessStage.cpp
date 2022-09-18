@@ -13,7 +13,6 @@ namespace Hogra {
 			"",
 			fragmentShaderPath
 		);
-		program.Activate();
 		colorTexture.Init(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
 		material = Material::Instantiate();
 		material->Init(&program);

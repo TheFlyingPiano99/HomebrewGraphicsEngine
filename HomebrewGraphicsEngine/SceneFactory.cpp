@@ -8,6 +8,7 @@
 #include "GeometryLoader.h"
 #include "ShaderProgramFactory.h"
 #include "AudioDevice.h"
+#include "Texture3D.h"
 
 #include "AudioBuffer.h"
 #include "AudioSource.h"
@@ -93,6 +94,27 @@ namespace Hogra {
 
 		InitAudio(scene, control);
 
+		// Volume:
+		auto* voxelTexture = Texture3D::Instantiate();
+		voxelTexture->Init(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"), 
+			3,
+			GL_RED
+		);
+		auto* volumeLight = Light::Instantiate();
+		volumeLight->Init(
+			glm::vec4(-10, 5, -10, 1.0), 
+			glm::vec3(100.0f, 100.0f, 100.0f)
+		);
+		auto volumeObject = new VolumeObject();
+		volumeObject->Init(
+			voxelTexture, 
+			glm::vec3(0, 4, 0), 
+			glm::vec3(0.01, 0.01, 0.01),
+			glm::angleAxis(90.0f, glm::vec3(1,0,0)),
+			volumeLight, 
+			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
+		scene->AddVolumeObject(volumeObject);
 		return scene;
 	}
 	

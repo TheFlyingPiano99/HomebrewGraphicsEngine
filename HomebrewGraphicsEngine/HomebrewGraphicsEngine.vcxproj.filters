@@ -321,6 +321,9 @@
     <ClCompile Include="UniformVariable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VolumeObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -581,6 +584,9 @@
     <ClInclude Include="UniformVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VolumeObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -712,6 +718,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\tapeEffect.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\bypass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

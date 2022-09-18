@@ -2,6 +2,9 @@
 #include <iomanip>
 #include <sstream>
 #include "MemoryManager.h"
+#include <fstream>
+#include <filesystem>
+
 
 namespace Hogra {
 	
@@ -10,9 +13,12 @@ namespace Hogra {
 		heapAllocatedInstances.push_back(instance);
 		return instance;
 	}
-	void Texture3D::Init(const char* directory, const Dimensions dimensions, GLuint slot, GLenum format)
+	void Texture3D::Init(const std::string& directory, GLuint slot, GLenum format)
 	{
-		this->dimensions = dimensions;
+		std::string name;	// Discarded !!!
+		if (!readDimensions(std::string(directory).append("/dimensions.txt").c_str(), name, this->dimensions)) {
+			throw new std::exception("Failed to read dimensions of voxel data!");
+		}
 		bool swapBytes = true;
 		unsigned int headerSize = 0;
 		GLenum pixelType;
@@ -34,7 +40,7 @@ namespace Hogra {
 		// Reads the image from a file and stores it in bytes
 		for (int z = 0; z < dimensions.depth; z++) {
 			std::stringstream pathss;
-			pathss << directory << std::setw(3) << std::setfill('0') << z + 1 << ".tif";	// <directory/><number of image>.tif
+			pathss << directory << "/" << std::setw(3) << std::setfill('0') << z + 1 << ".bmp";	// <directory/><number of image>.tif
 			std::string path = pathss.str();
 			FILE* file;
 			errno_t err;
@@ -97,5 +103,57 @@ namespace Hogra {
 	void Texture3D::Unbind() const
 	{
 		glBindTexture(GL_TEXTURE_3D, 0);
+	}
+
+	const Dimensions& Texture3D::GetDimensions() const {
+		return dimensions;
+	}
+	
+	bool Texture3D::readDimensions(const char* path, std::string& name, Dimensions& dimensions)
+	{
+		std::ifstream dimesionsStream;
+		std::string line;
+		std::string token;
+		std::vector<std::string> tokens;
+		dimesionsStream.open(path);
+		if (!dimesionsStream) {
+			return false;
+		}
+		else {
+			while (std::getline(dimesionsStream, line)) {
+				std::stringstream lineStream = std::stringstream(line);
+				while (std::getline(lineStream, token, ' ')) {
+					tokens.push_back(token);
+					if (tokens.size() >= 3 && tokens[tokens.size() - 2] == "=") {
+						if (tokens[tokens.size() - 3] == "name") {
+							name = tokens[tokens.size() - 1];
+						}
+						else if (tokens[tokens.size() - 3] == "width") {
+							dimensions.width = std::stoi(tokens[tokens.size() - 1]);
+						}
+						else if (tokens[tokens.size() - 3] == "height") {
+							dimensions.height = std::stoi(tokens[tokens.size() - 1]);
+						}
+						else if (tokens[tokens.size() - 3] == "depth") {
+							dimensions.depth = std::stoi(tokens[tokens.size() - 1]);
+						}
+						else if (tokens[tokens.size() - 3] == "bytesPerVoxel") {
+							dimensions.bytesPerVoxel = std::stoi(tokens[tokens.size() - 1]);
+						}
+						else if (tokens[tokens.size() - 3] == "widthScale") {
+							dimensions.widthScale = std::stof(tokens[tokens.size() - 1]);
+						}
+						else if (tokens[tokens.size() - 3] == "heightScale") {
+							dimensions.heightScale = std::stof(tokens[tokens.size() - 1]);
+						}
+						else if (tokens[tokens.size() - 3] == "depthScale") {
+							dimensions.depthScale = std::stof(tokens[tokens.size() - 1]);
+						}
+					}
+				}
+				tokens.clear();
+			}
+		}
+		return true;
 	}
 }
