@@ -7,9 +7,10 @@ vec2 texCoords;
 vec4 rayDir;
 } fs_in;
 
-layout (location = 0) out vec3 outputColor;
+layout (location = 0) out vec4 outputColor;
 
 void main()
 {
-	outputColor = texture(inputTexture, fs_in.texCoords).rgb;
+	outputColor = max(texture(inputTexture, fs_in.texCoords), 0.0);
+	outputColor.w = min(outputColor.w, 1.0);
 }

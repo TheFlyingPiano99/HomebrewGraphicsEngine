@@ -641,7 +641,7 @@
     <None Include="..\Resources\Shaders\transfer.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\voxel.frag">
+    <None Include="..\Resources\Shaders\voxelColor.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\voxelHalfAngleAttenuation.frag">
@@ -721,6 +721,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\bypass.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\voxelAttenuation.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

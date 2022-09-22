@@ -1,4 +1,102 @@
-﻿  Texture3D.cpp
+﻿  AABBCollider.cpp
+  Bloom.cpp
+  Callbacks.cpp
+  Camera.cpp
+  CameraAnimation.cpp
+  Caption.cpp
+  Collider.cpp
+  ColliderGroup.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.cpp(88,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  CollisionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.cpp(27,49): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  CompositeCollider.cpp
+  ControlAction.cpp
+  ControlActionManager.cpp
+  CuboidCollider.cpp
+  DeferredLightingSystem.cpp
+  FBO.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\FBO.cpp(48,38): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  FirstPersonControl.cpp
+  Font.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(73,37): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(179,41): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(179,41): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(180,36): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(180,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(181,36): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(181,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(183,41): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(183,41): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(184,38): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(184,38): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(185,43): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(185,43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(212,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(220,22): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  ForceField.cpp
+  GUI.cpp
+  HoGraEngineApplication.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Libraries\include\glad\glad.h(33): message : see previous definition of 'APIENTRY'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(151,57): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  InstanceGroup.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(6,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(12,20): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(23,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(41,28): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Light.cpp
+  LightManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\LightManager.cpp(22,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\LightManager.cpp(60,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Material.cpp
+  MaterialFactory.cpp
+  MemoryManager.cpp
+  Mesh.cpp
+  OrientationProvider.cpp
+  Physics.cpp
+  Plane.cpp
+  PostProcessStage.cpp
+  Scene.cpp
+  SceneEvent.cpp
+  SceneEventImplementation.cpp
+  SceneEventManager.cpp
+  SceneFactory.cpp
+  SceneManager.cpp
+  SceneObject.cpp
+  ShaderProgram.cpp
+  ShaderProgramFactory.cpp
+  Generating Code...
+  Compiling...
+  ShadowCaster.cpp
+  SphericalCollider.cpp
+  Texture1D.cpp
+  Texture2D.cpp
+  Texture3D.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(49,72): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(50,193): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  TextureCube.cpp
+  UniformVariable.cpp
+  UserControl.cpp
+  VolumeObject.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\VolumeObject.cpp(247,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\VolumeObject.cpp(255,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Generating Code...
+glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(init.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

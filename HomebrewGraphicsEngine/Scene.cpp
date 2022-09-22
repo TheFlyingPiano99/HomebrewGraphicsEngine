@@ -30,19 +30,23 @@ namespace Hogra {
 	void Scene::initPostProcessStages()
 	{
 		timeSpent.Init("time", 0.0f);
+		/*
 		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage0);
+		*/
 		auto* bloom = new Bloom();
 		bloom->Init(contextWidth, contextHeight);
 		postProcessStages.push_back(bloom);
 		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		postProcessStages.push_back(stage1);
+		/*
 		auto* stage2 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("tapeEffect.frag"),
 			contextWidth, contextHeight);
 		stage2->AddUniformVariable(&timeSpent);
 		postProcessStages.push_back(stage2);
+		*/
 
 		//auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
 		//	contextWidth, contextHeight);

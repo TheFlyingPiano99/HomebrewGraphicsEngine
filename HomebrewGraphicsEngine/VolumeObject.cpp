@@ -1,11 +1,16 @@
 #include "VolumeObject.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "AssetFolderPathManager.h"
 #include "GeometryFactory.h"
 #include <iostream>
 
+#define VOXEL_ATTENUATION_TEXTURE_WIDTH 2000
+#define VOXEL_ATTENUATION_TEXTURE_HEIGHT 2000
+
 namespace Hogra {
+
 	void VolumeObject::Init(Texture3D* _voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize)
 	{
 		voxels = _voxels;
@@ -17,25 +22,25 @@ namespace Hogra {
 		resolution = glm::vec3(voxels->GetDimensions().width, voxels->GetDimensions().height, voxels->GetDimensions().depth);
 		scale *= glm::vec3(voxels->GetDimensions().widthScale, voxels->GetDimensions().heightScale, voxels->GetDimensions().depthScale);
 		w_diameter = glm::length(resolution * scale);
-		sliceCount = (int)(glm::length(resolution) * 1.25f);
+		sliceCount = (int)(glm::length(resolution) * 1.75f);
 
 		pingpongFBO.Init();
 		colorProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryViewCamera.vert"), 
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxel.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelColor.frag")
 		);
 		attenuationProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryViewCamera.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryLightCamera.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxel.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelAttenuation.frag")
 		);
 
 		colorTextures[0].Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 		colorTextures[1].Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 		// Unit 1 is reserved for depth texture!
-		attenuationTextures[0].Init(GL_RGBA16F, contextSize, 2, GL_RGBA, GL_FLOAT);
-		attenuationTextures[1].Init(GL_RGBA16F, contextSize, 2, GL_RGBA, GL_FLOAT);
+		attenuationTextures[0].Init(GL_RGBA16F, glm::ivec2(VOXEL_ATTENUATION_TEXTURE_WIDTH, VOXEL_ATTENUATION_TEXTURE_HEIGHT), 2, GL_RGBA, GL_FLOAT);
+		attenuationTextures[1].Init(GL_RGBA16F, glm::ivec2(VOXEL_ATTENUATION_TEXTURE_WIDTH, VOXEL_ATTENUATION_TEXTURE_HEIGHT), 2, GL_RGBA, GL_FLOAT);
 
 		// Full screen quad mesh for combine scene with volume:
 		combineProgram.Init(
@@ -60,13 +65,14 @@ namespace Hogra {
 			isBackToFront = true;
 		}
 		auto w_halfway = (lightDir + viewDir) * 0.5f;
+		glm::vec3 w_sliceDelta = 1.0f / (float)sliceCount * w_diameter * w_halfway;
 		
 		// Clear textures: (working)
 		pingpongFBO.Bind();
 		glEnable(GL_BLEND);
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);
-		glClearColor(0, 0, 0, 0);
+		glClearColor(0.0, 0.0, 0.0, 0.0);
 		pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[0], 0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[1], 0);
@@ -77,8 +83,21 @@ namespace Hogra {
 		glClear(GL_COLOR_BUFFER_BIT);
 			
 		// Export matrices:
-		ExportData(colorProgram);
-		ExportData(attenuationProgram);
+		glm::mat4 view = glm::lookAt(
+			glm::vec3(light->GetPosition().x, light->GetPosition().y, light->GetPosition().z), 
+			this->w_position, 
+			camera.getPreferedUp()
+		);
+		glm::mat4 projection = glm::perspective(
+			glm::radians(45.0f), 
+			(float)VOXEL_ATTENUATION_TEXTURE_WIDTH / (float)VOXEL_ATTENUATION_TEXTURE_HEIGHT,
+			0.1f, 
+			1000.0f
+		);
+
+		glm::mat4 lightViewProjMatrix = projection * view;
+		ExportData(colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
+		ExportData(attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
 
 		// Half-angle slicing:
 		int in, out;
@@ -97,11 +116,11 @@ namespace Hogra {
 				m_sliceNorm
 			);
 		}
-		// Combine volume with the earlier rendered scene: (working)
+		// Combine volume with the earlier rendered scened: (working)
 		combineProgram.Activate();
 		outputFBO.Bind();
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_ONE, GL_ONE);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		colorTextures[out].Bind();
 		fullScreenQuad->BindVAO();
 		fullScreenQuad->Draw();
@@ -213,10 +232,12 @@ namespace Hogra {
 			attenuationTextures[in].Bind();
 			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[out], 0);
 			if (isBackToFront) {
-				glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+				glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+				//glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE, GL_ZERO);
 			}
 			else {
-				glBlendFunc(GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+				glBlendFuncSeparate(GL_ONE_MINUS_DST_ALPHA, GL_ONE, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+				//glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE, GL_ZERO);
 			}
 
 			VAO.Bind();
@@ -228,7 +249,9 @@ namespace Hogra {
 			attenuationProgram.Activate();
 			attenuationTextures[in].Bind();
 			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[out], 0);
-			glBlendFunc(GL_ONE, GL_ONE);
+
+			// For light always front-to-back
+			glBlendFuncSeparate(GL_ONE_MINUS_DST_COLOR, GL_ONE, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
 
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			VBO.Delete();
@@ -295,13 +318,18 @@ namespace Hogra {
 		box.edges[11].length = resolution.z;
 	}
 
-	void VolumeObject::ExportData(const ShaderProgram& program)
+	void VolumeObject::ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)
 	{
 		program.Activate();
 		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.invModelMatrix"), 1, GL_FALSE, glm::value_ptr(invModelMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(program.ID, "light.viewProjMatrix"), 1, GL_FALSE, glm::value_ptr(lightViewProjMatrix));
 		glUniform3f(glGetUniformLocation(program.ID, "resolution"), resolution.x, resolution.y, resolution.z);
+		glUniform3f(glGetUniformLocation(program.ID, "scale"), scale.x, scale.y, scale.z);
+		glUniform3f(glGetUniformLocation(program.ID, "w_sliceDelta"), w_sliceDelta.x, w_sliceDelta.y, w_sliceDelta.z);
 		glUniform3f(glGetUniformLocation(program.ID, "light.position"), light->GetPosition().x, light->GetPosition().y, light->GetPosition().z);
+		glUniform3f(glGetUniformLocation(program.ID, "light.powerDensity"), light->getPowerDensity().x, light->getPowerDensity().y, light->getPowerDensity().z);
+		glUniform1i(glGetUniformLocation(program.ID, "isBackToFront"), (isBackToFront)? 1 : 0);
 	}
 }
 

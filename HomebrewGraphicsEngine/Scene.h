@@ -155,6 +155,7 @@ namespace Hogra {
 		void initShadowMap();
 
 		void initPostProcessStages();
+
 		class SceneNotInstanciatedException : public std::exception {
 
 		};

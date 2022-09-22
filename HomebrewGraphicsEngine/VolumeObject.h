@@ -88,7 +88,7 @@ namespace Hogra {
 
 		void InitBoundingBox(const Dimensions& dimensions, BoundingBox& boundingBox);
 
-		void ExportData(const ShaderProgram& program);
+		void ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera& camera, const glm::vec3& w_sliceDelta);
 
 		glm::vec3 w_position;
 		glm::vec3 scale;
