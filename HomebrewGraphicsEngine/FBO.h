@@ -7,12 +7,18 @@ namespace Hogra {
 	class FBO
 	{
 	public:
-		GLuint ID;
+		GLuint ID = 0;
 		glm::ivec4 viewport;
 
 		void Init();
 
 		~FBO();
+
+		FBO() = default;
+		
+		FBO(const FBO& fbo);
+
+		FBO& operator=(const FBO& fbo);
 
 		void Bind() const;
 		void Unbind() const;
@@ -28,7 +34,7 @@ namespace Hogra {
 		void SelectDrawBuffers(std::vector<GLenum> bufs);
 
 		static void BindDefault();
-		static FBO getDefault();
+		static FBO&& GetDefault();
 	};
 
 }

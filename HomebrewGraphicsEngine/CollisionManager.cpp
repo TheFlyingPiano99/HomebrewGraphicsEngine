@@ -43,7 +43,7 @@ void Hogra::CollisionManager::Collide() {
 		root.SelfCollide();
 	}
 	else {
-		for (int i = 0; i < colliders.size() - 1; i++) {
+		for (int i = 0; i < colliders.size() - 1 && colliders.size() > 0; i++) {
 			for (int j = i + 1; j < colliders.size(); j++) {
 				colliders[i]->Collide(colliders[j]);
 			}

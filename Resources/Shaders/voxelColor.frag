@@ -191,41 +191,41 @@ vec4 calculateColor(vec3 cameraRayStart, vec3 cameraRay) {
 
 vec3 simpleTransfer(float g, float i) {
 	float t = min(pow(max(i - 0.5, 0.0) * 0.1, 0.5), 1.0);
-	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(1,0,0)) * i * 2.0;
+	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(1, 0.5, 0.4)) * i * 2.0;
 }
 
 vec3 transferGradient(vec3 currentPos, vec3 color) {
-	vec3 currentPosCentered = ivec3(currentPos);
-	vec3 deltaPos = currentPos - currentPosCentered;
-	vec4 gradientIntesity = resampleGradientAndDensity(currentPosCentered, trilinearInterpolation(currentPosCentered + vec3(1,0,0)));
+	vec3 offset = 1.0 / resolution;
+	vec3 centeredPos = ivec3(currentPos);
+	vec4 gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(1,0,0) * offset));
 	vec3 cX = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
 
-	gradientIntesity = resampleGradientAndDensity(currentPosCentered, trilinearInterpolation(currentPosCentered + vec3(0,1,0)));
+	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,1,0) * offset));
 	vec3 cY = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
 
-	gradientIntesity = resampleGradientAndDensity(currentPosCentered, trilinearInterpolation(currentPosCentered + vec3(0,0,1)));
+	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,0,1) * offset));
 	vec3 cZ = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
 
-	gradientIntesity = resampleGradientAndDensity(currentPosCentered, trilinearInterpolation(currentPosCentered + vec3(-1,0,0)));
+	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(-1,0,0) * offset));
 	vec3 cNX = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
 
-	gradientIntesity = resampleGradientAndDensity(currentPosCentered, trilinearInterpolation(currentPosCentered + vec3(0,-1,0)));
+	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,-1,0) * offset));
 	vec3 cNY = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
 
-	gradientIntesity = resampleGradientAndDensity(currentPosCentered, trilinearInterpolation(currentPosCentered + vec3(0,0,-1)));
+	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,0,-1) * offset));
 	vec3 cNZ = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
 
 	float c0 = length(color);
 	return (vec3(
-				deltaPos.x * length(cX) - (1.0 - deltaPos.x) * c0, 
-				deltaPos.y * length(cY) - (1.0 - deltaPos.y) * c0, 
-				deltaPos.z * length(cZ) - (1.0 - deltaPos.z) * c0
+				length(cX) - c0, 
+				length(cY) - c0, 
+				length(cZ) - c0
 			)
 			+
 			 vec3(
-				deltaPos.x * c0 - (1.0 - deltaPos.x) * length(cNX), 
-				deltaPos.y * c0 - (1.0 - deltaPos.y) * length(cNY), 
-				deltaPos.z * c0 - (1.0 - deltaPos.z) * length(cNZ)
+				c0 - length(cNX), 
+				c0 - length(cNY), 
+				c0 - length(cNZ)
 			)) * 0.5;
 }
 

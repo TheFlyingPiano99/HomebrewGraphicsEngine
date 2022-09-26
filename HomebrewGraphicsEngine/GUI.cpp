@@ -41,7 +41,11 @@ namespace Hogra {
 			return;
 		char value_buf[64] = {};
 		ImGui::Begin("Settings");
-		//TODO
+		
+		if (ImGui::Button("Press me!")) {
+			std::cout << "Button pressed" << std::endl;
+		}
+
 		ImGui::End();
 	}
 

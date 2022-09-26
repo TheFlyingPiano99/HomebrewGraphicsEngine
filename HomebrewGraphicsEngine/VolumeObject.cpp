@@ -100,7 +100,8 @@ namespace Hogra {
 		ExportData(attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
 
 		// Half-angle slicing:
-		int in, out;
+		int in = 0;
+		int out = 0;
 		for (int slice = 0; slice < sliceCount; slice++) {
 			in = slice % 2;
 			out = (slice + 1) % 2;
@@ -116,9 +117,12 @@ namespace Hogra {
 				m_sliceNorm
 			);
 		}
+		pingpongFBO.Unbind();
+
 		// Combine volume with the earlier rendered scened: (working)
 		combineProgram.Activate();
 		outputFBO.Bind();
+		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		colorTextures[out].Bind();

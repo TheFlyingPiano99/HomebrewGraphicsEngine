@@ -163,18 +163,41 @@ namespace Hogra {
 		lookAt = eye + lookDir;
 		right = glm::cross(lookDir, prefUp);
 		up = glm::cross(right, lookDir);
+		moved = true;
 	}
 
-	void Camera::approachCenter(float delta)
+	void Camera::RotateAroundPoint(const glm::vec2& deltaAngle, const glm::vec3& rotationCenter)
+	{
+		auto toCenter = rotationCenter - eye;
+		glm::quat rotXQuat = angleAxis(deltaAngle.y, right);
+		glm::quat rotYQuat = angleAxis(deltaAngle.x, prefUp);
+		glm::vec3 rotatedToCenter;
+		auto possibleLookDir = normalize(rotYQuat * rotXQuat * lookDir);
+		if (abs(glm::dot(possibleLookDir, prefUp)) < 0.9f) {
+			rotatedToCenter = rotYQuat * rotXQuat * toCenter;
+		}
+		else {			// If the rotation around X axis causes gimbal lock than execute only the rotation around Y axis
+			rotatedToCenter = rotYQuat * toCenter;
+		}
+		lookDir = glm::normalize(rotatedToCenter);
+		eye = rotationCenter - rotatedToCenter;
+		lookAt = eye + lookDir;
+		right = glm::cross(lookDir, prefUp);
+		up = glm::cross(right, lookDir);
+		moved = true;
+	}
+
+	void Camera::ApproachCenter(float delta, const glm::vec3& center)
 	{
 		if (nullptr != positionProvider) {
 			return;
 		}
-		float l = length(lookAt - eye);
-		if (l > delta) {
-			eye += delta * normalize(lookAt - eye) * approachCenterSpeed;
+		float l = length(center - eye);
+		if (l - 0.01f > delta) {	// If not passing the lookAt position
+			eye += delta * normalize(center - eye);
+			lookAt = eye + lookDir;
+			moved = true;
 		}
-		moved = true;
 	}
 
 }

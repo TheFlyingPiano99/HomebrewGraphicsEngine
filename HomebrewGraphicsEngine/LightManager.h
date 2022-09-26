@@ -26,9 +26,7 @@ namespace Hogra {
 			deferredLightingSystem.Resize(contextWidth, contextHeight);
 		}
 
-		void renderDeferredLighting() {
-			deferredLightingSystem.Draw(lights);
-		}
+		void RenderDeferredLighting();
 
 		void BindGBuffer() {
 			deferredLightingSystem.BindGBuffer();

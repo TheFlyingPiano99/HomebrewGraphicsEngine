@@ -96,7 +96,7 @@ namespace Hogra {
 			Destroy();
 		}
 
-		UserControl* getAvatarControl() {
+		UserControl* GetUserControl() {
 			return userControl;
 		}
 
@@ -153,8 +153,6 @@ namespace Hogra {
 		void Destroy();
 
 		void initShadowMap();
-
-		void initPostProcessStages();
 
 		class SceneNotInstanciatedException : public std::exception {
 

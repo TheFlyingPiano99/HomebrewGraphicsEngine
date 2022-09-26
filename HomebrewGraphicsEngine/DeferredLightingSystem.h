@@ -20,7 +20,7 @@ namespace Hogra {
 
 		void BindGBuffer();
 
-		void Draw(const std::vector<Light*>& lights);
+		void Draw(const std::vector<Light*>& pointLights, const Light& directionalLight);
 
 		const Texture2D& GetDepthTexture();
 

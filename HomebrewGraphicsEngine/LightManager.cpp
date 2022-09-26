@@ -29,6 +29,12 @@ namespace Hogra {
 		ubo.Unbind();
 	}
 
+	void LightManager::RenderDeferredLighting() {
+		if (!lights.empty()) {
+			deferredLightingSystem.Draw(lights, *lights[0]);
+		}
+	}
+
 	void LightManager::initDebug()
 	{
 		if (nullptr != debugLightVolumeMesh) {

@@ -107,7 +107,7 @@ vec4 resampleGradientAndDensity(vec3 position, float intensity)
 
 vec3 simpleTransfer(float g, float i) {
 	float t = min(pow(max(i - 0.5, 0.0) * 0.1, 0.5), 1.0);
-	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(1,0,0)) * i * 2.0;
+	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(0.2,0.4,0.8)) * i * 4.0;
 }
 
 void main() {	

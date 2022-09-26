@@ -30,7 +30,7 @@ namespace Hogra {
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
 		// Set control layout
-		ControlActionManager::getInstance()->RegisterDefault();
+		ControlActionManager::getInstance()->RegisterDefaultForVoxelObserving();
 
 		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 		GUI::getInstance()->initGUI(window);
@@ -65,11 +65,11 @@ namespace Hogra {
 		static bool prevCentered = false;
 		bool isFirst = false;
 		// Check if this is the first call with centered camera:
-		if (!ControlActionManager::getInstance()->IsCursorVisible() && !prevCentered) {
+		if (GlobalVariables::hideCursor && !prevCentered) {
 			isFirst = true;
 			glfwSetCursorPos(window, (GlobalVariables::windowWidth / 2), (GlobalVariables::windowHeight / 2));
 		}
-		if (!ControlActionManager::getInstance()->IsCursorVisible()) {
+		if (GlobalVariables::hideCursor) {
 			// Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 			prevCentered = true;
@@ -87,7 +87,7 @@ namespace Hogra {
 
 	void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
 	{
-		//TODO
+		ControlActionManager::getInstance()->OnMouseScroll(yoffset);
 	}
 
 	void Callbacks::onMouseClick(GLFWwindow* window, int button, int action, int mods)

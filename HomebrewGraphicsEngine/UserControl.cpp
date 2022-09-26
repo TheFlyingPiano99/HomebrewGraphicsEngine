@@ -56,6 +56,26 @@ void Hogra::UserControl::Rotate(const glm::vec2& ndcDelta)
 	physics->applyTransientTorque(rotatingTorque * glm::vec3(ndcDelta.y, ndcDelta.x, 0.0f));
 }
 
+void Hogra::UserControl::Zoom(float delta)
+{
+}
+
+void Hogra::UserControl::primaryAction()
+{
+}
+
+void Hogra::UserControl::secondaryAction()
+{
+}
+
+void Hogra::UserControl::grab()
+{
+}
+
+void Hogra::UserControl::release()
+{
+}
+
 void Hogra::UserControl::EarlyPhysicsUpdate(float dt)
 {
 

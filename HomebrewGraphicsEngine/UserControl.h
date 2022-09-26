@@ -16,6 +16,11 @@ namespace Hogra {
 		virtual void MoveUp();
 		virtual void MoveDown();
 		virtual void Rotate(const glm::vec2& delta);
+		virtual void Zoom(float delta);
+		virtual void primaryAction();
+		virtual void secondaryAction();
+		virtual void grab();
+		virtual void release();
 
 		void setInitialDirection(const glm::vec3& dir) {
 			initialDirection = dir;

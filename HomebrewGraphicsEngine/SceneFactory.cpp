@@ -15,6 +15,7 @@
 #include "AudioListener.h"
 
 #include "SceneAudioSource.h"
+#include "ObservObjectControl.h"
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -32,12 +33,14 @@ namespace Hogra {
 			instance = nullptr;
 		}
 	}
+
 	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
 		Scene* scene = new Scene();
 		scene->Init(contextWidth, contextHeight);
 		auto* light = Light::Instantiate();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
+		
 		light = Light::Instantiate();
 		light->Init(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
 		scene->AddLight(light);
@@ -53,9 +56,11 @@ namespace Hogra {
 			instance->Init(glm::vec4(std::rand() % 1000 - 500, 2.0f, std::rand() % 1000 - 500, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
 			scene->AddLight(instance);
 		}
-
-		ForceField* field = InitGravitation(scene);
+		
 		InitGroud(scene);
+
+		
+		ForceField* field = InitGravitation(scene);
 		auto* col = InitCompositeCollider();
 		InitCube(scene, glm::vec3(0.0f, 0.0f, 0.0f), col, field);
 		col = InitCompositeCollider();
@@ -88,33 +93,105 @@ namespace Hogra {
 		}
 		InitSkyBox(scene);
 		InitLoadedGeometry(scene, glm::vec3(-10.0f, 3.0f, -30.0f), field);
-		FirstPersonControl* control = nullptr;
-		InitAvatar(scene, field, control);
-		InitCaptions(scene);
-
-		InitAudio(scene, control);
+		
 
 		// Volume:
 		auto* voxelTexture = Texture3D::Instantiate();
 		voxelTexture->Init(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"), 
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
 			3,
 			GL_RED
 		);
+		
+		/*
 		auto* volumeLight = Light::Instantiate();
 		volumeLight->Init(
-			glm::vec4(15, 5, 15, 1.0), 
+			glm::vec4(15, 5, 15, 1.0),
 			glm::vec3(1000.0f, 1000.0f, 1000.0f)
 		);
 		auto volumeObject = new VolumeObject();
 		volumeObject->Init(
-			voxelTexture, 
-			glm::vec3(0, 4, 0), 
+			voxelTexture,
+			glm::vec3(0, 0, 0),
 			glm::vec3(0.01, 0.01, 0.01),
-			glm::angleAxis(90.0f, glm::vec3(1,0,0)),
-			volumeLight, 
+			glm::angleAxis(90.0f, glm::vec3(1, 0, 0)),
+			volumeLight,
 			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
 		scene->AddVolumeObject(volumeObject);
+		*/
+
+		FirstPersonControl* control = nullptr;
+		InitAvatar(scene, field, control);
+		// InitObjectObserverControl(scene, volumeObject);
+		InitCaptions(scene);
+
+		InitAudio(scene, control);
+
+		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
+			contextWidth, contextHeight);
+		scene->AddPostProcessStage(stage0);
+
+		auto* bloom = new Bloom();
+		bloom->Init(contextWidth, contextHeight);
+		scene->AddPostProcessStage(bloom);
+
+		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+			contextWidth, contextHeight);
+		scene->AddPostProcessStage(stage1);
+		/*
+		auto* stage2 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("tapeEffect.frag"),
+			contextWidth, contextHeight);
+		stage2->AddUniformVariable(&timeSpent);
+		scene->AddPostProcessStage(stage2);
+		*/
+
+		//auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
+		//	contextWidth, contextHeight);
+		//  scene->AddPostProcessStage(stage1);
+
+		return scene;
+	}
+
+	Scene* SceneFactory::CreateVoxelDemoScene(int contextWidth, int contextHeight)
+	{
+		Scene* scene = new Scene();
+		scene->Init(contextWidth, contextHeight);
+
+		// Volume:
+		auto* voxelTexture = Texture3D::Instantiate();
+		voxelTexture->Init(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
+			3,
+			GL_RED
+		);
+
+		auto* volumeLight = Light::Instantiate();
+		volumeLight->Init(
+			glm::vec4(15, 5, 15, 1.0),
+			glm::vec3(1000.0f, 1000.0f, 1000.0f)
+		);
+		auto volumeObject = new VolumeObject();
+		volumeObject->Init(
+			voxelTexture,
+			glm::vec3(0, 0, 0),
+			glm::vec3(0.01, 0.01, 0.01),
+			glm::angleAxis(1.57079633f, glm::vec3(1, 0, 0)),
+			volumeLight,
+			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
+		scene->AddVolumeObject(volumeObject);
+
+		InitObjectObserverControl(scene, volumeObject);
+		InitCaptions(scene);
+
+		auto* bloom = new Bloom();
+		bloom->Init(contextWidth, contextHeight);
+		scene->AddPostProcessStage(bloom);
+
+		auto* hdr = new PostProcessStage(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+			contextWidth, contextHeight);
+		scene->AddPostProcessStage(hdr);
+
 		return scene;
 	}
 	
@@ -435,7 +512,9 @@ namespace Hogra {
 		physics->setWorldSpaceDrag(glm::vec3(200.0f, 0.01f, 200.0f));
 		physics->setPositionForcingLevel(1.0f);
 		physics->setFriction(0.001f);
-		gravitation->AddListener(physics);
+		if (nullptr != gravitation) {
+			gravitation->AddListener(physics);
+		}
 		collider->SetPhysics(physics);
 		collider->SetPositionProvider(avatar);
 		scene->AddCollider(collider, "avatar");
@@ -465,6 +544,16 @@ namespace Hogra {
 		scene->getShadowCaster()->setPositionOffsetToProvider(glm::vec3(-20, 20, -20));
 		scene->AddSceneObject(avatar);
 		InitLaserBeam(scene, control);
+	}
+
+	void SceneFactory::InitObjectObserverControl(Scene* scene, VolumeObject* volumeObject)
+	{
+		auto control = new ObservObjectControl();
+		control->SetCamera(scene->GetCamera());
+		if (nullptr != volumeObject) {
+			control->SetVolumeObject(*volumeObject);
+		}
+		scene->SetUserControl(control);
 	}
 	
 	void SceneFactory::InitLaserBeam(Hogra::Scene* scene, Hogra::FirstPersonControl* control)

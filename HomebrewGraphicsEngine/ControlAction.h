@@ -51,7 +51,7 @@ namespace Hogra {
 
 		bool PopIsTriggering();
 
-		void OnMove(const glm::vec2& _pixPos, bool isFirst = false);
+		void OnAxisMove(const glm::vec2& _pixPos, bool isFirst = false);
 
 	protected:
 		glm::vec2 pixDelta;
@@ -67,6 +67,26 @@ namespace Hogra {
 		void Execute(Scene& scene) override;
 	};
 
+	class CameraZoomAction : public AxisMoveAction {
+	public:
+		CameraZoomAction() : AxisMoveAction() {}
+
+		void Execute(Scene& scene) override;
+	};
+
+	class GrabAction : public ButtonKeyAction {
+	public:
+		GrabAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerOnPress) {}
+
+		void Execute(Scene& scene) override;
+	};
+
+	class ReleaseAction : public ButtonKeyAction {
+	public:
+		ReleaseAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerOnRelease) {}
+
+		void Execute(Scene& scene) override;
+	};
 
 	class MoveAvatarForward : public ButtonKeyAction {
 	public:

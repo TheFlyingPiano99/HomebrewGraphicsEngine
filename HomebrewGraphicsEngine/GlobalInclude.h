@@ -39,6 +39,7 @@ namespace Hogra {
 		static int windowHeight;
 		static bool fullScreenMode;
 		static bool hideConsoleWindow;
+		static bool hideCursor;
 
 		static int renderResolutionWidth;
 		static int renderResolutionHeight;

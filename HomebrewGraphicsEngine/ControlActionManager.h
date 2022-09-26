@@ -3,6 +3,8 @@
 #include "ControlAction.h"
 #include <map>
 #include <iostream>
+
+
 namespace Hogra {
 
 	class ControlActionManager
@@ -32,6 +34,8 @@ namespace Hogra {
 		void OnMouseRightButtonRelease(const glm::vec2& pixCoords);
 
 		void OnMouseMove(const glm::vec2& pixPos, bool isFirst);
+
+		void OnMouseScroll(float delta);
 
 		/*
 		* Register new controlAction
@@ -71,17 +75,17 @@ namespace Hogra {
 		*/
 		void RegisterDefault();
 
-		void SetCursorVisible(bool b);
-
-		bool IsCursorVisible();
+		void RegisterDefaultForVoxelObserving();
 
 	private:
 		static ControlActionManager* instance;
 		std::map<const int, ButtonKeyAction*> registeredKeyActions;
-		ButtonKeyAction* leftMouseButtonAction = nullptr;
-		ButtonKeyAction* rightMouseButtonAction = nullptr;
+		ButtonKeyAction* pressLeftMouseButtonAction = nullptr;
+		ButtonKeyAction* pressRightMouseButtonAction = nullptr;
+		ButtonKeyAction* releaseLeftMouseButtonAction = nullptr;
+		ButtonKeyAction* releaseRightMouseButtonAction = nullptr;
 		AxisMoveAction* mouseMoveAction = nullptr;
-		bool isCursorVisible = false;
+		AxisMoveAction* mouseScrollAction = nullptr;
 
 		std::queue<AbstractControlAction*> queuedActions;
 
@@ -93,14 +97,23 @@ namespace Hogra {
 				delete act.second;
 			}
 			registeredKeyActions.clear();
-			if (nullptr != leftMouseButtonAction) {
-				delete leftMouseButtonAction;
+			if (nullptr != pressLeftMouseButtonAction) {
+				delete pressLeftMouseButtonAction;
 			}
-			if (nullptr != rightMouseButtonAction) {
-				delete rightMouseButtonAction;
+			if (nullptr != pressRightMouseButtonAction) {
+				delete pressRightMouseButtonAction;
+			}
+			if (nullptr != releaseLeftMouseButtonAction) {
+				delete releaseLeftMouseButtonAction;
+			}
+			if (nullptr != releaseRightMouseButtonAction) {
+				delete releaseRightMouseButtonAction;
 			}
 			if (nullptr != mouseMoveAction) {
 				delete mouseMoveAction;
+			}
+			if (nullptr != mouseScrollAction) {
+				delete mouseScrollAction;
 			}
 		}
 

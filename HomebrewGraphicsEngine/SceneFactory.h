@@ -14,6 +14,8 @@ namespace Hogra {
 
 		Scene* CreateDemoScene(int contextWidth, int contextHeight);
 
+		Scene* CreateVoxelDemoScene(int contextWidth, int contextHeight);
+
 		ForceField* InitGravitation(Scene* scene);
 
 		CompositeCollider* InitCompositeCollider();
@@ -31,6 +33,8 @@ namespace Hogra {
 		void InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field);
 
 		void InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control);
+
+		void InitObjectObserverControl(Scene* scene, VolumeObject* volumeObject);
 
 		void InitLaserBeam(Scene* scene, FirstPersonControl* control);
 

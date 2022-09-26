@@ -39,7 +39,10 @@ namespace Hogra {
 		void MoveDown(float dt);
 
 		void Rotate(const glm::vec2& deltaAngle);
-		void approachCenter(float delta);
+		
+		void RotateAroundPoint(const glm::vec2& deltaAngle, const glm::vec3& rotationCenter = glm::vec3(0.0f));
+
+		void ApproachCenter(float delta, const glm::vec3& center = glm::vec3(0.0f));
 
 		void setAspectRatio(float ratio) {
 			aspectRatio = ratio;
@@ -154,7 +157,6 @@ namespace Hogra {
 		// Adjust the speed of the camera and it's sensitivity when looking around
 		float speed = 0.1f;
 		float sensitivity = 100.0f;
-		float approachCenterSpeed = 10.0f;
 		float aspectRatio;
 	};
 }

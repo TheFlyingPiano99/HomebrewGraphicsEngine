@@ -166,7 +166,6 @@ namespace Hogra {
 			// Take care of all GLFW events
 			glfwPollEvents();
 		}
-
 	}
 	
 	void HoGraEngineApplication::Destroy() {

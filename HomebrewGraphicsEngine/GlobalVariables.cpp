@@ -10,6 +10,7 @@ namespace Hogra {
 
 	bool GlobalVariables::fullScreenMode = false;
 	bool GlobalVariables::hideConsoleWindow = false;
+	bool GlobalVariables::hideCursor = false;
 
 	std::string GlobalVariables::windowIcon = "demoAppIcon.jpg";
 }

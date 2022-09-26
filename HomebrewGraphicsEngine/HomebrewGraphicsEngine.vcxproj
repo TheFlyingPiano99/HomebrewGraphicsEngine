@@ -206,6 +206,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ObservObjectControl.cpp" />
     <ClCompile Include="OrientationProvider.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -295,6 +296,7 @@
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ObservObjectControl.h" />
     <ClInclude Include="OrientationProvider.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Plane.h" />

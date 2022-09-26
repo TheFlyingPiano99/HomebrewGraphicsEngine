@@ -26,32 +26,7 @@ namespace Hogra {
 		}
 		shadowCaster = new ShadowCaster(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
 	}
-
-	void Scene::initPostProcessStages()
-	{
-		timeSpent.Init("time", 0.0f);
-		/*
-		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
-			contextWidth, contextHeight);
-		postProcessStages.push_back(stage0);
-		*/
-		auto* bloom = new Bloom();
-		bloom->Init(contextWidth, contextHeight);
-		postProcessStages.push_back(bloom);
-		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
-			contextWidth, contextHeight);
-		postProcessStages.push_back(stage1);
-		/*
-		auto* stage2 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("tapeEffect.frag"),
-			contextWidth, contextHeight);
-		stage2->AddUniformVariable(&timeSpent);
-		postProcessStages.push_back(stage2);
-		*/
-
-		//auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
-		//	contextWidth, contextHeight);
-		//postProcessStages.push_back(stage1);
-	}
+	
 
 	const SceneChange& Scene::GetSceneChange()
 	{
@@ -70,11 +45,11 @@ namespace Hogra {
 
 		audioManager.Init();
 		initShadowMap();
-		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(-9.0f, 10.0f, -9.0f));
+		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 5.0f, 0.0f));
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
 		lightManager.initDebug();
-		initPostProcessStages();
 		collisionManager.InitDebug();
+		timeSpent.Init("time", 0.0f);
 	}
 
 	void Scene::BeforePhysicsLoopUpdate() {
@@ -119,10 +94,15 @@ namespace Hogra {
 			delete postProcStage;
 		}
 		postProcessStages.clear();
+
 		for (auto& volumeObject : volumeObjects) {
 			delete volumeObject;
 		}
 		volumeObjects.clear();
+
+		if (nullptr != userControl) {
+			delete userControl;
+		}
 	}
 
 	//-----------------------------------------------------------------------------
@@ -194,19 +174,30 @@ namespace Hogra {
 		}
 
 		// Deferred lighting pass:
-		postProcessStages[0]->Bind();
+		bool isPostProc = false;
+		if (!postProcessStages.empty()) {
+			postProcessStages[0]->Bind();
+			isPostProc = true;
+		}
+		else {
+			FBO::BindDefault();
+		}
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 		glClearDepth(1);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
+		glDisable(GL_BLEND);
+		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glStencilMask(0x00);
-		lightManager.renderDeferredLighting();
+		lightManager.RenderDeferredLighting();
 
+		// Volume pass:
+		FBO defaultFBO = FBO::GetDefault();
 		for (auto& volume : volumeObjects) {
-			volume->Draw(postProcessStages[0]->GetFBO(), camera, lightManager.GetDepthTexture());
+			volume->Draw(isPostProc ? postProcessStages[0]->GetFBO() : defaultFBO, camera, lightManager.GetDepthTexture());
 		}
 
 		// Post-process pass:
@@ -215,7 +206,7 @@ namespace Hogra {
 				postProcessStages[i]->Draw(postProcessStages[i + 1]->GetFBO(), lightManager.GetDepthTexture());
 			}
 			else {
-				postProcessStages[i]->Draw(FBO::getDefault(), lightManager.GetDepthTexture());
+				postProcessStages[i]->Draw(FBO::GetDefault(), lightManager.GetDepthTexture());
 			}
 		}
 
@@ -276,6 +267,7 @@ namespace Hogra {
 	}
 
 	void Scene::AddPostProcessStage(PostProcessStage* stage) {
+		stage->AddUniformVariable(&timeSpent);
 		postProcessStages.push_back(stage);
 	}
 

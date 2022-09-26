@@ -12,6 +12,22 @@ namespace Hogra {
 		Delete();
 	}
 
+	FBO::FBO(const FBO& fbo)
+	{
+		this->ID = fbo.ID;
+		this->viewport = fbo.viewport;
+	}
+
+	FBO& FBO::operator=(const FBO& fbo)
+	{
+		if (&fbo == this) {
+			return *this;
+		}
+		this->ID = fbo.ID;
+		this->viewport = fbo.viewport;
+		return *this;
+	}
+
 	void FBO::Bind() const
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, ID);
@@ -56,11 +72,11 @@ namespace Hogra {
 		glViewport(0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 	}
 
-	FBO FBO::getDefault()
+	FBO&& FBO::GetDefault()
 	{
-		FBO fbo;
+		static FBO fbo;
 		fbo.ID = 0;
 		fbo.viewport = glm::vec4(0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight);
-		return fbo;
+		return std::move(fbo);
 	}
 }

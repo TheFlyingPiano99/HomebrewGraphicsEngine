@@ -9,7 +9,7 @@ namespace Hogra {
 
 	void MoveAvatarForward::Execute(Scene& scene)
 	{
-		auto* control = scene.getAvatarControl();
+		auto* control = scene.GetUserControl();
 		if (nullptr != control) {
 			control->MoveForward();
 		}
@@ -17,7 +17,7 @@ namespace Hogra {
 
 	void MoveAvatarBackward::Execute(Scene& scene)
 	{
-		auto* control = scene.getAvatarControl();
+		auto* control = scene.GetUserControl();
 		if (nullptr != control) {
 			control->MoveBackward();
 		}
@@ -25,7 +25,7 @@ namespace Hogra {
 
 	void MoveAvatarRight::Execute(Scene& scene)
 	{
-		auto* control = scene.getAvatarControl();
+		auto* control = scene.GetUserControl();
 		if (nullptr != control) {
 			control->MoveRight();
 		}
@@ -33,7 +33,7 @@ namespace Hogra {
 
 	void MoveAvatarLeft::Execute(Scene& scene)
 	{
-		auto* control = scene.getAvatarControl();
+		auto* control = scene.GetUserControl();
 		if (nullptr != control) {
 			control->MoveLeft();
 		}
@@ -41,7 +41,7 @@ namespace Hogra {
 
 	void MoveAvatarUp::Execute(Scene& scene)
 	{
-		auto* control = scene.getAvatarControl();
+		auto* control = scene.GetUserControl();
 		if (nullptr != control) {
 			control->MoveUp();
 		}
@@ -49,7 +49,7 @@ namespace Hogra {
 
 	void MoveAvatarDown::Execute(Scene& scene)
 	{
-		auto* control = scene.getAvatarControl();
+		auto* control = scene.GetUserControl();
 		if (nullptr != control) {
 			control->MoveDown();
 		}
@@ -108,7 +108,7 @@ namespace Hogra {
 	}
 	void JumpAvatar::Execute(Scene& scene)
 	{
-		auto* control = (FirstPersonControl*)scene.getAvatarControl();
+		auto* control = (FirstPersonControl*)scene.GetUserControl();
 		if (nullptr != control) {
  			control->Jump();
 		}
@@ -119,7 +119,7 @@ namespace Hogra {
 	}
 	void PrimaryAction::Execute(Scene& scene)
 	{
-		auto* control = (FirstPersonControl*)scene.getAvatarControl();
+		auto* control = (FirstPersonControl*)scene.GetUserControl();
 		if (nullptr != control) {
 			control->primaryAction();
 		}
@@ -146,7 +146,7 @@ namespace Hogra {
 		return temp;
 	}
 
-	void AxisMoveAction::OnMove(const glm::vec2& _pixPos, bool isFirst)
+	void AxisMoveAction::OnAxisMove(const glm::vec2& _pixPos, bool isFirst)
 	{
 		if (isFirst) {
 			this->pixPos = glm::vec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight) / 2.0f;
@@ -157,11 +157,23 @@ namespace Hogra {
 	}
 	void CameraMoveAction::Execute(Scene& scene)
 	{
-		//scene.getAvatarControl()->Rotate(-(pixPos - glm::vec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight) * 0.5f)* 0.01f);
-		scene.getAvatarControl()->Rotate(-pixDelta);
+		scene.GetUserControl()->Rotate(-pixDelta);
 	}
 	void SecondaryAction::Execute(Scene& scene)
 	{
 		// Todo
+	}
+
+	void CameraZoomAction::Execute(Scene& scene)
+	{
+		scene.GetUserControl()->Zoom(this->pixPos.y);
+	}
+	void GrabAction::Execute(Scene& scene)
+	{
+		scene.GetUserControl()->grab();
+	}
+	void ReleaseAction::Execute(Scene& scene)
+	{
+		scene.GetUserControl()->release();
 	}
 }

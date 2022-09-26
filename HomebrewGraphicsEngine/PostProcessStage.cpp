@@ -42,6 +42,7 @@ namespace Hogra {
 			var->Bind(*(mesh->getMaterial()->GetShaderProgram()));
 		}
 		mesh->Draw();
+		nextTargetFbo.Unbind();
 	}
 
 	const FBO& PostProcessStage::GetFBO() const

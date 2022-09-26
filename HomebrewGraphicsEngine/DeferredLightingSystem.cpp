@@ -71,24 +71,27 @@ namespace Hogra {
 		glStencilMask(0x00);
 	}
 	
-	void DeferredLightingSystem::Draw(const std::vector<Light*>& lights) {
+	void DeferredLightingSystem::Draw(const std::vector<Light*>& pointLights, const Light& directionalLight) {
 		meshFullScreen->Bind();
-		glm::vec4 pos = lights[0]->GetPosition();
-		glm::vec3 pow = lights[0]->getPowerDensity();
+		glm::vec4 pos = directionalLight.GetPosition();
+		glm::vec3 pow = directionalLight.getPowerDensity();
 		glUniform4f(glGetUniformLocation(fullScreenProgram.ID, "light.position"), pos.x, pos.y, pos.z, pos.w);
 		glUniform3f(glGetUniformLocation(fullScreenProgram.ID, "light.powerDensity"), pow.x, pow.y, pow.z);
 		meshFullScreen->Draw();
 
 		mesh->Bind();
-		instanceData.clear();
-		for (int i = 1; i < lights.size(); i++) {
-			if (lights[i]->IsActive()) {
-				Geometry::LightInstancedData d = { lights[i]->getVolumeModelMatrix(), lights[i]->GetPosition(), glm::vec4(lights[i]->getPowerDensity(), 0.0) };
-				instanceData.push_back(d);
+		if (1 < pointLights.size()) {
+			instanceData.clear();
+			for (int i = 1; i < pointLights.size(); i++) {
+				if (pointLights[i]->IsActive()) {
+					Geometry::LightInstancedData d = { pointLights[i]->getVolumeModelMatrix(), pointLights[i]->GetPosition(), glm::vec4(pointLights[i]->getPowerDensity(), 0.0) };
+					instanceData.push_back(d);
+				}
 			}
+			mesh->DrawInstanced(instanceData);
 		}
-		mesh->DrawInstanced(instanceData);
 	}
+
 	const Texture2D& DeferredLightingSystem::GetDepthTexture()
 	{
 		return depthTexture;
