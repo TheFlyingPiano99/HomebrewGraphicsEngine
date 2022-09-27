@@ -9,13 +9,15 @@
 #include "ShaderProgramFactory.h"
 #include "AudioDevice.h"
 #include "Texture3D.h"
-
+#include "Texture2D.h"
+#include "Scene.h"
 #include "AudioBuffer.h"
 #include "AudioSource.h"
 #include "AudioListener.h"
 
 #include "SceneAudioSource.h"
 #include "ObservObjectControl.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -154,6 +156,12 @@ namespace Hogra {
 
 	Scene* SceneFactory::CreateVoxelDemoScene(int contextWidth, int contextHeight)
 	{
+
+		//Test mem allocator:
+		Texture2D* textureInstance = Allocator<Hogra::Texture2D>::New();
+
+		Scene* sceneInstance = Allocator<Hogra::Scene>::New();
+
 		Scene* scene = new Scene();
 		scene->Init(contextWidth, contextHeight);
 

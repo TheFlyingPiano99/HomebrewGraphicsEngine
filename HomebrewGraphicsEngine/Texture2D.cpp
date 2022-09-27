@@ -52,10 +52,10 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture2D::Init(std::vector<glm::vec4> bytes, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType)
+	void Texture2D::Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum format, GLenum pixelType)
 	{
-		this->dimensions = dimensions;
-		
+		this->dimensions = _dimensions;
+		this->bytes = _bytes;
 			// Generates an OpenGL texture object
 		glGenTextures(1, &ID);
 		// Assigns the texture to a Texture Unit
@@ -130,5 +130,9 @@ namespace Hogra {
 	void Texture2D::Unbind() const
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	
+	const std::vector<glm::vec4>& Texture2D::GetBytes() const {
+		return bytes;
 	}
 }

@@ -33,8 +33,13 @@ namespace Hogra {
 
 		const Dimensions& GetDimensions() const;
 
+		const glm::vec4 ResampleGradientAndDensity(glm::ivec3 position);
+
+		const float operator()(glm::ivec3 position);
+
 	private:
-		bool readDimensions(const char* path, std::string& name, Dimensions& dimensions);
+		bool ReadDimensions(const char* path, std::string& name, Dimensions& dimensions);
 		Dimensions dimensions;
+		int maxValue = 256;
 	};
 }

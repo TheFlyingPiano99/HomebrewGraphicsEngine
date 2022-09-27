@@ -175,5 +175,8 @@ namespace Hogra {
 		glfwDestroyWindow(window);
 		// Terminate GLFW before ending the program
 		glfwTerminate();
+
+		MemoryManager::DeallocateAll();
+		MasterAllocator::DeleteAll();
 	}
 }

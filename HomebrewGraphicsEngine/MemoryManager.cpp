@@ -13,10 +13,12 @@
 #include "AudioSource.h"
 #include "AudioListener.h"
 
+
+namespace Hogra {
 	/*
 	* Needs to be called before closing program!
 	*/
-	void Hogra::MemoryManager::DeallocateAll() {
+	void MemoryManager::DeallocateAll() {
 		GUI::DestroyInstance();
 		AssetFolderPathManager::DestroyInstance();
 		ControlActionManager::DestroyInstance();
@@ -40,7 +42,7 @@
 		AudioListener::DeallocateAll();
 	}
 
-	void Hogra::MemoryManager::DeallocateSceneResources()
+	void MemoryManager::DeallocateSceneResources()
 	{
 		ShaderProgram::DeallocateAll();
 		Material::DeallocateAll();
@@ -58,4 +60,8 @@
 		GeometryFactory::GetInstance()->ForgetPointers();
 		ShaderProgramFactory::GetInstance()->ForgetPointers();
 	}
+
+	std::vector<std::function<void()>> MasterAllocator::deleteAllFunctions = std::vector<std::function<void()>>();
+
+}
 

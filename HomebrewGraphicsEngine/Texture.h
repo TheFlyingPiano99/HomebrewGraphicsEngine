@@ -13,6 +13,9 @@ namespace Hogra {
 
 		static void Deallocate(Texture* instance)
 		{
+			if (nullptr == instance) {
+				return;
+			}
 			auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
 			if (iter != heapAllocatedInstances.end()) {
 				heapAllocatedInstances.erase(iter);

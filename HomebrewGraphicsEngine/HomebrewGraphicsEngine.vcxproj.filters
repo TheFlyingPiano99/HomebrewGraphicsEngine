@@ -327,6 +327,9 @@
     <ClCompile Include="ObservObjectControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TransferFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -592,6 +595,9 @@
     </ClInclude>
     <ClInclude Include="ObservObjectControl.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TransferFunction.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

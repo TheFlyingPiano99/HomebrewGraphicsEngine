@@ -235,6 +235,7 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TextureCube.cpp" />
+    <ClCompile Include="TransferFunction.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="UniformVariable.cpp" />
     <ClCompile Include="UserControl.cpp" />
@@ -325,6 +326,7 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
+    <ClInclude Include="TransferFunction.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="UniformVariable.h" />
     <ClInclude Include="UserControl.h" />
