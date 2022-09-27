@@ -6,7 +6,7 @@ in vec3 worldPos;
 layout (location = 0) out vec4 FragColor;
 
 layout (binding = 0) uniform sampler2D colorTexture;
-layout (binding = 1) uniform sampler2D depthTexture;
+layout (binding = 1) uniform sampler2D transferTexture;
 layout (binding = 2) uniform sampler2D attenuationTexture;
 layout (binding = 3) uniform sampler3D voxels;
 
@@ -110,6 +110,10 @@ vec3 simpleTransfer(float g, float i) {
 	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(0.2,0.4,0.8)) * i * 4.0;
 }
 
+vec4 transferFunctionFromTexture(float i, float g) {
+	return texture(transferTexture, vec2(i, g));
+}
+
 void main() {	
 
 	vec3 viewDir = normalize(cameraPosition - worldPos);
@@ -117,13 +121,13 @@ void main() {
 	vec3 currentPos = modelPos + resolution * 0.5;
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
 
-	vec3 color = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
 	
 	// Calculate attenuation:
-	FragColor = vec4(
+	FragColor = min(max(vec4(
 		1.0 - pow(1.0 - min(color.r, 1.0), w_delta),
 		1.0 - pow(1.0 - min(color.g, 1.0), w_delta),
 		1.0 - pow(1.0 - min(color.b, 1.0), w_delta),
-		1.0 - pow(1.0 - min(length(color), 1.0), w_delta)
-	);
+		1.0 - pow(1.0 - min(color.a, 1.0), w_delta)
+	), 0.0), 1.0);
 }

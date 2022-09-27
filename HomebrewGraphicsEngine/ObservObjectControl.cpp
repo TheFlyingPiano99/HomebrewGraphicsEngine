@@ -22,8 +22,7 @@ void Hogra::ObservObjectControl::Zoom(float delta)
 void Hogra::ObservObjectControl::primaryAction()
 {
 	if (!GlobalVariables::hideCursor) {
-		// Todo
-		//Maybe click on the voxel object...
+		volumeObject->CycleSelectedFeature();
 	}
 }
 

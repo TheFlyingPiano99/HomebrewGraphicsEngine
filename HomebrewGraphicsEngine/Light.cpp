@@ -9,10 +9,10 @@ namespace Hogra {
 		return instance;
 	}
 
-	void Light::Init(glm::vec4 position, glm::vec3 powerDensity)
+	void Light::Init(const glm::vec4& _position, const glm::vec3& _powerDensity)
 	{
-		this->position = position;
-		this->powerDensity = powerDensity;
+		this->position = _position;
+		this->powerDensity = _powerDensity;
 		effectiveRadius = getEffectiveRadius();
 		volumeModelMatrix = glm::translate(glm::vec3(GetPosition())) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}

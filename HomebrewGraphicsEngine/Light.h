@@ -13,7 +13,7 @@ namespace Hogra {
 
 		static Light* Instantiate();
 
-		void Init(glm::vec4 position, glm::vec3 powerDensity);
+		void Init(const glm::vec4& _position, const glm::vec3& _powerDensity);
 
 		~Light() = default;
 

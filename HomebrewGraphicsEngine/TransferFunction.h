@@ -157,11 +157,11 @@ namespace Hogra {
 	class TransferFunction
 	{
 	private:
-		ShaderProgram* shader = nullptr;
+		ShaderProgram shader;
 		glm::mat4 modelMatrix;
 		glm::mat4 invModelMatrix;
 		Texture2D* texture = nullptr;
-		VAO* quadVAO;
+		VAO quadVAO;
 		float displayExposure = 1.0f;
 		float displayGamma = 1.0f;
 		glm::vec4 nullVector = glm::vec4(0.0f);
@@ -169,9 +169,9 @@ namespace Hogra {
 		bool visible = true;
 		glm::vec2 preferedCameraSpacePosition = glm::vec2(0, 0);
 		glm::vec2 cameraSpacePosition = glm::vec2(0, 0);
-
+		
 	public:
-		TransferFunction(ShaderProgram* shader, VAO* quad);
+		void Init();
 
 		~TransferFunction() {
 			if (texture != nullptr) {
@@ -187,7 +187,7 @@ namespace Hogra {
 		void singleColor(glm::vec3 color);
 		void removeColor(glm::vec3 color);
 		void grayscale();
-		void draw(FBO& fbo);
+		void Draw(const FBO& fbo);
 		void Bind();
 		void Unbind();
 		void clear();
@@ -288,7 +288,7 @@ namespace Hogra {
 			visible = !visible;
 		}
 
-		void animate(float dt);
+		void Animate(float dt);
 
 		bool isVisible() {
 			return visible;

@@ -96,7 +96,7 @@ namespace Hogra {
 		postProcessStages.clear();
 
 		for (auto& volumeObject : volumeObjects) {
-			delete volumeObject;
+			Allocator<VolumeObject>::Delete(volumeObject);
 		}
 		volumeObjects.clear();
 
@@ -122,6 +122,9 @@ namespace Hogra {
 		}
 
 		camera.LatePhysicsUpdate(dt);
+		for (auto* volume : volumeObjects) {
+			volume->LatePhysicsUpdate(dt);
+		}
 		for (auto& obj : sceneObjects) {
 			obj->Update();
 		}

@@ -6,7 +6,7 @@ in vec3 worldPos;
 layout (location = 0) out vec4 FragColor;
 
 layout (binding = 0) uniform sampler2D colorTexture;
-layout (binding = 1) uniform sampler2D depthTexture;
+layout (binding = 1) uniform sampler2D transferTexture;
 layout (binding = 2) uniform sampler2D attenuationTexture;
 layout (binding = 3) uniform sampler3D voxels;
 
@@ -194,26 +194,30 @@ vec3 simpleTransfer(float g, float i) {
 	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(1, 0.5, 0.4)) * i * 2.0;
 }
 
-vec3 transferGradient(vec3 currentPos, vec3 color) {
+vec4 transferFunctionFromTexture(float i, float g) {
+	return texture(transferTexture, vec2(i, g));
+}
+
+vec3 transferGradient(vec3 currentPos, vec4 color) {
 	vec3 offset = 1.0 / resolution;
 	vec3 centeredPos = ivec3(currentPos);
 	vec4 gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(1,0,0) * offset));
-	vec3 cX = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 cX = transferFunctionFromTexture(length(gradientIntesity.xyz), gradientIntesity.w);
 
 	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,1,0) * offset));
-	vec3 cY = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 cY = transferFunctionFromTexture(length(gradientIntesity.xyz), gradientIntesity.w);
 
 	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,0,1) * offset));
-	vec3 cZ = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 cZ = transferFunctionFromTexture(length(gradientIntesity.xyz), gradientIntesity.w);
 
 	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(-1,0,0) * offset));
-	vec3 cNX = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 cNX = transferFunctionFromTexture(length(gradientIntesity.xyz), gradientIntesity.w);
 
 	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,-1,0) * offset));
-	vec3 cNY = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 cNY = transferFunctionFromTexture(length(gradientIntesity.xyz), gradientIntesity.w);
 
 	gradientIntesity = resampleGradientAndDensity(centeredPos, trilinearInterpolation(centeredPos + vec3(0,0,-1) * offset));
-	vec3 cNZ = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 cNZ = transferFunctionFromTexture(length(gradientIntesity.xyz), gradientIntesity.w);
 
 	float c0 = length(color);
 	return (vec3(
@@ -240,12 +244,11 @@ void main() {
 	vec2 cameraTexCoords = ndc_temp.xy * 0.5 + 0.5;
 	vec4 prevColor = texture(colorTexture, cameraTexCoords);
 
-	vec3 color = simpleTransfer(length(gradientIntesity.xyz), gradientIntesity.w);
+	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
 
 	vec3 transferGrad = transferGradient(currentPos, color);
 
 	// Calculate opacity of this segment:
-	float alpha = 1.0 - pow(1.0 - min(length(color) * 10.0, 1.0), w_delta);
 	float w_lightDistance = length(light.position - worldPos);
 	vec3 w_lightDir = normalize(light.position - worldPos);
 	vec3 w_halfway = (w_lightDir + w_viewDir) * 0.5;
@@ -253,18 +256,20 @@ void main() {
 	
 	// Blinn-Phong local illumination:
 	float shininess = 3.0;
-	color += pow(max(dot(normalize(-transferGrad), normalize(m_halfway.xyz)), 0.0), shininess) * length(transferGrad.xyz) * 50.0 * light.powerDensity / w_lightDistance / w_lightDistance * w_delta;
+	float t = length(transferGrad.xyz);
+	color.rgb *= light.powerDensity / w_lightDistance / w_lightDistance * w_delta;
+	color.rgb += pow(length(transferGrad), 0.1) * pow(max(dot(normalize(-transferGrad), normalize(m_halfway.xyz)), 0.0), shininess) * light.powerDensity / w_lightDistance / w_lightDistance * w_delta;
 	
 	// Ambient light:
-	color += vec3(0.01) * w_delta;
+	color.rgb += vec3(0.01) * w_delta;
 
 	vec4 ndc_attenuationCoords = light.viewProjMatrix * vec4(worldPos, 1.0);
 	ndc_attenuationCoords /= ndc_attenuationCoords.w;
 	vec2 attenuationTexCoords = ndc_attenuationCoords.xy * 0.5 + 0.5;
-	vec3 attenuation = texture(attenuationTexture, attenuationTexCoords).rgb;
+	vec4 attenuation = texture(attenuationTexture, attenuationTexCoords);
 
 	// Light Attenuation from lights direction:
-	color *= max(1.0 - attenuation, 0.0);
-		
-	FragColor = vec4(color, alpha);
+	color.rgb *= max(1.0 - attenuation.rgb - attenuation.a, 0.0);
+	color.a = min(1.0 - pow(1.0 - color.a, w_delta), 1.0);
+	FragColor = max(color, 0.0);
 }

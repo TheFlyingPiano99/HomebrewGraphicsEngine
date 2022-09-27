@@ -4,9 +4,39 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtx/rotate_vector.hpp>
 #include <queue>
+#include "AssetFolderPathManager.h"
 
 namespace Hogra {
-	TransferFunction::TransferFunction(ShaderProgram* shader, VAO* quad) : shader(shader), quadVAO(quad) {
+
+	float quadVertices[] =
+	{
+		//Coord	//texCoords
+		1.0f, -1.0f,  1.0f,  0.0f,
+	   -1.0f, -1.0f,  0.0f,  0.0f,
+	   -1.0f,  1.0f,  0.0f,  1.0f,
+
+		1.0f,  1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,  0.0f,
+	   -1.0f,  1.0f,  0.0f,  1.0f
+	};
+
+	void TransferFunction::Init() {
+		shader.Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("transfer.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("transfer.frag")
+		);
+		quadVAO.Init();
+		quadVAO.Bind();
+		unsigned int quadVBO;
+		glGenBuffers(1, &quadVBO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+		quadVAO.Unbind();
 		features.clear();
 		defaultTransferFunction(glm::ivec2(256, 64));
 		setCamSpacePosition(glm::vec2(0.0f, -0.75f));
@@ -229,22 +259,19 @@ namespace Hogra {
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
-	void TransferFunction::draw(FBO& fbo)
+	void TransferFunction::Draw(const FBO& fbo)
 	{
-		if (shader == nullptr) {
-			return;
-		}
-		shader->Activate();
+		shader.Activate();
 		fbo.Bind();
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND);
-		quadVAO->Bind();
+		quadVAO.Bind();
 		texture->Bind();
 
-		glUniform1f(glGetUniformLocation(shader->ID, "exposure"), displayExposure);
-		glUniform1f(glGetUniformLocation(shader->ID, "gamma"), displayGamma);
-		glUniformMatrix4fv(glGetUniformLocation(shader->ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		glUniform1f(glGetUniformLocation(shader.ID, "exposure"), displayExposure);
+		glUniform1f(glGetUniformLocation(shader.ID, "gamma"), displayGamma);
+		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		fbo.Unbind();
 	}
@@ -294,7 +321,7 @@ namespace Hogra {
 					bytes[y * dimensions.x + x].x = x / (float)dimensions.x;
 					bytes[y * dimensions.x + x].y = x / (float)dimensions.x * x / (float)dimensions.x;
 					bytes[y * dimensions.x + x].z = x / (float)dimensions.x * x / (float)dimensions.x;
-					bytes[y * dimensions.x + x].w = (std::pow((x - 3), 0.5) <= (float)dimensions.x) ? std::pow((x - 3), 0.5) / (float)dimensions.x : 1.0f;
+					bytes[y * dimensions.x + x].w = std::pow((x - 3) / (float)dimensions.x, 0.01);
 				}
 				else {
 					bytes[y * dimensions.x + x].x = 0.0f;
@@ -540,9 +567,9 @@ namespace Hogra {
 
 	static float timer = 0.0f;
 	static bool prevVisible = false;
-	void TransferFunction::animate(float dt)
+	void TransferFunction::Animate(float dt)
 	{
-		const float maxTime = 500.0f;
+		const float maxTime = 3.0f;
 		if (prevVisible != visible) {
 			prevVisible = visible;
 			timer = maxTime;

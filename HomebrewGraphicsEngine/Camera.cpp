@@ -40,7 +40,6 @@ namespace Hogra {
 		invViewProjMatrix = glm::inverse(viewProjMatrix);
 		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye + animationOffset));
 		bool prevMooved = moved;
-		moved = false;
 		return prevMooved;
 	}
 

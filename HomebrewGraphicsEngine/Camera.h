@@ -124,6 +124,12 @@ namespace Hogra {
 			animationOffset = offset;
 		}
 
+		bool PopIsMoved() {
+			auto temp = moved;
+			moved = false;
+			return temp;
+		}
+
 	private:
 		UniformBufferObject ubo;
 		// Stores the main vectors of the camera

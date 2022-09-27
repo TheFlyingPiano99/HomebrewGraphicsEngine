@@ -175,10 +175,10 @@ namespace Hogra {
 
 		auto* volumeLight = Light::Instantiate();
 		volumeLight->Init(
-			glm::vec4(15, 5, 15, 1.0),
-			glm::vec3(1000.0f, 1000.0f, 1000.0f)
+			glm::vec4(10, 10, 10, 1.0),
+			glm::vec3(10000.0f, 10000.0f, 10000.0f)
 		);
-		auto volumeObject = new VolumeObject();
+		auto* volumeObject = Allocator<VolumeObject>::New();
 		volumeObject->Init(
 			voxelTexture,
 			glm::vec3(0, 0, 0),

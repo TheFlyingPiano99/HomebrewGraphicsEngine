@@ -1572,8 +1572,8 @@ static void ShowDemoWindowWidgets()
     // (see others https://github.com/ocornut/imgui/wiki/Useful-Extensions)
     if (ImGui::TreeNode("Plots Widgets"))
     {
-        static bool animate = true;
-        ImGui::Checkbox("Animate", &animate);
+        static bool Update = true;
+        ImGui::Checkbox("Animate", &Update);
 
         // Plot as lines and plot as histogram
         static float arr[] = { 0.6f, 0.1f, 1.0f, 0.5f, 0.92f, 0.1f, 0.2f };
@@ -1586,7 +1586,7 @@ static void ShowDemoWindowWidgets()
         static float values[90] = {};
         static int values_offset = 0;
         static double refresh_time = 0.0;
-        if (!animate || refresh_time == 0.0)
+        if (!Update || refresh_time == 0.0)
             refresh_time = ImGui::GetTime();
         while (refresh_time < ImGui::GetTime()) // Create data at fixed 60 Hz rate for the demo
         {
@@ -1630,7 +1630,7 @@ static void ShowDemoWindowWidgets()
 
         // Animate a simple progress bar
         static float progress = 0.0f, progress_dir = 1.0f;
-        if (animate)
+        if (Update)
         {
             progress += progress_dir * 0.4f * ImGui::GetIO().DeltaTime;
             if (progress >= +1.1f) { progress = +1.1f; progress_dir *= -1.0f; }

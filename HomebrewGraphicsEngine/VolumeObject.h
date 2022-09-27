@@ -11,7 +11,10 @@
 #include "VAO.h"
 #include "EBO.h"
 #include "Geometry.h"
+#include "TransferFunction.h"
+#include "AssetFolderPathManager.h"
 #include <iostream>
+#include <fstream>
 
 #define VOLUME_TEXTURE_WIDTH 1024
 #define VOLUME_TEXTURE_HEIGHT 1024
@@ -20,11 +23,12 @@ namespace Hogra {
 	class VolumeObject
 	{
 	public:
+
 		VolumeObject() = default;
 
 		void Init(Texture3D* voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize);
 
-		void Draw(const FBO& outputFBO, const Camera& camera, const Texture2D& depthTexture);
+		void Draw(const FBO& outputFBO, Camera& camera, const Texture2D& depthTexture);
 
 		const glm::vec3& GetPosition() const;
 
@@ -48,11 +52,44 @@ namespace Hogra {
 
 		void Update();
 
+		void LatePhysicsUpdate(float dt);
+
 		void SetTexture(Texture3D* texture) {
 			voxels = texture;
 		}
 
+		void LoadFeatures() {
+			std::ifstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("/features.txt"));
+			if (stream.is_open()) {
+				featureGroups.clear();
+				transferFunction.loadFeatures(stream, featureGroups);
+				stream.close();
+				FeatureGroup all;
+				all.name = "All features";
+				for (Feature& feature : transferFunction.getFeatures()) {
+					all.features.push_back(&feature);
+				}
+				all.serialize = false;
+				featureGroups.push_back(all);
+				selectedFeature = nullptr;
+				selectedFeatureGroup = nullptr;
+			}
+		}
 
+		void CycleSelectedFeature() {
+			const auto* prevSelected = selectedFeature;
+			selectedFeature = transferFunction.nextFeature(selectedFeature);
+			if (prevSelected != selectedFeature) {
+				std::cout << "Next: " << selectedFeature->name << std::endl;
+				transferFunction.clear();
+				transferFunction.setFeatureVisibility(*selectedFeature, true);
+				transferFunction.blur(3);
+			}
+		}
+
+		void ShowAll() {
+			transferFunction.showAll();
+		}
 
 	private:
 
@@ -67,7 +104,7 @@ namespace Hogra {
 		};
 		BoundingBox boundingBox;
 
-		bool intersectPlane(const BoxEdge& edge, const glm::vec3& planePos, const glm::vec3& planeNormal, glm::vec3& intersection) {
+		bool IntersectPlane(const BoxEdge& edge, const glm::vec3& planePos, const glm::vec3& planeNormal, glm::vec3& intersection) {
 			float t = dot(planePos - edge.position, planeNormal) / dot(edge.direction, planeNormal);
 			if (t >= 0 && t < edge.length) {
 				intersection = edge.position + edge.direction * t;
@@ -108,6 +145,11 @@ namespace Hogra {
 		ShaderProgram combineProgram;
 		Geometry* fullScreenQuad = nullptr;
 		glm::vec3 resolution = glm::vec3(1.0f);
+		std::vector<FeatureGroup> featureGroups;
+		TransferFunction transferFunction;
+		Feature* selectedFeature = nullptr;
+		FeatureGroup* selectedFeatureGroup = nullptr;
+
 	};
 }
 
