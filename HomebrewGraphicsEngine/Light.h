@@ -11,8 +11,6 @@ namespace Hogra {
 	class Light : public Component {
 	public:
 
-		static Light* Instantiate();
-
 		void Init(const glm::vec4& _position, const glm::vec3& _powerDensity);
 
 		~Light() = default;

@@ -13,12 +13,6 @@ namespace Hogra {
 	{
 	public:
 
-		static AudioSource* Instantiate();
-
-		static void Deallocate(AudioSource* toDelete);
-
-		static void DeallocateAll();
-
 		void Init(const AudioBuffer* _buffer);
 
 		~AudioSource();
@@ -42,8 +36,6 @@ namespace Hogra {
 	private:
 		ALuint ID;
 		const AudioBuffer* buffer = nullptr;
-
-		static std::vector<AudioSource*> heapAllocatedInstances;
 
 	};
 }

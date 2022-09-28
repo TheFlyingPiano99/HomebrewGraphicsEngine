@@ -61,10 +61,8 @@ namespace Hogra {
 				}
 			}
 		}
-		if (texture != nullptr) {
-			delete texture;
-		}
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -113,8 +111,8 @@ namespace Hogra {
 				}
 			}
 		}
-		delete texture;
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -143,8 +141,8 @@ namespace Hogra {
 				}
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -172,8 +170,8 @@ namespace Hogra {
 				bytes[y * dim.x + x] = texture->operator()(glm::ivec2(x, y)) / max;
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -193,8 +191,8 @@ namespace Hogra {
 				bytes[y * dim.x + x] += texture->operator()(glm::ivec2(x, y - 1));
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -213,8 +211,8 @@ namespace Hogra {
 				}
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -233,8 +231,8 @@ namespace Hogra {
 				}
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -254,8 +252,8 @@ namespace Hogra {
 				bytes[y * dim.x + x].b = gray;
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -307,8 +305,8 @@ namespace Hogra {
 				bytes[y * dim.x + x].a = 0.0f;
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -331,11 +329,9 @@ namespace Hogra {
 				}
 			}
 		}
-		if (texture != nullptr) {
-			delete texture;
-		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -420,8 +416,8 @@ namespace Hogra {
 			}
 		}
 
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -433,8 +429,8 @@ namespace Hogra {
 				bytes[y * dimensions.x + x] = glm::vec4(y / (float)dimensions.y * globalOpacity);
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -457,8 +453,8 @@ namespace Hogra {
 			}
 		}
 
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -502,9 +498,7 @@ namespace Hogra {
 		features = transferFunction.features;
 		glm::ivec2 dim = transferFunction.getDimensions();
 		if (dim.x == 0 || dim.y == 0) {	// Clear if empty.
-			if (texture != nullptr) {
-				delete texture;
-			}
+			Allocator<Texture2D>::Delete(texture);
 			return;
 		}
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
@@ -513,8 +507,8 @@ namespace Hogra {
 				bytes[y * dim.x + x] = transferFunction(glm::ivec2(x, y));
 			}
 		}
-		Texture2D::Deallocate(texture);
-		texture = Texture2D::Instantiate();
+		Allocator<Texture2D>::Delete(texture);
+		texture = Allocator<Texture2D>::New();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -569,7 +563,7 @@ namespace Hogra {
 	static bool prevVisible = false;
 	void TransferFunction::Animate(float dt)
 	{
-		const float maxTime = 3.0f;
+		const float maxTime = 15.0f;
 		if (prevVisible != visible) {
 			prevVisible = visible;
 			timer = maxTime;

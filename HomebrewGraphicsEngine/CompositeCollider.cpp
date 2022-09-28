@@ -1,12 +1,7 @@
 #include "CompositeCollider.h"
 #include <algorithm>
 namespace Hogra {
-    CompositeCollider* CompositeCollider::Instantiate()
-    {
-        auto* instance = new CompositeCollider();
-        heapAllocatedInstances.push_back(instance);
-        return instance;
-    }
+
     bool CompositeCollider::TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
     {
         float minT = -1.0f;

@@ -1,28 +1,13 @@
 #pragma once
 #include <vector>
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class Component
 	{
+		friend class Allocator<Component>;
 	public:
-
-		static void Deallocate(Component* instance)
-		{
-			auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
-			if (iter != heapAllocatedInstances.end()) {
-				heapAllocatedInstances.erase(iter);
-				delete instance;
-			}
-		}
-
-		static void DeallocateAll() {
-			for (auto& instance : heapAllocatedInstances) {
-				delete instance;
-			}
-			heapAllocatedInstances.clear();
-		}
-
 
 		virtual ~Component() = default;
 
@@ -37,7 +22,6 @@ namespace Hogra {
 		virtual void AfterPhysicsLoopUpdate() {}
 
 	protected:
-		static std::vector<Component*> heapAllocatedInstances;
 	};
 
 }

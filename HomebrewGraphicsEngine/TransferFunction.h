@@ -174,9 +174,7 @@ namespace Hogra {
 		void Init();
 
 		~TransferFunction() {
-			if (texture != nullptr) {
-				delete texture;
-			}
+			Allocator<Texture2D>::Delete(texture);
 		}
 
 		void crop(glm::vec2 min, glm::vec2 max);
@@ -242,7 +240,7 @@ namespace Hogra {
 			return displayGamma;
 		}
 
-		std::vector<Feature>& getFeatures() {
+		std::vector<Feature>& GetFeatures() {
 			return features;
 		}
 

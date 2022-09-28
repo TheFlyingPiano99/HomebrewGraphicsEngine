@@ -16,8 +16,6 @@ namespace Hogra {
 	{
 	public:
 
-		static Caption* Instantiate();
-
 		void Init(const std::string& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color);
 		
 		~Caption() = default;

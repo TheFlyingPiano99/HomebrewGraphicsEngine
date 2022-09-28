@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "MemoryManager.h"
 
 namespace Hogra {
 
@@ -8,6 +9,7 @@ namespace Hogra {
 	* Singleton
 	*/
 	class AssetFolderPathManager {
+		friend class Allocator<AssetFolderPathManager>;
 		static AssetFolderPathManager* instance;
 
 		std::string shaderFolderPath;
@@ -38,16 +40,13 @@ namespace Hogra {
 
 		static AssetFolderPathManager* getInstance() {
 			if (instance == nullptr) {
-				instance = new AssetFolderPathManager();
+				instance = Allocator<AssetFolderPathManager>::New();
 			}
 			return instance;
 		}
 
 		static void DestroyInstance() {
-			if (instance != nullptr) {
-				delete instance;
-				instance = nullptr;
-			}
+			Allocator<AssetFolderPathManager>::Delete(instance);
 		}
 
 		std::string getShaderFolderPath();

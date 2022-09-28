@@ -4,15 +4,6 @@
 
 namespace Hogra {
 
-	std::vector<Material*> Material::heapAllocatedInstances = std::vector<Material*>();
-
-	Material* Material::Instantiate()
-	{
-		auto* instance = new Material();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
-
 	void Material::Init(ShaderProgram* program)
 	{
 		this->program = program;

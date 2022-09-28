@@ -24,7 +24,7 @@ namespace Hogra {
 	{
 	public:
 
-		VolumeObject() = default;
+		VolumeObject();
 
 		void Init(Texture3D* voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize);
 
@@ -56,6 +56,7 @@ namespace Hogra {
 
 		void SetTexture(Texture3D* texture) {
 			voxels = texture;
+			isChanged = true;
 		}
 
 		void LoadFeatures() {
@@ -66,7 +67,7 @@ namespace Hogra {
 				stream.close();
 				FeatureGroup all;
 				all.name = "All features";
-				for (Feature& feature : transferFunction.getFeatures()) {
+				for (Feature& feature : transferFunction.GetFeatures()) {
 					all.features.push_back(&feature);
 				}
 				all.serialize = false;
@@ -85,10 +86,144 @@ namespace Hogra {
 				transferFunction.setFeatureVisibility(*selectedFeature, true);
 				transferFunction.blur(3);
 			}
+			isChanged = true;
 		}
 
 		void ShowAll() {
 			transferFunction.showAll();
+			isChanged = true;
+		}
+
+		FeatureGroup* GetSelectedFeatureGroup() {
+			return selectedFeatureGroup;
+		}
+
+		std::vector<FeatureGroup>& GetFeatureGroups() {
+			return featureGroups;
+		}
+
+		void ShowSelectedFeatureGroup()
+		{
+			if (nullptr != selectedFeatureGroup) {
+				transferFunction.clear();
+				for (Feature* feature : selectedFeatureGroup->features) {
+					feature->visible = true;
+				}
+				transferFunction.showVisible();
+				transferFunction.blur(3);
+				isChanged = true;
+			}
+		}
+
+		void SetSelectedFeatureGroup(const char* name) {
+			for (FeatureGroup& group : featureGroups) {
+				if (group.name.compare(name) == 0) {
+					if (selectedFeatureGroup != &group) {
+						selectedFeature = nullptr;
+					}
+					selectedFeatureGroup = &group;
+					if (selectedFeatureGroup != &group) {
+						selectedFeature = nullptr;
+						ShowSelectedFeatureGroup();
+					}
+					break;
+				}
+			}
+			isChanged = true;
+		}
+
+		Feature* GetSelectedFeature() {
+			return selectedFeature;
+		}
+
+		void SetSelectedFeature(const char* name) {
+			selectedFeature = transferFunction.findFeatureByName(name);
+			transferFunction.clear();
+			if (selectedFeature != nullptr) {
+				if (transferFunction.setFeatureVisibility(*selectedFeature, true)) {
+					transferFunction.blur(3);
+					isChanged = true;
+				};
+			}
+
+		}
+
+		void ResetToDefault()
+		{
+			transferFunction.clear();
+			transferFunction.defaultTransferFunction(glm::ivec2(256, 128));
+			isChanged = true;
+		}
+
+
+		void CreateFeatureGroup()
+		{
+			static int nextGroupIdx = 1;
+			FeatureGroup group;
+			group.features.clear();
+			group.name = std::string("Group").append(std::to_string(nextGroupIdx++));
+			featureGroups.push_back(group);
+		}
+
+		void RemoveSelectedFeatureFromFeatureGroup()
+		{
+			if (nullptr != selectedFeature && nullptr != selectedFeatureGroup) {
+				selectedFeatureGroup->features.erase(std::find(selectedFeatureGroup->features.begin(),
+					selectedFeatureGroup->features.end(),
+					selectedFeature));
+				selectedFeature = nullptr;
+			}
+		}
+
+		void RedrawSelected()
+		{
+			transferFunction.clear();
+			transferFunction.setFeatureVisibility(*selectedFeature, true);
+			transferFunction.blur(3);
+			isChanged = true;
+		}
+
+		void RotateModelAroundX(float rad_angle) {
+			orientation = glm::angleAxis(rad_angle, glm::vec3(1.0f,0.0f,0.0f)) * orientation;
+		}
+
+		void RotateModelAroundY(float rad_angle) {
+			orientation = glm::angleAxis(rad_angle, glm::vec3(0.0f, 1.0f, 0.0f)) * orientation;
+		}
+
+		void RotateModelAroundZ(float rad_angle) {
+			orientation = glm::angleAxis(rad_angle, glm::vec3(0.0f, 0.0f, 1.0f)) * orientation;
+		}
+
+		float& GetSTFradius() {
+			return STFradius;
+		}
+
+		float& GetSTFOpacity() {
+			return STFOpacity;
+		}
+		float& GetSTFEmission() {
+			return STFEmission;
+		}
+
+		void ResetToSTF()
+		{
+			transferFunction.spatialTransferFunction(glm::ivec2(256, 128), *voxels, STFradius, STFOpacity, STFEmission);
+			std::cout << "STF feature count: " << transferFunction.GetFeatures().size() << std::endl;
+			isChanged = true;
+		}
+
+		std::vector<Feature>& GetFeatures() {
+			return transferFunction.GetFeatures();
+		}
+
+		void AddFeatureToFeatureGroup(Feature* feature) {
+			if (nullptr != feature && nullptr != selectedFeatureGroup) {
+				if (std::ranges::find(selectedFeatureGroup->features.begin(), selectedFeatureGroup->features.end(), feature)
+					== selectedFeatureGroup->features.end()) {
+					selectedFeatureGroup->features.push_back(feature);
+				}
+			}
 		}
 
 	private:
@@ -135,6 +270,10 @@ namespace Hogra {
 		int sliceCount = 0;
 		float w_diameter = 0;
 
+		float STFradius;
+		float STFOpacity;
+		float STFEmission;
+
 		Light* light;
 		Texture3D* voxels = nullptr;
 		Texture2D colorTextures[2];
@@ -149,6 +288,7 @@ namespace Hogra {
 		TransferFunction transferFunction;
 		Feature* selectedFeature = nullptr;
 		FeatureGroup* selectedFeatureGroup = nullptr;
+		bool isChanged = true;
 
 	};
 }

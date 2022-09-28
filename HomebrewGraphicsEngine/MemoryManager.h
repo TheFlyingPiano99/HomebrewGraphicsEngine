@@ -37,34 +37,42 @@ namespace Hogra {
 	public:
 
 		static T* New() {
-			if (instances.empty()) {	// Heuristic solution: if the array of instances get cleared multiple lambdas get passed to the master allocator!
+			if (isFirstAllocationOfThisType) {
+				isFirstAllocationOfThisType = false;
 				MasterAllocator::AddDeleteAllFunction(Allocator<T>::DeleteAll);
 			}
 			auto* instance = new T();
+			std::cout << "New    " << instance << std::endl;
 			instances.push_back(instance);
 			return instance;
 		}
 
 		static void Delete(T*& instance) {
-			instances.erase(std::find(instances.begin(), instances.end(), instance));
-			delete instance;
+			if (auto iter = std::ranges::find(instances.begin(), instances.end(), instance); iter != instances.end()) {
+				instances.erase(iter);
+				std::cout << "Delete " << instance << std::endl;
+				delete instance;
+			}
 			instance = nullptr;
 		}
 
 		static void DeleteAll() {
 			for (T* instance : instances) {
+				std::cout << "Delete " << instance << std::endl;
 				delete instance;
 			}
 			instances.clear();
-			std::cout << "Delete all of type " << std::endl;
 		}
 
 	private:
 		static std::vector<T*> instances;
+		static bool isFirstAllocationOfThisType;
 	};
 
 	template<typename T>
 	std::vector<T*> Allocator<T>::instances = std::vector<T*>();
 
+	template<typename T>
+	bool Allocator<T>::isFirstAllocationOfThisType = true;
 
 }

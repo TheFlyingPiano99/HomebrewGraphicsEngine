@@ -5,29 +5,14 @@
 #include "Light.h"
 #include <span>
 #include "ShadowCaster.h"
+#include "MemoryManager.h"
+
 namespace Hogra {
 
 	class Material
 	{
+		friend class Allocator<Material>;
 	public:
-
-		static Material* Instantiate();
-
-		static void Deallocate(Material* instance)
-		{
-			auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
-			if (iter != heapAllocatedInstances.end()) {
-				heapAllocatedInstances.erase(iter);
-				delete instance;
-			}
-		}
-
-		static void DeallocateAll() {
-			for (auto& instance : heapAllocatedInstances) {
-				delete instance;
-			}
-			heapAllocatedInstances.clear();
-		}
 
 		void Init(ShaderProgram* program);
 
@@ -92,7 +77,6 @@ namespace Hogra {
 		class ShaderProgramIsNullptr : public std::exception {};
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); };
-		static std::vector<Material*> heapAllocatedInstances;
 
 	};
 

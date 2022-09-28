@@ -1,12 +1,5 @@
 #include "Caption.h"
 
-Hogra::Caption* Hogra::Caption::Instantiate()
-{
-	auto* instance = new Caption();
-	heapAllocatedInstances.push_back(instance);
-	return instance;
-}
-
 void Hogra::Caption::Init(const std::string& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color) {
 	this->text = text;
 	this->scale = scale;

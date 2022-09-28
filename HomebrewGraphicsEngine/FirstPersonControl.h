@@ -9,8 +9,6 @@ namespace Hogra {
 	{
 	public:
 
-		static FirstPersonControl* Instantiate();
-
 		FirstPersonControl() {
 			allowRotate = true;
 		}

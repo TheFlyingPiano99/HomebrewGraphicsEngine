@@ -85,13 +85,6 @@ void Hogra::FirstPersonControl::MoveRight()
 	tSinceLastInput = 0.0f;
 }
 
-Hogra::FirstPersonControl* Hogra::FirstPersonControl::Instantiate()
-{
-	auto* instance = new FirstPersonControl();
-	heapAllocatedInstances.push_back((UserControl*)instance);
-	return instance;
-}
-
 Hogra::FirstPersonControl::~FirstPersonControl()
 {
 }

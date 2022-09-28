@@ -3,12 +3,13 @@
 #include "ControlAction.h"
 #include <map>
 #include <iostream>
-
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class ControlActionManager
 	{
+		friend class Allocator<ControlActionManager>;
 	public:
 
 		static ControlActionManager* getInstance();

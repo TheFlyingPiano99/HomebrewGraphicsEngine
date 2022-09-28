@@ -1,12 +1,7 @@
 #include "ForceField.h"
 
 namespace Hogra {
-	HomogeneForceField* HomogeneForceField::Instantiate()
-	{
-		auto instance = new HomogeneForceField();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
+
 	void HomogeneForceField::EarlyPhysicsUpdate(float dt)
 	{
 		for (auto& listener : listeners) {
@@ -22,12 +17,6 @@ namespace Hogra {
 	{
 	}
 
-	CentralForceField* CentralForceField::Instantiate()
-	{
-		auto* instance = new CentralForceField();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
 
 	void CentralForceField::EarlyPhysicsUpdate(float dt)
 	{

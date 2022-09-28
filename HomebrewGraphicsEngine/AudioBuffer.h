@@ -14,12 +14,6 @@ namespace Hogra {
 	{
 	public:
 
-		static AudioBuffer* Instantiate();
-
-		static void Deallocate(AudioBuffer* toDelete);
-
-		static void DeallocateAll();
-
 		void Init(std::string& path);
 
 		~AudioBuffer();
@@ -31,7 +25,6 @@ namespace Hogra {
 
 	private:
 		ALuint ID;
-		static std::vector<AudioBuffer*> heapAllocatedInstances;
 
 		/*
 		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"

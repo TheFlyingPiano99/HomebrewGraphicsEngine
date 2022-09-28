@@ -4,15 +4,6 @@
 
 namespace Hogra {
 
-	std::vector<Mesh*> Mesh::heapAllocatedInstances = std::vector<Mesh*>();
-
-	Mesh* Mesh::Instantiate()
-	{
-		auto* instance = new Mesh();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
-
 	void Mesh::Init(Material* _material, Geometry* _geometry)
 	{
 		this->material = _material;

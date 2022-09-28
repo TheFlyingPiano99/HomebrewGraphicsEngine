@@ -46,7 +46,7 @@ namespace Hogra {
 					}
 				}
 			}
-			geometry = Geometry::Instantiate();
+			geometry = Allocator<Geometry>::New();
 			geometry->Init(vertices, indices);
 			break;
 		}

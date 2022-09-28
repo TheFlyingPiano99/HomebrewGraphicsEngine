@@ -9,8 +9,6 @@ namespace Hogra {
     {
     public:
 
-        static CompositeCollider* Instantiate();
-
         void Init(Physics* physics = nullptr) {
             this->physics = physics;
             type = ColliderType::compositeColliderType;

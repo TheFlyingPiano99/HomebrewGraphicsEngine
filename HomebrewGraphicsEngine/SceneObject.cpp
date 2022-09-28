@@ -6,15 +6,6 @@
 
 namespace Hogra {
 
-	std::vector<SceneObject*> SceneObject::heapAllocatedInstances = std::vector<SceneObject*>();
-
-	SceneObject* SceneObject::Instantiate()
-	{
-		auto* instance = new SceneObject();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
-
 	void SceneObject::BeforePhysicsLoopUpdate() {
 		for (auto& component : components) {
 			component->BeforePhysicsLoopUpdate();

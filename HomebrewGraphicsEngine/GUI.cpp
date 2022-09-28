@@ -35,18 +35,206 @@ namespace Hogra {
 
 	}
 
-	void GUI::configToScene(Scene& scene)
+
+	void GUI::UpdateGUI(VolumeObject& volumeObject)
 	{
-		if (!visible)
+		if (!visible) {
 			return;
-		char value_buf[64] = {};
-		ImGui::Begin("Settings");
-		
-		if (ImGui::Button("Press me!")) {
-			std::cout << "Button pressed" << std::endl;
 		}
 
+		static bool configFeature = false;
+		static bool configSTF = false;
+		static bool addFeatureToGroup = false;
+		static Feature* featureToAdd = nullptr;
+
+		char value_buf[64] = {};
+		ImGui::Begin("Settings");
+		ImGui::SliderFloat3((const char*)"Light power", (float*) &(volumeObject.GetLight()->getPowerDensity())[0], 0.0f, 1.0f, (const char*)"", 1.0f);
+
+		/*
+		const char* current_item = scene.getVoxelData()->getCurrentTransferRegionSelectModes();
+		const char** items = scene.getVoxelData()->getTransferRegionSelectModes();
+		if (ImGui::BeginCombo("Transfer region select mode", current_item)) // The second parameter is the label previewed before opening the combo.
+		{
+			for (int n = 0; n < TRANSFER_MODE_COUNT; n++)
+			{
+				bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
+				if (ImGui::Selectable(items[n], is_selected)) {
+					current_item = items[n];
+					scene.getVoxelData()->setCurrentTransferRegionSelectModes(current_item);
+				}
+				if (is_selected) {
+					ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+				}
+			}
+			ImGui::EndCombo();
+		}
+		*/
+
+		const char* current_item = (volumeObject.GetSelectedFeatureGroup() != nullptr) ?
+			volumeObject.GetSelectedFeatureGroup()->name.c_str() : "Select group";
+		std::vector<FeatureGroup>& groups = volumeObject.GetFeatureGroups();
+		if (ImGui::BeginCombo("Feature group", current_item)) // The second parameter is the label previewed before opening the combo.
+		{
+			for (int n = 0; n < groups.size(); n++)
+			{
+				bool is_selected = (current_item == groups[n].name.c_str()); // You can store your selection however you want, outside or inside your objects
+				if (ImGui::Selectable(groups[n].name.c_str(), is_selected)) {
+					current_item = groups[n].name.c_str();
+					volumeObject.SetSelectedFeatureGroup(current_item);
+				}
+				if (is_selected) {
+					ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		if (volumeObject.GetSelectedFeatureGroup() != nullptr) {
+			current_item = (volumeObject.GetSelectedFeature() != nullptr) ?
+				volumeObject.GetSelectedFeature()->name.c_str() : "Select feature";
+			std::vector<Feature*>& features = volumeObject.GetSelectedFeatureGroup()->features;
+
+			if (ImGui::BeginCombo("Feature", current_item)) // The second parameter is the label previewed before opening the combo.
+			{
+				for (int n = 0; n < features.size(); n++)
+				{
+					bool is_selected = (current_item == features[n]->name.c_str()); // You can store your selection however you want, outside or inside your objects
+					if (ImGui::Selectable(features[n]->name.c_str(), is_selected)) {
+						current_item = features[n]->name.c_str();
+						volumeObject.SetSelectedFeature(current_item);
+					}
+					if (is_selected) {
+						ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		ImGui::BeginGroup();
+		if (ImGui::Button("Reset to STF", ImVec2(120, 50))) {
+			configSTF = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Reset to Default", ImVec2(120, 50))) {
+			volumeObject.ResetToDefault();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Config feature", ImVec2(120, 50))) {
+			configFeature = true;
+		}
+		if (ImGui::Button("Show all features", ImVec2(120, 50))) {
+			volumeObject.ShowAll();
+		}
+		if (ImGui::Button("Load features", ImVec2(120, 50))) {
+			volumeObject.LoadFeatures();
+		}
+
+		if (ImGui::Button("Create group", ImVec2(120, 50))) {
+			volumeObject.CreateFeatureGroup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Show group", ImVec2(120, 50))) {
+			volumeObject.ShowSelectedFeatureGroup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Add feature", ImVec2(120, 50))) {
+			addFeatureToGroup = true;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Remove feature", ImVec2(120, 50))) {
+			volumeObject.RemoveSelectedFeatureFromFeatureGroup();
+		}
+
+		ImGui::EndGroup();
+		ImGui::BeginGroup();
+		ImGui::Text("Rotate");
+		if (ImGui::Button("X", ImVec2(25, 25))) {
+			volumeObject.RotateModelAroundX(M_PI / 2.0f);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Y", ImVec2(25, 25))) {
+			volumeObject.RotateModelAroundY(M_PI / 2.0f);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Z", ImVec2(25, 25))) {
+			volumeObject.RotateModelAroundZ(M_PI / 2.0f);
+		}
+		ImGui::EndGroup();
 		ImGui::End();
+
+		if (configFeature && volumeObject.GetSelectedFeature() != nullptr) {
+			ImGui::Begin("Config feature");
+			ImGui::ColorEdit3("Color", &volumeObject.GetSelectedFeature()->color.x);
+			ImGui::SliderFloat("Opacity", &volumeObject.GetSelectedFeature()->opacity, 0.0f, 1.0f);
+			ImGui::SliderFloat("Emission", &volumeObject.GetSelectedFeature()->emission, 0.0f, 2.0f);
+			if (ImGui::Button("Finish", ImVec2(120, 50))) {
+				volumeObject.RedrawSelected();
+				configFeature = false;
+			}
+
+			ImGui::End();
+		}
+
+		if (configSTF) {
+			ImGui::Begin("Configure STF");
+
+			ImGui::SliderFloat("Class radius", &volumeObject.GetSTFradius(), 0.0f, 50.0f);
+			ImGui::SliderFloat("Global opacity", &volumeObject.GetSTFOpacity(), 0.0f, 50.0f);
+			ImGui::SliderFloat("Global emission", &volumeObject.GetSTFEmission(), 0.0f, 2.0f);
+
+			if (ImGui::Button("Generate", ImVec2())) {
+				volumeObject.ResetToSTF();
+				configSTF = false;
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2())) {
+				configSTF = false;
+			}
+		}
+
+		if (addFeatureToGroup) {
+			FeatureGroup* group = volumeObject.GetSelectedFeatureGroup();
+			if (group != nullptr && group->name.compare("All features") != 0) {
+				ImGui::Begin(std::string("Add feature to ").append(group->name).c_str());
+				current_item = (featureToAdd != nullptr) ?
+					featureToAdd->name.c_str() : "Select feature";
+				std::vector<Feature>& features = volumeObject.GetFeatures();
+				if (ImGui::BeginCombo("Feature to add", current_item)) // The second parameter is the label previewed before opening the combo.
+				{
+					for (int n = 0; n < features.size(); n++)
+					{
+						bool is_selected = (current_item == features[n].name.c_str()); // You can store your selection however you want, outside or inside your objects
+						if (ImGui::Selectable(features[n].name.c_str(), is_selected)) {
+							current_item = features[n].name.c_str();
+							featureToAdd = &features[n];
+						}
+						if (is_selected) {
+							ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+						}
+					}
+					ImGui::EndCombo();
+				}
+				if (ImGui::Button("Add", ImVec2())) {
+					if (featureToAdd != nullptr) {
+						volumeObject.AddFeatureToFeatureGroup(featureToAdd);
+						featureToAdd = nullptr;
+						addFeatureToGroup = false;
+					}
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Cancel", ImVec2())) {
+					featureToAdd = nullptr;
+					addFeatureToGroup = false;
+				}
+				ImGui::End();
+			}
+			else {
+				featureToAdd = nullptr;
+				addFeatureToGroup = false;
+			}
+		}
 	}
 
 	void GUI::Draw()

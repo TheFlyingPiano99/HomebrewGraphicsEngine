@@ -5,8 +5,9 @@
 #include<stb/stb_image.h>
 #include<glm/glm.hpp>
 #include <vector>
-
+#include "MemoryManager.h"
 #include"ShaderProgram.h"
+
 namespace Hogra {
 
 	struct Dimensions {
@@ -16,9 +17,8 @@ namespace Hogra {
 
 	class Texture3D : public Texture
 	{
+		friend class Allocator<Texture3D>;
 	public:
-
-		static Texture3D* Instantiate();
 
 		std::vector<char> bytes;
 		

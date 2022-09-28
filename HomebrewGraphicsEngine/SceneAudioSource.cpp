@@ -2,13 +2,6 @@
 
 namespace Hogra {
 
-	SceneAudioSource* SceneAudioSource::Instantiate()
-	{
-		auto* instance = new SceneAudioSource();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
-
 	void Hogra::SceneAudioSource::Init(AudioSource* _source)
 	{
 		audioSource = _source;

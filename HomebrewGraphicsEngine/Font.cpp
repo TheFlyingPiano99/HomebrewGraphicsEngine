@@ -4,13 +4,6 @@ namespace Hogra {
     
     std::vector<Font*> Font::heapAllocatedInstances = std::vector<Font*>();
 
-    Font* Font::Instantiate()
-    {
-        auto* instance = new Font();
-        heapAllocatedInstances.push_back(instance);
-        return instance;
-    }
-
     Font::~Font() {
         glDeleteBuffers(1, &vbo);
         glDeleteVertexArrays(1, &vao);
@@ -146,7 +139,7 @@ namespace Hogra {
         }
         int baseline;
         glm::ivec2 dim = GetTextDimension(text, baseline);
-        Texture2D* texture = Texture2D::Instantiate();
+        Texture2D* texture = Allocator<Texture2D>::New();
         texture->Init(GL_RGBA, dim, 0, GL_RGBA, GL_UNSIGNED_BYTE);
         FBO fbo;
         fbo.Init();

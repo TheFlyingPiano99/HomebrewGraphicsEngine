@@ -11,6 +11,14 @@
 
 namespace Hogra {
 
+	VolumeObject::VolumeObject() 
+		: STFradius(0.25f),
+		STFEmission(1.0f),
+		STFOpacity(1.0f) {
+
+	}
+
+
 	void VolumeObject::Init(Texture3D* _voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize)
 	{
 		voxels = _voxels;
@@ -57,7 +65,8 @@ namespace Hogra {
 	void VolumeObject::Draw(const FBO& outputFBO, Camera& camera, const Texture2D& depthTexture)
 	{
 		static int out = 0;
-		if (camera.PopIsMoved()) {
+		if (camera.PopIsMoved() || isChanged) {
+			isChanged = false;
 			// Calculate directions and transformations:
 			auto lightDir = glm::normalize(glm::vec3(light->GetPosition()) - this->w_position);
 			auto viewDir = glm::normalize(glm::vec3(camera.GetEyePos()) - this->w_position);
@@ -141,6 +150,7 @@ namespace Hogra {
 
 	void VolumeObject::SetPosition(const glm::vec3& pos) {
 		w_position = pos;
+		isChanged = true;
 	}
 
 	const glm::vec3 VolumeObject::GetScale() const {
@@ -149,6 +159,7 @@ namespace Hogra {
 
 	void VolumeObject::SetScale(const glm::vec3& _scale) {
 		scale = _scale;
+		isChanged = true;
 	}
 
 	const glm::quat& VolumeObject::GetOrientation() const {
@@ -157,6 +168,7 @@ namespace Hogra {
 
 	void VolumeObject::SetOrientation(const glm::quat& _orientation) {
 		orientation = _orientation;
+		isChanged = true;
 	}
 
 	Light* VolumeObject::GetLight() const
@@ -167,6 +179,7 @@ namespace Hogra {
 	void VolumeObject::SetLight(Light* _light)
 	{
 		light = _light;
+		isChanged = true;
 	}
 
 	void VolumeObject::Update()

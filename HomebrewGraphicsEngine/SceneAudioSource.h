@@ -8,7 +8,6 @@ namespace Hogra {
 	class SceneAudioSource : public Component
 	{
 	public:
-		static SceneAudioSource* Instantiate();
 
 		void Init(AudioSource* _source);
 

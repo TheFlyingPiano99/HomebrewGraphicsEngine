@@ -4,21 +4,20 @@
 #include<stb/stb_image.h>
 
 #include"ShaderProgram.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class Texture1D : public Texture
 	{
+		friend class Allocator<Texture1D>;
 	public:
 		const char* type;
 		unsigned int width = 0;
 
-		static Texture1D* Instantiate();
-
 		void Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType);
 
 		~Texture1D() override {
-			Delete();
 		}
 
 		const unsigned int getWidth() {

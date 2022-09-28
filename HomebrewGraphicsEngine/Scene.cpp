@@ -16,6 +16,11 @@
 #include "GeometryLoader.h"
 #include "MaterialFactory.h"
 #include "ShaderProgramFactory.h"
+#include "GUI.h"
+
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 namespace Hogra {
 
@@ -152,6 +157,8 @@ namespace Hogra {
 
 	void Scene::Draw()
 	{
+		UpdateGUI();
+
 		// Init and export data:
 		camera.ExportData();
 		lightManager.ExportData();
@@ -333,6 +340,17 @@ namespace Hogra {
 
 	void Scene::AddVolumeObject(VolumeObject* object) {
 		volumeObjects.push_back(object);
+	}
+
+	std::vector<VolumeObject*>& Scene::GetVolumeObjects() {
+		return volumeObjects;
+	}
+
+	void Scene::UpdateGUI() {
+
+		for (auto* volume : volumeObjects) {
+			GUI::getInstance()->UpdateGUI(*volume);
+		}
 	}
 
 }

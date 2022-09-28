@@ -40,8 +40,6 @@ namespace Hogra {
 	{
 	public:
 
-		static CentralForceField* Instantiate();
-
 		CentralForceField() = default;
 
 		// Inherited via Component
@@ -54,8 +52,6 @@ namespace Hogra {
 	class HomogeneForceField : public ForceField
 	{
 	public:
-
-		static HomogeneForceField* Instantiate();
 
 		HomogeneForceField() = default;
 

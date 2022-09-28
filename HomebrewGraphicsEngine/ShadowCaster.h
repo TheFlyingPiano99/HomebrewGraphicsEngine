@@ -57,7 +57,7 @@ namespace Hogra {
 
 		FBO fbo;
 		UniformBufferObject ubo;
-		Texture2D shadowMap;	// Do not delete in this object
+		Texture2D shadowMap;
 		ShaderProgram program;
 		glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
 		PositionProvider* positionProvider = nullptr;

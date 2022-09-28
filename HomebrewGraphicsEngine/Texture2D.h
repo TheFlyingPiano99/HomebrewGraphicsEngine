@@ -12,9 +12,8 @@ namespace Hogra {
 
 	class Texture2D : public Texture
 	{
+		friend class Allocator<Texture2D>;
 	public:
-
-		static Texture2D* Instantiate();
 
 		void Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType);
 

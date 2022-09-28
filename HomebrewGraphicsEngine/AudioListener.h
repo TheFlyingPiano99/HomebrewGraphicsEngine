@@ -11,16 +11,8 @@ namespace Hogra {
 	{
 	public:
 
-		static AudioListener* Instantiate();
-
-		static void Deallocate(AudioListener* toDelete);
-
-		static void DeallocateAll();
-
 		void Init();
 
 	private:
-		static std::vector<AudioListener*> heapAllocatedInstances;
-
 	};
 }

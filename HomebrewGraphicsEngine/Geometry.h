@@ -2,13 +2,14 @@
 #include <vector>
 #include"VAO.h"
 #include"EBO.h"
+#include "MemoryManager.h"
+
 namespace Hogra {
 
 	class Geometry
 	{
+		friend class Allocator<Geometry>;
 	public:
-
-		static Geometry* Instantiate();
 
 		void Init(std::vector <Vertex>& vertices, std::vector <GLint>& indices);
 
@@ -16,22 +17,6 @@ namespace Hogra {
 			if (0 != instancedBuffer) {
 				glDeleteBuffers(1, &instancedBuffer);
 			}
-		}
-
-		static void Deallocate(Geometry* instance)
-		{
-			auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
-			if (iter != heapAllocatedInstances.end()) {
-				heapAllocatedInstances.erase(iter);
-				delete instance;
-			}
-		}
-
-		static void DeallocateAll() {
-			for (auto& instance : heapAllocatedInstances) {
-				delete instance;
-			}
-			heapAllocatedInstances.clear();
 		}
 
 		// Bind the VAO to the currently active GPU program
@@ -79,7 +64,6 @@ namespace Hogra {
 		bool faceCulling = true;
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); }
-		static std::vector<Geometry*> heapAllocatedInstances;
 	};
 
 }

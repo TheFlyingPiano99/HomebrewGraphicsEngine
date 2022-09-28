@@ -14,10 +14,10 @@ namespace Hogra {
 			fragmentShaderPath
 		);
 		colorTexture.Init(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
-		material = Material::Instantiate();
+		material = Allocator<Material>::New();
 		material->Init(&program);
 		material->addTexture(&colorTexture);
-		mesh = Mesh::Instantiate();
+		mesh = Allocator<Mesh>::New();
 		mesh->Init(material, GeometryFactory::GetInstance()->getFullScreenQuad());
 		mesh->setDepthTest(false);
 		mesh->setStencilTest(false);

@@ -8,11 +8,6 @@
 
 namespace Hogra {
 	
-	Texture3D* Texture3D::Instantiate() {
-		auto* instance = new Texture3D();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
 	void Texture3D::Init(const std::string& directory, GLuint slot, GLenum format)
 	{
 		maxValue = std::pow(2, dimensions.bytesPerVoxel * 8) - 1;

@@ -2,12 +2,6 @@
 #include <math.h>
 #include <iostream>
 namespace Hogra {
-	Physics* Physics::Instantiate()
-	{
-		auto* instance = new Physics();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
 
 	void Physics::EarlyPhysicsUpdate(float dtSec)
 	{

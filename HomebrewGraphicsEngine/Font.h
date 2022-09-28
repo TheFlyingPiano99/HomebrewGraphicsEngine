@@ -15,9 +15,6 @@ namespace Hogra {
     class Font
     {
     public:
-
-        static Font* Instantiate();
-
         static void Deallocate(Font* instance)
         {
             auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);

@@ -8,8 +8,6 @@ namespace Hogra {
 	{
 	public:
 
-		static Physics* Instantiate();
-
 		void Init(SceneObject* _owner) {
 			owner = _owner;
 		}

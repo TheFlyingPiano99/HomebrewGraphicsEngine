@@ -5,15 +5,6 @@
 
 namespace Hogra {
 
-	std::vector<Geometry*> Geometry::heapAllocatedInstances = std::vector<Geometry*>();
-
-	Geometry* Geometry::Instantiate()
-	{
-		auto* instance = new Geometry();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
-
 	void Geometry::Init(std::vector<Vertex>& _vertices, std::vector<GLint>& _indices)
 	{
 		this->vertices = _vertices;

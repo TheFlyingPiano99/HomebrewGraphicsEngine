@@ -14,33 +14,17 @@
 #include "PositionProvider.h"
 #include "OrientationProvider.h"
 #include "ScaleProvider.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider
 	{
+		friend class Allocator<SceneObject>;
 	public:
-
-		static SceneObject* Instantiate();
 
 		void Init(Mesh* _mesh = nullptr) {
 			this->mesh = _mesh;
-		}
-
-		static void Deallocate(SceneObject* instance)
-		{
-			auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
-			if (iter != heapAllocatedInstances.end()) {
-				heapAllocatedInstances.erase(iter);
-				delete instance;
-			}
-		}
-
-		static void DeallocateAll() {
-			for (auto& instance : heapAllocatedInstances) {
-				delete instance;
-			}
-			heapAllocatedInstances.clear();
 		}
 
 		~SceneObject() = default;

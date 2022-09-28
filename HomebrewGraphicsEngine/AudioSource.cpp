@@ -5,30 +5,6 @@
 
 namespace Hogra {
 
-    std::vector<AudioSource*> AudioSource::heapAllocatedInstances = std::vector<AudioSource*>();
-
-    AudioSource* AudioSource::Instantiate()
-    {
-        auto* instance = new AudioSource();
-        heapAllocatedInstances.push_back(instance);
-        return instance;
-    }
-    void AudioSource::Deallocate(AudioSource* toDelete)
-    {
-        auto iter = std::ranges::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), toDelete);
-        if (heapAllocatedInstances.end() != iter) {
-            heapAllocatedInstances.erase(iter);
-            delete toDelete;
-        }
-    }
-    void AudioSource::DeallocateAll()
-    {
-        for (auto instance : heapAllocatedInstances) {
-            delete instance;
-        }
-        heapAllocatedInstances.clear();
-    }
-    
     void AudioSource::Init(const AudioBuffer* _buffer) {
         this->buffer = _buffer;
 

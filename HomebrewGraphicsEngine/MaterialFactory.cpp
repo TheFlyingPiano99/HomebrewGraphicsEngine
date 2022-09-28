@@ -3,6 +3,7 @@
 #include "ShaderProgramFactory.h"
 #include "VAO.h"
 #include "VBO.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 
@@ -30,10 +31,10 @@ namespace Hogra {
 		if (iter != loadedPBRMaterials.end()) {
 			return iter->second;
 		}
-		Texture2D* albedoMap = Texture2D::Instantiate();
+		Texture2D* albedoMap = Allocator<Texture2D>::New();
 		albedoMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 		.append(materialName).append("/albedo.jpg"), ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
-		Texture2D* normalMap = Texture2D::Instantiate();
+		Texture2D* normalMap = Allocator<Texture2D>::New();
 		normalMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/normal.jpg"), NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D roughnessMap;
@@ -48,7 +49,7 @@ namespace Hogra {
 		
 		// Combining roughness, metallic and AO:
 		auto& dim = albedoMap->getDimensions();
-		Texture2D* roughnessMetallicAO = Texture2D::Instantiate();
+		Texture2D* roughnessMetallicAO = Allocator<Texture2D>::New();
 		roughnessMetallicAO->Init(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		VAO vao;
 		VBO vbo;
@@ -92,7 +93,7 @@ namespace Hogra {
 		aoMap.Unbind();
 
 		auto* shader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
-		auto* material = Material::Instantiate();
+		auto* material = Allocator<Material>::New();
 		material->Init(shader);
 		material->addTexture(albedoMap);
 		material->addTexture(normalMap);
@@ -104,7 +105,7 @@ namespace Hogra {
 	Material* MaterialFactory::getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity)
 	{
 		ShaderProgram* program = ShaderProgramFactory::GetInstance()->GetEmissiveMaterialProgram();
-		auto* material = Material::Instantiate();
+		auto* material = Allocator<Material>::New();
 		material->Init(program);
 		material->setAlbedo(color * intensity);
 		material->setAlphaBlend(false);

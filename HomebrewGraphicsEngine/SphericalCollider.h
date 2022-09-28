@@ -10,8 +10,6 @@ namespace Hogra {
         public Collider
     {
     public:
-
-        static SphericalCollider* Instantiate();
         
         void Init(Physics* physics = nullptr) {
             this->physics = physics;

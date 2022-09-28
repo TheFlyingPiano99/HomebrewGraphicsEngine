@@ -28,34 +28,10 @@ namespace Hogra {
 		ShaderProgramFactory::DestroyInstance();
 		SceneManager::DestroyInstance();
 		SceneFactory::DestroyInstance();
-
-		ShaderProgram::DeallocateAll();
-		Material::DeallocateAll();
-		Geometry::DeallocateAll();
-		SceneObject::DeallocateAll();
-		Texture::DeallocateAll();
-		Component::DeallocateAll();
-		Font::DeallocateAll();
-
-		AudioBuffer::DeallocateAll();
-		AudioSource::DeallocateAll();
-		AudioListener::DeallocateAll();
 	}
 
 	void MemoryManager::DeallocateSceneResources()
 	{
-		ShaderProgram::DeallocateAll();
-		Material::DeallocateAll();
-		Geometry::DeallocateAll();
-		SceneObject::DeallocateAll();
-		Texture::DeallocateAll();
-		Component::DeallocateAll();
-		Font::DeallocateAll();
-
-		AudioBuffer::DeallocateAll();
-		AudioSource::DeallocateAll();
-		AudioListener::DeallocateAll();
-
 		MaterialFactory::GetInstance()->ForgetPointers();
 		GeometryFactory::GetInstance()->ForgetPointers();
 		ShaderProgramFactory::GetInstance()->ForgetPointers();

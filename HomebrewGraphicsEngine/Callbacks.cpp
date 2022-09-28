@@ -43,7 +43,6 @@ namespace Hogra {
 
 		SceneManager::getInstance()->Draw();
 
-		GUI::getInstance()->configToScene(*SceneManager::getInstance()->getScene());
 		GUI::getInstance()->Draw();
 
 		glfwSwapBuffers(window);
@@ -87,7 +86,7 @@ namespace Hogra {
 
 	void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
 	{
-		ControlActionManager::getInstance()->OnMouseScroll(yoffset);
+		ControlActionManager::getInstance()->OnMouseScroll((float)yoffset);
 	}
 
 	void Callbacks::onMouseClick(GLFWwindow* window, int button, int action, int mods)

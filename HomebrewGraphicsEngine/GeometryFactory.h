@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Geometry.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 
@@ -9,6 +10,7 @@ namespace Hogra {
 	*/
 	class GeometryFactory
 	{
+		friend class Allocator<GeometryFactory>;
 	public:
 		static GeometryFactory* GetInstance();
 		static void DestroyInstance();

@@ -64,7 +64,7 @@ namespace Hogra {
 					indices.push_back(zRes + yRes + 0);
 				}
 			}
-			wireFrameSphere = Geometry::Instantiate();
+			wireFrameSphere = Allocator<Geometry>::New();
 			wireFrameSphere->Init(vertices, indices);
 			wireFrameSphere->SetPrimitiveType(GL_LINES);
 			wireFrameSphere->SetFaceCulling(false);
@@ -113,7 +113,7 @@ namespace Hogra {
 				}
 			}
 
-			cilinder = Geometry::Instantiate();
+			cilinder = Allocator<Geometry>::New();
 			cilinder->Init(vertices, indices);
 		}
 		return cilinder;
@@ -231,7 +231,7 @@ namespace Hogra {
 			vert.texUV = glm::vec2(horizontal.x * 0.5f + 0.5f, vert.normal.y * 0.5f + 0.5f);
 			vertices.push_back(vert);
 		}
-		auto* geom = Geometry::Instantiate();
+		auto* geom = Allocator<Geometry>::New();
 		geom->Init(vertices, indices);
 		return geom;
 	}
@@ -295,7 +295,7 @@ namespace Hogra {
 GeometryFactory* GeometryFactory::GetInstance()
 {
 	if (nullptr == instance) {
-		instance = new GeometryFactory();
+		instance = Allocator<GeometryFactory>::New();
 	}
 	return instance;
 }
@@ -380,7 +380,7 @@ Geometry* GeometryFactory::getFullScreenQuad()
 	indices.push_back(3);
 	indices.push_back(4);
 	indices.push_back(5);
-	fullScreenQuad = Geometry::Instantiate();
+	fullScreenQuad = Allocator<Geometry>::New();
 	fullScreenQuad->Init(vertices, indices);
 	fullScreenQuad->SetFaceCulling(false);
 	return fullScreenQuad;
@@ -677,7 +677,7 @@ Geometry* GeometryFactory::getCube()
 	for (int i = 0; i < 36; i++) {
 		indices.push_back(i);
 	}
-	cube = Geometry::Instantiate();
+	cube = Allocator<Geometry>::New();
 	cube->Init(vertices, indices);
 	return cube;
 }
@@ -735,7 +735,7 @@ Geometry* GeometryFactory::getWireframeCube()
 	indices.push_back(3);
 	indices.push_back(7);
 
-	wireframeCube = Geometry::Instantiate();
+	wireframeCube = Allocator<Geometry>::New();
 	wireframeCube->Init(vertices, indices);
 	wireframeCube->SetPrimitiveType(GL_LINES);
 	wireframeCube->SetFaceCulling(false);

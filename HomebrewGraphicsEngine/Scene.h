@@ -91,6 +91,8 @@ namespace Hogra {
 
 		void AddVolumeObject(VolumeObject* object);
 
+		std::vector<VolumeObject*>& GetVolumeObjects();
+
 		~Scene() {
 			Serialize();
 			Destroy();
@@ -119,6 +121,8 @@ namespace Hogra {
 		}
 
 		Collider* IntersectRay(const Ray& ray, glm::vec3& intersectionPoint, glm::vec3& intersectionNormal);
+
+		void UpdateGUI();
 
 	private:
 

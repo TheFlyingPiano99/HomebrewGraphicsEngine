@@ -1,4 +1,5 @@
 #include "DeferredLightingSystem.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 	
@@ -8,9 +9,9 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshading.frag"));
-		materialFullScreen = Material::Instantiate();
+		materialFullScreen = Allocator<Material>::New();
 		materialFullScreen->Init(&fullScreenProgram);
-		meshFullScreen = Mesh::Instantiate();
+		meshFullScreen = Allocator<Mesh>::New();
 		meshFullScreen->Init(materialFullScreen, GeometryFactory::GetInstance()->getFullScreenQuad());
 		meshFullScreen->setDepthTest(false);
 		meshFullScreen->setStencilTest(false);
@@ -19,11 +20,11 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingLightVolume.frag"));
-		material = Material::Instantiate();
+		material = Allocator<Material>::New();
 		material->Init(&lightVolumeProgram);
 		material->setAlphaBlend(true);
 		material->setBlendFunc(GL_ONE, GL_ONE);
-		mesh = Mesh::Instantiate();
+		mesh = Allocator<Mesh>::New();
 		mesh->Init(material, GeometryFactory::GetInstance()->getLightVolumeSphere());
 		mesh->setDepthTest(false);
 		mesh->setStencilTest(false);

@@ -10,9 +10,6 @@ namespace Hogra {
         public Collider
     {
     public:
-
-        static CuboidCollider* Instantiate();
-
         void Init(Physics* physics = nullptr) {
             this->physics = physics;
             type = ColliderType::cuboidColliderType;

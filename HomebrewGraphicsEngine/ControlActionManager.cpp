@@ -1,4 +1,5 @@
 #include "ControlActionManager.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 
@@ -150,7 +151,6 @@ namespace Hogra {
 		RegisterAction(new RestartAction());
 		RegisterAction(new QuitAction());
 
-		pressLeftMouseButtonAction = new PrimaryAction();
 		pressRightMouseButtonAction = new GrabAction();
 
 		releaseLeftMouseButtonAction = nullptr;		// Not used
@@ -183,15 +183,12 @@ namespace Hogra {
 
 	ControlActionManager* ControlActionManager::getInstance() {
 		if (nullptr == instance) {
-			instance = new ControlActionManager();
+			instance = Allocator<ControlActionManager>::New();
 		}
 		return instance;
 	}
 
 	void ControlActionManager::DestroyInstance() {
-		if (nullptr != instance) {
-			delete instance;
-			instance = nullptr;
-		}
+		Allocator<ControlActionManager>::Delete(instance);
 	}
 }

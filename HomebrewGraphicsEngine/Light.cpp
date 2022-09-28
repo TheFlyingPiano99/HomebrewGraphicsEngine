@@ -2,12 +2,6 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
 namespace Hogra {
-	Light* Light::Instantiate()
-	{
-		auto* instance = new Light();
-		heapAllocatedInstances.push_back(instance);
-		return instance;
-	}
 
 	void Light::Init(const glm::vec4& _position, const glm::vec3& _powerDensity)
 	{

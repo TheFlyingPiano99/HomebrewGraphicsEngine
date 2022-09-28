@@ -1,12 +1,6 @@
 #include "CuboidCollider.h"
 
 namespace Hogra {
-    CuboidCollider* CuboidCollider::Instantiate()
-    {
-        auto* instance = new CuboidCollider();
-        heapAllocatedInstances.push_back(instance);
-        return instance;
-    }
 
     bool CuboidCollider::TestRayIntersection(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal) const
     {

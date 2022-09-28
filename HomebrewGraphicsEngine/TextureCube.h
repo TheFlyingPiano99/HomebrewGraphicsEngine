@@ -5,12 +5,15 @@
 #include<stb/stb_image.h>
 #include<glm/glm.hpp>
 #include <vector>
-
+#include "MemoryManager.h"
 #include"ShaderProgram.h"
+
 namespace Hogra {
 
 	class TextureCube : public Texture
 	{
+		friend class Allocator<TextureCube>;
+	
 		glm::ivec2 dimensions;
 		glm::vec4 nullVector;
 
@@ -18,8 +21,6 @@ namespace Hogra {
 		friend class FBO;
 
 		const char* type;
-
-		static TextureCube* Instantiate();
 
 		void Init(std::vector<std::string>& images, GLuint unit);
 
