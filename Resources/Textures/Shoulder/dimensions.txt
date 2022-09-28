@@ -1,0 +1,8 @@
+name = cthead
+width = 512
+height = 512
+depth = 450
+bytesPerVoxel = 1
+widthScale = 1
+heightScale = 1
+depthScale = 1

@@ -166,7 +166,7 @@ namespace Hogra {
 		auto* voxelTexture = Allocator<Texture3D>::New();
 		voxelTexture->Init(
 //			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
-	AssetFolderPathManager::getInstance()->getTextureFolderPath().append("Hip"),
+	AssetFolderPathManager::getInstance()->getTextureFolderPath().append("Shoulder"),
 		3,
 			GL_RED
 		);
