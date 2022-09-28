@@ -303,7 +303,7 @@ GeometryFactory* GeometryFactory::GetInstance()
 void GeometryFactory::DestroyInstance()
 {
 	if (nullptr != instance) {
-		delete instance;
+		Allocator<GeometryFactory>::Delete(instance);
 	}
 	instance = nullptr;
 }

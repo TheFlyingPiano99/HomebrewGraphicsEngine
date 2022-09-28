@@ -1,10 +1,12 @@
 #pragma once
 #include "ShaderProgram.h"
 #include "AssetFolderPathManager.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 	class ShaderProgramFactory
 	{
+		friend class Allocator<ShaderProgramFactory>;
 	public:
 		static ShaderProgramFactory* GetInstance();
 

@@ -15,7 +15,7 @@ namespace Hogra {
 		if (!ReadDimensions(std::string(directory).append("/dimensions.txt").c_str(), name, this->dimensions)) {
 			throw new std::exception("Failed to read dimensions of voxel data!");
 		}
-		bool swapBytes = true;
+		bool swapBytes = false;
 		unsigned int headerSize = 0;
 		GLenum pixelType;
 		if (dimensions.bytesPerVoxel == 1) {
@@ -36,14 +36,19 @@ namespace Hogra {
 		// Reads the image from a file and stores it in bytes
 		for (int z = 0; z < dimensions.depth; z++) {
 			std::stringstream pathss;
-			pathss << directory << "/" << std::setw(3) << std::setfill('0') << z + 1 << ".bmp";	// <directory/><number of image>.tif
+			pathss << directory << "/" << std::setw(3) << std::setfill('0') << z + 1 << ".tif";	// <directory/><number of image>.tif
 			std::string path = pathss.str();
 			FILE* file;
 			errno_t err;
 			if (err = fopen_s(&file, path.c_str(), "rb") == 0) {
 				unsigned char* header = new unsigned char[headerSize];
 				int headerByteCount = fread(header, sizeof(char), headerSize, file);
-				int bytesCount = fread(&bytes[0] + z * dimensions.width * dimensions.height * dimensions.bytesPerVoxel, sizeof(char), dimensions.width * dimensions.height * dimensions.bytesPerVoxel, file);
+				int bytesCount = fread(
+					&bytes[0] + z * dimensions.width * dimensions.height * dimensions.bytesPerVoxel,
+					sizeof(char),
+					dimensions.width * dimensions.height * dimensions.bytesPerVoxel,
+					file
+				);
 				fclose(file);
 				delete[] header;
 			}

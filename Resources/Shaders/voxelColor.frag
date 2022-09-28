@@ -24,6 +24,7 @@ uniform vec3 ambientColor;
 uniform bool isBackToFront;
 uniform vec3 scale;
 uniform vec3 w_sliceDelta;
+uniform float opacityScale;
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 	vec3 cameraPosition;			// 16				0
@@ -189,10 +190,6 @@ vec4 calculateColor(vec3 cameraRayStart, vec3 cameraRay) {
 }
 */
 
-vec3 simpleTransfer(float g, float i) {
-	float t = min(pow(max(i - 0.5, 0.0) * 0.1, 0.5), 1.0);
-	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(1, 0.5, 0.4)) * i * 2.0;
-}
 
 vec4 transferFunctionFromTexture(float i, float g) {
 	return texture(transferTexture, vec2(i, g));
@@ -235,9 +232,15 @@ vec3 transferGradient(vec3 currentPos, vec4 color) {
 
 void main() {	
 	vec3 w_viewDir = normalize(cameraPosition - worldPos);
-	float w_delta = length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), w_viewDir));
+	float w_delta = opacityScale * length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), w_viewDir));
 
 	vec3 currentPos = modelPos + resolution * 0.5;
+	if (currentPos.x < 1 || currentPos.x > resolution.x - 2
+	|| currentPos.y < 1 || currentPos.y > resolution.y  - 2
+	|| currentPos.z < 1 || currentPos.z > resolution.z  - 2) {	// Out of volume
+		FragColor = vec4(0.0);
+		return;
+	}
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
 	vec4 ndc_temp = viewProjMatrix * vec4(worldPos, 1);
 	ndc_temp /= ndc_temp.w;
@@ -256,12 +259,10 @@ void main() {
 	
 	// Blinn-Phong local illumination:
 	float shininess = 3.0;
-	float t = length(transferGrad.xyz);
+	float t = pow(length(transferGrad.xyz), 10.0);
+	color.rgb += max(1.0 - t, 0.0) * color.rgb + min(t, 1.0) * pow(length(transferGrad), 1.0) * pow(max(dot(normalize(-transferGrad), normalize(m_halfway.xyz)), 0.0), shininess);
 	color.rgb *= light.powerDensity / w_lightDistance / w_lightDistance * w_delta;
-	color.rgb += pow(length(transferGrad), 0.1) * pow(max(dot(normalize(-transferGrad), normalize(m_halfway.xyz)), 0.0), shininess) * light.powerDensity / w_lightDistance / w_lightDistance * w_delta;
 	
-	// Ambient light:
-	color.rgb += vec3(0.01) * w_delta;
 
 	vec4 ndc_attenuationCoords = light.viewProjMatrix * vec4(worldPos, 1.0);
 	ndc_attenuationCoords /= ndc_attenuationCoords.w;
@@ -269,7 +270,8 @@ void main() {
 	vec4 attenuation = texture(attenuationTexture, attenuationTexCoords);
 
 	// Light Attenuation from lights direction:
-	color.rgb *= max(1.0 - attenuation.rgb - attenuation.a, 0.0);
-	color.a = min(1.0 - pow(1.0 - color.a, w_delta), 1.0);
-	FragColor = max(color, 0.0);
+	vec3 l = 1.0 - attenuation.rgb - attenuation.a;
+	color.rgb *= vec3(max(l.x, 0.0), max(l.y, 0.0), max(l.z, 0.0));
+	color.a = max(min(1.0 - pow(1.0 - color.a, w_delta), 1.0), 0.0);
+	FragColor = color;
 }

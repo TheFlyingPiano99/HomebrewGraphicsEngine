@@ -45,7 +45,7 @@ namespace Hogra {
 			visible = b;
 		}
 
-		bool isVisible() {
+		bool IsVisible() {
 			return visible;
 		}
 

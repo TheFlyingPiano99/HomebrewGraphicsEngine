@@ -38,6 +38,7 @@ namespace Hogra {
 	}
 
 	std::vector<std::function<void()>> MasterAllocator::deleteAllFunctions = std::vector<std::function<void()>>();
+	int MasterAllocator::currentAllocationCount = 0;
 
 }
 

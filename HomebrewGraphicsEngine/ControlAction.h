@@ -74,6 +74,13 @@ namespace Hogra {
 		void Execute(Scene& scene) override;
 	};
 
+	class ClickOnScreen : public ButtonKeyAction {
+	public:
+		ClickOnScreen() : ButtonKeyAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerOnPress) {}
+
+		void Execute(Scene& scene) override;
+	};
+
 	class GrabAction : public ButtonKeyAction {
 	public:
 		GrabAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerOnPress) {}
@@ -148,6 +155,14 @@ namespace Hogra {
 	class ToggleGUI : public ButtonKeyAction {
 	public:
 		ToggleGUI() : ButtonKeyAction(GLFW_KEY_O) {
+		}
+
+		void Execute(Scene& scene) override;
+	};
+
+	class ToggleHUD : public ButtonKeyAction {
+	public:
+		ToggleHUD() : ButtonKeyAction(GLFW_KEY_H) {
 		}
 
 		void Execute(Scene& scene) override;

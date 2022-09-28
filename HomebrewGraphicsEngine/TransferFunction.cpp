@@ -321,6 +321,12 @@ namespace Hogra {
 					bytes[y * dimensions.x + x].z = x / (float)dimensions.x * x / (float)dimensions.x;
 					bytes[y * dimensions.x + x].w = std::pow((x - 3) / (float)dimensions.x, 0.01);
 				}
+				else if (x >= 250) {
+					bytes[y * dimensions.x + x].x = x / (float)dimensions.x;
+					bytes[y * dimensions.x + x].y = x / (float)dimensions.x * x / (float)dimensions.x;
+					bytes[y * dimensions.x + x].z = x / (float)dimensions.x * x / (float)dimensions.x;
+					bytes[y * dimensions.x + x].w = std::pow(1.0f - x / (float)dimensions.x, 10.0f);
+				}
 				else {
 					bytes[y * dimensions.x + x].x = 0.0f;
 					bytes[y * dimensions.x + x].y = 0.0f;
@@ -350,7 +356,7 @@ namespace Hogra {
 				bytes[y * dimensions.x + x].r = 0.0f;
 				bytes[y * dimensions.x + x].g = 0.0f;
 				bytes[y * dimensions.x + x].b = 0.0f;
-				bytes[y * dimensions.x + x].a = sqrt(y / (float)dimensions.y) * globalOpacity;
+				bytes[y * dimensions.x + x].a = x / (float)dimensions.x * globalOpacity;
 			}
 		}
 		Dimensions voxelDim = voxelTexture.GetDimensions();
@@ -449,7 +455,7 @@ namespace Hogra {
 				bytes[p.y * dimensions.x + p.x].r = color.r * feature.emission;
 				bytes[p.y * dimensions.x + p.x].g = color.g * feature.emission;
 				bytes[p.y * dimensions.x + p.x].b = color.b * feature.emission;
-				bytes[p.y * dimensions.x + p.x].a = sqrt(p.y / (float)dimensions.y) * feature.opacity;
+				bytes[p.y * dimensions.x + p.x].w = std::pow((p.x - 3) / (float)dimensions.x, 0.01);
 			}
 		}
 
@@ -563,7 +569,7 @@ namespace Hogra {
 	static bool prevVisible = false;
 	void TransferFunction::Animate(float dt)
 	{
-		const float maxTime = 15.0f;
+		const float maxTime = 1.0f;
 		if (prevVisible != visible) {
 			prevVisible = visible;
 			timer = maxTime;

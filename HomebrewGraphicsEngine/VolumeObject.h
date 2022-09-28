@@ -18,6 +18,7 @@
 
 #define VOLUME_TEXTURE_WIDTH 1024
 #define VOLUME_TEXTURE_HEIGHT 1024
+#define TRANSFER_MODE_COUNT 4
 
 namespace Hogra {
 	class VolumeObject
@@ -175,6 +176,10 @@ namespace Hogra {
 			}
 		}
 
+		float& GetOpacityScale() {
+			return opacityScale;
+		}
+
 		void RedrawSelected()
 		{
 			transferFunction.clear();
@@ -185,14 +190,17 @@ namespace Hogra {
 
 		void RotateModelAroundX(float rad_angle) {
 			orientation = glm::angleAxis(rad_angle, glm::vec3(1.0f,0.0f,0.0f)) * orientation;
+			isChanged = true;
 		}
 
 		void RotateModelAroundY(float rad_angle) {
 			orientation = glm::angleAxis(rad_angle, glm::vec3(0.0f, 1.0f, 0.0f)) * orientation;
+			isChanged = true;
 		}
 
 		void RotateModelAroundZ(float rad_angle) {
 			orientation = glm::angleAxis(rad_angle, glm::vec3(0.0f, 0.0f, 1.0f)) * orientation;
+			isChanged = true;
 		}
 
 		float& GetSTFradius() {
@@ -226,7 +234,86 @@ namespace Hogra {
 			}
 		}
 
+		TransferFunction& GetTransferFunction() {
+			return transferFunction;
+		}
+
+		void SelectTransferFunctionRegion(double x, double y) {
+			if (!transferFunction.IsVisible()) {
+				return;
+			}
+			glm::vec4 camPos = glm::vec4(x, -y, 0, 1);
+			glm::vec4 modelPos = transferFunction.getInvModelMatrix() * camPos;
+			modelPos /= modelPos.w;
+			glm::vec2 texCoords = glm::vec2(modelPos.x / 2.0f + 0.5f, 0.5f + modelPos.y / 2.0f);
+			bool inBound = false;
+			if (texCoords.x >= 0.0f && texCoords.x <= 1.0f
+				&& texCoords.y >= 0.0f && texCoords.y <= 1.0f) {
+				inBound = true;
+			}
+
+			if (inBound) {
+				if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[0])) {
+					glm::vec3 color = transferFunction(texCoords);
+					transferFunction.floodFill(texCoords, glm::vec4(color.r, color.g, color.b, 1), transferFloodFillTreshold);
+					transferFunction.blur(3);
+					isChanged = true;
+				}
+				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[1])) {
+					transferFunction.clear();
+					transferFunction.crop(texCoords - glm::vec2(0.2, 0.3), texCoords + glm::vec2(0.2, 0.3));
+					transferFunction.blur(3);
+					isChanged = true;
+				}
+				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[2])) {
+					Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
+					if (nullptr != feature) {
+						std::cout << "Selected: " << feature->name << std::endl;
+						std::cout << "Feature element count: " << feature->elements.size() << std::endl;
+						transferFunction.clear();
+						transferFunction.setFeatureVisibility(*feature, true);
+						transferFunction.blur(3);
+						if (selectedFeature != feature) {
+							selectedFeature = feature;
+							isChanged = true;
+						}
+					}
+				}
+				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[3])) {
+					Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
+					if (nullptr != feature) {
+						std::cout << "Removed: " << feature->name << std::endl;
+						std::cout << "Feature element count: " << feature->elements.size() << std::endl;
+						bool update = transferFunction.setFeatureVisibility(*feature, false);
+						transferFunction.blur(3);
+						if (update) {
+							isChanged = true;
+						}
+					}
+				}
+			}
+		}
+
+		const char* GetCurrentTransferRegionSelectMode() {
+			return currentTransferRegionSelectMode;
+		}
+
+		const char** GetTransferRegionSelectModes() {
+			return transferRegionSelectModes;
+		}
+
+		void SetCurrentTransferRegionSelectModes(const char* mode) {
+			currentTransferRegionSelectMode = mode;
+		}
+
+		float& GetLightPower() {
+			return lightPower;
+		}
+
 	private:
+
+		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Single class", "Remove class" };
+		const char* currentTransferRegionSelectMode = "Single class";
 
 		struct BoxEdge {
 			glm::vec3 position;
@@ -288,6 +375,10 @@ namespace Hogra {
 		TransferFunction transferFunction;
 		Feature* selectedFeature = nullptr;
 		FeatureGroup* selectedFeatureGroup = nullptr;
+		float opacityScale = 10.0f;
+		float transferFloodFillTreshold;
+		float lightPower = 100.0f;
+
 		bool isChanged = true;
 
 	};

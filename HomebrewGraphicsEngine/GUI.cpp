@@ -49,11 +49,11 @@ namespace Hogra {
 
 		char value_buf[64] = {};
 		ImGui::Begin("Settings");
-		ImGui::SliderFloat3((const char*)"Light power", (float*) &(volumeObject.GetLight()->getPowerDensity())[0], 0.0f, 1.0f, (const char*)"", 1.0f);
+		ImGui::SliderFloat((const char*)"Light power", &volumeObject.GetLightPower(), 1.0f, 10000.0f);
+		ImGui::SliderFloat("Opacity scale", &volumeObject.GetOpacityScale(), 1.0, 100.0);
 
-		/*
-		const char* current_item = scene.getVoxelData()->getCurrentTransferRegionSelectModes();
-		const char** items = scene.getVoxelData()->getTransferRegionSelectModes();
+		const char* current_item = volumeObject.GetCurrentTransferRegionSelectMode();
+		const char** items = volumeObject.GetTransferRegionSelectModes();
 		if (ImGui::BeginCombo("Transfer region select mode", current_item)) // The second parameter is the label previewed before opening the combo.
 		{
 			for (int n = 0; n < TRANSFER_MODE_COUNT; n++)
@@ -61,7 +61,7 @@ namespace Hogra {
 				bool is_selected = (current_item == items[n]); // You can store your selection however you want, outside or inside your objects
 				if (ImGui::Selectable(items[n], is_selected)) {
 					current_item = items[n];
-					scene.getVoxelData()->setCurrentTransferRegionSelectModes(current_item);
+					volumeObject.SetCurrentTransferRegionSelectModes(current_item);
 				}
 				if (is_selected) {
 					ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
@@ -69,9 +69,8 @@ namespace Hogra {
 			}
 			ImGui::EndCombo();
 		}
-		*/
 
-		const char* current_item = (volumeObject.GetSelectedFeatureGroup() != nullptr) ?
+		current_item = (volumeObject.GetSelectedFeatureGroup() != nullptr) ?
 			volumeObject.GetSelectedFeatureGroup()->name.c_str() : "Select group";
 		std::vector<FeatureGroup>& groups = volumeObject.GetFeatureGroups();
 		if (ImGui::BeginCombo("Feature group", current_item)) // The second parameter is the label previewed before opening the combo.

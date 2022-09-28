@@ -6,22 +6,18 @@ namespace Hogra {
 
 	ShaderProgramFactory* ShaderProgramFactory::GetInstance() {
 		if (nullptr == instance) {
-			instance = new ShaderProgramFactory();
+			instance = Allocator<ShaderProgramFactory>::New();
 		}
 		return instance;
 	}
 	
 	void ShaderProgramFactory::DestroyInstance() {
-		if (nullptr != instance) {
-			delete instance;
-		}
-		instance = nullptr;
+		Allocator<ShaderProgramFactory>::Delete(instance);
 	}
 	
 	ShaderProgram* ShaderProgramFactory::GetDefaultPBRProgramWithMapping() {
 		if (nullptr == defaultBPRProgramWithMapping) {
-			defaultBPRProgramWithMapping
-				= ShaderProgram::Instantiate();
+			defaultBPRProgramWithMapping = Allocator<ShaderProgram>::New();
 			defaultBPRProgramWithMapping->Init(
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 					"",
@@ -35,7 +31,7 @@ namespace Hogra {
 	{
 		if (nullptr == glyphProgram) {
 			glyphProgram
-				= ShaderProgram::Instantiate();
+				= Allocator<ShaderProgram>::New();
 			glyphProgram->Init(
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 					"",
@@ -48,7 +44,7 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetCaptionProgram()
 	{
 		if (nullptr == captionProgram) {
-			captionProgram = ShaderProgram::Instantiate();
+			captionProgram = Allocator<ShaderProgram>::New();
 			captionProgram->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 				"",
@@ -61,7 +57,7 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetEmissiveMaterialProgram()
 	{
 		if (nullptr == emissiveMaterial) {
-			emissiveMaterial = ShaderProgram::Instantiate();
+			emissiveMaterial = Allocator<ShaderProgram>::New();
 			emissiveMaterial->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 				"",

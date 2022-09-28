@@ -24,6 +24,7 @@ uniform vec3 specularColor;
 uniform vec3 ambientColor;
 uniform vec3 scale;
 uniform vec3 w_sliceDelta;
+uniform float opacityScale;
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 	vec3 cameraPosition;			// 16				0
@@ -105,11 +106,6 @@ vec4 resampleGradientAndDensity(vec3 position, float intensity)
 }
 
 
-vec3 simpleTransfer(float g, float i) {
-	float t = min(pow(max(i - 0.5, 0.0) * 0.1, 0.5), 1.0);
-	return (t * vec3(1, 1, 1) + (1.0 - t) * vec3(0.2,0.4,0.8)) * i * 4.0;
-}
-
 vec4 transferFunctionFromTexture(float i, float g) {
 	return texture(transferTexture, vec2(i, g));
 }
@@ -117,17 +113,17 @@ vec4 transferFunctionFromTexture(float i, float g) {
 void main() {	
 
 	vec3 viewDir = normalize(cameraPosition - worldPos);
-	float w_delta = length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
+	float w_delta = opacityScale * length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
 	vec3 currentPos = modelPos + resolution * 0.5;
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
 
 	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
 	
 	// Calculate attenuation:
-	FragColor = min(max(vec4(
-		1.0 - pow(1.0 - min(color.r, 1.0), w_delta),
-		1.0 - pow(1.0 - min(color.g, 1.0), w_delta),
-		1.0 - pow(1.0 - min(color.b, 1.0), w_delta),
-		1.0 - pow(1.0 - min(color.a, 1.0), w_delta)
-	), 0.0), 1.0);
+	FragColor = vec4(
+		min(max(1.0 - pow(1.0 - color.g - color.b, w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - color.r - color.b, w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - color.r - color.g, w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - color.a, w_delta), 0.0), 1.0)
+	);
 }

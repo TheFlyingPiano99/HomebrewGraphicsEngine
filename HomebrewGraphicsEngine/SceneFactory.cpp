@@ -30,10 +30,7 @@ namespace Hogra {
 	}
 	
 	void SceneFactory::DestroyInstance() {
-		if (nullptr != instance) {
-			delete instance;
-			instance = nullptr;
-		}
+		Allocator<SceneFactory>::Delete(instance);
 	}
 
 	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
@@ -168,8 +165,9 @@ namespace Hogra {
 		// Volume:
 		auto* voxelTexture = Allocator<Texture3D>::New();
 		voxelTexture->Init(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
-			3,
+//			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
+	AssetFolderPathManager::getInstance()->getTextureFolderPath().append("Hip"),
+		3,
 			GL_RED
 		);
 
@@ -190,7 +188,8 @@ namespace Hogra {
 
 		InitObjectObserverControl(scene, volumeObject);
 		InitCaptions(scene);
-
+		
+		
 		auto* bloom = new Bloom();
 		bloom->Init(contextWidth, contextHeight);
 		scene->AddPostProcessStage(bloom);
@@ -200,6 +199,7 @@ namespace Hogra {
 			contextWidth, contextHeight);
 		scene->AddPostProcessStage(hdr);
 
+		
 		return scene;
 	}
 	

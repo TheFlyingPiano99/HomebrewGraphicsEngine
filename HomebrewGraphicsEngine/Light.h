@@ -44,6 +44,10 @@ namespace Hogra {
 			return powerDensity;
 		}
 
+		void SetPowerDensity(const glm::vec3& power) {
+			powerDensity = power;
+		}
+
 		float getEffectiveRadius() const;
 
 		const glm::mat4& getVolumeModelMatrix() const {

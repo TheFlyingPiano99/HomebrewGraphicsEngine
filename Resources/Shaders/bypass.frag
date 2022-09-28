@@ -11,6 +11,9 @@ layout (location = 0) out vec4 outputColor;
 
 void main()
 {
-	outputColor = max(texture(inputTexture, fs_in.texCoords), 0.0);
-	outputColor.w = min(outputColor.w, 1.0);
+	outputColor = texture(inputTexture, fs_in.texCoords);
+	outputColor.r = max(outputColor.r, 0.0);
+	outputColor.g = max(outputColor.g, 0.0);
+	outputColor.b = max(outputColor.b, 0.0);
+	outputColor.a = max(min(outputColor.a, 1.0), 0.0);
 }

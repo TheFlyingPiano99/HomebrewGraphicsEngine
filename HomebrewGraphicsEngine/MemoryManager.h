@@ -28,9 +28,24 @@ namespace Hogra {
 			deleteAllFunctions.push_back(func);
 		}
 
+		static void IncrementAllocationCount() {
+			currentAllocationCount++;
+		}
+
+		static void DecrementAllocationCount() {
+			currentAllocationCount--;
+		}
+		
+		static int GetCurrentAllocationCount() {
+			return currentAllocationCount;
+		}
+
 	private:
+			
 		static std::vector<std::function<void()>> deleteAllFunctions;
+		static int currentAllocationCount;
 	};
+
 
 	template<typename T>
 	class Allocator {
@@ -44,6 +59,7 @@ namespace Hogra {
 			auto* instance = new T();
 			std::cout << "New    " << instance << std::endl;
 			instances.push_back(instance);
+			MasterAllocator::IncrementAllocationCount();
 			return instance;
 		}
 
@@ -52,6 +68,7 @@ namespace Hogra {
 				instances.erase(iter);
 				std::cout << "Delete " << instance << std::endl;
 				delete instance;
+				MasterAllocator::DecrementAllocationCount();
 			}
 			instance = nullptr;
 		}
@@ -60,6 +77,7 @@ namespace Hogra {
 			for (T* instance : instances) {
 				std::cout << "Delete " << instance << std::endl;
 				delete instance;
+				MasterAllocator::DecrementAllocationCount();
 			}
 			instances.clear();
 		}

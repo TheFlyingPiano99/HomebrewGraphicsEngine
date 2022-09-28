@@ -11,6 +11,7 @@ namespace Hogra {
 
 		FirstPersonControl() {
 			allowRotate = true;
+			GlobalVariables::hideCursor = true;
 		}
 
 		~FirstPersonControl() override;

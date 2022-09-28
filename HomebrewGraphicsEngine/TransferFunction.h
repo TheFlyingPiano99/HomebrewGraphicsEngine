@@ -282,13 +282,13 @@ namespace Hogra {
 			}
 		}
 
-		void toggleVisibility() {
+		void ToggleVisibility() {
 			visible = !visible;
 		}
 
 		void Animate(float dt);
 
-		bool isVisible() {
+		bool IsVisible() {
 			return visible;
 		}
 	};

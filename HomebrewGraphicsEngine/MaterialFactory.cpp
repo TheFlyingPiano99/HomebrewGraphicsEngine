@@ -19,10 +19,7 @@ namespace Hogra {
 
 	void MaterialFactory::DestroyInstance()
 	{
-		if (nullptr != instance) {
-			delete instance;
-		}
-		instance = nullptr;
+		Allocator<MaterialFactory>::Delete(instance);
 	}
 
 	Material* MaterialFactory::getPBRMaterial(const char* materialName) {

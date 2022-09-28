@@ -130,6 +130,8 @@ namespace Hogra {
 
 		pressLeftMouseButtonAction = new PrimaryAction();
 		pressRightMouseButtonAction = new SecondaryAction();
+		releaseLeftMouseButtonAction = nullptr;
+		releaseRightMouseButtonAction = nullptr;
 		mouseMoveAction = new CameraMoveAction();
 		mouseScrollAction = new CameraZoomAction();
 
@@ -144,6 +146,7 @@ namespace Hogra {
 		RegisterAction(new MoveAvatarUp());
 		RegisterAction(new MoveAvatarDown());
 		RegisterAction(new ToggleGUI());
+		RegisterAction(new ToggleHUD());
 		RegisterAction(new TogglePause());
 		RegisterAction(new ToggleFullScreenMode());
 		RegisterAction(new JumpAvatar());
@@ -151,14 +154,40 @@ namespace Hogra {
 		RegisterAction(new RestartAction());
 		RegisterAction(new QuitAction());
 
+		pressLeftMouseButtonAction = new ClickOnScreen();
 		pressRightMouseButtonAction = new GrabAction();
-
-		releaseLeftMouseButtonAction = nullptr;		// Not used
+		releaseLeftMouseButtonAction = nullptr;
 		releaseRightMouseButtonAction = new ReleaseAction();
 
 		mouseMoveAction = new CameraMoveAction();
 		mouseScrollAction = new CameraZoomAction();
 
+	}
+
+	void ControlActionManager::UnregisterControls() {
+		ClearQueue();
+		for (auto& act : registeredKeyActions) {
+			delete act.second;
+		}
+		registeredKeyActions.clear();
+		if (nullptr != pressLeftMouseButtonAction) {
+			delete pressLeftMouseButtonAction;
+		}
+		if (nullptr != pressRightMouseButtonAction) {
+			delete pressRightMouseButtonAction;
+		}
+		if (nullptr != releaseLeftMouseButtonAction) {
+			delete releaseLeftMouseButtonAction;
+		}
+		if (nullptr != releaseRightMouseButtonAction) {
+			delete releaseRightMouseButtonAction;
+		}
+		if (nullptr != mouseMoveAction) {
+			delete mouseMoveAction;
+		}
+		if (nullptr != mouseScrollAction) {
+			delete mouseScrollAction;
+		}
 	}
 
 	void ControlActionManager::RegisterAction(ButtonKeyAction* toRegister)

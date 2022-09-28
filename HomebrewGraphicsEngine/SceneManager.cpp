@@ -2,6 +2,7 @@
 #include "SceneFactory.h"
 #include "MemoryManager.h"
 #include "GlobalInclude.h"
+#include "ControlActionManager.h"
 
 namespace Hogra {
 	SceneManager* SceneManager::instance = nullptr;
@@ -25,8 +26,10 @@ namespace Hogra {
 		if (nullptr == currentScene) {
 			return;
 		}
-		delete currentScene;
+		Allocator<Scene>::Delete(currentScene);
 		MemoryManager::DeallocateSceneResources();
+		ControlActionManager::getInstance()->UnregisterControls();
+		ControlActionManager::getInstance()->RegisterDefault();
 		currentScene = SceneFactory::getInstance()->CreateDemoScene(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 	}
 

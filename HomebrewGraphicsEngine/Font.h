@@ -15,21 +15,6 @@ namespace Hogra {
     class Font
     {
     public:
-        static void Deallocate(Font* instance)
-        {
-            auto iter = std::find(heapAllocatedInstances.begin(), heapAllocatedInstances.end(), instance);
-            if (iter != heapAllocatedInstances.end()) {
-                heapAllocatedInstances.erase(iter);
-                delete instance;
-            }
-        }
-
-        static void DeallocateAll() {
-            for (auto& instance : heapAllocatedInstances) {
-                delete instance;
-            }
-            heapAllocatedInstances.clear();
-        }
 
         class UnloadedFontException : public std::exception {
         };

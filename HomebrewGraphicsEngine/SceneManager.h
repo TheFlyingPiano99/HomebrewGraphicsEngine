@@ -1,17 +1,19 @@
 #pragma once
 #include "Scene.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class SceneManager
 	{
+		friend class Allocator<SceneManager>;
 	public:
 
 		static SceneManager* getInstance();
 
 		static void DestroyInstance() {
 			if (nullptr != instance) {
-				delete instance;
+				Allocator<SceneManager>::Delete(instance);
 				instance = nullptr;
 			}
 		}
@@ -40,9 +42,7 @@ namespace Hogra {
 		SceneManager() = default;
 
 		~SceneManager() {
-			if (nullptr != currentScene) {
-				delete currentScene;
-			}
+			Allocator<Scene>::Delete(currentScene);
 		}
 
 		static SceneManager* instance;

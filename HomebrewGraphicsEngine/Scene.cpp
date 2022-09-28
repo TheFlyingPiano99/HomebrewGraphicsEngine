@@ -50,7 +50,7 @@ namespace Hogra {
 
 		audioManager.Init();
 		initShadowMap();
-		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 5.0f, 0.0f));
+		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
 		lightManager.initDebug();
 		collisionManager.InitDebug();
@@ -86,17 +86,14 @@ namespace Hogra {
 		lightManager.Clear();
 
 		for (auto& instanceGroup : instanceGroups) {	//8
-			delete instanceGroup.second;
+			Allocator<InstanceGroup>::Delete(instanceGroup.second);
 		}
 		instanceGroups.clear();
 
-		if (nullptr != shadowCaster) {			//13
-			delete shadowCaster;
-			shadowCaster = nullptr;
-		}
+		Allocator<ShadowCaster>::Delete(shadowCaster);
 
 		for (auto& postProcStage : postProcessStages) {	//14
-			delete postProcStage;
+			Allocator<PostProcessStage>::Delete(postProcStage);
 		}
 		postProcessStages.clear();
 

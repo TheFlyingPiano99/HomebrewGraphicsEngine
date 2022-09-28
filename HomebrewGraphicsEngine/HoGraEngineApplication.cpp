@@ -178,5 +178,9 @@ namespace Hogra {
 
 		MemoryManager::DeallocateAll();
 		MasterAllocator::DeleteAll();
+		auto undeletedHeapInstances = MasterAllocator::GetCurrentAllocationCount();
+		if (0 < undeletedHeapInstances) {
+			std::cout << "WARNING: " << undeletedHeapInstances << " heap allocated instances are not deleted!" << std::endl;
+		}
 	}
 }

@@ -14,7 +14,9 @@ namespace Hogra {
 	VolumeObject::VolumeObject() 
 		: STFradius(0.25f),
 		STFEmission(1.0f),
-		STFOpacity(1.0f) {
+		STFOpacity(1.0f),
+		transferFloodFillTreshold(4.0f)
+	{
 
 	}
 
@@ -30,7 +32,7 @@ namespace Hogra {
 		resolution = glm::vec3(voxels->GetDimensions().width, voxels->GetDimensions().height, voxels->GetDimensions().depth);
 		scale *= glm::vec3(voxels->GetDimensions().widthScale, voxels->GetDimensions().heightScale, voxels->GetDimensions().depthScale);
 		w_diameter = glm::length(resolution * scale);
-		sliceCount = (int)(glm::length(resolution) * 1.75f);
+		sliceCount = (int)(glm::length(resolution) * 1.0f);
 
 		pingpongFBO.Init();
 		colorProgram.Init(
@@ -105,6 +107,8 @@ namespace Hogra {
 				0.1f,
 				1000.0f
 			);
+
+			light->SetPowerDensity(glm::vec3(lightPower));
 
 			glm::mat4 lightViewProjMatrix = projection * view;
 			ExportData(colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
@@ -357,6 +361,7 @@ namespace Hogra {
 		glUniform3f(glGetUniformLocation(program.ID, "light.position"), light->GetPosition().x, light->GetPosition().y, light->GetPosition().z);
 		glUniform3f(glGetUniformLocation(program.ID, "light.powerDensity"), light->getPowerDensity().x, light->getPowerDensity().y, light->getPowerDensity().z);
 		glUniform1i(glGetUniformLocation(program.ID, "isBackToFront"), (isBackToFront)? 1 : 0);
+		glUniform1f(glGetUniformLocation(program.ID, "opacityScale"), opacityScale);
 	}
 }
 

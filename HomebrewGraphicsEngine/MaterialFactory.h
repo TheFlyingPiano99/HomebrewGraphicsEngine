@@ -3,10 +3,12 @@
 #include "TextureCube.h"
 #include <string>
 #include <map>
+#include "MemoryManager.h"
 
 namespace Hogra {
 	class MaterialFactory
 	{
+		friend class Allocator<MaterialFactory>;
 	public:
 		static MaterialFactory* GetInstance();
 		static void DestroyInstance();

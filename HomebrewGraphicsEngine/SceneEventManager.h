@@ -2,16 +2,13 @@
 #include "SceneEvent.h"
 #include <queue>
 #include <iostream>
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class SceneEventManager
 	{
-		static SceneEventManager* instance;
-		std::queue<SceneEvent*> events;
-
-		SceneEventManager() = default;
-
+		friend class Allocator<SceneEventManager>;
 	public:
 
 		~SceneEventManager() {
@@ -23,16 +20,13 @@ namespace Hogra {
 
 		static SceneEventManager* getInstance() {
 			if (nullptr == instance) {
-				instance = new SceneEventManager();
+				instance = Allocator<SceneEventManager>::New();
 			}
 			return instance;
 		}
 
 		static void DestroyInstance() {
-			if (nullptr != instance) {
-				delete instance;
-				instance = nullptr;
-			}
+			Allocator<SceneEventManager>::Delete(instance);
 		}
 
 
@@ -64,6 +58,12 @@ namespace Hogra {
 				delete event;
 			}
 		}
+	private:
+		static SceneEventManager* instance;
+		std::queue<SceneEvent*> events;
+
+		SceneEventManager() = default;
+
 	};
 
 }

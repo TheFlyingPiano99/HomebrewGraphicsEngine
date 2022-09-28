@@ -78,6 +78,8 @@ namespace Hogra {
 
 		void RegisterDefaultForVoxelObserving();
 
+		void UnregisterControls();
+
 	private:
 		static ControlActionManager* instance;
 		std::map<const int, ButtonKeyAction*> registeredKeyActions;
@@ -93,29 +95,7 @@ namespace Hogra {
 		ControlActionManager() = default;
 
 		~ControlActionManager() {
-			ClearQueue();
-			for (auto& act : registeredKeyActions) {
-				delete act.second;
-			}
-			registeredKeyActions.clear();
-			if (nullptr != pressLeftMouseButtonAction) {
-				delete pressLeftMouseButtonAction;
-			}
-			if (nullptr != pressRightMouseButtonAction) {
-				delete pressRightMouseButtonAction;
-			}
-			if (nullptr != releaseLeftMouseButtonAction) {
-				delete releaseLeftMouseButtonAction;
-			}
-			if (nullptr != releaseRightMouseButtonAction) {
-				delete releaseRightMouseButtonAction;
-			}
-			if (nullptr != mouseMoveAction) {
-				delete mouseMoveAction;
-			}
-			if (nullptr != mouseScrollAction) {
-				delete mouseScrollAction;
-			}
+			UnregisterControls();
 		}
 
 		/*

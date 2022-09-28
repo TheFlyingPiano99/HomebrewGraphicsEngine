@@ -57,7 +57,14 @@ namespace Hogra {
 
 	void ToggleGUI::Execute(Scene& scene)
 	{
-		GUI::getInstance()->setVisible(!(GUI::getInstance()->isVisible()));
+		GUI::getInstance()->setVisible(!(GUI::getInstance()->IsVisible()));
+	}
+
+	void ToggleHUD::Execute(Scene& scene)
+	{
+		for (auto* volume : scene.GetVolumeObjects()) {
+			volume->GetTransferFunction().ToggleVisibility();
+		}
 	}
 
 	void TogglePause::Execute(Scene& scene)
@@ -164,6 +171,16 @@ namespace Hogra {
 		// Todo
 	}
 
+	void ClickOnScreen::Execute(Scene& scene) {
+		if (GlobalVariables::hideCursor) {
+			return;
+		}
+		double x;
+		double y;
+		glfwGetCursorPos(GlobalVariables::window, &x, &y);
+		scene.GetVolumeObjects()[0]->SelectTransferFunctionRegion(x / (double)GlobalVariables::windowWidth * 2.0 - 1.0, y / (double)GlobalVariables::windowHeight * 2.0 - 1.0);
+	}
+
 	void CameraZoomAction::Execute(Scene& scene)
 	{
 		scene.GetUserControl()->Zoom(this->pixPos.y);
@@ -171,7 +188,8 @@ namespace Hogra {
 	void GrabAction::Execute(Scene& scene)
 	{
 		scene.GetUserControl()->grab();
-	}
+	}	void selectTransferFunctionRegion(double xpos, double ypos);
+
 	void ReleaseAction::Execute(Scene& scene)
 	{
 		scene.GetUserControl()->release();
