@@ -185,6 +185,7 @@ namespace Hogra {
 			glm::vec4(10, 10, 10, 1.0),
 			glm::vec3(10000.0f, 10000.0f, 10000.0f)
 		);
+		volumeLight->SetCastShadow(false);
 		auto* volumeObject = Allocator<VolumeObject>::New();
 		volumeObject->Init(
 			voxelTexture,
@@ -193,8 +194,13 @@ namespace Hogra {
 			glm::angleAxis(1.57079633f, glm::vec3(1, 0, 0)),
 			volumeLight,
 			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
+		scene->AddLight(volumeLight);
 		scene->AddVolumeObject(volumeObject);
-
+		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
+		auto* posConnector = Allocator<PositionConnector>::New();
+		posConnector->Init(volumeLight);
+		bulbSprite->SetPositionConnector(posConnector);
+		scene->AddSceneObject(bulbSprite, "bulbSprite");
 		InitObjectObserverControl(scene, volumeObject);
 		InitVoxelCaption(scene, dataSetName);
 		

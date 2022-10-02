@@ -378,6 +378,7 @@ namespace Hogra {
 		float opacityScale = 10.0f;
 		float transferFloodFillTreshold;
 		float lightPower = 100.0f;
+		float levelOfDetail = 1.0f;		// (0..1]
 
 		bool isChanged = true;
 

@@ -8,7 +8,7 @@
 
 namespace Hogra {
 
-	class Light : public Component {
+	class Light : public Component, public PositionProvider {
 	public:
 
 		void Init(const glm::vec4& _position, const glm::vec3& _powerDensity);
@@ -30,11 +30,16 @@ namespace Hogra {
 			positionProvider = provider;
 		}
 
-		const glm::vec4& GetPosition() const {
+		const glm::vec3& GetPosition() const override {
+			return position3D;
+		}
+
+		const glm::vec4& GetPosition4D() const {
 			return position;
 		}
 
 		void SetPosition(const glm::vec3& pos) {
+			position3D = pos;
 			position.x = pos.x;
 			position.y = pos.y;
 			position.z = pos.z;
@@ -62,12 +67,22 @@ namespace Hogra {
 			isActive = b;
 		}
 
+		void SetCastShadow(bool b) {
+			castShadow = b;
+		}
+
+		bool IsCastShadow() const {
+			return castShadow;
+		}
+
 	private:
+		glm::vec3 position3D;
 		glm::vec4 position;
 		glm::vec3 powerDensity;
 		glm::mat4 volumeModelMatrix;
 		PositionProvider* positionProvider;
 		float effectiveRadius;
 		bool isActive = true;
+		bool castShadow = true;
 	};
 }

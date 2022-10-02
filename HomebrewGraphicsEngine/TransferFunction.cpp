@@ -54,7 +54,7 @@ namespace Hogra {
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
 				if (x >= iMin.x && x <= iMax.x && y >= iMin.y && y <= iMax.y) {
-					bytes[y * dim.x + x] = glm::vec4(1.0f) * (1.0f - glm::length(glm::vec2(center) - glm::vec2(x, y) / glm::vec2(dim.x, dim.y)) / radius);
+					bytes[y * dim.x + x] = glm::vec4(1.0f, 0.95f, 0.8f, 1.0f) * (1.0f - glm::length(glm::vec2(center) - glm::vec2(x, y) / glm::vec2(dim.x, dim.y)) / radius);
 				}
 				else {
 					bytes[y * dim.x + x] = glm::vec4(0.0f);

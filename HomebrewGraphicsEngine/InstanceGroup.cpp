@@ -53,7 +53,7 @@ void Hogra::InstanceGroup::Draw()
 
 void Hogra::InstanceGroup::DrawShadow()
 {
-	if (objects.size() == 0) {
+	if (objects.size() == 0 || !objects[0]->IsCastingShadow()) {
 		return;
 	}
 	Mesh* mesh = objects[0]->GetMesh();

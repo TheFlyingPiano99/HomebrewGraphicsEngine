@@ -32,7 +32,6 @@ namespace Hogra {
 		resolution = glm::vec3(voxels->GetDimensions().width, voxels->GetDimensions().height, voxels->GetDimensions().depth);
 		scale *= glm::vec3(voxels->GetDimensions().widthScale, voxels->GetDimensions().heightScale, voxels->GetDimensions().depthScale);
 		w_diameter = glm::length(resolution * scale);
-		sliceCount = (int)(glm::length(resolution) * 1.0f);
 
 		pingpongFBO.Init();
 		colorProgram.Init(
@@ -67,8 +66,18 @@ namespace Hogra {
 	void VolumeObject::Draw(const FBO& outputFBO, Camera& camera, const Texture2D& depthTexture)
 	{
 		static int out = 0;
-		if (camera.PopIsMoved() || isChanged) {
-			isChanged = false;
+		bool isCameraMoved = camera.PopIsMoved();
+		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f) {
+			if (isCameraMoved || isChanged) {
+				levelOfDetail = 0.05f;
+				isChanged = false;
+			}
+			sliceCount = (int)(glm::length(resolution) * levelOfDetail * 4.0f);
+			levelOfDetail *= 1.25f;
+			if (1.0f < levelOfDetail) {	// max
+				levelOfDetail = 1.0f;
+			}
+
 			// Calculate directions and transformations:
 			auto lightDir = glm::normalize(glm::vec3(light->GetPosition()) - this->w_position);
 			auto viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - this->w_position);

@@ -74,7 +74,7 @@ namespace Hogra {
 
 	FBO&& FBO::GetDefault()
 	{
-		static FBO fbo;
+		FBO fbo;
 		fbo.ID = 0;
 		fbo.viewport = glm::vec4(0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 		return std::move(fbo);

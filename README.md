@@ -10,3 +10,9 @@ A grahics/videogame engine writen in C++ using OpenGL.
 - Audio
 
 ![HoGraEngine logo](HoGraEngineLogo.png "HoGraEngine logo")
+
+===
+
+<hr>
+
+<a href="https://www.flaticon.com/free-icons/idea" title="idea icons">Idea icons created by Good Ware - Flaticon</a>

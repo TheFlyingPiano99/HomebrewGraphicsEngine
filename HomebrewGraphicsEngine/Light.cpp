@@ -6,9 +6,10 @@ namespace Hogra {
 	void Light::Init(const glm::vec4& _position, const glm::vec3& _powerDensity)
 	{
 		this->position = _position;
+		this->position3D = _position;
 		this->powerDensity = _powerDensity;
 		effectiveRadius = getEffectiveRadius();
-		volumeModelMatrix = glm::translate(glm::vec3(GetPosition())) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
+		volumeModelMatrix = glm::translate(position3D) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}
 	void Light::ExportData(UniformBufferObject& ubo, unsigned int& idx) {
 		ubo.UploadSubData(glm::value_ptr(position), idx++);
@@ -22,9 +23,12 @@ namespace Hogra {
 	void Light::Update()
 	{
 		if (positionProvider != nullptr) {
-			position = glm::vec4(positionProvider->GetPosition(), 1.0f);
+			position3D = glm::vec4(positionProvider->GetPosition(), 1.0f);
+			position.x = position3D.x;
+			position.y = position3D.y;
+			position.z = position3D.z;
 		}
-		volumeModelMatrix = glm::translate(glm::vec3(position)) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
+		volumeModelMatrix = glm::translate(position3D) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}
 	
 	float Light::getEffectiveRadius() const {

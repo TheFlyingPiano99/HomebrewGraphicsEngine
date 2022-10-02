@@ -159,7 +159,6 @@ namespace Hogra {
 		// Init and export data:
 		camera.ExportData();
 		lightManager.ExportData();
-
 		// Shadow pass:
 		for (auto& group : instanceGroups) {
 			group.second->GatherInstanceDataForShadow();
@@ -175,6 +174,7 @@ namespace Hogra {
 		for (auto& group : instanceGroups) {
 			group.second->GatherInstanceData();
 		}
+		
 		lightManager.BindGBuffer();
 		for (auto& group : instanceGroups) {
 			group.second->Draw();
@@ -191,7 +191,7 @@ namespace Hogra {
 		}
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 		glClearDepth(1);
-		glEnable(GL_DEPTH_TEST);
+		glDisable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);

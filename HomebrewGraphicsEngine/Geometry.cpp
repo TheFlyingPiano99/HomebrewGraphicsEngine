@@ -111,6 +111,7 @@ namespace Hogra {
 		}
 
 		glDrawElements(primitiveType, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr);
+		vao.Unbind();
 	}
 
 	void Geometry::DrawInstanced(const std::vector<InstanceData>& instanceData, int visibleCount)
@@ -132,6 +133,7 @@ namespace Hogra {
 			glDisable(GL_CULL_FACE);
 		}
 		glDrawElementsInstanced(primitiveType, (GLsizei)indices.size(), GL_UNSIGNED_INT, nullptr, (GLsizei)visibleCount);
+		vao.Unbind();
 	}
 
 	void Geometry::DrawInstanced(const std::vector<LightInstancedData>& instanceData)
