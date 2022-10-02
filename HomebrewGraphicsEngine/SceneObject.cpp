@@ -28,6 +28,13 @@ namespace Hogra {
 		for (auto& comp : components) {
 			comp->Update();
 		}
+		if (nullptr != positionConnector) {
+			position = positionConnector->GetPosition();
+		}
+		if (nullptr != orientationConnector) {
+			orientation = orientationConnector->GetOrientation();
+		}
+
 		translationMatrix = glm::translate(position);
 		if (useEulerAngles) {
 			rotationMatrix = glm::mat4(1.0f)

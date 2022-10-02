@@ -26,6 +26,8 @@ namespace Hogra {
 
 		void InitCaptions(Scene* scene);
 
+		void InitVoxelCaption(Scene* scene, const char* dataSetName);
+
 		void InitGroud(Scene* scene);
 
 		void InitSkyBox(Scene* scene);

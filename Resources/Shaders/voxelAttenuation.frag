@@ -116,7 +116,6 @@ void main() {
 	float w_delta = opacityScale * length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
 	vec3 currentPos = modelPos + resolution * 0.5;
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
-
 	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
 	
 	// Calculate attenuation:

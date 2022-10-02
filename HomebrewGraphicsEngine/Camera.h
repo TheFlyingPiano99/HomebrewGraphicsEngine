@@ -5,14 +5,14 @@
 #include<glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include "ShaderProgram.h"
-#include "PositionProvider.h"
-#include "OrientationProvider.h"
+#include "PositionConnector.h"
+#include "OrientationConnector.h"
 #include "Animation.h"
 #include "UniformBuffer.h"
 
 namespace Hogra {
 
-	class Camera
+	class Camera : public PositionProvider, public OrientationProvider
 	{
 	public:
 
@@ -72,24 +72,16 @@ namespace Hogra {
 			return lookDir;
 		}
 
-		const glm::vec3& GetEyePos() const {
+		const glm::vec3& GetPosition() const override {
 			return eye;
 		}
 
-		const PositionProvider* getPositionProvider() const {
-			return positionProvider;
+		void SetPositionConnetor(PositionConnector* provider) {
+			positionConnector = provider;
 		}
 
-		void SetPositionProvider(PositionProvider* provider) {
-			positionProvider = provider;
-		}
-
-		const OrientationProvider* getOrientationProvider() const {
-			return orientationProvider;
-		}
-
-		void SetOrientationProvider(OrientationProvider* provider) {
-			orientationProvider = provider;
+		void SetOrientationConnector(OrientationConnector* provider) {
+			orientationConnector = provider;
 		}
 
 		const glm::vec3& getRight() const {
@@ -104,12 +96,8 @@ namespace Hogra {
 			return prefUp;
 		}
 
-		glm::quat GetOrientation() const {
-			return quat_cast(glm::inverse(view));
-		}
-
-		void setPositionInProvidersSpace(glm::vec3 pos) {
-			positionInProvidersSpace = pos;
+		const glm::quat& GetOrientation() const override {
+			return orientation;
 		}
 
 		Animation* getAnimation() const {
@@ -144,6 +132,7 @@ namespace Hogra {
 		glm::mat4 viewProjMatrix = glm::mat4(1.0f);
 		glm::mat4 invViewProjMatrix = glm::mat4(1.0f);
 		glm::mat4 rayDirMatrix = glm::mat4(1.0f);
+		glm::quat orientation;
 		float FOVdeg = 45.0f;
 		float nearPlane = 0.1f;
 		float farPlane = 2000.0f;
@@ -152,10 +141,8 @@ namespace Hogra {
 		bool firstClick = true;
 
 		bool moved = false;
-		PositionProvider* positionProvider = nullptr;
-		glm::vec3 positionInProvidersSpace = glm::vec3(0.0f);
-		OrientationProvider* orientationProvider = nullptr;
-		glm::vec3 lookDirInProvidersSpace = glm::vec3(0.0f, 0.0f, 1.0f);
+		PositionConnector* positionConnector = nullptr;
+		OrientationConnector* orientationConnector = nullptr;
 
 		Animation* animation = nullptr;
 		glm::vec3 animationOffset = glm::vec3(0.0f);

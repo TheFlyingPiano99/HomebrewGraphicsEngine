@@ -330,6 +330,9 @@
     <ClCompile Include="TransferFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SceneObjectFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -593,10 +596,19 @@
     <ClInclude Include="VolumeObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObservObjectControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TransferFunction.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ObservObjectControl.h">
+      <Filter>Header Files\Model\UserControls</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObjectFactory.h">
+      <Filter>Header Files\Model\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="OrientationConnector.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionConnector.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
@@ -736,6 +748,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\voxelAttenuation.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\sprite.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

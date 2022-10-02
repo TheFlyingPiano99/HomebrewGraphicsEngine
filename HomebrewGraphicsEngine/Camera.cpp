@@ -39,6 +39,7 @@ namespace Hogra {
 		viewProjMatrix = projection * view;
 		invViewProjMatrix = glm::inverse(viewProjMatrix);
 		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye + animationOffset));
+		orientation = glm::quat_cast(glm::transpose(glm::mat3(view)));
 		bool prevMooved = moved;
 		return prevMooved;
 	}
@@ -48,12 +49,12 @@ namespace Hogra {
 		if (nullptr != animation) {
 			animation->perform(this, dt);
 		}
-		if (nullptr != positionProvider) {
-			eye = positionProvider->GetPosition() + positionInProvidersSpace;
+		if (nullptr != positionConnector) {
+			eye = positionConnector->GetPosition();
 			lookAt = eye + lookDir;
 		}
-		if (nullptr != orientationProvider) {
-			lookDir = glm::normalize(orientationProvider->GetOrientation() * lookDirInProvidersSpace);
+		if (nullptr != orientationConnector) {
+			lookDir = glm::normalize(orientationConnector->GetOrientation() * glm::vec3(0.0f, 0.0f, 1.0f));
 			right = glm::cross(lookDir, prefUp);
 			up = glm::cross(right, lookDir);
 			lookAt = eye + lookDir;
@@ -86,7 +87,7 @@ namespace Hogra {
 	}
 
 	void Camera::MoveForward(float dt) {
-		if (nullptr != positionProvider) {
+		if (nullptr != positionConnector) {
 			return;
 		}
 		eye += dt * speed * lookDir;
@@ -96,7 +97,7 @@ namespace Hogra {
 
 	void Camera::MoveBackward(float dt)
 	{
-		if (nullptr != positionProvider) {
+		if (nullptr != positionConnector) {
 			return;
 		}
 		eye += dt * speed * -lookDir;
@@ -106,7 +107,7 @@ namespace Hogra {
 
 	void Camera::MoveLeft(float dt)
 	{
-		if (nullptr != positionProvider) {
+		if (nullptr != positionConnector) {
 			return;
 		}
 		eye += dt * speed * -right;
@@ -116,7 +117,7 @@ namespace Hogra {
 
 	void Camera::MoveRight(float dt)
 	{
-		if (nullptr != positionProvider) {
+		if (nullptr != positionConnector) {
 			return;
 		}
 		eye += dt * speed * right;
@@ -126,7 +127,7 @@ namespace Hogra {
 
 	void Camera::MoveUp(float dt)
 	{
-		if (nullptr != positionProvider) {
+		if (nullptr != positionConnector) {
 			return;
 		}
 		eye += dt * speed * up;
@@ -136,7 +137,7 @@ namespace Hogra {
 
 	void Camera::MoveDown(float dt)
 	{
-		if (nullptr != positionProvider) {
+		if (nullptr != positionConnector) {
 			return;
 		}
 		eye += dt * speed * -up;
@@ -146,7 +147,7 @@ namespace Hogra {
 
 	void Camera::Rotate(const glm::vec2& deltaAngle)
 	{
-		if (nullptr != orientationProvider) {
+		if (nullptr != orientationConnector) {
 			return;
 		}
 		glm::quat rotXQuat = angleAxis(deltaAngle.y, right);
@@ -188,7 +189,7 @@ namespace Hogra {
 
 	void Camera::ApproachCenter(float delta, const glm::vec3& center)
 	{
-		if (nullptr != positionProvider) {
+		if (nullptr != positionConnector) {
 			return;
 		}
 		float l = length(center - eye);

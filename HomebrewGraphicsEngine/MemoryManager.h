@@ -57,7 +57,6 @@ namespace Hogra {
 				MasterAllocator::AddDeleteAllFunction(Allocator<T>::DeleteAll);
 			}
 			auto* instance = new T();
-			std::cout << "New    " << instance << std::endl;
 			instances.push_back(instance);
 			MasterAllocator::IncrementAllocationCount();
 			return instance;
@@ -66,7 +65,6 @@ namespace Hogra {
 		static void Delete(T*& instance) {
 			if (auto iter = std::ranges::find(instances.begin(), instances.end(), instance); iter != instances.end()) {
 				instances.erase(iter);
-				std::cout << "Delete " << instance << std::endl;
 				delete instance;
 				MasterAllocator::DecrementAllocationCount();
 			}
@@ -75,7 +73,6 @@ namespace Hogra {
 
 		static void DeleteAll() {
 			for (T* instance : instances) {
-				std::cout << "Delete " << instance << std::endl;
 				delete instance;
 				MasterAllocator::DecrementAllocationCount();
 			}

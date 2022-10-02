@@ -71,7 +71,7 @@ namespace Hogra {
 			isChanged = false;
 			// Calculate directions and transformations:
 			auto lightDir = glm::normalize(glm::vec3(light->GetPosition()) - this->w_position);
-			auto viewDir = glm::normalize(glm::vec3(camera.GetEyePos()) - this->w_position);
+			auto viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - this->w_position);
 			bool isBackToFront = false;
 			if (glm::dot(lightDir, viewDir) < 0.0f) {	// Negate viewDir if the camera is on the opposite side of the volume as the light source.
 				viewDir *= -1.0f;

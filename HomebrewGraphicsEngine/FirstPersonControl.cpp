@@ -184,7 +184,7 @@ void Hogra::FirstPersonControl::primaryAction()
 
 	if (nullptr != laser) {
 		laser->SetIsVisible(true);
-		glm::vec3 start = camera->GetEyePos() - glm::vec3(0.0f, 0.5f, 0.0f);
+		glm::vec3 start = camera->GetPosition() - glm::vec3(0.0f, 0.5f, 0.0f);
 		glm::vec3 end;
 		if (isPoke) {
 			end = point;
@@ -224,7 +224,7 @@ bool Hogra::FirstPersonControl::PokeObject(const glm::vec2& ndcCoords, glm::vec3
 	glm::vec3 intersectionPoint;
 	glm::vec3 intersectionNormal;
 	Ray ray;
-	ray.SetPosition(camera->GetEyePos() + dir * 1.0f);
+	ray.SetPosition(camera->GetPosition() + dir * 1.0f);
 	ray.setDirection(dir);
 	const auto* selected = scene->IntersectRay(ray, intersectionPoint, intersectionNormal);
 	if (nullptr != selected && nullptr != selected->GetPhysics()) {

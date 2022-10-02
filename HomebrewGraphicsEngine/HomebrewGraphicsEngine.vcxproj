@@ -224,6 +224,7 @@
     <ClCompile Include="SceneFactory.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="SceneObjectFactory.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgramFactory.cpp" />
     <ClCompile Include="ShadowCaster.cpp" />
@@ -298,9 +299,11 @@
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ObservObjectControl.h" />
+    <ClInclude Include="OrientationConnector.h" />
     <ClInclude Include="OrientationProvider.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="PositionConnector.h" />
     <ClInclude Include="PositionProvider.h" />
     <ClInclude Include="PostProcessStage.h" />
     <ClInclude Include="Ray.h" />
@@ -316,6 +319,7 @@
     <ClInclude Include="SceneFactory.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="SceneObjectFactory.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShaderProgramFactory.h" />
     <ClInclude Include="ShadowCaster.h" />
@@ -372,6 +376,7 @@
     <None Include="..\Resources\Shaders\shadowCast.vert" />
     <None Include="..\Resources\Shaders\skybox.frag" />
     <None Include="..\Resources\Shaders\fullscreenQuad.vert" />
+    <None Include="..\Resources\Shaders\sprite.frag" />
     <None Include="..\Resources\Shaders\tapeEffect.frag" />
     <None Include="..\Resources\Shaders\transfer.frag" />
     <None Include="..\Resources\Shaders\transfer.vert" />

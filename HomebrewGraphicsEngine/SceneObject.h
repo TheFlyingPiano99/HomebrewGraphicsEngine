@@ -15,6 +15,8 @@
 #include "OrientationProvider.h"
 #include "ScaleProvider.h"
 #include "MemoryManager.h"
+#include "PositionConnector.h"
+#include "OrientationConnector.h"
 
 namespace Hogra {
 
@@ -141,6 +143,14 @@ namespace Hogra {
 			return isCastingShadow;
 		}
 
+		void SetPositionConnector(PositionConnector* _connector) {
+			positionConnector = _connector;
+		}
+
+		void SetOrientationConnector(OrientationConnector* _connector) {
+			orientationConnector = _connector;
+		}
+
 	private:
 		Mesh* mesh = nullptr;		// Don't delete from this object!
 		std::vector<Component*> components;
@@ -156,6 +166,9 @@ namespace Hogra {
 		glm::mat4 scaleMatrix = glm::mat4(1.0f);
 		glm::mat4 modelMatrix = glm::mat4(1.0f);
 		glm::mat4 invModelMatrix = glm::mat4(1.0f);
+
+		PositionConnector* positionConnector = nullptr;
+		OrientationConnector* orientationConnector = nullptr;
 
 		bool isVisible = true;
 		bool isCastingShadow = true;

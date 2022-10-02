@@ -8,6 +8,8 @@
 #include "GlobalInclude.h"
 #include <glm/gtc/type_ptr.hpp>
 #include "Texture2D.h"
+#include "ShaderProgramFactory.h"
+#include "AssetFolderPathManager.h"
 
 namespace Hogra {
 #define DEFAULT_FONT_HEIGHT 24
@@ -26,8 +28,9 @@ namespace Hogra {
             unsigned int advance;    // Offset to advance to next glyph
         };
 
-        void Init(ShaderProgram* program) {
-            shaderProgram = program;
+        void Init(const char* fileName) {
+            shaderProgram = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
+            Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append(fileName));
         }
 
         ~Font();

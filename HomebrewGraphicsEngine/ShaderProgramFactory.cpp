@@ -67,6 +67,18 @@ namespace Hogra {
 		return emissiveMaterial;
 	}
 
+	ShaderProgram* ShaderProgramFactory::GetSpriteProgram() {
+		if (nullptr == spriteProgram) {
+			spriteProgram = Allocator<ShaderProgram>::New();
+			spriteProgram->Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("sprite.frag")
+			);
+		}
+		return spriteProgram;
+	}
+
 	void ShaderProgramFactory::ForgetPointers()
 	{
 		defaultBPRProgramWithMapping = nullptr;

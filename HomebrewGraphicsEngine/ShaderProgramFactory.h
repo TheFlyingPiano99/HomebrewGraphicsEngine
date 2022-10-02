@@ -20,6 +20,8 @@ namespace Hogra {
 
 		ShaderProgram* GetEmissiveMaterialProgram();
 
+		ShaderProgram* GetSpriteProgram();
+
 		void ForgetPointers();
 
 	private:
@@ -32,5 +34,6 @@ namespace Hogra {
 		ShaderProgram* emissiveMaterial = nullptr;
 		ShaderProgram* glyphProgram = nullptr;
 		ShaderProgram* captionProgram = nullptr;
+		ShaderProgram* spriteProgram = nullptr;
 	};
 }

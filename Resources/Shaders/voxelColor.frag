@@ -233,14 +233,7 @@ vec3 transferGradient(vec3 currentPos, vec4 color) {
 void main() {	
 	vec3 w_viewDir = normalize(cameraPosition - worldPos);
 	float w_delta = opacityScale * length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), w_viewDir));
-
 	vec3 currentPos = modelPos + resolution * 0.5;
-	if (currentPos.x < 1 || currentPos.x > resolution.x - 2
-	|| currentPos.y < 1 || currentPos.y > resolution.y  - 2
-	|| currentPos.z < 1 || currentPos.z > resolution.z  - 2) {	// Out of volume
-		FragColor = vec4(0.0);
-		return;
-	}
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
 	vec4 ndc_temp = viewProjMatrix * vec4(worldPos, 1);
 	ndc_temp /= ndc_temp.w;
@@ -259,8 +252,8 @@ void main() {
 	
 	// Blinn-Phong local illumination:
 	float shininess = 3.0;
-	float t = pow(length(transferGrad.xyz), 10.0);
-	color.rgb += max(1.0 - t, 0.0) * color.rgb + min(t, 1.0) * pow(length(transferGrad), 1.0) * pow(max(dot(normalize(-transferGrad), normalize(m_halfway.xyz)), 0.0), shininess);
+	float t = min(max(pow(length(transferGrad.xyz), 10.0), 0.0), 1.0);
+	//color.rgb += (1.0 - t) * color.rgb + t * pow(max(dot(normalize(-transferGrad), normalize(m_halfway.xyz)), 0.0), shininess);
 	color.rgb *= light.powerDensity / w_lightDistance / w_lightDistance * w_delta;
 	
 

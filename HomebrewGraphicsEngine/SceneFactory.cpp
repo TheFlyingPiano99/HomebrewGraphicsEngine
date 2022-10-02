@@ -18,6 +18,9 @@
 #include "SceneAudioSource.h"
 #include "ObservObjectControl.h"
 #include "MemoryManager.h"
+#include "PositionConnector.h"
+#include "SceneObjectFactory.h"
+
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -90,17 +93,24 @@ namespace Hogra {
 			light->SetPositionProvider(obj);
 			scene->AddLight(light);
 		}
+
+		auto* mario = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/mario-bros-hd.png"),
+			&scene->GetCamera()
+		);
+		auto* marioColl = Allocator<AABBCollider>::New();
+		marioColl->Init();
+		marioColl->SetPositionProvider(mario);
+		marioColl->setMinRelToPosition(glm::vec3(-0.5f, -0.5f, -0.5f));
+		marioColl->setMaxRelToPosition(glm::vec3(0.5f, 0.5f, 0.5f));
+		scene->AddCollider(marioColl);
+		mario->addComponent(marioColl);
+		mario->SetPosition(glm::vec3(-11.0f, 4.0f, -20.0f));
+		scene->AddSceneObject(mario, "mario_sprite");
+
 		InitSkyBox(scene);
 		InitLoadedGeometry(scene, glm::vec3(-10.0f, 3.0f, -30.0f), field);
 		
-
-		// Volume:
-		auto* voxelTexture = Allocator<Texture3D>::New();
-		voxelTexture->Init(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
-			3,
-			GL_RED
-		);
 		
 		/*
 		auto* volumeLight = Light::Instantiate();
@@ -157,16 +167,15 @@ namespace Hogra {
 		//Test mem allocator:
 		Texture2D* textureInstance = Allocator<Hogra::Texture2D>::New();
 
-		Scene* sceneInstance = Allocator<Hogra::Scene>::New();
-
-		Scene* scene = new Scene();
+		Scene* scene = Allocator<Scene>::New();
 		scene->Init(contextWidth, contextHeight);
 
 		// Volume:
+		const char* dataSetName = "Shoulder";
 		auto* voxelTexture = Allocator<Texture3D>::New();
 		voxelTexture->Init(
 //			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
-	AssetFolderPathManager::getInstance()->getTextureFolderPath().append("Shoulder"),
+	AssetFolderPathManager::getInstance()->getTextureFolderPath().append(dataSetName),
 		3,
 			GL_RED
 		);
@@ -187,10 +196,10 @@ namespace Hogra {
 		scene->AddVolumeObject(volumeObject);
 
 		InitObjectObserverControl(scene, volumeObject);
-		InitCaptions(scene);
+		InitVoxelCaption(scene, dataSetName);
 		
 		
-		auto* bloom = new Bloom();
+		auto* bloom = Allocator<Bloom>::New();
 		bloom->Init(contextWidth, contextHeight);
 		scene->AddPostProcessStage(bloom);
 
@@ -392,15 +401,28 @@ namespace Hogra {
 	
 	void SceneFactory::InitCaptions(Scene* scene)
 	{
-		auto* shader = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
 		auto* font = Allocator<Font>::New();
-		font->Init(shader);
-		font->Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append("arial.ttf"));
+		font->Init("arial.ttf");
 
 		Caption* caption1 = Allocator<Caption>::New();
 		caption1->Init("Homebrew Graphics Engine Demo", font,
 			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.95), 1.5f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
+		Allocator<Font>::Delete(font);
+	}
+
+	void SceneFactory::InitVoxelCaption(Scene* scene, const char* dataSetName) {
+		auto* font = Allocator<Font>::New();
+		font->Init("arial.ttf");
+		auto* caption1 = Allocator<Caption>::New();
+		caption1->Init("Volume rendering", font,
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.95), 1.0f, glm::vec4(1, 1, 1, 1));
+		scene->AddCaption(caption1);
+		auto* caption2 = Allocator<Caption>::New();
+		caption2->Init(std::string("Data set: ").append(dataSetName), font,
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.91), 1.0f, glm::vec4(1, 1, 1, 1));
+		scene->AddCaption(caption2);
+		Allocator<Font>::Delete(font);
 	}
 	
 	void SceneFactory::InitGroud(Scene* scene)
@@ -508,8 +530,9 @@ namespace Hogra {
 		auto* avatar = Allocator<SceneObject>::New();
 		avatar->Init();
 		avatar->SetPosition(glm::vec3(-60.0f, 2.0f, -60.0f));
-		scene->GetCamera().SetPositionProvider(avatar);
-		scene->GetCamera().setPositionInProvidersSpace(glm::vec3(0.0f, 0.8f, 0.0f));
+		auto* posConnector = Allocator<PositionConnector>::New();
+		posConnector->Init(avatar, glm::vec3(0.0f, 0.8f, 0.0f));
+		scene->GetCamera().SetPositionConnetor(posConnector);
 		auto* collider = Allocator<AABBCollider>::New();
 		collider->Init();
 		collider->setMinRelToPosition(glm::vec3(-0.2f, -1.0f, -0.2f));
