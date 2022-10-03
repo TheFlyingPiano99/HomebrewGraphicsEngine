@@ -365,7 +365,9 @@ namespace Hogra {
 		Texture3D* voxels = nullptr;
 		Texture2D colorTextures[2];
 		Texture2D attenuationTextures[2];
+		Texture2D prevCompleteImage;
 		FBO pingpongFBO;
+		FBO prevCompleteImageFBO;
 		ShaderProgram colorProgram;
 		ShaderProgram attenuationProgram;
 		ShaderProgram combineProgram;
@@ -379,7 +381,8 @@ namespace Hogra {
 		float transferFloodFillTreshold;
 		float lightPower = 100.0f;
 		float levelOfDetail = 1.0f;		// (0..1]
-
+		int firstSlice = 0;
+		int out = 0;				// Idx of Out texture from the pingpong buffer
 		bool isChanged = true;
 
 	};

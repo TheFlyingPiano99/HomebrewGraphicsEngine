@@ -1,7 +1,9 @@
-﻿  SceneFactory.cpp
+﻿  VolumeObject.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\VolumeObject.cpp(315,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\VolumeObject.cpp(326,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  2 of 8073 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 8073 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     41 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
