@@ -323,6 +323,7 @@ namespace Hogra {
 
 		struct BoundingBox {
 			BoxEdge edges[12];
+			glm::vec3 corners[8];
 		};
 		BoundingBox boundingBox;
 

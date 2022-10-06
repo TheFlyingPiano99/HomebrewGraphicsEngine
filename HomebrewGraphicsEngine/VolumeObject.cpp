@@ -31,7 +31,6 @@ namespace Hogra {
 		InitBoundingBox(voxels->GetDimensions(), boundingBox);
 		resolution = glm::vec3(voxels->GetDimensions().width, voxels->GetDimensions().height, voxels->GetDimensions().depth);
 		scale *= glm::vec3(voxels->GetDimensions().widthScale, voxels->GetDimensions().heightScale, voxels->GetDimensions().depthScale);
-		w_diameter = glm::length(resolution * scale);
 
 		pingpongFBO.Init();
 		colorProgram.Init(
@@ -74,28 +73,51 @@ namespace Hogra {
 		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f || firstSlice > 0) {
 			isFinishedVolume = true;
 			if (isCameraMoved || isChanged) {
-				levelOfDetail = 0.01f;
+				levelOfDetail = 0.04f;
 				firstSlice = 0;
 				isChanged = false;
 			}
 			else if (0 == firstSlice) {
-				levelOfDetail *= (1.5f + levelOfDetail);
+				levelOfDetail *= (2.0f + levelOfDetail);
 				if (1.0f < levelOfDetail) {	// max
 					levelOfDetail = 1.0f;
 				}
 			}
-			sliceCount = (int)(glm::length(resolution) * levelOfDetail * 4.0f);
 
 			// Calculate directions and transformations:
-			auto lightDir = glm::normalize(glm::vec3(light->GetPosition()) - this->w_position);
-			auto viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - this->w_position);
+			auto w_lightDir = glm::normalize(glm::vec3(light->GetPosition()) - this->w_position);
+			auto w_viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - this->w_position);
 			bool isBackToFront = false;
-			if (glm::dot(lightDir, viewDir) < 0.0f) {	// Negate viewDir if the camera is on the opposite side of the volume as the light source.
-				viewDir *= -1.0f;
+			if (glm::dot(w_lightDir, w_viewDir) < 0.0f) {	// Negate viewDir if the camera is on the opposite side of the volume as the light source.
+				w_viewDir *= -1.0f;
 				isBackToFront = true;
 			}
-			auto w_halfway = (lightDir + viewDir) * 0.5f;
-			glm::vec3 w_sliceDelta = 1.0f / (float)sliceCount * w_diameter * w_halfway;
+			auto w_halfway = normalize((w_lightDir + w_viewDir) * 0.5f);
+
+			glm::vec3 w_toCorner;
+			float maxCos = 0.0f;
+			for (int i = 0; i < 8; i++) {
+				auto temp4 = glm::vec4(boundingBox.corners[i], 1.0f);
+				temp4 = modelMatrix * temp4;
+				glm::vec3 w_tempDir = glm::vec3(temp4 / temp4.w) - w_position;
+				float cos = glm::dot(glm::normalize(w_tempDir), w_halfway);
+				if (0.0f > cos) {
+					w_tempDir *= -1.0f;
+					cos *= -1.0f;
+				}
+				if (cos > maxCos) {
+					maxCos = cos;
+					w_toCorner = w_tempDir;
+				}
+			}
+			w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
+			if (levelOfDetail < 0.05) {
+				sliceCount = 50;
+			}
+			else {
+				sliceCount = (int)(glm::length(resolution) * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
+			}
+			glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
 
 			// Clear textures: (working)
 			pingpongFBO.Bind();
@@ -138,12 +160,13 @@ namespace Hogra {
 			int in = 0;
 			int slicePerCurrentFrame = 0;
 			int maxSlicePerFrame = 50;
+			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
+			int i = 0;
 			for (int slice = firstSlice; slice < sliceCount; slice++) {
 				in = slice % 2;
 				out = (slice + 1) % 2;
-				auto w_slicePos = w_position + w_halfway * (1.0f - (float)slice / (float)sliceCount * 2.0f) * w_diameter * 0.5f;
+				auto w_slicePos = w_position + w_halfway * (1.0f - ((float)slice / (float)sliceCount) * 2.0f) * w_diameter * 0.5f;
 				auto m_slicePos = invModelMatrix * glm::vec4(w_slicePos, 1.0f);
-				auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
 				DrawProxyGeometry(camera,
 					depthTexture,
 					isBackToFront,
@@ -152,6 +175,7 @@ namespace Hogra {
 					glm::vec3(m_slicePos) / m_slicePos.w,
 					m_sliceNorm
 				);
+				i++;
 				slicePerCurrentFrame++;
 				if (slicePerCurrentFrame >= maxSlicePerFrame && sliceCount > maxSlicePerFrame) {
 					firstSlice = slice + 1;
@@ -164,7 +188,6 @@ namespace Hogra {
 				firstSlice = 0;
 			}
 		}
-
 		// Combine volume with the earlier rendered scened
 		combineProgram.Activate();
 		fullScreenQuad->BindVAO();
@@ -173,7 +196,7 @@ namespace Hogra {
 			glDisable(GL_DEPTH_TEST);
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE, GL_ZERO);
-			colorTextures[out].Bind();
+			colorTextures[0].Bind();
 			fullScreenQuad->Draw();
 		}
 		outputFBO.Bind();
@@ -242,13 +265,13 @@ namespace Hogra {
 		bool isBackToFront, 
 		int in, 
 		int out, 
-		const glm::vec3& modelSlicePosition, 
+		const glm::vec3& m_slicePosition, 
 		const glm::vec3& m_sliceNormal
 	) {
 		glm::vec3 m_intersectionPoint;
 		std::vector<glm::vec3> vertices;
 		for (int i = 0; i < 12; i++) {
-			if (IntersectPlane(boundingBox.edges[i], modelSlicePosition, m_sliceNormal, m_intersectionPoint)) {
+			if (IntersectPlane(boundingBox.edges[i], m_slicePosition, m_sliceNormal, m_intersectionPoint)) {
 				vertices.push_back(m_intersectionPoint);
 			}
 		}
@@ -261,11 +284,11 @@ namespace Hogra {
 				indices.push_back(2);
 			}
 			else {	// Triangle fan
-				glm::vec4 ndc_center = camera.GetViewProjMatrix() * modelMatrix * glm::vec4(modelSlicePosition, 1.0f);
+				glm::vec4 ndc_center = camera.GetViewProjMatrix() * modelMatrix * glm::vec4(m_slicePosition, 1.0f);
 				ndc_center /= ndc_center.w;
 				const glm::mat4& modelMatrix = this->modelMatrix;
 				auto* cam_ptr = &camera;	// Capturing camera by value caused error: locked up the scene (Didn't understand...)
-				auto compareAngleFunc = [cam_ptr, modelSlicePosition, modelMatrix, ndc_center](glm::vec3& vertex1, glm::vec3& vertex2)-> float {
+				auto compareAngleFunc = [cam_ptr, m_slicePosition, modelMatrix, ndc_center](glm::vec3& vertex1, glm::vec3& vertex2)-> float {
 					glm::vec4 ndc_vert = cam_ptr->GetViewProjMatrix() * modelMatrix * glm::vec4(vertex1.x, vertex1.y, vertex1.z, 1.0f);
 					ndc_vert /= ndc_vert.w;
 					glm::vec2 dir1 = glm::normalize(glm::vec2(ndc_vert.x, ndc_vert.y) - glm::vec2(ndc_center.x, ndc_center.y));
@@ -297,9 +320,9 @@ namespace Hogra {
 			colorProgram.Activate();
 			transferFunction.Bind();
 			voxels->Bind();
-			colorTextures[in].Bind();
+			//colorTextures[in].Bind();
 			attenuationTextures[in].Bind();
-			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[out], 0);
+			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[0], 0);
 			if (isBackToFront) {
 				glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 				//glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE, GL_ZERO);
@@ -386,6 +409,15 @@ namespace Hogra {
 		box.edges[11].position = glm::vec3(-0.5f, 0.5f, 0.5f) * resolution;
 		box.edges[11].direction = glm::vec3(0, 0, -1);
 		box.edges[11].length = resolution.z;
+
+		box.corners[0] = glm::vec3(-0.5f, -0.5f, -0.5f) * resolution;
+		box.corners[1] = glm::vec3(-0.5f, -0.5f,  0.5f) * resolution;
+		box.corners[2] = glm::vec3(-0.5f,  0.5f, -0.5f) * resolution;
+		box.corners[3] = glm::vec3(-0.5f,  0.5f,  0.5f) * resolution;
+		box.corners[4] = glm::vec3( 0.5f, -0.5f, -0.5f) * resolution;
+		box.corners[5] = glm::vec3( 0.5f, -0.5f,  0.5f) * resolution;
+		box.corners[6] = glm::vec3( 0.5f,  0.5f, -0.5f) * resolution;
+		box.corners[7] = glm::vec3( 0.5f,  0.5f,  0.5f) * resolution;
 	}
 
 	void VolumeObject::ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)

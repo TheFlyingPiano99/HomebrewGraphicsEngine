@@ -1,7 +1,6 @@
-﻿  InstanceGroup.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(6,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(12,20): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(23,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(41,28): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+﻿  VolumeObject.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\VolumeObject.cpp(338,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\VolumeObject.cpp(349,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\TransferFunction.h(97): warning C4715: 'Hogra::Feature::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\TransferFunction.h(154): warning C4715: 'Hogra::FeatureGroup::load': not all control paths return a value
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

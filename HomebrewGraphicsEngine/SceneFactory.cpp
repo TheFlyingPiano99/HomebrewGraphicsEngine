@@ -171,7 +171,7 @@ namespace Hogra {
 		scene->Init(contextWidth, contextHeight);
 
 		// Volume:
-		const char* dataSetName = "Shoulder";
+		const char* dataSetName = "Head";
 		auto* voxelTexture = Allocator<Texture3D>::New();
 		voxelTexture->Init(
 //			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
