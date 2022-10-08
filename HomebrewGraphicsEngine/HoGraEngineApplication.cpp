@@ -42,6 +42,24 @@ namespace Hogra {
 		glfwSetWindowIcon(window, 1, icons);
 	}
 
+	void HoGraEngineApplication::PrintWelcomeConsoleText()
+	{
+		std::cout << " Powered by" << std::endl;
+		std::cout << "  _   _                          " << std::endl;
+		std::cout << " | | | | ___   __ _ _ __ __ _    " << std::endl;
+		std::cout << " | |_| |/ _ \\ / _` | '__/ _` |   " << std::endl;
+		std::cout << " |  _  | (_) | (_| | | | (_| |   " << std::endl;
+		std::cout << " |_|_|_|\\___/ \\__, |_|  \\__,_|   " << std::endl;
+		std::cout << " | ____|_ __  |___/(_)_ __   ___ " << std::endl;
+		std::cout << " |  _| | '_ \\ / _` | | '_ \\ / _ \\" << std::endl;
+		std::cout << " | |___| | | | (_| | | | | |  __/" << std::endl;
+		std::cout << " |_____|_| |_|\\__, |_|_| |_|\\___|" << std::endl;
+		std::cout << "              |___/              " << std::endl;
+		std::cout << "                                  Zoltan Simon (2022)" << std::endl;
+		std::cout << "_____________________________________________________" << std::endl;
+		std::cout << std::endl;
+	}
+
 	int HoGraEngineApplication::Init(const char* _windowName) {
 
 		auto consoleHandle = GetConsoleWindow();
@@ -51,6 +69,7 @@ namespace Hogra {
 		}
 		else {
 			ShowWindow(consoleHandle, SW_SHOW);
+			PrintWelcomeConsoleText();
 		}
 
 		windowName = _windowName;
@@ -120,7 +139,7 @@ namespace Hogra {
 
 			if (frameCounter >= 50)
 			{
-				// Creates new title
+				// Creates title
 				std::string FPS = std::to_string((1.0 / timeDiff) * frameCounter);
 				std::string ms = std::to_string((timeDiff / frameCounter) * 1000.0);
 				std::string newTitle = windowName + " (" + FPS + " FPS / " + ms + " ms)";
@@ -169,7 +188,7 @@ namespace Hogra {
 	}
 	
 	void HoGraEngineApplication::Destroy() {
-		GUI::getInstance()->destroyGUI();
+		GUI::getInstance()->DestroyGUI();
 
 		// Delete window before ending the program
 		glfwDestroyWindow(window);
@@ -180,7 +199,7 @@ namespace Hogra {
 		MasterAllocator::DeleteAll();
 		auto undeletedHeapInstances = MasterAllocator::GetCurrentAllocationCount();
 		if (0 < undeletedHeapInstances) {
-			std::cout << "WARNING: " << undeletedHeapInstances << " heap allocated instances are not deleted!" << std::endl;
+			std::cout << "WARNING: " << undeletedHeapInstances << " dynamically allocated instances are not deallocated!" << std::endl;
 		}
 	}
 }

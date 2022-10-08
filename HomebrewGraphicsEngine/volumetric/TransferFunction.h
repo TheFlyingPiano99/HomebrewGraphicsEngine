@@ -3,13 +3,13 @@
 #include<glm/glm.hpp>
 #include <iostream>
 #include <fstream>
-#include "ShaderProgram.h"
-#include "Texture2D.h"
-#include "VAO.h"
-#include "Texture3D.h"
-#include "FBO.h"
+#include "../ShaderProgram.h"
+#include "../Texture2D.h"
+#include "../VAO.h"
+#include "../Texture3D.h"
+#include "../FBO.h"
 
-namespace Hogra {
+namespace Hogra::Volumetric {
 	struct Feature {
 		std::vector<glm::ivec2> elements;
 		glm::vec3 color;

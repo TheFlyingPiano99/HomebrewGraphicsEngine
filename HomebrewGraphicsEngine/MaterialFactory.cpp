@@ -12,7 +12,7 @@ namespace Hogra {
 	MaterialFactory* MaterialFactory::GetInstance()
 	{
 		if (nullptr == instance) {
-			instance = new MaterialFactory();
+			instance = Allocator<MaterialFactory>::New();
 		}
 		return instance;
 	}

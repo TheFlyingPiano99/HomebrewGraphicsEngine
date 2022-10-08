@@ -16,6 +16,10 @@ namespace Hogra {
 		GUI() {
 		}
 
+		~GUI() {
+
+		}
+
 		bool visible = false;
 
 	public:
@@ -31,13 +35,13 @@ namespace Hogra {
 			Allocator<GUI>::Delete(instance);
 		}
 
-		void initGUI(GLFWwindow* window);
+		void InitGUI(GLFWwindow* window);
 
-		void destroyGUI();
+		void DestroyGUI();
 
 		void preDrawInit();
 
-		void UpdateGUI(VolumeObject& volumeObject);
+		void UpdateGUI(Volumetric::VolumeObject& volumeObject);
 
 		void Draw();
 

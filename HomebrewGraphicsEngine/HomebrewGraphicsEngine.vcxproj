@@ -236,13 +236,13 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TextureCube.cpp" />
-    <ClCompile Include="TransferFunction.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="UniformVariable.cpp" />
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
-    <ClCompile Include="VolumeObject.cpp" />
+    <ClCompile Include="volumetric\TransferFunction.cpp" />
+    <ClCompile Include="volumetric\VolumeObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBCollider.h" />
@@ -337,6 +337,8 @@
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
     <ClInclude Include="VolumeObject.h" />
+    <ClInclude Include="volumetric\TransferFunction.h" />
+    <ClInclude Include="volumetric\VolumeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />

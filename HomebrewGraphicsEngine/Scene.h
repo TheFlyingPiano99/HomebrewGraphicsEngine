@@ -25,7 +25,7 @@
 #include "AudioManager.h"
 #include "SceneAudioSource.h"
 #include "UniformVariable.h"
-#include "VolumeObject.h"
+#include "volumetric/VolumeObject.h"
 
 
 namespace Hogra {
@@ -89,9 +89,9 @@ namespace Hogra {
 
 		void Serialize();
 
-		void AddVolumeObject(VolumeObject* object);
+		void AddVolumeObject(Volumetric::VolumeObject* object);
 
-		std::vector<VolumeObject*>& GetVolumeObjects();
+		std::vector<Volumetric::VolumeObject*>& GetVolumeObjects();
 
 		~Scene() {
 			Serialize();
@@ -141,7 +141,7 @@ namespace Hogra {
 		UserControl* userControl = nullptr;
 		ShadowCaster* shadowCaster = nullptr;
 		std::vector<PostProcessStage*> postProcessStages;
-		std::vector<VolumeObject*> volumeObjects;
+		std::vector<Volumetric::VolumeObject*> volumeObjects;
 
 		CollisionManager collisionManager;
 		UniformVariable<float> timeSpent;

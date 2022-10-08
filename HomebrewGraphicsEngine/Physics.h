@@ -204,14 +204,14 @@ namespace Hogra {
 		}
 
 		/*
-		* [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
+		* [0..1] 0 - object can not be moved; 1 - object can be freely moved
 		*/
 		float getPositionForcingLevel() const {
 			return positionForcingLevel;
 		}
 
 		/*
-		* [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
+		* [0..1] 0 - object can not be moved; 1 - object can be freely moved
 		*/
 		void setPositionForcingLevel(float level) {
 			positionForcingLevel = level;
@@ -262,11 +262,11 @@ namespace Hogra {
 		glm::vec3 angularMomentum = glm::vec3(0.0f);
 		glm::mat3 invModelSpaceInertiaTensor = glm::mat3(0.0f);
 		glm::vec3 rotationalDrag = glm::vec3(0.0f);
-		float elasticity = 0.0f;	// From [0..1] interval: 1 ~ fully elastic; 0 ~ inelastic. 
+		float elasticity = 0.0f;	// From [0..1] interval: 1 - fully elastic; 0 - inelastic. 
 		float friction = 0.5f;
 		std::vector<glm::vec3> forcedPositionOffsets;
 		std::vector<glm::quat> forcedOrientationOffsets;
-		float positionForcingLevel = 0; // [0..1] 0 ~ object can not be moved; 1 ~ object can be freely moved
+		float positionForcingLevel = 0; // [0..1] 0 - object can not be moved; 1 - object can be freely moved
 
 	};
 

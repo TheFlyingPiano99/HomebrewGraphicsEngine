@@ -13,7 +13,7 @@ namespace Hogra {
 		maxValue = std::pow(2, dimensions.bytesPerVoxel * 8) - 1;
 		std::string name;	// Discarded !!!
 		if (!ReadDimensions(std::string(directory).append("/dimensions.txt").c_str(), name, this->dimensions)) {
-			throw new std::exception("Failed to read dimensions of voxel data!");
+			throw std::exception("Failed to read dimensions of voxel data!");
 		}
 		bool swapBytes = false;
 		unsigned int headerSize = 0;

@@ -14,7 +14,7 @@ namespace Hogra {
 		~SceneEventManager() {
 			while (!events.empty()) {
 				auto* e = popNextEvent();
-				delete e;
+				Allocator<SceneEvent>::Delete(e);
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace Hogra {
 
 		void ClearQueue() {
 			while (!events.empty()) {
-				delete events.front();
+				Allocator<SceneEvent>::Delete(events.front());
 				events.pop();
 			}
 		}
@@ -55,7 +55,7 @@ namespace Hogra {
 			while (!empty()) {
 				SceneEvent* event = popNextEvent();
 				event->Execute(scene);
-				delete event;
+				Allocator<SceneEvent>::Delete(event);
 			}
 		}
 	private:

@@ -29,7 +29,7 @@ namespace Hogra {
 			this->mesh = _mesh;
 		}
 
-		~SceneObject() = default;
+		virtual ~SceneObject() = default;
 
 		void BeforePhysicsLoopUpdate();
 

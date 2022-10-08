@@ -1,6 +1,6 @@
 #include "HoGraEngineApplication.h"
 
-#define WINDOW_NAME "HomebrewGraphicsEngineApp"
+#define WINDOW_NAME "HograApp"
 
 using namespace Hogra;
 

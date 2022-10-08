@@ -46,8 +46,12 @@ void Hogra::ColliderGroup::AddCollider(Collider* collider) {
 	if (subGroups.empty()) {	// Leaf group
 		colliders.push_back(collider);
 		if (colliders.size() > MAX_COLLIDER_COUNT && level < MAX_DEPTH_LEVEL) {	// Divide group into subgroups
-			subGroups.push_back(new ColliderGroup(this, level + 1));
-			subGroups.push_back(new ColliderGroup(this, level + 1));
+			auto group1 = Allocator<ColliderGroup>::New();
+			group1->Init(this, level + 1);
+			subGroups.push_back(group1);
+			auto group2 = Allocator<ColliderGroup>::New();
+			group2->Init(this, level + 1);
+			subGroups.push_back(group2);
 			for (int i = 0; i < 2; i++) {	// First few in separate groups
 				int groupIdx = i % 2;
 				subGroups[groupIdx]->AddCollider(colliders[i]);
@@ -91,7 +95,7 @@ int Hogra::ColliderGroup::GetLoad() {
 void Hogra::ColliderGroup::Clear()
 {
 	for (auto& group : subGroups) {
-		delete group;
+		Allocator<ColliderGroup>::Delete(group);
 	}
 	aabb.SetMin(glm::vec3(0, 0, 0));
 	aabb.SetMax(glm::vec3(0, 0, 0));
@@ -104,7 +108,7 @@ void Hogra::ColliderGroup::putInLeastExpandingSubGroup(Collider* collider)
 {
 	float minExpansion;
 	ColliderGroup* minGroup = nullptr;
-	for (auto& group : subGroups) {	// Find subGroup least expanded by the new collider
+	for (auto& group : subGroups) {	// Find subGroup least expanded by the added collider
 		float currentExpansion = group->GetExpansion(collider);
 		if (nullptr == minGroup || currentExpansion < minExpansion) {
 			minExpansion = currentExpansion;

@@ -21,6 +21,8 @@ namespace Hogra {
 
 		void SetIcon();
 
+		void PrintWelcomeConsoleText();
+
 		GLFWwindow* window = nullptr;
 		AudioContext audioContext;
 		std::string windowName;

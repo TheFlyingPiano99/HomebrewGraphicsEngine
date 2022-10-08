@@ -1,11 +1,8 @@
 #include "PostProcessStage.h"
 
 namespace Hogra {
-	PostProcessStage::PostProcessStage()
-	{
-	}
 
-	PostProcessStage::PostProcessStage(std::string& fragmentShaderPath, int contextWidth, int contextHeight) {
+	void PostProcessStage::Init(std::string& fragmentShaderPath, int contextWidth, int contextHeight) {
 		fbo.Init();
 		fbo.Bind();
 		program.Init(

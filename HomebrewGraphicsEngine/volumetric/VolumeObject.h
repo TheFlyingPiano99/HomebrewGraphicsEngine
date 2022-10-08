@@ -2,17 +2,17 @@
 #include "glm/glm.hpp"
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtc/quaternion.hpp"
-#include "Texture2D.h"
-#include "Light.h"
-#include "Texture3D.h"
-#include "FBO.h"
-#include "Camera.h"
-#include <algorithm>
-#include "VAO.h"
-#include "EBO.h"
-#include "Geometry.h"
 #include "TransferFunction.h"
-#include "AssetFolderPathManager.h"
+#include "../Texture2D.h"
+#include "../Light.h"
+#include "../Texture3D.h"
+#include "../FBO.h"
+#include "../Camera.h"
+#include "../VAO.h"
+#include "../EBO.h"
+#include "../Geometry.h"
+#include "../AssetFolderPathManager.h"
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 
@@ -20,7 +20,7 @@
 #define VOLUME_TEXTURE_HEIGHT 1024
 #define TRANSFER_MODE_COUNT 4
 
-namespace Hogra {
+namespace Hogra::Volumetric {
 	class VolumeObject
 	{
 	public:

@@ -13,7 +13,7 @@ namespace Hogra {
 
 		void Init(const glm::vec4& _position, const glm::vec3& _powerDensity);
 
-		~Light() = default;
+		~Light() override = default;
 
 		void ExportData(UniformBufferObject& ubo, unsigned int& idx);
 

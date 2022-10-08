@@ -27,7 +27,7 @@ namespace Hogra {
 
 	SceneFactory* SceneFactory::getInstance() {
 		if (nullptr == instance) {
-			instance = new SceneFactory();
+			instance = Allocator<SceneFactory>::New();
 		}
 		return instance;
 	}
@@ -37,7 +37,7 @@ namespace Hogra {
 	}
 
 	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
-		Scene* scene = new Scene();
+		Scene* scene = Allocator<Scene>::New();
 		scene->Init(contextWidth, contextHeight);
 		auto* light = Allocator<Light>::New();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -136,28 +136,19 @@ namespace Hogra {
 
 		InitAudio(scene, control);
 
-		auto* stage0 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
+		auto* stage0 = Allocator<PostProcessStage>::New();
+		stage0->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
 			contextWidth, contextHeight);
 		scene->AddPostProcessStage(stage0);
 
-		auto* bloom = new Bloom();
+		auto* bloom = Allocator<Bloom>::New();
 		bloom->Init(contextWidth, contextHeight);
 		scene->AddPostProcessStage(bloom);
 
-		auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+		auto* stage1 = Allocator<PostProcessStage>::New();
+		stage1->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		scene->AddPostProcessStage(stage1);
-		/*
-		auto* stage2 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("tapeEffect.frag"),
-			contextWidth, contextHeight);
-		stage2->AddUniformVariable(&timeSpent);
-		scene->AddPostProcessStage(stage2);
-		*/
-
-		//auto* stage1 = new PostProcessStage(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("edgeDetect.frag"),
-		//	contextWidth, contextHeight);
-		//  scene->AddPostProcessStage(stage1);
-
 		return scene;
 	}
 
@@ -171,7 +162,7 @@ namespace Hogra {
 		scene->Init(contextWidth, contextHeight);
 
 		// Volume:
-		const char* dataSetName = "Head";
+		const char* dataSetName = "Shoulder";
 		auto* voxelTexture = Allocator<Texture3D>::New();
 		voxelTexture->Init(
 //			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
@@ -186,7 +177,7 @@ namespace Hogra {
 			glm::vec3(10000.0f, 10000.0f, 10000.0f)
 		);
 		volumeLight->SetCastShadow(false);
-		auto* volumeObject = Allocator<VolumeObject>::New();
+		auto* volumeObject = Allocator<Volumetric::VolumeObject>::New();
 		volumeObject->Init(
 			voxelTexture,
 			glm::vec3(0, 0, 0),
@@ -209,7 +200,8 @@ namespace Hogra {
 		bloom->Init(contextWidth, contextHeight);
 		scene->AddPostProcessStage(bloom);
 
-		auto* hdr = new PostProcessStage(
+		auto* hdr = Allocator<PostProcessStage>::New();
+		hdr->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		scene->AddPostProcessStage(hdr);
@@ -583,9 +575,9 @@ namespace Hogra {
 		InitLaserBeam(scene, control);
 	}
 
-	void SceneFactory::InitObjectObserverControl(Scene* scene, VolumeObject* volumeObject)
+	void SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
 	{
-		auto control = new ObservObjectControl();
+		auto control = Allocator<ObservObjectControl>::New();
 		control->SetCamera(scene->GetCamera());
 		if (nullptr != volumeObject) {
 			control->SetVolumeObject(*volumeObject);
@@ -685,7 +677,7 @@ namespace Hogra {
 		
 		// TODO
 
-		Scene* scene = new Scene();
+		auto* scene = Allocator<Scene>::New();
 		return scene;
 	}
 }

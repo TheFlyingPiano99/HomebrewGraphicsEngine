@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "SceneAudioSource.h"
+#include "AudioContext.h"
 
 namespace Hogra {
 	class AudioManager
@@ -19,6 +20,7 @@ namespace Hogra {
 
 	private:
 		std::vector<SceneAudioSource*> sceneAudioSources;
+		AudioContext context;
 	};
 }
 

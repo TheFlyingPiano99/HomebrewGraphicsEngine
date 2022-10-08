@@ -39,7 +39,7 @@ namespace Hogra {
 		void OnMouseScroll(float delta);
 
 		/*
-		* Register new controlAction
+		* Register a controlAction
 		*/
 		void RegisterAction(ButtonKeyAction* toRegister);
 

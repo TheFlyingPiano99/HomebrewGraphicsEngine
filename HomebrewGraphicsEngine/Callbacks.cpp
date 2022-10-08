@@ -33,7 +33,7 @@ namespace Hogra {
 		ControlActionManager::getInstance()->RegisterDefaultForVoxelObserving();
 
 		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
-		GUI::getInstance()->initGUI(window);
+		GUI::getInstance()->InitGUI(window);
 	}
 
 

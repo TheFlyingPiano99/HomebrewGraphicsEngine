@@ -13,7 +13,7 @@ namespace Hogra {
 	{
 	public:
 
-		void Init(const AudioBuffer* _buffer);
+		void Init(AudioBuffer* _buffer);
 
 		~AudioSource();
 
@@ -35,7 +35,6 @@ namespace Hogra {
 
 	private:
 		ALuint ID;
-		const AudioBuffer* buffer = nullptr;
-
+		AudioBuffer* buffer = nullptr;
 	};
 }

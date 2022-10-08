@@ -9,7 +9,7 @@ namespace Hogra {
 
 	GUI* GUI::instance = nullptr;
 
-	void GUI::initGUI(GLFWwindow* window) {
+	void GUI::InitGUI(GLFWwindow* window) {
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 		io = ImGui::GetIO();
@@ -18,7 +18,7 @@ namespace Hogra {
 		ImGui_ImplOpenGL3_Init("#version 420");
 	}
 
-	void GUI::destroyGUI() {
+	void GUI::DestroyGUI() {
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
@@ -36,7 +36,7 @@ namespace Hogra {
 	}
 
 
-	void GUI::UpdateGUI(VolumeObject& volumeObject)
+	void GUI::UpdateGUI(Volumetric::VolumeObject& volumeObject)
 	{
 		if (!visible) {
 			return;
@@ -45,7 +45,7 @@ namespace Hogra {
 		static bool configFeature = false;
 		static bool configSTF = false;
 		static bool addFeatureToGroup = false;
-		static Feature* featureToAdd = nullptr;
+		static Volumetric::Feature* featureToAdd = nullptr;
 
 		char value_buf[64] = {};
 		ImGui::Begin("Settings");
@@ -72,7 +72,7 @@ namespace Hogra {
 
 		current_item = (volumeObject.GetSelectedFeatureGroup() != nullptr) ?
 			volumeObject.GetSelectedFeatureGroup()->name.c_str() : "Select group";
-		std::vector<FeatureGroup>& groups = volumeObject.GetFeatureGroups();
+		std::vector<Volumetric::FeatureGroup>& groups = volumeObject.GetFeatureGroups();
 		if (ImGui::BeginCombo("Feature group", current_item)) // The second parameter is the label previewed before opening the combo.
 		{
 			for (int n = 0; n < groups.size(); n++)
@@ -92,7 +92,7 @@ namespace Hogra {
 		if (volumeObject.GetSelectedFeatureGroup() != nullptr) {
 			current_item = (volumeObject.GetSelectedFeature() != nullptr) ?
 				volumeObject.GetSelectedFeature()->name.c_str() : "Select feature";
-			std::vector<Feature*>& features = volumeObject.GetSelectedFeatureGroup()->features;
+			std::vector<Volumetric::Feature*>& features = volumeObject.GetSelectedFeatureGroup()->features;
 
 			if (ImGui::BeginCombo("Feature", current_item)) // The second parameter is the label previewed before opening the combo.
 			{
@@ -194,12 +194,12 @@ namespace Hogra {
 		}
 
 		if (addFeatureToGroup) {
-			FeatureGroup* group = volumeObject.GetSelectedFeatureGroup();
+			Volumetric::FeatureGroup* group = volumeObject.GetSelectedFeatureGroup();
 			if (group != nullptr && group->name.compare("All features") != 0) {
 				ImGui::Begin(std::string("Add feature to ").append(group->name).c_str());
 				current_item = (featureToAdd != nullptr) ?
 					featureToAdd->name.c_str() : "Select feature";
-				std::vector<Feature>& features = volumeObject.GetFeatures();
+				std::vector<Volumetric::Feature>& features = volumeObject.GetFeatures();
 				if (ImGui::BeginCombo("Feature to add", current_item)) // The second parameter is the label previewed before opening the combo.
 				{
 					for (int n = 0; n < features.size(); n++)

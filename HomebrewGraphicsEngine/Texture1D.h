@@ -18,6 +18,7 @@ namespace Hogra {
 		void Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType);
 
 		~Texture1D() override {
+			this->Delete();
 		}
 
 		const unsigned int getWidth() {

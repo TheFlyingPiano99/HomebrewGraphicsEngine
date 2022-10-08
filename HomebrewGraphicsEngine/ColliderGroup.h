@@ -15,13 +15,18 @@ namespace Hogra {
 	class ColliderGroup
 	{
 	public:
-		ColliderGroup(ColliderGroup* _parent, int _level = 0) : parent(_parent), level(_level) {
+		ColliderGroup() {
+		}
+
+		void Init(ColliderGroup* _parent, int _level = 0) {
+			parent = _parent;
+			level = _level;
 			aabb.Init();
 		}
 		
 		~ColliderGroup() {
 			for (auto& group : subGroups) {
-				delete group;
+				Allocator<ColliderGroup>::Delete(group);
 			}
 			// Deleting colliders is not the responsibility of the group
 		}

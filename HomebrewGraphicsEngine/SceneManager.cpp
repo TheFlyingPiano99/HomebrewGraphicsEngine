@@ -9,7 +9,7 @@ namespace Hogra {
 
 	SceneManager* SceneManager::getInstance() {
 		if (nullptr == instance) {
-			instance = new SceneManager();
+			instance = Allocator<SceneManager>::New();
 		}
 		return instance;
 	}

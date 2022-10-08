@@ -2,14 +2,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "AssetFolderPathManager.h"
-#include "GeometryFactory.h"
+#include "../AssetFolderPathManager.h"
+#include "../GeometryFactory.h"
 #include <iostream>
 
 #define VOXEL_ATTENUATION_TEXTURE_WIDTH 2000
 #define VOXEL_ATTENUATION_TEXTURE_HEIGHT 2000
 
-namespace Hogra {
+namespace Hogra::Volumetric {
 
 	VolumeObject::VolumeObject() 
 		: STFradius(0.25f),
@@ -122,7 +122,8 @@ namespace Hogra {
 			// Clear textures: (working)
 			pingpongFBO.Bind();
 			glEnable(GL_BLEND);
-			glDisable(GL_DEPTH_TEST);
+			glEnable(GL_DEPTH_TEST);
+			glDepthMask(GL_FALSE);
 			glDisable(GL_CULL_FACE);
 			if (0 == firstSlice) {
 				glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -134,6 +135,7 @@ namespace Hogra {
 				glClear(GL_COLOR_BUFFER_BIT);
 				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[1], 0);
 				glClear(GL_COLOR_BUFFER_BIT);
+				pingpongFBO.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
 
 				// Export matrices:
 				glm::mat4 view = glm::lookAt(
@@ -161,7 +163,6 @@ namespace Hogra {
 			int slicePerCurrentFrame = 0;
 			int maxSlicePerFrame = 50;
 			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
-			int i = 0;
 			for (int slice = firstSlice; slice < sliceCount; slice++) {
 				in = slice % 2;
 				out = (slice + 1) % 2;
@@ -175,7 +176,6 @@ namespace Hogra {
 					glm::vec3(m_slicePos) / m_slicePos.w,
 					m_sliceNorm
 				);
-				i++;
 				slicePerCurrentFrame++;
 				if (slicePerCurrentFrame >= maxSlicePerFrame && sliceCount > maxSlicePerFrame) {
 					firstSlice = slice + 1;
@@ -187,7 +187,9 @@ namespace Hogra {
 			if (isFinishedVolume) {
 				firstSlice = 0;
 			}
+			glDepthMask(GL_TRUE);
 		}
+
 		// Combine volume with the earlier rendered scened
 		combineProgram.Activate();
 		fullScreenQuad->BindVAO();

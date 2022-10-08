@@ -6,7 +6,9 @@ namespace Hogra {
 	class CollisionManager
 	{
 	public:
-		CollisionManager() = default;
+		CollisionManager() {
+			root.Init(nullptr);
+		}
 
 		~CollisionManager();
 
@@ -27,7 +29,7 @@ namespace Hogra {
 		Collider* IntersectRay(const Ray& ray, glm::vec3& wIntersectionPoint, glm::vec3& wIntersectionNormal);
 
 	private:
-		ColliderGroup root = ColliderGroup(nullptr);
+		ColliderGroup root = ColliderGroup();
 		std::vector<Collider*> colliders;
 		bool useSpatialTree = true;
 		InstanceGroup instanceGroup;

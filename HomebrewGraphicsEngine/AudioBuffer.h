@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <set>
 
 namespace Hogra {
 
@@ -23,9 +24,20 @@ namespace Hogra {
 		*/
 		ALuint Get() const;
 
+		void AddSource(ALuint source) {
+			sourcesUsingThisBuffer.insert(source);
+		}
+
+		void RemoveSource(ALuint source) {
+			auto iter = std::find(sourcesUsingThisBuffer.begin(), sourcesUsingThisBuffer.end(), source);
+			if (sourcesUsingThisBuffer.end() != iter) {
+				sourcesUsingThisBuffer.erase(iter);
+			}
+		}
+
 	private:
 		ALuint ID;
-
+		std::set<ALuint> sourcesUsingThisBuffer;
 		/*
 		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
 		* Published on the website indiegamedev.net

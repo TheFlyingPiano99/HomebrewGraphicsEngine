@@ -1,11 +1,13 @@
 ﻿#pragma once
 #include "Scene.h"
 #include "FirstPersonControl.h"
+#include "MemoryManager.h"
 #include<glm/glm.hpp>
 
 namespace Hogra {
 	class SceneFactory
 	{
+		friend class Allocator<SceneFactory>;
 	public:
 
 		static SceneFactory* getInstance();
@@ -36,7 +38,7 @@ namespace Hogra {
 
 		void InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control);
 
-		void InitObjectObserverControl(Scene* scene, VolumeObject* volumeObject);
+		void InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject);
 
 		void InitLaserBeam(Scene* scene, FirstPersonControl* control);
 

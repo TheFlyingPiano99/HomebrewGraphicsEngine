@@ -5,10 +5,10 @@
 
 namespace Hogra {
 
-    void AudioSource::Init(const AudioBuffer* _buffer) {
+    void AudioSource::Init(AudioBuffer* _buffer) {
         this->buffer = _buffer;
-
         alGenSources(1, &ID);
+        buffer->AddSource(ID);
         alSourcei(ID, AL_BUFFER, buffer->Get());
     }
 

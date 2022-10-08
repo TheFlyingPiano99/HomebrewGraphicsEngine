@@ -18,7 +18,7 @@ namespace Hogra {
 
 		void Init(const std::string& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color);
 		
-		~Caption() = default;
+		~Caption() override = default;
 
 		void Draw();
 

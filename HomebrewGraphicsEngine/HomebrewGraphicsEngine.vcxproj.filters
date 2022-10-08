@@ -64,6 +64,9 @@
     <Filter Include="Header Files\View\Text">
       <UniqueIdentifier>{c0ecc28f-5d13-4569-b3fa-cde09786736d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Model\Volumetric">
+      <UniqueIdentifier>{b5b1237b-e428-4baf-9215-3e0342bc351f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -321,16 +324,16 @@
     <ClCompile Include="UniformVariable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VolumeObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ObservObjectControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TransferFunction.cpp">
+    <ClCompile Include="SceneObjectFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SceneObjectFactory.cpp">
+    <ClCompile Include="volumetric\TransferFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="volumetric\VolumeObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -610,6 +613,12 @@
     </ClInclude>
     <ClInclude Include="PositionConnector.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="volumetric\TransferFunction.h">
+      <Filter>Header Files\Model\Volumetric</Filter>
+    </ClInclude>
+    <ClInclude Include="volumetric\VolumeObject.h">
+      <Filter>Header Files\Model\Volumetric</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

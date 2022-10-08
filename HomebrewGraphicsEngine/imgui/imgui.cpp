@@ -206,7 +206,7 @@ CODE
      // Application main loop
      while (true)
      {
-         // Feed inputs to dear imgui, start new frame
+         // Feed inputs to dear imgui, start frame
          ImGui_ImplDX11_NewFrame();
          ImGui_ImplWin32_NewFrame();
          ImGui::NewFrame();

@@ -1,7 +1,7 @@
 #pragma once
 #include "UserControl.h"
 #include "Camera.h"
-#include "VolumeObject.h"
+#include "volumetric/VolumeObject.h"
 
 namespace Hogra {
 
@@ -27,13 +27,13 @@ namespace Hogra {
 
         void release() override;
 
-        void SetVolumeObject(VolumeObject& _volumeObject) {
+        void SetVolumeObject(Volumetric::VolumeObject& _volumeObject) {
             volumeObject = &_volumeObject;
         }
 
     private:
         Camera* camera = nullptr;
-        VolumeObject* volumeObject = nullptr;
+        Volumetric::VolumeObject* volumeObject = nullptr;
         float rotationSpeed = 0.1f;
         float zoomSpeed = 0.1f;
     };

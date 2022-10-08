@@ -5,8 +5,7 @@ namespace Hogra{
 	class InstanceGroup
 	{
 	public:
-		InstanceGroup() {
-		};
+		InstanceGroup() = default;
 
 		~InstanceGroup() {
 		}

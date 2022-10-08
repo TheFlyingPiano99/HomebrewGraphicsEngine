@@ -29,7 +29,8 @@ namespace Hogra {
 		if (shadowCaster != nullptr) {
 			throw std::exception("Shadowcaster already initialised! Only one allowed.");
 		}
-		shadowCaster = new ShadowCaster(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
+		shadowCaster = Allocator<ShadowCaster>::New();
+		shadowCaster->Init(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
 	}
 	
 
@@ -98,12 +99,12 @@ namespace Hogra {
 		postProcessStages.clear();
 
 		for (auto& volumeObject : volumeObjects) {
-			Allocator<VolumeObject>::Delete(volumeObject);
+			Allocator<Volumetric::VolumeObject>::Delete(volumeObject);
 		}
 		volumeObjects.clear();
 
 		if (nullptr != userControl) {
-			delete userControl;
+			Allocator<UserControl>::Delete(userControl);
 		}
 	}
 
@@ -204,7 +205,8 @@ namespace Hogra {
 		// Volume pass:
 		FBO defaultFBO = FBO::GetDefault();
 		for (auto& volume : volumeObjects) {
-			volume->Draw(isPostProc ? postProcessStages[0]->GetFBO() : defaultFBO, camera, lightManager.GetDepthTexture());
+			const Texture2D& depth = lightManager.GetDepthTexture();
+			volume->Draw(isPostProc ? postProcessStages[0]->GetFBO() : defaultFBO, camera, depth);
 		}
 
 		// Post-process pass:
@@ -244,13 +246,13 @@ namespace Hogra {
 					iter->second->addObject(object);
 				}
 				else {
-					auto* group = new InstanceGroup();
+					auto* group = Allocator<InstanceGroup>::New();
 					group->addObject(object);
 					instanceGroups.emplace(instanceGroupName, group);
 				}
 			}
 			else {
-				auto* group = new InstanceGroup();
+				auto* group = Allocator<InstanceGroup>::New();
 				group->addObject(object);
 				instanceGroups.emplace(std::to_string(defaultName++), group);
 			}
@@ -335,11 +337,11 @@ namespace Hogra {
 		//TODO
 	}
 
-	void Scene::AddVolumeObject(VolumeObject* object) {
+	void Scene::AddVolumeObject(Volumetric::VolumeObject* object) {
 		volumeObjects.push_back(object);
 	}
 
-	std::vector<VolumeObject*>& Scene::GetVolumeObjects() {
+	std::vector<Volumetric::VolumeObject*>& Scene::GetVolumeObjects() {
 		return volumeObjects;
 	}
 

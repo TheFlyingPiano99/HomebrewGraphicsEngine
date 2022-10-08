@@ -1,6 +1,7 @@
 #include "Collider.h"
 #include "SceneEventManager.h"
 #include "SceneEventImplementation.h"
+#include "MemoryManager.h"
 #include <iostream>
 namespace Hogra {
 
@@ -28,7 +29,9 @@ namespace Hogra {
             isCollision = TestCollision(collider);
         }
         if (isCollision) {
-            SceneEventManager::getInstance()->pushEvent(new CollisionEvent((const Collider*)this, collider));
+            auto event = Allocator<CollisionEvent>::New();
+            event->Init((const Collider*)this, collider);
+            SceneEventManager::getInstance()->pushEvent(event);
             haveCollided = true;
             collider->SetHaveCollided(true);
         }

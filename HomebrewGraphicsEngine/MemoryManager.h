@@ -19,7 +19,7 @@ namespace Hogra {
 	class MasterAllocator {
 	public:
 		static void DeleteAll() {
-			for (auto& func : deleteAllFunctions) {
+			for (const auto& func : deleteAllFunctions) {
 				func();
 			}
 		}

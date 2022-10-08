@@ -41,6 +41,9 @@ namespace Hogra {
 
     AudioBuffer::~AudioBuffer()
     {
+        for (auto& src : sourcesUsingThisBuffer) {  // Unbind buffer from sources referencing it
+            alSourcei(src, AL_BUFFER, 0);
+        }
         alDeleteBuffers(1, &ID);
     }
     ALuint AudioBuffer::Get() const

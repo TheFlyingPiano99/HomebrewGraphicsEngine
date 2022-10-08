@@ -2,7 +2,7 @@
 
 void Hogra::AudioManager::Init()
 {
-
+	context.Init();
 }
 
 Hogra::AudioManager::~AudioManager()
