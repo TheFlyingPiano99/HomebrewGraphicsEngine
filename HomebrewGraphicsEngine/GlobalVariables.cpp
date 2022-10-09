@@ -12,5 +12,5 @@ namespace Hogra {
 	bool GlobalVariables::hideConsoleWindow = false;
 	bool GlobalVariables::hideCursor = false;
 
-	std::string GlobalVariables::windowIcon = "demoAppIcon.jpg";
+	std::string GlobalVariables::windowIcon = "HoGraEngineLogo_small.png";
 }

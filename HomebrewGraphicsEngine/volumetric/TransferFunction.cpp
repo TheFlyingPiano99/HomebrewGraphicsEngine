@@ -39,7 +39,7 @@ namespace Hogra::Volumetric {
 		quadVAO.Unbind();
 		features.clear();
 		defaultTransferFunction(glm::ivec2(256, 64));
-		setCamSpacePosition(glm::vec2(0.0f, -0.75f));
+		setCamSpacePosition(glm::vec2(0.0f, -0.65f));
 	}
 
 	void TransferFunction::crop(glm::vec2 min, glm::vec2 max)
@@ -316,16 +316,10 @@ namespace Hogra::Volumetric {
 		for (int y = 0; y < dimensions.y; y++) {
 			for (int x = 0; x < dimensions.x; x++) {
 				if (x > 3 && x < 250) {
-					bytes[y * dimensions.x + x].x = x / (float)dimensions.x;
-					bytes[y * dimensions.x + x].y = x / (float)dimensions.x * x / (float)dimensions.x;
-					bytes[y * dimensions.x + x].z = x / (float)dimensions.x * x / (float)dimensions.x;
-					bytes[y * dimensions.x + x].w = std::pow((x - 3) / (float)dimensions.x, 0.01);
-				}
-				else if (x >= 250) {
-					bytes[y * dimensions.x + x].x = x / (float)dimensions.x;
-					bytes[y * dimensions.x + x].y = x / (float)dimensions.x * x / (float)dimensions.x;
-					bytes[y * dimensions.x + x].z = x / (float)dimensions.x * x / (float)dimensions.x;
-					bytes[y * dimensions.x + x].w = std::pow(1.0f - x / (float)dimensions.x, 10.0f);
+					bytes[y * dimensions.x + x].x = (float)x / (float)dimensions.x;
+					bytes[y * dimensions.x + x].y = (float)x / (float)dimensions.x * x / (float)dimensions.x;
+					bytes[y * dimensions.x + x].z = (float)x / (float)dimensions.x * x / (float)dimensions.x;
+					bytes[y * dimensions.x + x].w = std::powf(((float)x - 3.0f) / (float)dimensions.x, 0.5);
 				}
 				else {
 					bytes[y * dimensions.x + x].x = 0.0f;
@@ -341,7 +335,7 @@ namespace Hogra::Volumetric {
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
-	void TransferFunction::spatialTransferFunction(glm::ivec2 dimensions, Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission) {
+	void TransferFunction::SpatialTransferFunction(glm::ivec2 dimensions, Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions) {
 		features.clear();
 		std::vector<glm::vec4> bytes = std::vector<glm::vec4>(dimensions.x * dimensions.y);
 		std::vector<glm::vec3> barycenters = std::vector<glm::vec3>(dimensions.x * dimensions.y);
@@ -405,7 +399,7 @@ namespace Hogra::Volumetric {
 				feature.opacity = globalOpacity;
 				feature.emission = globalEmission;
 				for (int j = 0; j < dimensions.x * dimensions.y; j++) {
-					if (contributingPositions[j].size() > 0 && bytes[j].r == 0.0f && bytes[j].g == 0.0f && bytes[j].b == 0.0f) {
+					if (contributingPositions[j].size() >= minimalContributions && bytes[j].r == 0.0f && bytes[j].g == 0.0f && bytes[j].b == 0.0f) {
 						float distanceNorm = glm::length(barycenters[j] - b0) + std::abs(v0 - spatialVariances[j]);
 						if (distanceNorm < radius) {
 							bytes[j].r = Crgb.r * globalEmission;
@@ -455,7 +449,7 @@ namespace Hogra::Volumetric {
 				bytes[p.y * dimensions.x + p.x].r = color.r * feature.emission;
 				bytes[p.y * dimensions.x + p.x].g = color.g * feature.emission;
 				bytes[p.y * dimensions.x + p.x].b = color.b * feature.emission;
-				bytes[p.y * dimensions.x + p.x].w = std::pow((p.x - 3) / (float)dimensions.x, 0.01);
+				bytes[p.y * dimensions.x + p.x].w = std::powf((float)p.x / (float)dimensions.x, 0.5) * feature.opacity;
 			}
 		}
 
@@ -577,11 +571,11 @@ namespace Hogra::Volumetric {
 		if (timer > 0.0f) {
 			if (visible) {
 				cameraSpacePosition = (1.0f - timer / maxTime) * preferedCameraSpacePosition
-					+ timer / maxTime * glm::vec2(0, -1.2);
+					+ timer / maxTime * glm::vec2(0, -1.35);
 			}
 			else {
 				cameraSpacePosition = (timer / maxTime) * preferedCameraSpacePosition
-					+ (1.0f - timer / maxTime) * glm::vec2(0, -1.2);
+					+ (1.0f - timer / maxTime) * glm::vec2(0, -1.35);
 			}
 
 			timer -= dt;
@@ -589,7 +583,7 @@ namespace Hogra::Volumetric {
 				timer = 0.0f;
 			}
 			float aspectRatio = getDimensions().x / (float)getDimensions().y;
-			modelMatrix = glm::translate(glm::vec3(cameraSpacePosition.x, cameraSpacePosition.y, 0.0f)) * glm::scale(glm::vec3(0.5f, 0.2f, 1.0f));
+			modelMatrix = glm::translate(glm::vec3(cameraSpacePosition.x, cameraSpacePosition.y, 0.0f)) * glm::scale(glm::vec3(0.5f, 0.3f, 1.0f));
 			invModelMatrix = glm::inverse(modelMatrix);
 		}
 

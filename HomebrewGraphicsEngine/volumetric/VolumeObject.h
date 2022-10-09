@@ -19,6 +19,7 @@
 #define VOLUME_TEXTURE_WIDTH 1024
 #define VOLUME_TEXTURE_HEIGHT 1024
 #define TRANSFER_MODE_COUNT 4
+#define ALL_FEATURES_STR "All features"
 
 namespace Hogra::Volumetric {
 	class VolumeObject
@@ -66,33 +67,34 @@ namespace Hogra::Volumetric {
 				featureGroups.clear();
 				transferFunction.loadFeatures(stream, featureGroups);
 				stream.close();
+
+				nextGroupIdx = featureGroups.size() + 1;
+
 				FeatureGroup all;
-				all.name = "All features";
+				all.name = ALL_FEATURES_STR;
 				for (Feature& feature : transferFunction.GetFeatures()) {
 					all.features.push_back(&feature);
 				}
 				all.serialize = false;
-				featureGroups.push_back(all);
+				featureGroups.emplace(featureGroups.begin(), all);
 				selectedFeature = nullptr;
-				selectedFeatureGroup = nullptr;
+				ShowAll();
 			}
 		}
+
+		void Serialize();
 
 		void CycleSelectedFeature() {
 			const auto* prevSelected = selectedFeature;
 			selectedFeature = transferFunction.nextFeature(selectedFeature);
 			if (prevSelected != selectedFeature) {
 				std::cout << "Next: " << selectedFeature->name << std::endl;
-				transferFunction.clear();
-				transferFunction.setFeatureVisibility(*selectedFeature, true);
-				transferFunction.blur(3);
+				SetSelectedFeature(selectedFeature->name.c_str());
 			}
-			isChanged = true;
 		}
 
 		void ShowAll() {
-			transferFunction.showAll();
-			isChanged = true;
+			SetSelectedFeatureGroup(ALL_FEATURES_STR);
 		}
 
 		FeatureGroup* GetSelectedFeatureGroup() {
@@ -130,6 +132,8 @@ namespace Hogra::Volumetric {
 					break;
 				}
 			}
+			ShowSelectedFeatureGroup();
+
 			isChanged = true;
 		}
 
@@ -146,7 +150,6 @@ namespace Hogra::Volumetric {
 					isChanged = true;
 				};
 			}
-
 		}
 
 		void ResetToDefault()
@@ -159,11 +162,11 @@ namespace Hogra::Volumetric {
 
 		void CreateFeatureGroup()
 		{
-			static int nextGroupIdx = 1;
 			FeatureGroup group;
 			group.features.clear();
 			group.name = std::string("Group").append(std::to_string(nextGroupIdx++));
 			featureGroups.push_back(group);
+			SetSelectedFeatureGroup(group.name.c_str());
 		}
 
 		void RemoveSelectedFeatureFromFeatureGroup()
@@ -176,8 +179,8 @@ namespace Hogra::Volumetric {
 			}
 		}
 
-		float& GetOpacityScale() {
-			return opacityScale;
+		float& GetDensity() {
+			return density;
 		}
 
 		void RedrawSelected()
@@ -210,15 +213,32 @@ namespace Hogra::Volumetric {
 		float& GetSTFOpacity() {
 			return STFOpacity;
 		}
+
 		float& GetSTFEmission() {
 			return STFEmission;
 		}
 
-		void ResetToSTF()
+		int& GetSTFMinContributions() {
+			return STFMinContributions;
+		}
+
+		void GenerateSTF()
 		{
-			transferFunction.spatialTransferFunction(glm::ivec2(256, 128), *voxels, STFradius, STFOpacity, STFEmission);
+			transferFunction.SpatialTransferFunction(glm::ivec2(256, 128), *voxels, STFradius, STFOpacity, STFEmission, STFMinContributions);
 			std::cout << "STF feature count: " << transferFunction.GetFeatures().size() << std::endl;
-			isChanged = true;
+			featureGroups.clear();
+
+			nextGroupIdx = featureGroups.size() + 1;
+
+			FeatureGroup all;
+			all.name = ALL_FEATURES_STR;
+			for (Feature& feature : transferFunction.GetFeatures()) {
+				all.features.push_back(&feature);
+			}
+			all.serialize = false;
+			featureGroups.emplace(featureGroups.begin(), all);
+			selectedFeature = nullptr;
+			ShowAll();
 		}
 
 		std::vector<Feature>& GetFeatures() {
@@ -312,8 +332,8 @@ namespace Hogra::Volumetric {
 
 	private:
 
-		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Single class", "Remove class" };
-		const char* currentTransferRegionSelectMode = "Single class";
+		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Select class", "Remove class" };
+		const char* currentTransferRegionSelectMode = "Select class";
 
 		struct BoxEdge {
 			glm::vec3 position;
@@ -361,6 +381,7 @@ namespace Hogra::Volumetric {
 		float STFradius;
 		float STFOpacity;
 		float STFEmission;
+		int STFMinContributions = 500;
 
 		Light* light;
 		Texture3D* voxels = nullptr;
@@ -378,13 +399,14 @@ namespace Hogra::Volumetric {
 		TransferFunction transferFunction;
 		Feature* selectedFeature = nullptr;
 		FeatureGroup* selectedFeatureGroup = nullptr;
-		float opacityScale = 10.0f;
+		float density = 10.0f;
 		float transferFloodFillTreshold;
 		float lightPower = 100.0f;
 		float levelOfDetail = 1.0f;		// (0..1]
 		int firstSlice = 0;
 		int out = 0;				// Idx of Out texture from the pingpong buffer
 		bool isChanged = true;
+		int nextGroupIdx = 1;
 
 	};
 }

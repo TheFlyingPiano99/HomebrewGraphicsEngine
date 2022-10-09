@@ -168,6 +168,14 @@ namespace Hogra {
 		void Execute(Scene& scene) override;
 	};
 
+	class StepFeature : public ButtonKeyAction {
+	public:
+		StepFeature() : ButtonKeyAction(GLFW_KEY_SPACE) {
+		}
+
+		void Execute(Scene& scene) override;
+	};
+
 	class FastForward : public ButtonKeyAction {
 	public:
 		FastForward() : ButtonKeyAction(GLFW_KEY_F, ButtonKeyAction::TriggerType::triggerContinuosly) {

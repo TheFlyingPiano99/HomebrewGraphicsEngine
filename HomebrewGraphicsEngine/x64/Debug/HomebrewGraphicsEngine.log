@@ -1,3 +1,67 @@
-﻿  VolumeObject.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(338,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(349,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+﻿  Callbacks.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Collider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  ControlAction.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  ControlActionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  FirstPersonControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  GUI.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(172,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(178,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(184,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(189,50): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(195,50): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(201,50): warning C4305: 'argument': truncation from 'double' to 'float'
+  HoGraEngineApplication.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Libraries\include\glad\glad.h(33): message : see previous definition of 'APIENTRY'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(170,57): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Light.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  MemoryManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  ObservObjectControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Scene.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  SceneEvent.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  SceneEventImplementation.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  SceneFactory.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  SceneManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  SceneObjectFactory.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Texture3D.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(45,72): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(51,6): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  TransferFunction.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(364,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(365,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  VolumeObject.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(340,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(351,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Generating Code...
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(97): warning C4715: 'Hogra::Volumetric::Feature::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture2D.h(42): warning C4172: returning address of local variable or temporary: v
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(97): warning C4715: 'Hogra::Volumetric::Feature::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture2D.h(42): warning C4172: returning address of local variable or temporary: v
+  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

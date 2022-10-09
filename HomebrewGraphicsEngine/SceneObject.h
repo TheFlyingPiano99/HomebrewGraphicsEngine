@@ -31,6 +31,8 @@ namespace Hogra {
 
 		virtual ~SceneObject() = default;
 
+		void Serialize(std::ostream& stream);
+
 		void BeforePhysicsLoopUpdate();
 
 		void EarlyPhysicsUpdate(float dt);

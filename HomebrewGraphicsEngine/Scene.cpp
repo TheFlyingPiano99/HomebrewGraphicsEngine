@@ -334,7 +334,11 @@ namespace Hogra {
 
 	void Scene::Serialize()
 	{
-		//TODO
+		//TODO serialize the rest
+
+		for (auto& volume : volumeObjects) {
+			volume->Serialize();
+		}
 	}
 
 	void Scene::AddVolumeObject(Volumetric::VolumeObject* object) {

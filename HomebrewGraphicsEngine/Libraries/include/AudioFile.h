@@ -101,7 +101,7 @@ public:
     /** Saves an audio file to a given file path.
      * @Returns true if the file was successfully saved
      */
-    bool save (std::string filePath, AudioFileFormat format = AudioFileFormat::Wave);
+    bool Serialize (std::string filePath, AudioFileFormat format = AudioFileFormat::Wave);
         
     //=============================================================
     /** Loads an audio file from data in memory */
@@ -848,7 +848,7 @@ void AudioFile<T>::addSampleRateToAiffData (std::vector<uint8_t>& fileData, uint
 
 //=============================================================
 template <class T>
-bool AudioFile<T>::save (std::string filePath, AudioFileFormat format)
+bool AudioFile<T>::Serialize (std::string filePath, AudioFileFormat format)
 {
     if (format == AudioFileFormat::Wave)
     {

@@ -139,20 +139,14 @@ namespace Hogra {
 
 	void ControlActionManager::RegisterDefaultForVoxelObserving()
 	{
-		RegisterAction(Allocator<MoveAvatarForward>::New());
-		RegisterAction(Allocator<MoveAvatarBackward>::New());
-		RegisterAction(Allocator<MoveAvatarRight>::New());
-		RegisterAction(Allocator<MoveAvatarLeft>::New());
-		RegisterAction(Allocator<MoveAvatarUp>::New());
-		RegisterAction(Allocator<MoveAvatarDown>::New());
 		RegisterAction(Allocator<ToggleGUI>::New());
 		RegisterAction(Allocator<ToggleHUD>::New());
 		RegisterAction(Allocator<TogglePause>::New());
 		RegisterAction(Allocator<ToggleFullScreenMode>::New());
-		RegisterAction(Allocator<JumpAvatar>::New());
 		RegisterAction(Allocator<ToggleDebugInfo>::New());
 		RegisterAction(Allocator<RestartAction>::New());
 		RegisterAction(Allocator<QuitAction>::New());
+		RegisterAction(Allocator<StepFeature>::New());
 
 		pressLeftMouseButtonAction = Allocator<ClickOnScreen>::New();
 		pressRightMouseButtonAction = Allocator<GrabAction>::New();

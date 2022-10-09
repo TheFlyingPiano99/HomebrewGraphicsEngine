@@ -67,6 +67,13 @@ namespace Hogra {
 		}
 	}
 
+	void StepFeature::Execute(Scene& scene)
+	{
+		for (auto* volume : scene.GetVolumeObjects()) {
+			volume->CycleSelectedFeature();
+		}
+	}
+
 	void TogglePause::Execute(Scene& scene)
 	{
 		scene.TogglePause();

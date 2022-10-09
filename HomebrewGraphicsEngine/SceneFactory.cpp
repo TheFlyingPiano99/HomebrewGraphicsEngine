@@ -414,11 +414,11 @@ namespace Hogra {
 		font->Init("arial.ttf");
 		auto* caption1 = Allocator<Caption>::New();
 		caption1->Init("Volume rendering", font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.95), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.96), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
 		auto* caption2 = Allocator<Caption>::New();
-		caption2->Init(std::string("Data set: ").append(dataSetName), font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.91), 1.0f, glm::vec4(1, 1, 1, 1));
+		caption2->Init(std::string("Dataset: ").append(dataSetName), font,
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.93), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 		Allocator<Font>::Delete(font);
 	}

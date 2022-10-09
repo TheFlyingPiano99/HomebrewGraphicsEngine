@@ -40,6 +40,6 @@ namespace Hogra {
 	private:
 		bool ReadDimensions(const char* path, std::string& name, Dimensions& dimensions);
 		Dimensions dimensions;
-		int maxValue = 256;
+		int maxValue = 255;
 	};
 }

@@ -10,7 +10,6 @@ namespace Hogra {
 	
 	void Texture3D::Init(const std::string& directory, GLuint slot, GLenum format)
 	{
-		maxValue = std::pow(2, dimensions.bytesPerVoxel * 8) - 1;
 		std::string name;	// Discarded !!!
 		if (!ReadDimensions(std::string(directory).append("/dimensions.txt").c_str(), name, this->dimensions)) {
 			throw std::exception("Failed to read dimensions of voxel data!");
@@ -29,6 +28,7 @@ namespace Hogra {
 		}
 
 		bytes = std::vector<char>(dimensions.width * dimensions.height * dimensions.depth * dimensions.bytesPerVoxel);
+		maxValue = (int)std::powf(2.0f, (float)dimensions.bytesPerVoxel * 8.0f) - 1;
 
 		// Flips the image so it appears right side up
 		//stbi_set_flip_vertically_on_load(false);
@@ -112,7 +112,7 @@ namespace Hogra {
 
 	const glm::vec4 Texture3D::ResampleGradientAndDensity(glm::ivec3 position)
 	{
-		float intensity = operator()(position);
+		float intensity = this->operator()(position);
 		glm::vec3 stepSize = glm::vec3(1.0);
 		glm::vec3 sample0, sample1;
 		sample0.x = operator()(glm::ivec3(position.x - stepSize.x, position.y, position.z));
@@ -137,7 +137,7 @@ namespace Hogra {
 			|| position.y < 0
 			|| position.z >= dimensions.depth
 			|| position.z < 0) {
-			return 0.0f;	// Prevent access violation error.
+			return 0.0f;
 		}
 		int idx = position.z * dimensions.height * dimensions.width * dimensions.bytesPerVoxel + position.y * dimensions.width * dimensions.bytesPerVoxel + position.x * dimensions.bytesPerVoxel;
 		float result;

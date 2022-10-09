@@ -434,8 +434,21 @@ namespace Hogra::Volumetric {
 		glUniform3f(glGetUniformLocation(program.ID, "light.position"), light->GetPosition().x, light->GetPosition().y, light->GetPosition().z);
 		glUniform3f(glGetUniformLocation(program.ID, "light.powerDensity"), light->getPowerDensity().x, light->getPowerDensity().y, light->getPowerDensity().z);
 		glUniform1i(glGetUniformLocation(program.ID, "isBackToFront"), (isBackToFront)? 1 : 0);
-		glUniform1f(glGetUniformLocation(program.ID, "opacityScale"), opacityScale);
+		glUniform1f(glGetUniformLocation(program.ID, "opacityScale"), density);
 	}
+
+	void VolumeObject::Serialize() {
+		std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("/features_out.txt"));
+		if (stream.is_open()) {
+			std::cout << "Serializing volume object" << std::endl;
+			transferFunction.saveFeatures(stream);
+			for (FeatureGroup& group : featureGroups) {
+				group.Serialize(stream);
+			}
+			stream.close();
+		}
+	}
+
 }
 
 
