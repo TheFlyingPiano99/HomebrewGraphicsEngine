@@ -20,7 +20,6 @@ namespace Hogra {
 
 	private:
 		std::vector<SceneAudioSource*> sceneAudioSources;
-		AudioContext context;
 	};
 }
 
