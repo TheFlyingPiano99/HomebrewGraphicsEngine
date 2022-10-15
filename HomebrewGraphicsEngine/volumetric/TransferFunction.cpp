@@ -61,8 +61,8 @@ namespace Hogra::Volumetric {
 				}
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -111,8 +111,8 @@ namespace Hogra::Volumetric {
 				}
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -141,8 +141,8 @@ namespace Hogra::Volumetric {
 				}
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -170,8 +170,8 @@ namespace Hogra::Volumetric {
 				bytes[y * dim.x + x] = texture->operator()(glm::ivec2(x, y)) / max;
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -191,8 +191,8 @@ namespace Hogra::Volumetric {
 				bytes[y * dim.x + x] += texture->operator()(glm::ivec2(x, y - 1));
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -211,8 +211,8 @@ namespace Hogra::Volumetric {
 				}
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -231,8 +231,8 @@ namespace Hogra::Volumetric {
 				}
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -252,8 +252,8 @@ namespace Hogra::Volumetric {
 				bytes[y * dim.x + x].b = gray;
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -305,8 +305,8 @@ namespace Hogra::Volumetric {
 				bytes[y * dim.x + x].a = 0.0f;
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -329,9 +329,8 @@ namespace Hogra::Volumetric {
 				}
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -416,8 +415,8 @@ namespace Hogra::Volumetric {
 			}
 		}
 
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -429,8 +428,8 @@ namespace Hogra::Volumetric {
 				bytes[y * dimensions.x + x] = glm::vec4(y / (float)dimensions.y * globalOpacity);
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -453,8 +452,8 @@ namespace Hogra::Volumetric {
 			}
 		}
 
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
@@ -498,7 +497,7 @@ namespace Hogra::Volumetric {
 		features = transferFunction.features;
 		glm::ivec2 dim = transferFunction.getDimensions();
 		if (dim.x == 0 || dim.y == 0) {	// Clear if empty.
-			Allocator<Texture2D>::Delete(texture);
+			Allocator::Delete(texture);
 			return;
 		}
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
@@ -507,8 +506,8 @@ namespace Hogra::Volumetric {
 				bytes[y * dim.x + x] = transferFunction(glm::ivec2(x, y));
 			}
 		}
-		Allocator<Texture2D>::Delete(texture);
-		texture = Allocator<Texture2D>::New();
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 

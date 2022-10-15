@@ -6,7 +6,7 @@ namespace Hogra {
 
 	class Component
 	{
-		friend class Allocator<Component>;
+		friend class Allocator;
 	public:
 
 		virtual ~Component() = default;

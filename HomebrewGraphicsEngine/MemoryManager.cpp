@@ -15,30 +15,14 @@
 
 
 namespace Hogra {
-	/*
-	* Needs to be called before closing program!
-	*/
-	void MemoryManager::DeallocateAll() {
-		GUI::DestroyInstance();
-		AssetFolderPathManager::DestroyInstance();
-		ControlActionManager::DestroyInstance();
-		SceneEventManager::DestroyInstance();
-		MaterialFactory::DestroyInstance();
-		GeometryFactory::DestroyInstance();
-		ShaderProgramFactory::DestroyInstance();
-		SceneManager::DestroyInstance();
-		SceneFactory::DestroyInstance();
+	std::set<Allocator::AllocationData> Allocator::allocations = std::set<Allocator::AllocationData>();
+
+	bool operator<(const Allocator::AllocationData& ad, const Allocator::AllocationData& ad2) {
+		return reinterpret_cast<uintptr_t>(ad.pointer) < reinterpret_cast<uintptr_t>(ad2.pointer);
 	}
 
-	void MemoryManager::DeallocateSceneResources()
-	{
-		MaterialFactory::GetInstance()->ForgetPointers();
-		GeometryFactory::GetInstance()->ForgetPointers();
-		ShaderProgramFactory::GetInstance()->ForgetPointers();
+	bool operator>(const Allocator::AllocationData& ad, const Allocator::AllocationData& ad2) {
+		return reinterpret_cast<uintptr_t>(ad.pointer) > reinterpret_cast<uintptr_t>(ad2.pointer);
 	}
-
-	std::vector<std::function<void()>> MasterAllocator::deleteAllFunctions = std::vector<std::function<void()>>();
-	int MasterAllocator::currentAllocationCount = 0;
-
 }
 

@@ -174,7 +174,7 @@ namespace Hogra::Volumetric {
 		void Init();
 
 		~TransferFunction() {
-			Allocator<Texture2D>::Delete(texture);
+			Allocator::Delete(texture);
 		}
 
 		void crop(glm::vec2 min, glm::vec2 max);

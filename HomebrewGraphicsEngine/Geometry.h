@@ -8,7 +8,7 @@ namespace Hogra {
 
 	class Geometry
 	{
-		friend class Allocator<Geometry>;
+		friend class Allocator;
 	public:
 
 		void Init(std::vector <Vertex>& vertices, std::vector <GLint>& indices);

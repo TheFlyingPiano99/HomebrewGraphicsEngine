@@ -10,7 +10,7 @@ namespace Hogra {
 	*/
 	class GeometryFactory
 	{
-		friend class Allocator<GeometryFactory>;
+		friend class Allocator;
 	public:
 		static GeometryFactory* GetInstance();
 		static void DestroyInstance();

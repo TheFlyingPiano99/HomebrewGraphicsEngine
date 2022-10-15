@@ -94,7 +94,6 @@ namespace Hogra {
 		std::vector<Volumetric::VolumeObject*>& GetVolumeObjects();
 
 		~Scene() {
-			Serialize();
 			Destroy();
 		}
 

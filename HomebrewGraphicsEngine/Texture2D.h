@@ -12,7 +12,7 @@ namespace Hogra {
 
 	class Texture2D : public Texture
 	{
-		friend class Allocator<Texture2D>;
+		friend class Allocator;
 	public:
 
 		void Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType);
@@ -53,6 +53,6 @@ namespace Hogra {
 		glm::vec4 nullVector;
 		std::vector<glm::vec4> bytes;
 
-		friend class Allocator<Texture2D>;
+		friend class Allocator;
 	};
 }

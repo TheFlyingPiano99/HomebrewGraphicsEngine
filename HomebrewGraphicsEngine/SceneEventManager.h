@@ -8,25 +8,25 @@ namespace Hogra {
 
 	class SceneEventManager
 	{
-		friend class Allocator<SceneEventManager>;
+		friend class Allocator;
 	public:
 
 		~SceneEventManager() {
 			while (!events.empty()) {
 				auto* e = popNextEvent();
-				Allocator<SceneEvent>::Delete(e);
+				Allocator::Delete(e);
 			}
 		}
 
 		static SceneEventManager* getInstance() {
 			if (nullptr == instance) {
-				instance = Allocator<SceneEventManager>::New();
+				instance = Allocator::New<SceneEventManager>();
 			}
 			return instance;
 		}
 
 		static void DestroyInstance() {
-			Allocator<SceneEventManager>::Delete(instance);
+			Allocator::Delete(instance);
 		}
 
 
@@ -46,7 +46,7 @@ namespace Hogra {
 
 		void ClearQueue() {
 			while (!events.empty()) {
-				Allocator<SceneEvent>::Delete(events.front());
+				Allocator::Delete(events.front());
 				events.pop();
 			}
 		}
@@ -55,7 +55,7 @@ namespace Hogra {
 			while (!empty()) {
 				SceneEvent* event = popNextEvent();
 				event->Execute(scene);
-				Allocator<SceneEvent>::Delete(event);
+				Allocator::Delete(event);
 			}
 		}
 	private:

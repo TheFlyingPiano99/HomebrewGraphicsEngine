@@ -3,7 +3,7 @@
 namespace Hogra {
 	SceneObjectFactory* Hogra::SceneObjectFactory::GetInstance() {
 		if (nullptr == instance) {
-			instance = Allocator<SceneObjectFactory>::New();
+			instance = Allocator::New<SceneObjectFactory>();
 		}
 		return instance;
 	}
@@ -11,18 +11,18 @@ namespace Hogra {
 	SceneObject* SceneObjectFactory::Create2DSpriteObject(const std::string& texturePath, OrientationProvider* orientationProvider) {
 		auto* geometry = GeometryFactory::GetInstance()->getFullScreenQuad();
 		auto* program = ShaderProgramFactory::GetInstance()->GetSpriteProgram();
-		auto* material = Allocator<Material>::New();
+		auto* material = Allocator::New<Material>();
 		material->Init(program);
-		auto* texture = Allocator<Texture2D>::New();
+		auto* texture = Allocator::New<Texture2D>();
 		texture->Init(texturePath, 0, GL_RGBA, GL_UNSIGNED_BYTE);
 		material->addTexture(texture);
-		auto* mesh = Allocator<Mesh>::New();
+		auto* mesh = Allocator::New<Mesh>();
 		mesh->Init(material, geometry);
-		auto* obj = Allocator<SceneObject>::New();
+		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(mesh);
 
 		obj->SetIsCastingShadow(false);
-		auto* connector = Allocator<OrientationConnector>::New();
+		auto* connector = Allocator::New<OrientationConnector>();
 		connector->Init(orientationProvider);
 		obj->SetOrientationConnector(connector);
 		return obj;

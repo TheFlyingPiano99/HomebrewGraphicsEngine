@@ -6,7 +6,7 @@
 namespace Hogra {
 	class ShaderProgramFactory
 	{
-		friend class Allocator<ShaderProgramFactory>;
+		friend class Allocator;
 	public:
 		static ShaderProgramFactory* GetInstance();
 

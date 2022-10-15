@@ -47,7 +47,7 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
 		debugMaterial.Init(&shaderProgram);
 		debugGeometry = GeometryFactory::GetInstance()->getWireFrameSphere();
-		debugLightVolumeMesh = Allocator<Mesh>::New();
+		debugLightVolumeMesh = Allocator::New<Mesh>();
 		debugLightVolumeMesh->Init(&debugMaterial, debugGeometry);
 		debugLightVolumeMesh->setDepthTest(false);
 	}

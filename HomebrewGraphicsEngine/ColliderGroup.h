@@ -26,7 +26,7 @@ namespace Hogra {
 		
 		~ColliderGroup() {
 			for (auto& group : subGroups) {
-				Allocator<ColliderGroup>::Delete(group);
+				Allocator::Delete(group);
 			}
 			// Deleting colliders is not the responsibility of the group
 		}

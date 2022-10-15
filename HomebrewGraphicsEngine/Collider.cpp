@@ -29,7 +29,7 @@ namespace Hogra {
             isCollision = TestCollision(collider);
         }
         if (isCollision) {
-            auto event = Allocator<CollisionEvent>::New();
+            auto event = Allocator::New<CollisionEvent>();
             event->Init((const Collider*)this, collider);
             SceneEventManager::getInstance()->pushEvent(event);
             haveCollided = true;

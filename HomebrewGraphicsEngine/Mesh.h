@@ -12,7 +12,7 @@ namespace Hogra {
 
 	class Mesh
 	{
-		friend class Allocator<Mesh>;
+		friend class Allocator;
 	public:
 		enum DepthTestFunc {
 			less_func,

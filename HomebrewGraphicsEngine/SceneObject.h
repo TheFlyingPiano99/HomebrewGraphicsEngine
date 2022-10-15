@@ -22,7 +22,7 @@ namespace Hogra {
 
 	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider
 	{
-		friend class Allocator<SceneObject>;
+		friend class Allocator;
 	public:
 
 		void Init(Mesh* _mesh = nullptr) {

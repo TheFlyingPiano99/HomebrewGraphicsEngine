@@ -6,18 +6,18 @@ namespace Hogra {
 
 	ShaderProgramFactory* ShaderProgramFactory::GetInstance() {
 		if (nullptr == instance) {
-			instance = Allocator<ShaderProgramFactory>::New();
+			instance = Allocator::New<ShaderProgramFactory>();
 		}
 		return instance;
 	}
 	
 	void ShaderProgramFactory::DestroyInstance() {
-		Allocator<ShaderProgramFactory>::Delete(instance);
+		Allocator::Delete(instance);
 	}
 	
 	ShaderProgram* ShaderProgramFactory::GetDefaultPBRProgramWithMapping() {
 		if (nullptr == defaultBPRProgramWithMapping) {
-			defaultBPRProgramWithMapping = Allocator<ShaderProgram>::New();
+			defaultBPRProgramWithMapping = Allocator::New<ShaderProgram>();
 			defaultBPRProgramWithMapping->Init(
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 					"",
@@ -31,7 +31,7 @@ namespace Hogra {
 	{
 		if (nullptr == glyphProgram) {
 			glyphProgram
-				= Allocator<ShaderProgram>::New();
+				= Allocator::New<ShaderProgram>();
 			glyphProgram->Init(
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 					"",
@@ -44,7 +44,7 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetCaptionProgram()
 	{
 		if (nullptr == captionProgram) {
-			captionProgram = Allocator<ShaderProgram>::New();
+			captionProgram = Allocator::New<ShaderProgram>();
 			captionProgram->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
 				"",
@@ -57,7 +57,7 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetEmissiveMaterialProgram()
 	{
 		if (nullptr == emissiveMaterial) {
-			emissiveMaterial = Allocator<ShaderProgram>::New();
+			emissiveMaterial = Allocator::New<ShaderProgram>();
 			emissiveMaterial->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 				"",
@@ -69,7 +69,7 @@ namespace Hogra {
 
 	ShaderProgram* ShaderProgramFactory::GetSpriteProgram() {
 		if (nullptr == spriteProgram) {
-			spriteProgram = Allocator<ShaderProgram>::New();
+			spriteProgram = Allocator::New<ShaderProgram>();
 			spriteProgram->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
 				"",

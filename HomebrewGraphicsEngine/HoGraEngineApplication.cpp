@@ -189,15 +189,15 @@ namespace Hogra {
 	
 	void HoGraEngineApplication::Destroy() {
 		GUI::getInstance()->DestroyGUI();
+		SceneManager::getInstance()->UnloadScene();
 
 		// Delete window before ending the program
 		glfwDestroyWindow(window);
 		// Terminate GLFW before ending the program
 		glfwTerminate();
 
-		MemoryManager::DeallocateAll();
-		MasterAllocator::DeleteAll();
-		auto undeletedHeapInstances = MasterAllocator::GetCurrentAllocationCount();
+		Allocator::DeleteAll();
+		auto undeletedHeapInstances = Allocator::GetAllocationCount();
 		if (0 < undeletedHeapInstances) {
 			std::cout << "WARNING: " << undeletedHeapInstances << " dynamically allocated instances are not deallocated!" << std::endl;
 		}
