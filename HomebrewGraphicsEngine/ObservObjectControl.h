@@ -42,21 +42,22 @@ namespace Hogra {
             this->scene = scene;
         }
 
-        void AddCollider(Collider* collider, unsigned int idx) {
-            if (idx < 6) {
-                colliders[idx] = collider;
-            }
+        void AddCollider(AABBCollider* _collider) {
+            this->collider = _collider;
         }
 
     private:
+
+        void DragPlane(float delta);
+
         Scene* scene = nullptr;
         Camera* camera = nullptr;
         Volumetric::VolumeObject* volumeObject = nullptr;
         float rotationSpeed = 0.1f;
         float zoomSpeed = 4.0f;
-
-        Collider* colliders[6];
-        Collider* grabbedCollider = nullptr;
+        bool isPlaneGrabbed = false;
+        glm::vec3 planeNormal;
+        AABBCollider* collider = nullptr;
     };
 
 }

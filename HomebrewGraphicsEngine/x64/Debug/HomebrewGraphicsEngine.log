@@ -1,1 +1,4 @@
-﻿  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe
+﻿  ObservObjectControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

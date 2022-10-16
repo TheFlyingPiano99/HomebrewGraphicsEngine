@@ -338,6 +338,35 @@ namespace Hogra::Volumetric {
 
 		void ResizeDisplayBoundingBox(const glm::vec3& w_min, const glm::vec3& w_max);
 
+		void GetMinAndMax(glm::vec3& w_min, glm::vec3& w_max) {
+			auto m_originalMin = glm::vec3(0.0f);
+			auto m_originalMax = glm::vec3(0.0f);
+			for (int i = 0; i < 8; i++) {
+				if (boundingBox.corners[i].x < m_originalMin.x) {
+					m_originalMin.x = boundingBox.corners[i].x;
+				}
+				if (boundingBox.corners[i].y < m_originalMin.y) {
+					m_originalMin.y = boundingBox.corners[i].y;
+				}
+				if (boundingBox.corners[i].z < m_originalMin.z) {
+					m_originalMin.z = boundingBox.corners[i].z;
+				}
+				if (boundingBox.corners[i].x > m_originalMax.x) {
+					m_originalMax.x = boundingBox.corners[i].x;
+				}
+				if (boundingBox.corners[i].y > m_originalMax.y) {
+					m_originalMax.y = boundingBox.corners[i].y;
+				}
+				if (boundingBox.corners[i].z > m_originalMax.z) {
+					m_originalMax.z = boundingBox.corners[i].z;
+				}
+			}
+			auto w_min4 = modelMatrix * glm::vec4(m_originalMin, 1.0f);
+			auto w_max4 = modelMatrix * glm::vec4(m_originalMax, 1.0f);
+			w_min = glm::vec3(w_min4) / w_min4.w;
+			w_max = glm::vec3(w_max4) / w_max4.w;
+		}
+
 	private:
 
 		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Select class", "Remove class" };

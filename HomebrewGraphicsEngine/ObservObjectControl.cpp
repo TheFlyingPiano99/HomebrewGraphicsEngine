@@ -2,9 +2,6 @@
 
 Hogra::ObservObjectControl::ObservObjectControl() : rotationSpeed(0.01f), zoomSpeed(0.1f) {
 	GlobalVariables::hideCursor = false;
-	for (int i = 0; i < 6; i++) {
-		colliders[i] = nullptr;
-	}
 }
 
 void Hogra::ObservObjectControl::Rotate(const glm::vec2& delta)
@@ -18,6 +15,10 @@ void Hogra::ObservObjectControl::Rotate(const glm::vec2& delta)
 void Hogra::ObservObjectControl::Zoom(float delta)
 {
 	if (nullptr == camera) {
+		return;
+	}
+	if (isPlaneGrabbed) {
+		DragPlane(delta * 0.1f);
 		return;
 	}
 	camera->ApproachCenter(delta * zoomSpeed);
@@ -42,34 +43,55 @@ void Hogra::ObservObjectControl::grabPlane(float x, float y) {
 	glm::vec4 wDir = camera->GetRayDirMatrix() * glm::vec4(x, y, 0.0, 1.0f);
 	wDir /= wDir.w;
 	glm::vec3 dir = glm::normalize(glm::vec3(wDir));
-	glm::vec3 intersectionPoint;
-	glm::vec3 intersectionNormal;
 	Ray ray;
-	ray.SetPosition(camera->GetPosition() + dir * 1.0f);
+	ray.SetPosition(camera->GetPosition());
 	ray.setDirection(dir);
 
-	glm::vec3 w_point;
-	glm::vec3 w_normal;
-	auto collider = scene->IntersectRay(ray, w_point, w_normal);
-	std::cout << "Collider: " << collider << std::endl;
-	if (nullptr == collider) {
+	glm::vec3 w_point(0.0f);
+	glm::vec3 w_normal(0.0f);
+	auto collidedWith = scene->IntersectRay(ray, w_point, w_normal);
+	std::cout << "Collider: " << collidedWith << std::endl;
+	if (nullptr == collidedWith) {
 		return;
 	}
-	bool isOneOf6 = false;
-	for (int i = 0; i < 6; i++) {
-		if (colliders[i] == collider) {
-			isOneOf6 = true;
-			break;
-		}
-	}
-	if (!isOneOf6) {	// Other collider found
-		return;
+	if (collider == collidedWith) {
+		isPlaneGrabbed = true;
+		planeNormal = w_normal;
+		std::cout << "N: " << planeNormal.x << ", " << planeNormal.y << ", " << planeNormal.z << std::endl;
 	}
 }
 
 void Hogra::ObservObjectControl::releasePlane(float x, float y) {
-	if (nullptr == grabbedCollider) {
+	isPlaneGrabbed = false;
+
+}
+
+void Hogra::ObservObjectControl::DragPlane(float delta) {
+	if (nullptr == camera) {
 		return;
 	}
-	std::cout << "Release " << x << " " << y << std::endl;
+	glm::vec3 min(0.0f);
+	glm::vec3 max(0.0f);
+	volumeObject->GetMinAndMax(min, max);
+	if (glm::dot(planeNormal, glm::vec3(1,0,0)) > 0.9f) {
+		max += glm::vec3(delta, 0, 0);
+	}
+	else if (glm::dot(planeNormal, glm::vec3(0, 1, 0)) > 0.9f) {
+		max += glm::vec3(0, delta, 0);
+	}
+	else if (glm::dot(planeNormal, glm::vec3(0, 0, 1)) > 0.9f) {
+		max += glm::vec3(0, 0, delta);
+	}
+	else if (glm::dot(planeNormal, glm::vec3(-1, 0, 0)) > 0.9f) {
+		min += glm::vec3(-delta, 0, 0);
+	}
+	else if (glm::dot(planeNormal, glm::vec3(0, -1, 0)) > 0.9f) {
+		min += glm::vec3(0, -delta, 0);
+	}
+	else if (glm::dot(planeNormal, glm::vec3(0, 0, -1)) > 0.9f) {
+		min += glm::vec3(0, 0, -delta);
+	}
+	collider->SetMin(min);
+	collider->SetMax(max);
+	volumeObject->ResizeDisplayBoundingBox(min, max);
 }

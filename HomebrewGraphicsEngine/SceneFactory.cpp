@@ -609,41 +609,13 @@ namespace Hogra {
 			control->SetVolumeObject(*volumeObject);
 		}
 		control->SetScene(scene);
-		auto colliderX = Allocator::New<AABBCollider>();
-		colliderX->Init();
-		colliderX->setMinRelToPosition(glm::vec3(-0.01f, -1.0f, -1.0f));
-		colliderX->setMaxRelToPosition(glm::vec3(0.01f, 1.0f, 1.0f));
-		colliderX->SetPosition(glm::vec3(1,0,0));
-		control->AddCollider(colliderX, 0);
-		auto obj = Allocator::New<SceneObject>();
-		obj->Init();
-		obj->addComponent(colliderX);
-		scene->AddSceneObject(obj);
-		scene->AddCollider(colliderX, "volumePlane");
-		auto colliderY = Allocator::New<AABBCollider>();
-		colliderY->Init();
-		colliderY->setMinRelToPosition(glm::vec3(-1.0f, -0.01f, -1.0f));
-		colliderY->setMaxRelToPosition(glm::vec3(1.0f, 0.01f, 1.0f));
-		colliderY->SetPosition(glm::vec3(0, 1, 0));
-		control->AddCollider(colliderY, 1);
-		obj = Allocator::New<SceneObject>();
-		obj->Init();
-		obj->addComponent(colliderY);
-		scene->AddSceneObject(obj);
-		scene->AddCollider(colliderY, "volumePlane");
-
-		auto colliderZ = Allocator::New<AABBCollider>();
-		colliderZ->Init();
-		colliderZ->setMinRelToPosition(glm::vec3(-1.0f, -1.0f, -0.01f));
-		colliderZ->setMaxRelToPosition(glm::vec3(1.0f, 1.0f, 0.01f));
-		colliderZ->SetPosition(glm::vec3(0, 0, 1));
-		control->AddCollider(colliderZ, 2);
-		obj = Allocator::New<SceneObject>();
-		obj->Init();
-		obj->addComponent(colliderZ);
-		scene->AddSceneObject(obj);
-		scene->AddCollider(colliderZ, "volumePlane");
-
+		auto collider = Allocator::New<AABBCollider>();
+		collider->Init();
+		collider->SetMin(glm::vec3(-2.0f, -2.0f, -2.0f));
+		collider->SetMax(glm::vec3(2.0f, 2.0f, 2.0f));
+		collider->SetPosition(glm::vec3(0,0,0));
+		control->AddCollider(collider);
+		scene->AddCollider(collider, "volumePlane");
 		scene->SetUserControl(control);
 	}
 	
