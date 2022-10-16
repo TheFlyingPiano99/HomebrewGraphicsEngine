@@ -677,12 +677,6 @@
     <None Include="..\Resources\Shaders\voxelColor.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\voxelHalfAngleAttenuation.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelHalfAngleColor.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="..\Resources\Shaders\edgeDetect.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
@@ -760,6 +754,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\sprite.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\voxelColorCheap.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

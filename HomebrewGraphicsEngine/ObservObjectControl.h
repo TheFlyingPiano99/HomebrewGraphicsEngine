@@ -2,6 +2,8 @@
 #include "UserControl.h"
 #include "Camera.h"
 #include "volumetric/VolumeObject.h"
+#include "Scene.h"
+#include "Collider.h"
 
 namespace Hogra {
 
@@ -27,15 +29,34 @@ namespace Hogra {
 
         void release() override;
 
+        void grabPlane(float x, float y);
+
+        void releasePlane(float x, float y);
+
+
         void SetVolumeObject(Volumetric::VolumeObject& _volumeObject) {
             volumeObject = &_volumeObject;
         }
 
+        void SetScene(Scene* scene) {
+            this->scene = scene;
+        }
+
+        void AddCollider(Collider* collider, unsigned int idx) {
+            if (idx < 6) {
+                colliders[idx] = collider;
+            }
+        }
+
     private:
+        Scene* scene = nullptr;
         Camera* camera = nullptr;
         Volumetric::VolumeObject* volumeObject = nullptr;
         float rotationSpeed = 0.1f;
-        float zoomSpeed = 0.1f;
+        float zoomSpeed = 4.0f;
+
+        Collider* colliders[6];
+        Collider* grabbedCollider = nullptr;
     };
 
 }

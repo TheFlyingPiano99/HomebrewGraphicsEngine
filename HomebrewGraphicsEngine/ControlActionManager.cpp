@@ -150,7 +150,7 @@ namespace Hogra {
 
 		pressLeftMouseButtonAction = Allocator::New<ClickOnScreen>();
 		pressRightMouseButtonAction = Allocator::New<GrabAction>();
-		releaseLeftMouseButtonAction = nullptr;
+		releaseLeftMouseButtonAction = Allocator::New<ReleaseClickOnScreen>();
 		releaseRightMouseButtonAction = Allocator::New<ReleaseAction>();
 
 		mouseMoveAction = Allocator::New<CameraMoveAction>();

@@ -258,9 +258,9 @@ namespace Hogra::Volumetric {
 			return transferFunction;
 		}
 
-		void SelectTransferFunctionRegion(double x, double y) {
+		bool SelectTransferFunctionRegion(double x, double y) {
 			if (!transferFunction.IsVisible()) {
-				return;
+				return false;
 			}
 			glm::vec4 camPos = glm::vec4(x, -y, 0, 1);
 			glm::vec4 modelPos = transferFunction.getInvModelMatrix() * camPos;
@@ -311,7 +311,9 @@ namespace Hogra::Volumetric {
 						}
 					}
 				}
+				return true;
 			}
+			return false;
 		}
 
 		const char* GetCurrentTransferRegionSelectMode() {
@@ -330,6 +332,12 @@ namespace Hogra::Volumetric {
 			return lightPower;
 		}
 
+		void ForceRedraw() {
+			isChanged = true;
+		}
+
+		void ResizeDisplayBoundingBox(const glm::vec3& w_min, const glm::vec3& w_max);
+
 	private:
 
 		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Select class", "Remove class" };
@@ -345,7 +353,6 @@ namespace Hogra::Volumetric {
 			BoxEdge edges[12];
 			glm::vec3 corners[8];
 		};
-		BoundingBox boundingBox;
 
 		bool IntersectPlane(const BoxEdge& edge, const glm::vec3& planePos, const glm::vec3& planeNormal, glm::vec3& intersection) {
 			float t = dot(planePos - edge.position, planeNormal) / dot(edge.direction, planeNormal);
@@ -363,13 +370,16 @@ namespace Hogra::Volumetric {
 			int in,
 			int out,
 			const glm::vec3& modelSlicePosition,
-			const glm::vec3& modelSliceNormal
+			const glm::vec3& modelSliceNormal,
+			bool isCheapRender
 		);
 
 		void InitBoundingBox(const Dimensions& dimensions, BoundingBox& boundingBox);
 
 		void ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera& camera, const glm::vec3& w_sliceDelta);
 
+		BoundingBox originalBoundingBox;
+		BoundingBox boundingBox;
 		glm::vec3 w_position;
 		glm::vec3 scale;
 		glm::quat orientation;
@@ -392,6 +402,8 @@ namespace Hogra::Volumetric {
 		FBO prevCompleteImageFBO;
 		ShaderProgram colorProgram;
 		ShaderProgram attenuationProgram;
+		ShaderProgram colorCheapProgram;
+		ShaderProgram attenuationCheapProgram;
 		ShaderProgram combineProgram;
 		Geometry* fullScreenQuad = nullptr;
 		glm::vec3 resolution = glm::vec3(1.0f);

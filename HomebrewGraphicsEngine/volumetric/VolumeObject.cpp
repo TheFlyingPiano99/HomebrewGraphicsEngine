@@ -28,6 +28,7 @@ namespace Hogra::Volumetric {
 		scale = _scale;
 		orientation = _orientation;
 		light = _light;
+		InitBoundingBox(voxels->GetDimensions(), originalBoundingBox);
 		InitBoundingBox(voxels->GetDimensions(), boundingBox);
 		resolution = glm::vec3(voxels->GetDimensions().width, voxels->GetDimensions().height, voxels->GetDimensions().depth);
 		scale *= glm::vec3(voxels->GetDimensions().widthScale, voxels->GetDimensions().heightScale, voxels->GetDimensions().depthScale);
@@ -42,6 +43,17 @@ namespace Hogra::Volumetric {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryLightCamera.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelAttenuation.frag")
+		);
+
+		colorCheapProgram.Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryViewCamera.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelColorCheap.frag")
+		);
+		attenuationCheapProgram.Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryLightCamera.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelAttenuationCheap.frag")
 		);
 
 		colorTextures[0].Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
@@ -72,8 +84,10 @@ namespace Hogra::Volumetric {
 		bool isFinishedVolume = false;
 		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f || firstSlice > 0) {
 			isFinishedVolume = true;
+			bool isCheapRender = false;
 			if (isCameraMoved || isChanged) {
-				levelOfDetail = 0.04f;
+				isCheapRender = true;
+				levelOfDetail = 0.1f;
 				firstSlice = 0;
 				isChanged = false;
 			}
@@ -153,15 +167,15 @@ namespace Hogra::Volumetric {
 				light->SetPowerDensity(glm::vec3(lightPower));
 
 				glm::mat4 lightViewProjMatrix = projection * view;
-				ExportData(colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
-				ExportData(attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
+				ExportData((isCheapRender)? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
+				ExportData((isCheapRender)? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
 			}
 
 
 			// Half-angle slicing:
 			int in = 0;
 			int slicePerCurrentFrame = 0;
-			int maxSlicePerFrame = 50;
+			int maxSlicePerFrame = (isCheapRender)? 1000 : 25;
 			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
 			for (int slice = firstSlice; slice < sliceCount; slice++) {
 				in = slice % 2;
@@ -174,7 +188,8 @@ namespace Hogra::Volumetric {
 					in,
 					out,
 					glm::vec3(m_slicePos) / m_slicePos.w,
-					m_sliceNorm
+					m_sliceNorm,
+					isCheapRender
 				);
 				slicePerCurrentFrame++;
 				if (slicePerCurrentFrame >= maxSlicePerFrame && sliceCount > maxSlicePerFrame) {
@@ -268,7 +283,8 @@ namespace Hogra::Volumetric {
 		int in, 
 		int out, 
 		const glm::vec3& m_slicePosition, 
-		const glm::vec3& m_sliceNormal
+		const glm::vec3& m_sliceNormal,
+		bool isCheapRender
 	) {
 		glm::vec3 m_intersectionPoint;
 		std::vector<glm::vec3> vertices;
@@ -319,7 +335,12 @@ namespace Hogra::Volumetric {
 			VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(glm::vec3), (void*)0);
 
 			// Color:
-			colorProgram.Activate();
+			if (isCheapRender) {
+				colorCheapProgram.Activate();
+			}
+			else {
+				colorProgram.Activate();
+			}
 			transferFunction.Bind();
 			voxels->Bind();
 			//colorTextures[in].Bind();
@@ -340,7 +361,12 @@ namespace Hogra::Volumetric {
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 			// Attenuation:
-			attenuationProgram.Activate();
+			if (isCheapRender) {
+				attenuationCheapProgram.Activate();
+			}
+			else {
+				attenuationProgram.Activate();
+			}
 			transferFunction.Bind();
 			attenuationTextures[in].Bind();
 			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[out], 0);
@@ -420,6 +446,144 @@ namespace Hogra::Volumetric {
 		box.corners[5] = glm::vec3( 0.5f, -0.5f,  0.5f) * resolution;
 		box.corners[6] = glm::vec3( 0.5f,  0.5f, -0.5f) * resolution;
 		box.corners[7] = glm::vec3( 0.5f,  0.5f,  0.5f) * resolution;
+	}
+
+	void VolumeObject::ResizeDisplayBoundingBox(const glm::vec3& w_min, const glm::vec3& w_max) {
+		// Find minimum and maximum of original bounding box:
+		auto m_originalMin = glm::vec3(0.0f);
+		auto m_originalMax = glm::vec3(0.0f);
+		for (int i = 0; i < 8; i++) {
+			if (originalBoundingBox.corners[i].x < m_originalMin.x) {
+				m_originalMin.x = originalBoundingBox.corners[i].x;
+			}
+			if (originalBoundingBox.corners[i].y < m_originalMin.y) {
+				m_originalMin.y = originalBoundingBox.corners[i].y;
+			}
+			if (originalBoundingBox.corners[i].z < m_originalMin.z) {
+				m_originalMin.z = originalBoundingBox.corners[i].z;
+			}
+			if (originalBoundingBox.corners[i].x > m_originalMax.x) {
+				m_originalMax.x = originalBoundingBox.corners[i].x;
+			}
+			if (originalBoundingBox.corners[i].y > m_originalMax.y) {
+				m_originalMax.y = originalBoundingBox.corners[i].y;
+			}
+			if (originalBoundingBox.corners[i].z > m_originalMax.z) {
+				m_originalMax.z = originalBoundingBox.corners[i].z;
+			}
+		}
+
+		// transform from world to model space:
+		auto m_min = invModelMatrix * glm::vec4(w_min, 1.0f);
+		auto m_max = invModelMatrix * glm::vec4(w_max, 1.0f);
+		m_min /= m_min.w;
+		m_max /= m_max.w;
+
+		// Swap the min and max coordinates if needed:
+		if (m_min.x > m_max.x) {
+			auto temp = m_min.x;
+			m_min.x = m_max.x;
+			m_max.x = temp;
+		}
+		if (m_min.y > m_max.y) {
+			auto temp = m_min.y;
+			m_min.y = m_max.y;
+			m_max.y = temp;
+		}
+		if (m_min.z > m_max.z) {
+			auto temp = m_min.z;
+			m_min.z = m_max.z;
+			m_max.z = temp;
+		}
+
+		// check the bounds of the original box:
+		m_min.x = (m_min.x > m_originalMin.x) ? m_min.x : m_originalMin.x;
+		m_min.y = (m_min.y > m_originalMin.y) ? m_min.y : m_originalMin.y;
+		m_min.z = (m_min.z > m_originalMin.z) ? m_min.z : m_originalMin.z;
+
+		m_min.x = (m_min.x < m_originalMax.x) ? m_min.x : m_originalMax.x;
+		m_min.y = (m_min.y < m_originalMax.y) ? m_min.y : m_originalMax.y;
+		m_min.z = (m_min.z < m_originalMax.z) ? m_min.z : m_originalMax.z;
+
+		m_max.x = (m_max.x < m_originalMax.x) ? m_max.x : m_originalMax.x;
+		m_max.y = (m_max.y < m_originalMax.y) ? m_max.y : m_originalMax.y;
+		m_max.z = (m_max.z < m_originalMax.z) ? m_max.z : m_originalMax.z;
+
+		m_max.x = (m_max.x > m_originalMin.x) ? m_max.x : m_originalMin.x;
+		m_max.y = (m_max.y > m_originalMin.y) ? m_max.y : m_originalMin.y;
+		m_max.z = (m_max.z > m_originalMin.z) ? m_max.z : m_originalMin.z;
+
+		// Debug output:
+		std::cout << "Original Min " << m_originalMin.x << " " << m_originalMin.y << " " << m_originalMin.z << std::endl;
+		std::cout << "Original Max " << m_originalMax.x << " " << m_originalMax.y << " " << m_originalMax.z << std::endl;
+
+		std::cout << "Min " << m_min.x << " " << m_min.y << " " << m_min.z << std::endl;
+		std::cout << "Max " << m_max.x << " " << m_max.y << " " << m_max.z << std::endl;
+
+		// Build resized bounding box:
+		auto dimension = m_max - m_min;
+		auto box = BoundingBox();
+		// Base quad:
+		box.edges[0].position = glm::vec3(m_min.x, m_min.y, m_min.z);
+		box.edges[0].direction = glm::vec3(1, 0, 0);
+		box.edges[0].length = dimension.x;
+
+		box.edges[1].position = glm::vec3(m_max.x, m_min.y, m_min.z);
+		box.edges[1].direction = glm::vec3(0, 0, 1);
+		box.edges[1].length = dimension.z;
+
+		box.edges[2].position = glm::vec3(m_max.x, m_min.y, m_max.z);
+		box.edges[2].direction = glm::vec3(-1, 0, 0);
+		box.edges[2].length = dimension.x;
+
+		box.edges[3].position = glm::vec3(m_min.x, m_min.y, m_max.z);
+		box.edges[3].direction = glm::vec3(0, 0, -1);
+		box.edges[3].length = dimension.z;
+
+		// Vertical edges:
+		box.edges[4].position = glm::vec3(m_min.x, m_min.y, m_min.z);
+		box.edges[4].direction = glm::vec3(0, 1, 0);
+		box.edges[4].length = dimension.y;
+
+		box.edges[5].position = glm::vec3(m_max.x, m_min.y, m_min.z);
+		box.edges[5].direction = glm::vec3(0, 1, 0);
+		box.edges[5].length = dimension.y;
+
+		box.edges[6].position = glm::vec3(m_max.x, m_min.y, m_max.z);
+		box.edges[6].direction = glm::vec3(0, 1, 0);
+		box.edges[6].length = dimension.y;
+
+		box.edges[7].position = glm::vec3(m_min.x, m_min.y, m_max.z);
+		box.edges[7].direction = glm::vec3(0, 1, 0);
+		box.edges[7].length = dimension.y;
+
+		// Top quad:
+		box.edges[8].position = glm::vec3(m_min.x, m_max.y, m_min.z);
+		box.edges[8].direction = glm::vec3(1, 0, 0);
+		box.edges[8].length = dimension.x;
+
+		box.edges[9].position = glm::vec3(m_max.x, m_max.y, m_min.z);
+		box.edges[9].direction = glm::vec3(0, 0, 1);
+		box.edges[9].length = dimension.z;
+
+		box.edges[10].position = glm::vec3(m_max.x, m_max.y, m_max.z);
+		box.edges[10].direction = glm::vec3(-1, 0, 0);
+		box.edges[10].length = dimension.x;
+
+		box.edges[11].position = glm::vec3(m_min.x, m_max.y, m_max.z);
+		box.edges[11].direction = glm::vec3(0, 0, -1);
+		box.edges[11].length = dimension.z;
+
+		box.corners[0] = glm::vec3(m_min.x, m_min.y, m_min.z);
+		box.corners[1] = glm::vec3(m_min.x, m_min.y, m_max.z);
+		box.corners[2] = glm::vec3(m_min.x, m_max.y, m_min.z);
+		box.corners[3] = glm::vec3(m_min.y, m_max.y, m_max.z);
+		box.corners[4] = glm::vec3(m_max.x, m_min.y, m_min.z);
+		box.corners[5] = glm::vec3(m_max.x, m_min.y, m_max.z);
+		box.corners[6] = glm::vec3(m_max.x, m_max.y, m_min.z);
+		box.corners[7] = glm::vec3(m_max.x, m_max.y, m_max.z);
+		boundingBox = box;
+		isChanged = true;
 	}
 
 	void VolumeObject::ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)

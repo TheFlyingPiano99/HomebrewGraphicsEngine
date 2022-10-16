@@ -39,9 +39,9 @@ namespace Hogra {
 		return sceneChange;
 	}
 
-	Collider* Scene::IntersectRay(const Ray& ray, glm::vec3& intersectionPoint, glm::vec3& intersectionNormal)
+	Collider* Scene::IntersectRay(const Ray& ray, glm::vec3& w_intersectionPoint, glm::vec3& w_intersectionNormal)
 	{
-		return collisionManager.IntersectRay(ray, intersectionPoint, intersectionNormal);
+		return collisionManager.IntersectRay(ray, w_intersectionPoint, w_intersectionNormal);
 	}
 
 	void Scene::Init(int contextWidth, int contextHeight)

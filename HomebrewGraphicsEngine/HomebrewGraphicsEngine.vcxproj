@@ -384,9 +384,9 @@
     <None Include="..\Resources\Shaders\transfer.vert" />
     <None Include="..\Resources\Shaders\bloomUpSampling.frag" />
     <None Include="..\Resources\Shaders\voxelAttenuation.frag" />
+    <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag" />
     <None Include="..\Resources\Shaders\voxelColor.frag" />
-    <None Include="..\Resources\Shaders\voxelHalfAngleAttenuation.frag" />
-    <None Include="..\Resources\Shaders\voxelHalfAngleColor.frag" />
+    <None Include="..\Resources\Shaders\voxelColorCheap.frag" />
     <None Include="ClassDiagram.cd" />
     <None Include="imgui.ini" />
   </ItemGroup>

@@ -42,7 +42,7 @@ namespace Hogra {
 			return;
 		}
 		auto buttonSize = ImVec2(300, 25);
-		auto scareButtonSize = ImVec2(25, 25);
+		auto squareButtonSize = ImVec2(25, 25);
 		static bool configFeature = false;
 		static bool configSTF = false;
 		static bool addFeatureToGroup = false;
@@ -168,40 +168,44 @@ namespace Hogra {
 				ImGui::BeginGroup();
 				ImGui::Text("Rotate");
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-				if (ImGui::Button("+X", scareButtonSize)) {
+				if (ImGui::Button("+X", squareButtonSize)) {
 					volumeObject.RotateModelAroundX(M_PI / 4.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::SameLine();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
-				if (ImGui::Button("+Y", scareButtonSize)) {
+				if (ImGui::Button("+Y", squareButtonSize)) {
 					volumeObject.RotateModelAroundY(M_PI / 4.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::SameLine();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
-				if (ImGui::Button("+Z", scareButtonSize)) {
+				if (ImGui::Button("+Z", squareButtonSize)) {
 					volumeObject.RotateModelAroundZ(M_PI / 4.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-				if (ImGui::Button("-X", scareButtonSize)) {
+				if (ImGui::Button("-X", squareButtonSize)) {
 					volumeObject.RotateModelAroundX(-M_PI / 4.0f);
 				}
 				ImGui::SameLine();
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
-				if (ImGui::Button("-Y", scareButtonSize)) {
+				if (ImGui::Button("-Y", squareButtonSize)) {
 					volumeObject.RotateModelAroundY(-M_PI / 4.0f);
 				}
 				ImGui::SameLine();
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
-				if (ImGui::Button("-Z", scareButtonSize)) {
+				if (ImGui::Button("-Z", squareButtonSize)) {
 					volumeObject.RotateModelAroundZ(-M_PI / 4.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::EndGroup();
+			}
+			if (ImGui::Button("Redraw", buttonSize)) {
+				volumeObject.ResizeDisplayBoundingBox(glm::vec3(-1.0f), glm::vec3(1.0f));
+				volumeObject.ForceRedraw();
 			}
 			ImGui::End();
 		}

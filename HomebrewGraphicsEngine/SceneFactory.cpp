@@ -163,14 +163,16 @@ namespace Hogra {
 
 		// Volume:
 		const char* dataSetName = "Shoulder";
+		//const char* dataSetName = "cthead-8bit";
 		auto* voxelTexture = Allocator::New<Texture3D>();
 		
 		voxelTexture->Init(
-//			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
 	AssetFolderPathManager::getInstance()->getTextureFolderPath().append(dataSetName),
 		3,
 			GL_RED
 		);
+
+		//TODO
 		/*
 		voxelTexture->Init(
 			glm::ivec3(50, 50, 50),
@@ -436,12 +438,12 @@ namespace Hogra {
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::string("Toggle transfer function [H]"), font,
-			glm::vec2(GlobalVariables::renderResolutionWidth * 0.1f, GlobalVariables::renderResolutionHeight * 0.08), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::renderResolutionWidth * 0.9f, GlobalVariables::renderResolutionHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::string("Toggle options [O]"), font,
-			glm::vec2(GlobalVariables::renderResolutionWidth * 0.9f, GlobalVariables::renderResolutionHeight * 0.08), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::renderResolutionWidth * 0.1f, GlobalVariables::renderResolutionHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 
 		Allocator::Delete(font);
@@ -606,6 +608,42 @@ namespace Hogra {
 		if (nullptr != volumeObject) {
 			control->SetVolumeObject(*volumeObject);
 		}
+		control->SetScene(scene);
+		auto colliderX = Allocator::New<AABBCollider>();
+		colliderX->Init();
+		colliderX->setMinRelToPosition(glm::vec3(-0.01f, -1.0f, -1.0f));
+		colliderX->setMaxRelToPosition(glm::vec3(0.01f, 1.0f, 1.0f));
+		colliderX->SetPosition(glm::vec3(1,0,0));
+		control->AddCollider(colliderX, 0);
+		auto obj = Allocator::New<SceneObject>();
+		obj->Init();
+		obj->addComponent(colliderX);
+		scene->AddSceneObject(obj);
+		scene->AddCollider(colliderX, "volumePlane");
+		auto colliderY = Allocator::New<AABBCollider>();
+		colliderY->Init();
+		colliderY->setMinRelToPosition(glm::vec3(-1.0f, -0.01f, -1.0f));
+		colliderY->setMaxRelToPosition(glm::vec3(1.0f, 0.01f, 1.0f));
+		colliderY->SetPosition(glm::vec3(0, 1, 0));
+		control->AddCollider(colliderY, 1);
+		obj = Allocator::New<SceneObject>();
+		obj->Init();
+		obj->addComponent(colliderY);
+		scene->AddSceneObject(obj);
+		scene->AddCollider(colliderY, "volumePlane");
+
+		auto colliderZ = Allocator::New<AABBCollider>();
+		colliderZ->Init();
+		colliderZ->setMinRelToPosition(glm::vec3(-1.0f, -1.0f, -0.01f));
+		colliderZ->setMaxRelToPosition(glm::vec3(1.0f, 1.0f, 0.01f));
+		colliderZ->SetPosition(glm::vec3(0, 0, 1));
+		control->AddCollider(colliderZ, 2);
+		obj = Allocator::New<SceneObject>();
+		obj->Init();
+		obj->addComponent(colliderZ);
+		scene->AddSceneObject(obj);
+		scene->AddCollider(colliderZ, "volumePlane");
+
 		scene->SetUserControl(control);
 	}
 	
