@@ -57,6 +57,7 @@ namespace Hogra {
         float zoomSpeed = 4.0f;
         bool isPlaneGrabbed = false;
         glm::vec3 planeNormal;
+        glm::vec3 planePosition;
         AABBCollider* collider = nullptr;
     };
 

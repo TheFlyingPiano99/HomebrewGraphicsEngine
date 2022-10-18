@@ -514,9 +514,6 @@ namespace Hogra::Volumetric {
 		m_max.z = (m_max.z > m_originalMin.z) ? m_max.z : m_originalMin.z;
 
 		// Debug output:
-		std::cout << "Original Min " << m_originalMin.x << " " << m_originalMin.y << " " << m_originalMin.z << std::endl;
-		std::cout << "Original Max " << m_originalMax.x << " " << m_originalMax.y << " " << m_originalMax.z << std::endl;
-
 		std::cout << "Min " << m_min.x << " " << m_min.y << " " << m_min.z << std::endl;
 		std::cout << "Max " << m_max.x << " " << m_max.y << " " << m_max.z << std::endl;
 
@@ -584,6 +581,52 @@ namespace Hogra::Volumetric {
 		box.corners[7] = glm::vec3(m_max.x, m_max.y, m_max.z);
 		boundingBox = box;
 		isChanged = true;
+	}
+
+	void VolumeObject::GetMinAndMax(glm::vec3& w_min, glm::vec3& w_max) {
+		auto m_originalMin = glm::vec3(0.0f);
+		auto m_originalMax = glm::vec3(0.0f);
+		for (int i = 0; i < 8; i++) {
+			if (boundingBox.corners[i].x < m_originalMin.x) {
+				m_originalMin.x = boundingBox.corners[i].x;
+			}
+			if (boundingBox.corners[i].y < m_originalMin.y) {
+				m_originalMin.y = boundingBox.corners[i].y;
+			}
+			if (boundingBox.corners[i].z < m_originalMin.z) {
+				m_originalMin.z = boundingBox.corners[i].z;
+			}
+			if (boundingBox.corners[i].x > m_originalMax.x) {
+				m_originalMax.x = boundingBox.corners[i].x;
+			}
+			if (boundingBox.corners[i].y > m_originalMax.y) {
+				m_originalMax.y = boundingBox.corners[i].y;
+			}
+			if (boundingBox.corners[i].z > m_originalMax.z) {
+				m_originalMax.z = boundingBox.corners[i].z;
+			}
+		}
+		auto w_min4 = modelMatrix * glm::vec4(m_originalMin, 1.0f);
+		auto w_max4 = modelMatrix * glm::vec4(m_originalMax, 1.0f);
+		w_min = glm::vec3(w_min4) / w_min4.w;
+		w_max = glm::vec3(w_max4) / w_max4.w;
+
+		// Swap the min and max coordinates if needed:
+		if (w_min.x > w_max.x) {
+			auto temp = w_min.x;
+			w_min.x = w_max.x;
+			w_max.x = temp;
+		}
+		if (w_min.y > w_max.y) {
+			auto temp = w_min.y;
+			w_min.y = w_max.y;
+			w_max.y = temp;
+		}
+		if (w_min.z > w_max.z) {
+			auto temp = w_min.z;
+			w_min.z = w_max.z;
+			w_max.z = temp;
+		}
 	}
 
 	void VolumeObject::ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)

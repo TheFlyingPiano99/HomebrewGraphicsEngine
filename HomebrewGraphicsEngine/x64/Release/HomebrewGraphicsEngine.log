@@ -3,7 +3,7 @@ D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObje
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  2 of 7721 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  4 of 7723 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     42 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
