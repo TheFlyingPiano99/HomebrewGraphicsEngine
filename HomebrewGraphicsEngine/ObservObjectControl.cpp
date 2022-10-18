@@ -10,6 +10,7 @@ void Hogra::ObservObjectControl::Rotate(const glm::vec2& delta)
 		return;
 	}
 	if (isPlaneGrabbed) {
+		std::cout << delta.x << ", " << delta.y << std::endl;
 		glm::vec3 w_d = (camera->getRight() * delta.x + camera->getUp() * delta.y) / length(planePosition - camera->GetPosition());
 		float d = glm::dot(planeNormal, w_d);
 		std::cout << "Delta: " << w_d.x << ", " << w_d.y << ", " << w_d.z << std::endl;
@@ -100,7 +101,8 @@ void Hogra::ObservObjectControl::DragPlane(float delta) {
 	else if (glm::dot(planeNormal, glm::vec3(0, 0, -1)) > 0.9f) {
 		min += glm::vec3(0, 0, -delta);
 	}
+	volumeObject->ResizeDisplayBoundingBox(min, max);
+	volumeObject->GetMinAndMax(min, max);
 	collider->SetMin(min);
 	collider->SetMax(max);
-	volumeObject->ResizeDisplayBoundingBox(min, max);
 }

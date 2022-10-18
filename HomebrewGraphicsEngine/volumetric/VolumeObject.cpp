@@ -87,20 +87,28 @@ namespace Hogra::Volumetric {
 			bool isCheapRender = false;
 			if (isCameraMoved || isChanged) {
 				isCheapRender = true;
-				levelOfDetail = 0.1f;
+				levelOfDetail = 0.25f;
 				firstSlice = 0;
 				isChanged = false;
 			}
 			else if (0 == firstSlice) {
-				levelOfDetail *= (2.0f + levelOfDetail);
+				levelOfDetail *= 2.0f;
 				if (1.0f < levelOfDetail) {	// max
 					levelOfDetail = 1.0f;
 				}
 			}
 
+			auto m_center = glm::vec3(0.0f);
+			for (int i = 0; i < 8; i++) {
+				m_center += boundingBox.corners[i];
+			}
+			m_center /= 8.0f;
+			auto w_center4 = modelMatrix * glm::vec4(m_center, 1.0f);
+			auto w_center = glm::vec3(w_center4) / w_center4.w;
+
 			// Calculate directions and transformations:
-			auto w_lightDir = glm::normalize(glm::vec3(light->GetPosition()) - this->w_position);
-			auto w_viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - this->w_position);
+			auto w_lightDir = glm::normalize(glm::vec3(light->GetPosition()) - w_center);
+			auto w_viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - w_center);
 			bool isBackToFront = false;
 			if (glm::dot(w_lightDir, w_viewDir) < 0.0f) {	// Negate viewDir if the camera is on the opposite side of the volume as the light source.
 				w_viewDir *= -1.0f;
@@ -113,12 +121,8 @@ namespace Hogra::Volumetric {
 			for (int i = 0; i < 8; i++) {
 				auto temp4 = glm::vec4(boundingBox.corners[i], 1.0f);
 				temp4 = modelMatrix * temp4;
-				glm::vec3 w_tempDir = glm::vec3(temp4 / temp4.w) - w_position;
+				glm::vec3 w_tempDir = glm::vec3(temp4 / temp4.w) - w_center;
 				float cos = glm::dot(glm::normalize(w_tempDir), w_halfway);
-				if (0.0f > cos) {
-					w_tempDir *= -1.0f;
-					cos *= -1.0f;
-				}
 				if (cos > maxCos) {
 					maxCos = cos;
 					w_toCorner = w_tempDir;
@@ -154,7 +158,7 @@ namespace Hogra::Volumetric {
 				// Export matrices:
 				glm::mat4 view = glm::lookAt(
 					glm::vec3(light->GetPosition().x, light->GetPosition().y, light->GetPosition().z),
-					this->w_position,
+					w_center,
 					camera.getPreferedUp()
 				);
 				glm::mat4 projection = glm::perspective(
@@ -180,7 +184,7 @@ namespace Hogra::Volumetric {
 			for (int slice = firstSlice; slice < sliceCount; slice++) {
 				in = slice % 2;
 				out = (slice + 1) % 2;
-				auto w_slicePos = w_position + w_halfway * (1.0f - ((float)slice / (float)sliceCount) * 2.0f) * w_diameter * 0.5f;
+				auto w_slicePos = w_center + w_halfway * (1.0f - ((float)slice / (float)sliceCount) * 2.0f) * w_diameter * 0.5f;
 				auto m_slicePos = invModelMatrix * glm::vec4(w_slicePos, 1.0f);
 				DrawProxyGeometry(camera,
 					depthTexture,
