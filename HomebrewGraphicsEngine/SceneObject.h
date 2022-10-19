@@ -184,7 +184,7 @@ namespace Hogra {
 		/*
 		* Exports model matrix and inverse model matrix into shader uniform
 		*/
-		void exportMatrices(const ShaderProgram& program);
+		void exportMatrices(const ShaderProgram& program) const;
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); }
 		static std::vector<SceneObject*> heapAllocatedInstances;

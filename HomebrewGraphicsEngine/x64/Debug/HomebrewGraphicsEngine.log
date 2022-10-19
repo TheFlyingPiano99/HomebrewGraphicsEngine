@@ -4,6 +4,8 @@
   Callbacks.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Camera.cpp
+  CameraAnimation.cpp
   Caption.cpp
   Collider.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
@@ -26,10 +28,30 @@ D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObje
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   CuboidCollider.cpp
   DeferredLightingSystem.cpp
+  FBO.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\FBO.cpp(64,38): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   FirstPersonControl.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Font.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(66,37): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(172,41): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(172,41): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(173,36): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(173,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(174,36): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(174,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(176,41): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(176,41): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(177,38): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(177,38): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(178,43): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(178,43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(205,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(213,22): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   ForceField.cpp
+  Generating Code...
+  Compiling...
   GUI.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
@@ -51,23 +73,20 @@ D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(12,
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(23,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(41,28): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  Light.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(97): warning C4715: 'Hogra::Volumetric::Feature::load': not all control paths return a value
-  Compiling...
   LightManager.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\LightManager.cpp(24,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\LightManager.cpp(68,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Material.cpp
   MaterialFactory.cpp
+  MemoryManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   Mesh.cpp
   ObservObjectControl.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   Physics.cpp
+  Plane.cpp
   PostProcessStage.cpp
   RenderLayer.cpp
   Scene.cpp
@@ -94,27 +113,50 @@ D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObje
   SceneManager.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\RenderLayer.h(31): warning C4715: 'Hogra::RenderLayer::GetInFBO': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(97): warning C4715: 'Hogra::Volumetric::Feature::load': not all control paths return a value
+  Compiling...
   SceneObject.cpp
   SceneObjectFactory.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
   ScriptObject.cpp
-  MemoryManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  ShaderProgram.cpp
+  ShaderProgramFactory.cpp
+  ShadowCaster.cpp
   SphericalCollider.cpp
-  Generating Code...
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\RenderLayer.h(31): warning C4715: 'Hogra::RenderLayer::GetInFBO': not all control paths return a value
-  Compiling...
+  Texture1D.cpp
+  Texture2D.cpp
+  Texture3D.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(45,72): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(51,6): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(107,13): warning C4244: 'initializing': conversion from 'float' to 'char', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(109,11): warning C4309: '=': truncation of constant value
+  TextureCube.cpp
+  UniformVariable.cpp
   UserControl.cpp
+  TransferFunction.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(364,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(365,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
   VolumeObject.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(362,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(378,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   Generating Code...
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(97): warning C4715: 'Hogra::Volumetric::Feature::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture2D.h(42): warning C4172: returning address of local variable or temporary: v
 glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info

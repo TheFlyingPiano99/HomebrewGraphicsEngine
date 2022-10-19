@@ -75,10 +75,10 @@ namespace Hogra {
 		mesh->Draw();
 	}
 
-	void SceneObject::exportMatrices(const ShaderProgram& program)
+	void SceneObject::exportMatrices(const ShaderProgram& program) const
 	{
-		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.invModelMatrix"), 1, GL_FALSE, glm::value_ptr(invModelMatrix));
+		program.SetUniform("sceneObject.modelMatrix", modelMatrix);
+		program.SetUniform("sceneObject.invModelMatrix", invModelMatrix);
 	}
 	
 	void SceneObject::Serialize() {

@@ -5,6 +5,7 @@
 #include<iostream>
 #include<cerrno>
 
+
 namespace Hogra {
 
 	// Reads a text file and outputs a string with everything in the text file
@@ -123,4 +124,5 @@ namespace Hogra {
 			}
 		}
 	}
+
 }
