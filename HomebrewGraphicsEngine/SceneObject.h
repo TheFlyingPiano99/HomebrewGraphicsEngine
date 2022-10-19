@@ -39,8 +39,6 @@ namespace Hogra {
 
 		void LatePhysicsUpdate(float dt);
 
-		void Update();
-
 		void AfterPhysicsLoopUpdate();
 
 		void Draw();

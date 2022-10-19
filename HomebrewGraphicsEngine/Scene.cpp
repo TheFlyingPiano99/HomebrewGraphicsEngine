@@ -116,9 +116,6 @@ namespace Hogra {
 		for (auto* volume : volumeObjects) {
 			volume->LatePhysicsUpdate(dt);
 		}
-		for (auto& obj : sceneObjects) {
-			obj->Update();
-		}
 		collisionManager.Update();
 	}
 

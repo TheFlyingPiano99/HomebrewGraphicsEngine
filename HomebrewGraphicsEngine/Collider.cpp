@@ -92,7 +92,7 @@ namespace Hogra {
     {
     }
 
-    void Collider::Update()
+    void Collider::LatePhysicsUpdate(float dt)
     {
         if (nullptr != positionProvider) {
             position = positionProvider->GetPosition();
@@ -104,4 +104,5 @@ namespace Hogra {
             scale = scaleProvider->GetScale();
         }
     }
+
 }

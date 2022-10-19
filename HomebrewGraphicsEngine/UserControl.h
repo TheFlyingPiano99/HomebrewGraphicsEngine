@@ -69,7 +69,7 @@ namespace Hogra {
 
 		// Inherited via Component
 		void EarlyPhysicsUpdate(float dt) override;
-		void Update() override;
+		void LatePhysicsUpdate(float dt) override;
 
 		PositionProvider* positionProvider = nullptr;
 		OrientationProvider* orientationProvider = nullptr;

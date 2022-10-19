@@ -10,6 +10,7 @@
 #include <Windows.h>
 #include <stb/stb_image.h>
 #include "AssetFolderPathManager.h"
+#include "HograTime.h"
 
 
 namespace Hogra {
@@ -167,6 +168,8 @@ namespace Hogra {
 					dt = realDelta;
 					realDelta = 0.0;
 				}
+				Time::dt = dt;
+				Time::totalTime += dt;
 				retVal = SceneManager::getInstance()->PhysicsUpdate(dt);
 				if (-1 == retVal) {
 					break;

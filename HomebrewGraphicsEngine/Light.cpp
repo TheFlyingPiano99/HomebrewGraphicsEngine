@@ -20,7 +20,7 @@ namespace Hogra {
 	{
 	}
 
-	void Light::Update()
+	void Light::LatePhysicsUpdate(float dt)
 	{
 		if (positionProvider != nullptr) {
 			position3D = glm::vec4(positionProvider->GetPosition(), 1.0f);

@@ -52,7 +52,7 @@ namespace Hogra {
 
 	}
 
-	void SceneAudioSource::Update()
+	void SceneAudioSource::LatePhysicsUpdate(float dt)
 	{
 		if (nullptr != positionProvider) {
 			position = positionProvider->GetPosition();

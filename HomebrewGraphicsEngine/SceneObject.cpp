@@ -22,11 +22,8 @@ namespace Hogra {
 		for (auto& component : components) {
 			component->LatePhysicsUpdate(dt);
 		}
-	}
-
-	void SceneObject::Update() {
 		for (auto& comp : components) {
-			comp->Update();
+			comp->LatePhysicsUpdate(dt);
 		}
 		if (nullptr != positionConnector) {
 			position = positionConnector->GetPosition();

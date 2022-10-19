@@ -13,7 +13,7 @@ namespace Hogra {
 		// Inherited via Component
 		virtual void EarlyPhysicsUpdate(float dt) override = 0;
 
-		virtual void Update() override = 0;
+		virtual void LatePhysicsUpdate(float dt) override = 0;
 
 		std::span<const Physics* const > getListeners() const {
 			return listeners;
@@ -45,7 +45,7 @@ namespace Hogra {
 		// Inherited via Component
 		void EarlyPhysicsUpdate(float dt) override;
 
-		void Update() override;
+		void LatePhysicsUpdate(float dt) override;
 
 	};
 
@@ -58,7 +58,7 @@ namespace Hogra {
 		// Inherited via Component
 		void EarlyPhysicsUpdate(float dt) override;
 
-		void Update() override;
+		void LatePhysicsUpdate(float dt) override;
 
 		const glm::vec3& getDirection() const {
 			return direction;

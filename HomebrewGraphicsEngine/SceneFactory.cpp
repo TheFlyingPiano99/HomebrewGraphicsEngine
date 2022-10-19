@@ -362,7 +362,6 @@ namespace Hogra {
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
 		obj->addComponent(collider);
-		obj->Update();
 		scene->AddCollider(collider);
 		scene->AddSceneObject(obj, "cube");
 	}

@@ -63,9 +63,6 @@ namespace Hogra {
 		impulseAsIntegratedTorque = glm::vec3(0.0f, 0.0f, 0.0f);
 	}
 
-	void Physics::Update()
-	{
-	}
 
 	void Physics::Collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal) {
 		glm::vec3 ka = point - this->getOwnerPosition();

@@ -1,4 +1,5 @@
 #include "AudioManager.h"
+#include "HograTime.h"
 
 void Hogra::AudioManager::Init()
 {
@@ -27,6 +28,6 @@ void Hogra::AudioManager::AddSource(SceneAudioSource* source)
 void Hogra::AudioManager::Update()
 {
 	for (auto& source : sceneAudioSources) {
-		source->Update();
+		source->LatePhysicsUpdate(Time::dt);
 	}
 }

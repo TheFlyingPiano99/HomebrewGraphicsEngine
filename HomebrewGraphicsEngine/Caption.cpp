@@ -63,11 +63,6 @@ void Hogra::Caption::LatePhysicsUpdate(float dt)
 	;
 }
 
-void Hogra::Caption::Update()
-{
-	;
-}
-
 Hogra::ShaderProgram* Hogra::Caption::GetShaderProgram() const {
 	return program;
 }

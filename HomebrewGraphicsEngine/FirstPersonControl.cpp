@@ -119,7 +119,7 @@ void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
 	}
 }
 
-void Hogra::FirstPersonControl::Update()
+void Hogra::FirstPersonControl::LatePhysicsUpdate(float dt)
 {
 	if (camera == nullptr) {
 		return;

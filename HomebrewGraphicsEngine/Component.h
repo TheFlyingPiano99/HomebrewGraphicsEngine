@@ -15,8 +15,6 @@ namespace Hogra {
 
 		virtual void EarlyPhysicsUpdate(float dt) {};
 
-		virtual void Update() {};
-
 		virtual void LatePhysicsUpdate(float dt) {};
 
 		virtual void AfterPhysicsLoopUpdate() {}

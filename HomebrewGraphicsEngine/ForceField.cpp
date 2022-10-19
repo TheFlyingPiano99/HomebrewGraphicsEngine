@@ -13,7 +13,7 @@ namespace Hogra {
 		}
 	}
 
-	void HomogeneForceField::Update()
+	void HomogeneForceField::LatePhysicsUpdate(float dt)
 	{
 	}
 
@@ -22,7 +22,7 @@ namespace Hogra {
 	{
 	}
 
-	void CentralForceField::Update()
+	void CentralForceField::LatePhysicsUpdate(float dt)
 	{
 	}
 }

@@ -456,6 +456,9 @@ namespace Hogra::Volumetric {
 		// Find minimum and maximum of original bounding box:
 		auto m_originalMin = glm::vec3(0.0f);
 		auto m_originalMax = glm::vec3(0.0f);
+		auto w_minOld = glm::vec3(0.0f);
+		auto w_maxOld = glm::vec3(0.0f);
+		GetMinAndMax(w_minOld, w_maxOld);
 		for (int i = 0; i < 8; i++) {
 			if (originalBoundingBox.corners[i].x < m_originalMin.x) {
 				m_originalMin.x = originalBoundingBox.corners[i].x;
@@ -585,6 +588,14 @@ namespace Hogra::Volumetric {
 		box.corners[7] = glm::vec3(m_max.x, m_max.y, m_max.z);
 		boundingBox = box;
 		isChanged = true;
+
+		auto w_minNew = glm::vec3(0.0f);
+		auto w_maxNew = glm::vec3(0.0f);
+		GetMinAndMax(w_minNew, w_maxNew);
+		auto diffMin = w_minNew - w_minOld;
+		auto diffMax = w_maxNew - w_maxOld;
+		std::cout << "Difference min: " << diffMin.x << " " << diffMin.y << " " << diffMin.z << std::endl;
+		std::cout << "Difference max: " << diffMax.x << " " << diffMax.y << " " << diffMax.z << std::endl;
 	}
 
 	void VolumeObject::GetMinAndMax(glm::vec3& w_min, glm::vec3& w_max) {

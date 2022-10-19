@@ -1,6 +1,7 @@
 #include "LightManager.h"
 #include "GlobalInclude.h"
 #include "MemoryManager.h"
+#include "HograTime.h"
 
 namespace Hogra {
 	LightManager::LightManager()
@@ -75,7 +76,7 @@ namespace Hogra {
 	void LightManager::Update()
 	{
 		for (auto& light : lights) {
-			light->Update();
+			light->LatePhysicsUpdate(Time::dt);
 		}
 	}
 	const Texture2D& LightManager::GetDepthTexture()

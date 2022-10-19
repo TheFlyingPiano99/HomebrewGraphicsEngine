@@ -24,7 +24,7 @@ namespace Hogra {
         void EarlyPhysicsUpdate(float dt) override {
         }
 
-        void Update() override {
+        void LatePhysicsUpdate(float dt) override {
             if (nullptr != positionProvider) {
                 position = positionProvider->GetPosition();
             }

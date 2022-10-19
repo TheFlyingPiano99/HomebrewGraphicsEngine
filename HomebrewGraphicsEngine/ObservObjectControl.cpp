@@ -15,7 +15,7 @@ void Hogra::ObservObjectControl::Rotate(const glm::vec2& delta)
 		float d = glm::dot(planeNormal, w_d);
 		std::cout << "Delta: " << w_d.x << ", " << w_d.y << ", " << w_d.z << std::endl;
 		std::cout << "D: " << d << std::endl;
-		DragPlane(d);
+		DragPlane(-0.2f);
 		return;
 	}
 	camera->RotateAroundPoint(delta * rotationSpeed);
@@ -65,7 +65,8 @@ void Hogra::ObservObjectControl::grabPlane(float x, float y) {
 		GlobalVariables::hideCursor = true;
 		isPlaneGrabbed = true;
 		planePosition = w_point;
-		planeNormal = w_normal;
+		//planeNormal = w_normal;
+		planeNormal = glm::vec3(1, 0, 0);
 		std::cout << "N: " << planeNormal.x << ", " << planeNormal.y << ", " << planeNormal.z << std::endl;
 	}
 }
