@@ -46,9 +46,9 @@ namespace Hogra {
 
 		/*
 		* Performs collisions
-		* Calls SceneObject::EarlyPhysicsUpdate()
+		* Calls SceneObject::EarlyPhysicsUpdate(float dt)
 		* Performs scene events
-		* Calls SceneObject::LatePhysicsUpdate()
+		* Calls SceneObject::LatePhysicsUpdate(float dt)
 		* Calls SceneObject::Update()
 		*/
 		void PhysicsUpdate(float dt);

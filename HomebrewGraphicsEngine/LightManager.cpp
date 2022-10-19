@@ -76,7 +76,7 @@ namespace Hogra {
 	void LightManager::Update()
 	{
 		for (auto& light : lights) {
-			light->LatePhysicsUpdate(Time::dt);
+			light->LatePhysicsUpdate(0.0f);
 		}
 	}
 	const Texture2D& LightManager::GetDepthTexture()

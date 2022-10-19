@@ -52,8 +52,6 @@ namespace Hogra::Volumetric {
 			return voxels;
 		}
 
-		void Update();
-
 		void LatePhysicsUpdate(float dt);
 
 		void SetTexture(Texture3D* texture) {

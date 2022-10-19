@@ -1,4 +1,5 @@
 #include "CameraAnimation.h"
+#include "HograTime.h"
 
 void Hogra::HeadBob::perform(void* obj, float dt)
 {

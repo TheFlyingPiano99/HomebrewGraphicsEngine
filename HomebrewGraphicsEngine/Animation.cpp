@@ -1,4 +1,6 @@
 #include "Animation.h"
+#include "HograTime.h"
+
 namespace Hogra {
 
 	void Animation::reset() {

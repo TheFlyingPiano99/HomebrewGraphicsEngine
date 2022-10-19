@@ -17,6 +17,7 @@
 #include "MaterialFactory.h"
 #include "ShaderProgramFactory.h"
 #include "GUI.h"
+#include "HograTime.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -96,12 +97,10 @@ namespace Hogra {
 		}
 	}
 
-	//-----------------------------------------------------------------------------
-
 	void Scene::PhysicsUpdate(float dt)
 	{
 		collisionManager.Collide();
-		timeSpent.Set(timeSpent.Get() + dt);
+		timeSpent.Set(Time::totalTime);
 		for (auto& obj : sceneObjects) {
 			obj->EarlyPhysicsUpdate(dt);
 		}
@@ -130,9 +129,6 @@ namespace Hogra {
 		}
 		for (auto& group : instanceGroups) {
 			group.second->Optimalize(camera);
-		}
-		for (auto& volume : volumeObjects) {
-			volume->Update();
 		}
 		lightManager.Update();
 		audioManager.Update();

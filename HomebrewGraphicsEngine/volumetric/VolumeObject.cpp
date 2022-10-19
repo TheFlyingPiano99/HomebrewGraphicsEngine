@@ -269,13 +269,9 @@ namespace Hogra::Volumetric {
 		isChanged = true;
 	}
 
-	void VolumeObject::Update()
-	{
+	void VolumeObject::LatePhysicsUpdate(float dt) {
 		modelMatrix = glm::translate(w_position) * glm::toMat4(orientation) * glm::scale(scale);
 		invModelMatrix = glm::inverse(modelMatrix);
-	}
-
-	void VolumeObject::LatePhysicsUpdate(float dt) {
 		transferFunction.Animate(dt);
 	}
 
