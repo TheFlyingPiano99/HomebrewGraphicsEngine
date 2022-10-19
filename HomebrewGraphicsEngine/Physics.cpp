@@ -1,13 +1,15 @@
 #include "Physics.h"
+#include "HograTime.h"
 #include <math.h>
 #include <iostream>
+
 namespace Hogra {
 
-	void Physics::EarlyPhysicsUpdate(float dtSec)
+	void Physics::EarlyPhysicsUpdate(float dt)
 	{
 	}
 
-	void Physics::LatePhysicsUpdate(float dtSec)
+	void Physics::LatePhysicsUpdate(float dt)
 	{
 		if (!forcedPositionOffsets.empty()) {
 			glm::vec3 sumOffset = glm::vec3(0.0f);	// Position offset constraints
@@ -28,29 +30,29 @@ namespace Hogra {
 			owner->SetOrientation(cumOffset * owner->GetOrientation());
 		}
 		//Movement:
-		momentum += (appliedForce + appliedTransientForce) * dtSec + impulse;
+		momentum += (appliedForce + appliedTransientForce) * dt + impulse;
 		glm::quat orientation = owner->GetOrientation();
 		glm::vec3 rotatedModelSpaceDrag = abs(orientation * modelSpaceDrag);
 		glm::vec3 drag = worldSpaceDrag + rotatedModelSpaceDrag;
-		momentum *= glm::vec3(std::expf(-drag.x * dtSec * invMass), std::expf(-drag.y * dtSec * invMass), std::expf(-drag.z * dtSec * invMass));
+		momentum *= glm::vec3(std::expf(-drag.x * dt * invMass), std::expf(-drag.y * dt * invMass), std::expf(-drag.z * dt * invMass));
 		glm::vec3 pos = owner->GetPosition();
-		pos += momentum * invMass * dtSec;
+		pos += momentum * invMass * dt;
 		owner->SetPosition(pos);
 
 		//Rotation:
-		angularMomentum += (appliedTorque + appliedTransientTorque) * dtSec + impulseAsIntegratedTorque;
+		angularMomentum += (appliedTorque + appliedTransientTorque) * dt + impulseAsIntegratedTorque;
 		glm::mat3 rotationMatrix = owner->getRotationMatrix();
 		glm::vec3 modelSpaceRotationDrag = glm::vec3(
-			std::expf(-rotationalDrag.x * dtSec * invModelSpaceInertiaTensor[0][0]),
-			std::expf(-rotationalDrag.y * dtSec * invModelSpaceInertiaTensor[1][1]),
-			std::expf(-rotationalDrag.z * dtSec * invModelSpaceInertiaTensor[2][2]));
+			std::expf(-rotationalDrag.x * dt * invModelSpaceInertiaTensor[0][0]),
+			std::expf(-rotationalDrag.y * dt * invModelSpaceInertiaTensor[1][1]),
+			std::expf(-rotationalDrag.z * dt * invModelSpaceInertiaTensor[2][2]));
 		glm::mat3 msRotDragMat = glm::mat3(
 			modelSpaceRotationDrag.x, 0.0f, 0.0f,
 			0.0f, modelSpaceRotationDrag.y, 0.0f,
 			0.0f, 0.0f, modelSpaceRotationDrag.z
 		);
 		angularMomentum = rotationMatrix * msRotDragMat * glm::transpose(rotationMatrix) * angularMomentum;
-		glm::vec3 rotation = dtSec * rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix) * angularMomentum;
+		glm::vec3 rotation = dt * rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix) * angularMomentum;
 		if (float ang = length(rotation); ang > 0.0f) {
 			orientation = glm::angleAxis(ang, glm::normalize(rotation)) * orientation;
 			owner->SetOrientation(orientation);

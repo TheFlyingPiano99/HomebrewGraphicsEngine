@@ -28,6 +28,6 @@ void Hogra::AudioManager::AddSource(SceneAudioSource* source)
 void Hogra::AudioManager::Update()
 {
 	for (auto& source : sceneAudioSources) {
-		source->LatePhysicsUpdate(Time::dt);
+		source->LatePhysicsUpdate(0.0f);
 	}
 }

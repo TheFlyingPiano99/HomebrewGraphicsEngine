@@ -20,6 +20,7 @@
 #include "MemoryManager.h"
 #include "PositionConnector.h"
 #include "SceneObjectFactory.h"
+#include "RenderLayer.h"
 
 
 namespace Hogra {
@@ -200,27 +201,37 @@ namespace Hogra {
 			volumeLight,
 			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
 		scene->AddLight(volumeLight);
-		scene->AddVolumeObject(volumeObject);
+
+		auto* volumeSceneObj = Allocator::New<SceneObject>();
+		volumeSceneObj->Init();
+		volumeSceneObj->addComponent(volumeObject);
+		scene->AddSceneObject(volumeSceneObj);
+
 		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
 		auto* posConnector = Allocator::New<PositionConnector>();
+		auto* forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
 		posConnector->Init(volumeLight);
 		bulbSprite->SetPositionConnector(posConnector);
 		scene->AddSceneObject(bulbSprite, "bulbSprite");
+		forwardLayer->AddObject(bulbSprite);
+		forwardLayer->AddObject(volumeSceneObj);
+
+		scene->AddRenderLayer(forwardLayer);
 		InitObjectObserverControl(scene, volumeObject);
 		InitVoxelCaption(scene, dataSetName);
-		
-		
 		auto* bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
-		scene->AddPostProcessStage(bloom);
+		forwardLayer->AddPostProcessStage(bloom);
+		//scene->AddPostProcessStage(bloom);
 
 		auto* hdr = Allocator::New<PostProcessStage>();
 		hdr->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
-		scene->AddPostProcessStage(hdr);
+		forwardLayer->AddPostProcessStage(hdr);
+		//scene->AddPostProcessStage(hdr);
 
-		
 		return scene;
 	}
 	

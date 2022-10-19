@@ -342,6 +342,9 @@
     <ClCompile Include="HograTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RenderLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -632,6 +635,9 @@
     <ClInclude Include="HograTime.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -641,10 +647,10 @@
     <None Include="..\Resources\Shaders\bounding.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\default.frag">
+    <None Include="..\Resources\Shaders\defaultDeferred.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\default.vert">
+    <None Include="..\Resources\Shaders\defaultDeferred.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\flatColor.frag">
@@ -765,13 +771,19 @@
     <None Include="..\Resources\Shaders\voxelAttenuation.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\sprite.frag">
+    <None Include="..\Resources\Shaders\spriteDeferred.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\voxelColorCheap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\sprite.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\defaultForward.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

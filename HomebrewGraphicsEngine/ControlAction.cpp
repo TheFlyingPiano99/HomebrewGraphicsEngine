@@ -63,16 +63,10 @@ namespace Hogra {
 
 	void ToggleHUD::Execute(Scene& scene)
 	{
-		for (auto* volume : scene.GetVolumeObjects()) {
-			volume->GetTransferFunction().ToggleVisibility();
-		}
 	}
 
 	void StepFeature::Execute(Scene& scene)
 	{
-		for (auto* volume : scene.GetVolumeObjects()) {
-			volume->CycleSelectedFeature();
-		}
 	}
 
 	void TogglePause::Execute(Scene& scene)
@@ -188,10 +182,12 @@ namespace Hogra {
 		glfwGetCursorPos(GlobalVariables::window, &x, &y);
 		float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
 		float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+		/*
 		bool isSuccess = scene.GetVolumeObjects()[0]->SelectTransferFunctionRegion(ndc_x, ndc_y);
 		if (!isSuccess) {
 			((ObservObjectControl*)scene.GetUserControl())->grabPlane(ndc_x, ndc_y);
 		}
+		*/
 	}
 
 	void ReleaseClickOnScreen::Execute(Scene& scene) {

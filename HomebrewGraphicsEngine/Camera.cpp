@@ -5,6 +5,7 @@
 #include<glm/gtx/rotate_vector.hpp>
 #include<glm/gtx/vector_angle.hpp>
 #include "GlobalInclude.h"
+#include "HograTime.h"
 
 namespace Hogra {
 

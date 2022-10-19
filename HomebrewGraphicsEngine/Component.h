@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 #include "MemoryManager.h"
+#include "Camera.h"
+#include "FBO.h"
+#include "Texture2D.h"
 
 namespace Hogra {
 
@@ -18,6 +21,12 @@ namespace Hogra {
 		virtual void LatePhysicsUpdate(float dt) {};
 
 		virtual void AfterPhysicsLoopUpdate() {}
+
+		virtual void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) {}
+
+		virtual void Serialize() {}
+
+		virtual void UpdateGui() {}
 
 	protected:
 	};

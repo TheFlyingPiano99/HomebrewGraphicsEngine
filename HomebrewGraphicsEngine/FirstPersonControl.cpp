@@ -4,6 +4,7 @@
 #include "MemoryManager.h"
 #include "SceneEventManager.h"
 #include "SceneEventImplementation.h"
+#include "HograTime.h"
 
 void Hogra::FirstPersonControl::MoveForward()
 {

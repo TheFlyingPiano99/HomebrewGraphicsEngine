@@ -26,7 +26,7 @@
 #include "SceneAudioSource.h"
 #include "UniformVariable.h"
 #include "volumetric/VolumeObject.h"
-
+#include "RenderLayer.h"
 
 namespace Hogra {
 
@@ -46,9 +46,9 @@ namespace Hogra {
 
 		/*
 		* Performs collisions
-		* Calls SceneObject::EarlyPhysicsUpdate()
+		* Calls SceneObject::EarlyPhysicsUpdate(float dt)
 		* Performs scene events
-		* Calls SceneObject::LatePhysicsUpdate()
+		* Calls SceneObject::LatePhysicsUpdate(float dt)
 		* Calls SceneObject::Update()
 		*/
 		void PhysicsUpdate(float dt);
@@ -89,10 +89,6 @@ namespace Hogra {
 
 		void Serialize();
 
-		void AddVolumeObject(Volumetric::VolumeObject* object);
-
-		std::vector<Volumetric::VolumeObject*>& GetVolumeObjects();
-
 		~Scene() {
 			Destroy();
 		}
@@ -123,6 +119,10 @@ namespace Hogra {
 
 		void UpdateGUI();
 
+		void AddRenderLayer(RenderLayer* renderLayer) {
+			renderLayers.push_back(renderLayer);
+		}
+
 	private:
 
 		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
@@ -140,7 +140,7 @@ namespace Hogra {
 		UserControl* userControl = nullptr;
 		ShadowCaster* shadowCaster = nullptr;
 		std::vector<PostProcessStage*> postProcessStages;
-		std::vector<Volumetric::VolumeObject*> volumeObjects;
+		std::vector<RenderLayer*> renderLayers;
 
 		CollisionManager collisionManager;
 		UniformVariable<float> timeSpent;

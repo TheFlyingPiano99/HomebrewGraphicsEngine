@@ -41,9 +41,17 @@ namespace Hogra {
 
 		void AfterPhysicsLoopUpdate();
 
-		void Draw();
+		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera);
 
 		void drawShadow(const ShadowCaster& shadowCaster);
+
+		void Serialize();
+
+		void UpdateGui() {
+			for (auto& comp : components) {
+				comp->UpdateGui();
+			}
+		}
 
 		Mesh* GetMesh() const {
 			return mesh;
@@ -176,7 +184,7 @@ namespace Hogra {
 		/*
 		* Exports model matrix and inverse model matrix into shader uniform
 		*/
-		void exportMatrices(const ShaderProgram& program);
+		void exportMatrices(const ShaderProgram& program) const;
 
 		inline void* operator new(std::size_t size) { return ::operator new(size); }
 		static std::vector<SceneObject*> heapAllocatedInstances;
