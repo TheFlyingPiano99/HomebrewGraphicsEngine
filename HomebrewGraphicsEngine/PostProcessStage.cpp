@@ -42,7 +42,7 @@ namespace Hogra {
 		nextTargetFbo.Unbind();
 	}
 
-	const FBO& PostProcessStage::GetFBO() const
+	FBO& PostProcessStage::GetFBO()
 	{
 		return fbo;
 	}

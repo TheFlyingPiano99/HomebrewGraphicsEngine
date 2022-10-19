@@ -53,8 +53,11 @@ namespace Hogra {
 		}
 	}
 
-	void SceneObject::Draw()
+	void SceneObject::Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera)
 	{
+		for (auto& comp : components) {
+			comp->Draw(outFBO, depthTexture, camera);
+		}
 		if (nullptr == mesh || !isVisible) {
 			return;
 		}
@@ -77,4 +80,11 @@ namespace Hogra {
 		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.invModelMatrix"), 1, GL_FALSE, glm::value_ptr(invModelMatrix));
 	}
+	
+	void SceneObject::Serialize() {
+		for (auto* component : components) {
+			component->Serialize();
+		}
+	}
+
 }

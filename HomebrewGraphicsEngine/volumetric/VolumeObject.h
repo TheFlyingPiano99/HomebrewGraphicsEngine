@@ -3,6 +3,7 @@
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "TransferFunction.h"
+#include "../Component.h"
 #include "../Texture2D.h"
 #include "../Light.h"
 #include "../Texture3D.h"
@@ -22,7 +23,7 @@
 #define ALL_FEATURES_STR "All features"
 
 namespace Hogra::Volumetric {
-	class VolumeObject
+	class VolumeObject : public Component
 	{
 	public:
 
@@ -30,7 +31,7 @@ namespace Hogra::Volumetric {
 
 		void Init(Texture3D* voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize);
 
-		void Draw(const FBO& outputFBO, Camera& camera, const Texture2D& depthTexture);
+		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera);
 
 		const glm::vec3& GetPosition() const;
 
@@ -52,7 +53,7 @@ namespace Hogra::Volumetric {
 			return voxels;
 		}
 
-		void LatePhysicsUpdate(float dt);
+		void LatePhysicsUpdate(float dt) override;
 
 		void SetTexture(Texture3D* texture) {
 			voxels = texture;
@@ -80,7 +81,7 @@ namespace Hogra::Volumetric {
 			}
 		}
 
-		void Serialize();
+		void Serialize() override;
 
 		void CycleSelectedFeature() {
 			const auto* prevSelected = selectedFeature;
@@ -337,6 +338,8 @@ namespace Hogra::Volumetric {
 		void ResizeDisplayBoundingBox(const glm::vec3& w_min, const glm::vec3& w_max);
 
 		void GetMinAndMax(glm::vec3& w_min, glm::vec3& w_max);
+
+		void UpdateGui() override;
 
 	private:
 

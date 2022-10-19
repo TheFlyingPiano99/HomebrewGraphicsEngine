@@ -21,7 +21,7 @@ namespace Hogra {
 
 		virtual void Bind();
 		virtual void Draw(const FBO& nextTargetFbo, const Texture2D& depthTexture);
-		virtual const FBO& GetFBO() const;
+		virtual FBO& GetFBO();
 
 		virtual void OnResize(unsigned int contextWidth, unsigned int contextHeight);
 

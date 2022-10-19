@@ -41,9 +41,17 @@ namespace Hogra {
 
 		void AfterPhysicsLoopUpdate();
 
-		void Draw();
+		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera);
 
 		void drawShadow(const ShadowCaster& shadowCaster);
+
+		void Serialize();
+
+		void UpdateGui() {
+			for (auto& comp : components) {
+				comp->UpdateGui();
+			}
+		}
 
 		Mesh* GetMesh() const {
 			return mesh;

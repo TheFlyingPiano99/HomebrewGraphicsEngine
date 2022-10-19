@@ -215,6 +215,7 @@
     <ClCompile Include="PostProcessStage.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RBO.cpp" />
+    <ClCompile Include="RenderLayer.cpp" />
     <ClCompile Include="ScaleProvider.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneAudioSource.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="PostProcessStage.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RBO.h" />
+    <ClInclude Include="RenderLayer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScaleProvider.h" />
     <ClInclude Include="Scene.h" />
@@ -353,8 +355,9 @@
     <None Include="..\Resources\Shaders\caption.frag" />
     <None Include="..\Resources\Shaders\debug.frag" />
     <None Include="..\Resources\Shaders\debug.vert" />
-    <None Include="..\Resources\Shaders\default.frag" />
-    <None Include="..\Resources\Shaders\default.vert" />
+    <None Include="..\Resources\Shaders\defaultDeferred.frag" />
+    <None Include="..\Resources\Shaders\defaultDeferred.vert" />
+    <None Include="..\Resources\Shaders\defaultForward.vert" />
     <None Include="..\Resources\Shaders\deferredPBRshading.frag" />
     <None Include="..\Resources\Shaders\deferredPBRshadingLightVolume.frag" />
     <None Include="..\Resources\Shaders\depthEffects.frag" />
@@ -383,6 +386,7 @@
     <None Include="..\Resources\Shaders\skybox.frag" />
     <None Include="..\Resources\Shaders\fullscreenQuad.vert" />
     <None Include="..\Resources\Shaders\sprite.frag" />
+    <None Include="..\Resources\Shaders\spriteDeferred.frag" />
     <None Include="..\Resources\Shaders\tapeEffect.frag" />
     <None Include="..\Resources\Shaders\transfer.frag" />
     <None Include="..\Resources\Shaders\transfer.vert" />

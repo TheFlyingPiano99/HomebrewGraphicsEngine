@@ -5,6 +5,7 @@
 #include "../AssetFolderPathManager.h"
 #include "../GeometryFactory.h"
 #include <iostream>
+#include "../GUI.h"
 
 #define VOXEL_ATTENUATION_TEXTURE_WIDTH 2000
 #define VOXEL_ATTENUATION_TEXTURE_HEIGHT 2000
@@ -78,9 +79,9 @@ namespace Hogra::Volumetric {
 		LoadFeatures();
 	}
 
-	void VolumeObject::Draw(const FBO& outputFBO, Camera& camera, const Texture2D& depthTexture)
+	void VolumeObject::Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera)
 	{
-		bool isCameraMoved = camera.PopIsMoved();
+		bool isCameraMoved = camera.IsMoved();
 		bool isFinishedVolume = false;
 		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f || firstSlice > 0) {
 			isFinishedVolume = true;
@@ -220,15 +221,15 @@ namespace Hogra::Volumetric {
 			colorTextures[0].Bind();
 			fullScreenQuad->Draw();
 		}
-		outputFBO.Bind();
+		outFBO.Bind();
 		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		prevCompleteImage.Bind();
 		fullScreenQuad->Draw();
 
-		transferFunction.Draw(outputFBO);
-		outputFBO.Unbind();
+		transferFunction.Draw(outFBO);
+		outFBO.Unbind();
 	}
 
 	const glm::vec3& VolumeObject::GetPosition() const {
@@ -666,6 +667,11 @@ namespace Hogra::Volumetric {
 			stream.close();
 		}
 	}
+
+	void VolumeObject::UpdateGui() {
+		GUI::getInstance()->UpdateGUI(*this);
+	}
+
 
 }
 

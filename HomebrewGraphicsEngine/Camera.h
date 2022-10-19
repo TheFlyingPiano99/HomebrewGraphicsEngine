@@ -112,10 +112,12 @@ namespace Hogra {
 			animationOffset = offset;
 		}
 
-		bool PopIsMoved() {
-			auto temp = moved;
-			moved = false;
-			return temp;
+		bool IsMoved() const {
+			return moved;
+		}
+
+		void SetIsMoved(bool b) {
+			moved = b;
 		}
 
 	private:

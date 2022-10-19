@@ -71,8 +71,8 @@ namespace Hogra {
 		float ao = 0.2f;
 
 		bool alphaBlend = false;
-		int srcBlendFunc = GL_ONE;
-		int destBlendFunc = GL_ONE;
+		int srcBlendFunc = GL_SRC_ALPHA;
+		int destBlendFunc = GL_ONE_MINUS_SRC_ALPHA;
 
 		class ShaderProgramIsNullptr : public std::exception {};
 

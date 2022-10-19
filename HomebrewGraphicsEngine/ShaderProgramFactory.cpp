@@ -19,9 +19,9 @@ namespace Hogra {
 		if (nullptr == defaultBPRProgramWithMapping) {
 			defaultBPRProgramWithMapping = Allocator::New<ShaderProgram>();
 			defaultBPRProgramWithMapping->Init(
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("defaultDeferred.vert"),
 					"",
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.frag")
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("defaultDeferred.frag")
 				);
 		}
 		return defaultBPRProgramWithMapping;
@@ -59,7 +59,7 @@ namespace Hogra {
 		if (nullptr == emissiveMaterial) {
 			emissiveMaterial = Allocator::New<ShaderProgram>();
 			emissiveMaterial->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("defaultDeferred.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("emissive.frag")
 			);
@@ -71,7 +71,7 @@ namespace Hogra {
 		if (nullptr == spriteProgram) {
 			spriteProgram = Allocator::New<ShaderProgram>();
 			spriteProgram->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("default.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("defaultForward.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("sprite.frag")
 			);

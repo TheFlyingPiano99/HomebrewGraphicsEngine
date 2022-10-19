@@ -87,10 +87,9 @@ namespace Hogra {
 			Allocator::Delete(sceneObject);
 		}
 
-		for (auto& volumeObject : volumeObjects) {
-			Allocator::Delete(volumeObject);
+		for (auto renderLayer : renderLayers) {
+			Allocator::Delete(renderLayer);
 		}
-		volumeObjects.clear();
 
 		if (nullptr != userControl) {
 			Allocator::Delete(userControl);
@@ -112,9 +111,6 @@ namespace Hogra {
 		}
 
 		camera.LatePhysicsUpdate(dt);
-		for (auto* volume : volumeObjects) {
-			volume->LatePhysicsUpdate(dt);
-		}
 		collisionManager.Update();
 	}
 
@@ -141,6 +137,8 @@ namespace Hogra {
 		// Init and export data:
 		camera.ExportData();
 		lightManager.ExportData();
+
+		/*
 		// Shadow pass:
 		for (auto& group : instanceGroups) {
 			group.second->GatherInstanceDataForShadow();
@@ -156,20 +154,22 @@ namespace Hogra {
 		for (auto& group : instanceGroups) {
 			group.second->GatherInstanceData();
 		}
-		
+
 		lightManager.BindGBuffer();
 		for (auto& group : instanceGroups) {
 			group.second->Draw();
 		}
+		*/
 
+		const Texture2D& depth = lightManager.GetDepthTexture();
+		FBO defaultFBO = FBO::GetDefault();
 		// Deferred lighting pass:
-		bool isPostProc = false;
-		if (!postProcessStages.empty()) {
-			postProcessStages[0]->Bind();
-			isPostProc = true;
+		if (renderLayers.empty()) {
+			defaultFBO.Bind();
 		}
 		else {
-			FBO::BindDefault();
+			renderLayers.front()->GetInFBO().Bind();
+			renderLayers.front()->GetInFBO().LinkTexture(GL_DEPTH_ATTACHMENT, depth, 0);
 		}
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
 		glClearDepth(1);
@@ -183,21 +183,8 @@ namespace Hogra {
 		glStencilMask(0x00);
 		lightManager.RenderDeferredLighting();
 
-		// Volume pass:
-		FBO defaultFBO = FBO::GetDefault();
-		for (auto& volume : volumeObjects) {
-			const Texture2D& depth = lightManager.GetDepthTexture();
-			volume->Draw(isPostProc ? postProcessStages[0]->GetFBO() : defaultFBO, camera, depth);
-		}
-
-		// Post-process pass:
-		for (int i = 0; i < postProcessStages.size(); i++) {
-			if (i < postProcessStages.size() - 1) {
-				postProcessStages[i]->Draw(postProcessStages[i + 1]->GetFBO(), lightManager.GetDepthTexture());
-			}
-			else {
-				postProcessStages[i]->Draw(FBO::GetDefault(), lightManager.GetDepthTexture());
-			}
+		for (int i = 0; i < renderLayers.size(); i++) {
+			renderLayers[i]->Render((i < renderLayers.size() - 1)? renderLayers[i + 1]->GetInFBO() : defaultFBO, depth, camera);
 		}
 
 		// Text pass:
@@ -209,6 +196,9 @@ namespace Hogra {
 			collisionManager.DrawDebug();
 			lightManager.drawDebug();
 		}
+
+		// Reset camera state:
+		camera.SetIsMoved(false);
 	}
 
 	void Scene::AddSceneObject(SceneObject* object, const std::string& instanceGroupName)
@@ -315,25 +305,15 @@ namespace Hogra {
 
 	void Scene::Serialize()
 	{
-		//TODO serialize the rest
-
-		for (auto& volume : volumeObjects) {
-			volume->Serialize();
+		for (auto& obj : sceneObjects) {
+			obj->Serialize();
 		}
-	}
-
-	void Scene::AddVolumeObject(Volumetric::VolumeObject* object) {
-		volumeObjects.push_back(object);
-	}
-
-	std::vector<Volumetric::VolumeObject*>& Scene::GetVolumeObjects() {
-		return volumeObjects;
 	}
 
 	void Scene::UpdateGUI() {
 
-		for (auto* volume : volumeObjects) {
-			GUI::getInstance()->UpdateGUI(*volume);
+		for (auto* obj : sceneObjects) {
+			obj->UpdateGui();
 		}
 	}
 
