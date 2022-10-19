@@ -336,6 +336,12 @@
     <ClCompile Include="volumetric\VolumeObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HograTime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -620,6 +626,12 @@
     <ClInclude Include="volumetric\VolumeObject.h">
       <Filter>Header Files\Model\Volumetric</Filter>
     </ClInclude>
+    <ClInclude Include="ScriptObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HograTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -675,12 +687,6 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\voxelColor.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelHalfAngleAttenuation.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelHalfAngleColor.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\edgeDetect.frag">
@@ -760,6 +766,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\sprite.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\voxelColorCheap.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

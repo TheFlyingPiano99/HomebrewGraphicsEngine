@@ -22,7 +22,7 @@ namespace Hogra {
 
 	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider
 	{
-		friend class Allocator<SceneObject>;
+		friend class Allocator;
 	public:
 
 		void Init(Mesh* _mesh = nullptr) {
@@ -31,13 +31,13 @@ namespace Hogra {
 
 		virtual ~SceneObject() = default;
 
+		void Serialize(std::ostream& stream);
+
 		void BeforePhysicsLoopUpdate();
 
 		void EarlyPhysicsUpdate(float dt);
 
 		void LatePhysicsUpdate(float dt);
-
-		void Update();
 
 		void AfterPhysicsLoopUpdate();
 

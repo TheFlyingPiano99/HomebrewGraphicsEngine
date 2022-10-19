@@ -1,6 +1,7 @@
 #include "LightManager.h"
 #include "GlobalInclude.h"
 #include "MemoryManager.h"
+#include "HograTime.h"
 
 namespace Hogra {
 	LightManager::LightManager()
@@ -47,7 +48,7 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
 		debugMaterial.Init(&shaderProgram);
 		debugGeometry = GeometryFactory::GetInstance()->getWireFrameSphere();
-		debugLightVolumeMesh = Allocator<Mesh>::New();
+		debugLightVolumeMesh = Allocator::New<Mesh>();
 		debugLightVolumeMesh->Init(&debugMaterial, debugGeometry);
 		debugLightVolumeMesh->setDepthTest(false);
 	}
@@ -75,7 +76,7 @@ namespace Hogra {
 	void LightManager::Update()
 	{
 		for (auto& light : lights) {
-			light->Update();
+			light->LatePhysicsUpdate(Time::dt);
 		}
 	}
 	const Texture2D& LightManager::GetDepthTexture()

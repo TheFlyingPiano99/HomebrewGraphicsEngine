@@ -9,7 +9,7 @@ namespace Hogra {
 	* Singleton
 	*/
 	class AssetFolderPathManager {
-		friend class Allocator<AssetFolderPathManager>;
+		friend class Allocator;
 		static AssetFolderPathManager* instance;
 
 		std::string shaderFolderPath;
@@ -40,13 +40,13 @@ namespace Hogra {
 
 		static AssetFolderPathManager* getInstance() {
 			if (instance == nullptr) {
-				instance = Allocator<AssetFolderPathManager>::New();
+				instance = Allocator::New<AssetFolderPathManager>();
 			}
 			return instance;
 		}
 
 		static void DestroyInstance() {
-			Allocator<AssetFolderPathManager>::Delete(instance);
+			Allocator::Delete(instance);
 		}
 
 		std::string getShaderFolderPath();

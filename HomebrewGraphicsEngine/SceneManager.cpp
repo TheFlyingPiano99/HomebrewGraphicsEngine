@@ -9,7 +9,7 @@ namespace Hogra {
 
 	SceneManager* SceneManager::getInstance() {
 		if (nullptr == instance) {
-			instance = Allocator<SceneManager>::New();
+			instance = Allocator::New<SceneManager>();
 		}
 		return instance;
 	}
@@ -26,8 +26,7 @@ namespace Hogra {
 		if (nullptr == currentScene) {
 			return;
 		}
-		Allocator<Scene>::Delete(currentScene);
-		MemoryManager::DeallocateSceneResources();
+		Allocator::Delete(currentScene);
 		ControlActionManager::getInstance()->UnregisterControls();
 		ControlActionManager::getInstance()->RegisterDefault();
 		currentScene = SceneFactory::getInstance()->CreateDemoScene(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
@@ -79,4 +78,12 @@ namespace Hogra {
 		}
 		return 0;
 	}
+
+	void SceneManager::UnloadScene() {
+		if (nullptr != currentScene) {
+			currentScene->Serialize();
+			Allocator::Delete(currentScene);
+		}
+	}
+
 }

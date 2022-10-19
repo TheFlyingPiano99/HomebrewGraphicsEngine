@@ -1,93 +1,74 @@
 #pragma once
 #include <vector>
-#include <functional>
 #include <iostream>
+#include <set>
+#include <functional>
+#include <numeric>
 
 namespace Hogra {
 
-	class MemoryManager {
-	public:
-		/*
-		* Needs to be called before closing program!
-		*/
-		static void DeallocateAll();
-
-		static void DeallocateSceneResources();
-
-	};
-
-	class MasterAllocator {
-	public:
-		static void DeleteAll() {
-			for (const auto& func : deleteAllFunctions) {
-				func();
-			}
-		}
-
-		static void AddDeleteAllFunction(const std::function<void()>& func) {
-			deleteAllFunctions.push_back(func);
-		}
-
-		static void IncrementAllocationCount() {
-			currentAllocationCount++;
-		}
-
-		static void DecrementAllocationCount() {
-			currentAllocationCount--;
-		}
-		
-		static int GetCurrentAllocationCount() {
-			return currentAllocationCount;
-		}
-
-	private:
-			
-		static std::vector<std::function<void()>> deleteAllFunctions;
-		static int currentAllocationCount;
-	};
-
-
-	template<typename T>
 	class Allocator {
 	public:
+		struct AllocationData {
+			mutable void* pointer;
+			std::function<void()> deleteFunc;
 
+			bool operator==(const AllocationData& ad) {
+				return reinterpret_cast<uintptr_t>(pointer) == reinterpret_cast<uintptr_t>(ad.pointer);
+			}
+
+			bool operator<(const AllocationData& ad) {
+				return reinterpret_cast<uintptr_t>(pointer) < reinterpret_cast<uintptr_t>(ad.pointer);
+			}
+
+			bool operator>(const AllocationData& ad) {
+				return reinterpret_cast<uintptr_t>(pointer) > reinterpret_cast<uintptr_t>(ad.pointer);
+			}
+		};
+
+
+		template<typename T>
 		static T* New() {
-			if (isFirstAllocationOfThisType) {
-				isFirstAllocationOfThisType = false;
-				MasterAllocator::AddDeleteAllFunction(Allocator<T>::DeleteAll);
-			}
-			auto* instance = new T();
-			instances.push_back(instance);
-			MasterAllocator::IncrementAllocationCount();
-			return instance;
+			auto* p = new T();
+			allocations.insert(AllocationData{ p, [p]() { delete p; } });
+			return p;
 		}
 
-		static void Delete(T*& instance) {
-			if (auto iter = std::ranges::find(instances.begin(), instances.end(), instance); iter != instances.end()) {
-				instances.erase(iter);
-				delete instance;
-				MasterAllocator::DecrementAllocationCount();
+		template<typename T>
+		static void Delete(T*& p) {
+			auto toFind = AllocationData();
+			toFind.pointer = p;
+			if (
+				auto iterator = allocations.find(toFind);
+				allocations.end() != iterator && nullptr != iterator->pointer
+				) {
+				iterator->deleteFunc();
+				iterator->pointer = nullptr;
 			}
-			instance = nullptr;
+			p = nullptr;
 		}
+
 
 		static void DeleteAll() {
-			for (T* instance : instances) {
-				delete instance;
-				MasterAllocator::DecrementAllocationCount();
+			for (auto& allocation : allocations) {
+				if (nullptr != allocation.pointer) {
+					allocation.deleteFunc();
+					allocation.pointer = nullptr;
+				}
 			}
-			instances.clear();
+			allocations.clear();
+		}
+
+		static int GetAllocationCount() {
+			
+			return std::accumulate(allocations.begin(), allocations.end(), 0, [](int sum, const AllocationData& data) { return (nullptr != data.pointer) ? sum + 1 : sum; });
 		}
 
 	private:
-		static std::vector<T*> instances;
-		static bool isFirstAllocationOfThisType;
+		static std::set<AllocationData> allocations;
 	};
 
-	template<typename T>
-	std::vector<T*> Allocator<T>::instances = std::vector<T*>();
+	bool operator<(const Allocator::AllocationData& ad, const Allocator::AllocationData& ad2);
 
-	template<typename T>
-	bool Allocator<T>::isFirstAllocationOfThisType = true;
-
+	bool operator>(const Allocator::AllocationData& ad, const Allocator::AllocationData& ad2);
 }

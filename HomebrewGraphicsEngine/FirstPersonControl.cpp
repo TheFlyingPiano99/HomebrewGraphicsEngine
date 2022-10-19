@@ -13,7 +13,7 @@ void Hogra::FirstPersonControl::MoveForward()
 	}
 	walkForce += ahead * propellingForce;
 	if (camera->getAnimation() == nullptr) {
-		auto* a = Allocator<HeadBob>::New();
+		auto* a = Allocator::New<HeadBob>();
 		camera->setAnimation(a);
 	}
 	if (isGrounded) {
@@ -33,7 +33,7 @@ void Hogra::FirstPersonControl::MoveBackward()
 	}
 	walkForce += -ahead * propellingForce;
 	if (camera->getAnimation() == nullptr) {
-		auto* a = Allocator<HeadBob>::New();
+		auto* a = Allocator::New<HeadBob>();
 		camera->setAnimation(a);
 	}
 	if (isGrounded) {
@@ -53,7 +53,7 @@ void Hogra::FirstPersonControl::MoveLeft()
 	}
 	walkForce += -right * propellingForce;
 	if (camera->getAnimation() == nullptr) {
-		auto* a = Allocator<HeadBob>::New();
+		auto* a = Allocator::New<HeadBob>();
 		camera->setAnimation(a);
 	}
 	if (isGrounded) {
@@ -73,7 +73,7 @@ void Hogra::FirstPersonControl::MoveRight()
 	}
 	walkForce += right * propellingForce;
 	if (camera->getAnimation() == nullptr) {
-		auto* a = Allocator<HeadBob>::New();
+		auto* a = Allocator::New<HeadBob>();
 		camera->setAnimation(a);
 	}
 	if (isGrounded) {
@@ -108,7 +108,7 @@ void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
 	if (tSinceLastInput > 0.5f) {
 		auto* a = camera->getAnimation();
 		HeadBob* pointer = (HeadBob*) & a;
-		Allocator<HeadBob>::Delete(pointer);
+		Allocator::Delete(pointer);
 		camera->setAnimation(nullptr);
 	}
 	else {
@@ -119,7 +119,7 @@ void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
 	}
 }
 
-void Hogra::FirstPersonControl::Update()
+void Hogra::FirstPersonControl::LatePhysicsUpdate(float dt)
 {
 	if (camera == nullptr) {
 		return;

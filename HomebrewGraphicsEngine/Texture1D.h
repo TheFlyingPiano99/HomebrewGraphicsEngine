@@ -10,7 +10,7 @@ namespace Hogra {
 
 	class Texture1D : public Texture
 	{
-		friend class Allocator<Texture1D>;
+		friend class Allocator;
 	public:
 		const char* type;
 		unsigned int width = 0;

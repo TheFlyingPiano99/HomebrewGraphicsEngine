@@ -102,7 +102,7 @@ namespace Hogra::Volumetric {
 		std::string name;
 		bool serialize = true;
 
-		void save(std::ostream& stream) {
+		void Serialize(std::ostream& stream) {
 			if (name.compare("") == 0 || !serialize) {
 				return;
 			}
@@ -174,7 +174,7 @@ namespace Hogra::Volumetric {
 		void Init();
 
 		~TransferFunction() {
-			Allocator<Texture2D>::Delete(texture);
+			Allocator::Delete(texture);
 		}
 
 		void crop(glm::vec2 min, glm::vec2 max);
@@ -205,7 +205,7 @@ namespace Hogra::Volumetric {
 		}
 
 		void defaultTransferFunction(glm::ivec2 dimensions);
-		void spatialTransferFunction(glm::ivec2 dimensions, Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission);
+		void SpatialTransferFunction(glm::ivec2 dimensions, Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions = 1);
 		void gradientWeighted(glm::ivec2 dimensions, float globalOpacity);
 
 		void colorFeature(Feature& feature, glm::vec3 color);

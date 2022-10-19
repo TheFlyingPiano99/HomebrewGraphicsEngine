@@ -81,7 +81,7 @@ void Hogra::UserControl::EarlyPhysicsUpdate(float dt)
 
 }
 
-void Hogra::UserControl::Update()
+void Hogra::UserControl::LatePhysicsUpdate(float dt)
 {
 	if (nullptr == physics) {
 		return;

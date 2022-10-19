@@ -10,6 +10,7 @@
 #include <Windows.h>
 #include <stb/stb_image.h>
 #include "AssetFolderPathManager.h"
+#include "HograTime.h"
 
 
 namespace Hogra {
@@ -29,7 +30,7 @@ namespace Hogra {
 	{
 		GLFWimage icons[1];
 		// Flips the image so it appears right side up
-		stbi_set_flip_vertically_on_load(true);
+		stbi_set_flip_vertically_on_load(false);
 		// Reads the image from a file and stores it in bytes
 		int channels = 0;
 		auto path = AssetFolderPathManager::getInstance()->getIconsFolderPath().append(GlobalVariables::windowIcon);
@@ -167,6 +168,8 @@ namespace Hogra {
 					dt = realDelta;
 					realDelta = 0.0;
 				}
+				Time::dt = dt;
+				Time::totalTime += dt;
 				retVal = SceneManager::getInstance()->PhysicsUpdate(dt);
 				if (-1 == retVal) {
 					break;
@@ -189,15 +192,15 @@ namespace Hogra {
 	
 	void HoGraEngineApplication::Destroy() {
 		GUI::getInstance()->DestroyGUI();
+		SceneManager::getInstance()->UnloadScene();
 
 		// Delete window before ending the program
 		glfwDestroyWindow(window);
 		// Terminate GLFW before ending the program
 		glfwTerminate();
 
-		MemoryManager::DeallocateAll();
-		MasterAllocator::DeleteAll();
-		auto undeletedHeapInstances = MasterAllocator::GetCurrentAllocationCount();
+		Allocator::DeleteAll();
+		auto undeletedHeapInstances = Allocator::GetAllocationCount();
 		if (0 < undeletedHeapInstances) {
 			std::cout << "WARNING: " << undeletedHeapInstances << " dynamically allocated instances are not deallocated!" << std::endl;
 		}

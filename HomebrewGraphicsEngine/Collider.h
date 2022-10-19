@@ -47,7 +47,7 @@ namespace Hogra {
 		// Inherited via Component
 		virtual void EarlyPhysicsUpdate(float dt) override;
 
-		virtual void Update() override;
+		virtual void LatePhysicsUpdate(float dt) override;
 
 		const glm::vec3& GetPosition() const {
 			return position;

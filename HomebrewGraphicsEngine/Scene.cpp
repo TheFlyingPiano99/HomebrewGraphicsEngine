@@ -29,7 +29,7 @@ namespace Hogra {
 		if (shadowCaster != nullptr) {
 			throw std::exception("Shadowcaster already initialised! Only one allowed.");
 		}
-		shadowCaster = Allocator<ShadowCaster>::New();
+		shadowCaster = Allocator::New<ShadowCaster>();
 		shadowCaster->Init(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
 	}
 	
@@ -39,9 +39,9 @@ namespace Hogra {
 		return sceneChange;
 	}
 
-	Collider* Scene::IntersectRay(const Ray& ray, glm::vec3& intersectionPoint, glm::vec3& intersectionNormal)
+	Collider* Scene::IntersectRay(const Ray& ray, glm::vec3& w_intersectionPoint, glm::vec3& w_intersectionNormal)
 	{
-		return collisionManager.IntersectRay(ray, intersectionPoint, intersectionNormal);
+		return collisionManager.IntersectRay(ray, w_intersectionPoint, w_intersectionNormal);
 	}
 
 	void Scene::Init(int contextWidth, int contextHeight)
@@ -67,44 +67,32 @@ namespace Hogra {
 
 	void Scene::Destroy()
 	{
-		/*
- 		std::vector<Light*> lights;				//1
-		std::vector<ShaderProgram*> shaders;	//2
-		std::vector<Geometry*> geometries;		//3
-		std::vector<Material*> materials;		//4
-		std::vector<Mesh*> meshes;				//5
-		std::vector<const Texture*> textures;	//6
-		std::vector<SceneObject*> sceneObjects;	//7
-		std::map<std::string, InstanceGroup*> instanceGroups;	//8
-		std::vector<Component*> components;		//9
-		std::vector<Font*> fonts;				//10
-		std::vector<Caption*> captions;			//11
-		UserControl* userControl = nullptr;		//12
-		ShadowCaster* shadowCaster = nullptr;	//13
-		std::vector<PostProcessStage*> postProcessStages;	//14
-		*/
 
 		lightManager.Clear();
 
 		for (auto& instanceGroup : instanceGroups) {	//8
-			Allocator<InstanceGroup>::Delete(instanceGroup.second);
+			Allocator::Delete(instanceGroup.second);
 		}
 		instanceGroups.clear();
 
-		Allocator<ShadowCaster>::Delete(shadowCaster);
+		Allocator::Delete(shadowCaster);
 
 		for (auto& postProcStage : postProcessStages) {	//14
-			Allocator<PostProcessStage>::Delete(postProcStage);
+			Allocator::Delete(postProcStage);
 		}
 		postProcessStages.clear();
 
+		for (auto& sceneObject : sceneObjects) {
+			Allocator::Delete(sceneObject);
+		}
+
 		for (auto& volumeObject : volumeObjects) {
-			Allocator<Volumetric::VolumeObject>::Delete(volumeObject);
+			Allocator::Delete(volumeObject);
 		}
 		volumeObjects.clear();
 
 		if (nullptr != userControl) {
-			Allocator<UserControl>::Delete(userControl);
+			Allocator::Delete(userControl);
 		}
 	}
 
@@ -127,9 +115,6 @@ namespace Hogra {
 		camera.LatePhysicsUpdate(dt);
 		for (auto* volume : volumeObjects) {
 			volume->LatePhysicsUpdate(dt);
-		}
-		for (auto& obj : sceneObjects) {
-			obj->Update();
 		}
 		collisionManager.Update();
 	}
@@ -246,13 +231,13 @@ namespace Hogra {
 					iter->second->addObject(object);
 				}
 				else {
-					auto* group = Allocator<InstanceGroup>::New();
+					auto* group = Allocator::New<InstanceGroup>();
 					group->addObject(object);
 					instanceGroups.emplace(instanceGroupName, group);
 				}
 			}
 			else {
-				auto* group = Allocator<InstanceGroup>::New();
+				auto* group = Allocator::New<InstanceGroup>();
 				group->addObject(object);
 				instanceGroups.emplace(std::to_string(defaultName++), group);
 			}
@@ -334,7 +319,11 @@ namespace Hogra {
 
 	void Scene::Serialize()
 	{
-		//TODO
+		//TODO serialize the rest
+
+		for (auto& volume : volumeObjects) {
+			volume->Serialize();
+		}
 	}
 
 	void Scene::AddVolumeObject(Volumetric::VolumeObject* object) {

@@ -9,7 +9,7 @@ namespace Hogra {
 	*/
 	class GUI
 	{
-		friend class Allocator<GUI>;
+		friend class Allocator;
 		static GUI* instance;
 		ImGuiIO io;
 
@@ -26,13 +26,13 @@ namespace Hogra {
 
 		static GUI* getInstance() {
 			if (instance == nullptr) {
-				instance = Allocator<GUI>::New();
+				instance = Allocator::New<GUI>();
 			}
 			return instance;
 		}
 
 		static void DestroyInstance() {
-			Allocator<GUI>::Delete(instance);
+			Allocator::Delete(instance);
 		}
 
 		void InitGUI(GLFWwindow* window);

@@ -6,14 +6,14 @@ namespace Hogra {
 
 	class SceneManager
 	{
-		friend class Allocator<SceneManager>;
+		friend class Allocator;
 	public:
 
 		static SceneManager* getInstance();
 
 		static void DestroyInstance() {
 			if (nullptr != instance) {
-				Allocator<SceneManager>::Delete(instance);
+				Allocator::Delete(instance);
 				instance = nullptr;
 			}
 		}
@@ -38,11 +38,13 @@ namespace Hogra {
 
 		void HandleControlActions();
 
+		void UnloadScene();
+
 	private:
 		SceneManager() = default;
 
 		~SceneManager() {
-			Allocator<Scene>::Delete(currentScene);
+			UnloadScene();
 		}
 
 		static SceneManager* instance;

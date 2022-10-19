@@ -6,7 +6,7 @@ namespace Hogra {
 
 	class Component
 	{
-		friend class Allocator<Component>;
+		friend class Allocator;
 	public:
 
 		virtual ~Component() = default;
@@ -14,8 +14,6 @@ namespace Hogra {
 		virtual void BeforePhysicsLoopUpdate() {}
 
 		virtual void EarlyPhysicsUpdate(float dt) {};
-
-		virtual void Update() {};
 
 		virtual void LatePhysicsUpdate(float dt) {};
 

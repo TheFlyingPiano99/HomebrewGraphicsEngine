@@ -7,7 +7,7 @@
 namespace Hogra {
 	class SceneFactory
 	{
-		friend class Allocator<SceneFactory>;
+		friend class Allocator;
 	public:
 
 		static SceneFactory* getInstance();

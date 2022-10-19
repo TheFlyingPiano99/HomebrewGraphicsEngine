@@ -12,17 +12,22 @@ namespace Hogra {
 
 	struct Dimensions {
 		int width, height, depth, bytesPerVoxel;
-		float widthScale, heightScale, depthScale = 1.0f;
+		float widthScale = 1.0f, heightScale = 1.0f, depthScale = 1.0f;
 	};
 
 	class Texture3D : public Texture
 	{
-		friend class Allocator<Texture3D>;
+		friend class Allocator;
 	public:
 
 		std::vector<char> bytes;
 		
 		void Init(const std::string& directory, GLuint slot, GLenum format);
+
+		/*
+		* func sholud receive normalized coordinates and outputs normalized intensity
+		*/
+		void Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum format);
 		
 		~Texture3D() override;
 
@@ -40,6 +45,6 @@ namespace Hogra {
 	private:
 		bool ReadDimensions(const char* path, std::string& name, Dimensions& dimensions);
 		Dimensions dimensions;
-		int maxValue = 256;
+		int maxValue = 255;
 	};
 }

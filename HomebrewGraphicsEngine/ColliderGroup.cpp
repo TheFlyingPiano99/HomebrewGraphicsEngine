@@ -46,10 +46,10 @@ void Hogra::ColliderGroup::AddCollider(Collider* collider) {
 	if (subGroups.empty()) {	// Leaf group
 		colliders.push_back(collider);
 		if (colliders.size() > MAX_COLLIDER_COUNT && level < MAX_DEPTH_LEVEL) {	// Divide group into subgroups
-			auto group1 = Allocator<ColliderGroup>::New();
+			auto group1 = Allocator::New<ColliderGroup>();
 			group1->Init(this, level + 1);
 			subGroups.push_back(group1);
-			auto group2 = Allocator<ColliderGroup>::New();
+			auto group2 = Allocator::New<ColliderGroup>();
 			group2->Init(this, level + 1);
 			subGroups.push_back(group2);
 			for (int i = 0; i < 2; i++) {	// First few in separate groups
@@ -95,7 +95,7 @@ int Hogra::ColliderGroup::GetLoad() {
 void Hogra::ColliderGroup::Clear()
 {
 	for (auto& group : subGroups) {
-		Allocator<ColliderGroup>::Delete(group);
+		Allocator::Delete(group);
 	}
 	aabb.SetMin(glm::vec3(0, 0, 0));
 	aabb.SetMax(glm::vec3(0, 0, 0));

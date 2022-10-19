@@ -42,11 +42,12 @@ Source: "..\x64\Release\HomebrewGraphicsEngine.exe"; DestDir: "{app}"; Flags: ig
 Source: "..\x64\Release\assimp-vc143-mt.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\x64\Release\Irrlicht.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Resources\*"; DestDir: "{app}\Resources\"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\Saves\*"; DestDir: "{app}\Saves\"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\Resources\Icons\demoAppIcon.ico"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; IconFilename: "{app}\Resources\Icons\demoAppIcon.ico"
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\Resources\Icons\HoGraEngineLogo.ico"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; IconFilename: "{app}\Resources\Icons\HoGraEngineLogo.ico"
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

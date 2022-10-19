@@ -1,3 +1,8 @@
 ﻿  VolumeObject.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(338,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(349,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(365,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(381,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(97): warning C4715: 'Hogra::Volumetric::Feature::load': not all control paths return a value
+  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

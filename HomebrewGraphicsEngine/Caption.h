@@ -29,8 +29,6 @@ namespace Hogra {
 
 		void LatePhysicsUpdate(float dt) override;
 
-		void Update() override;
-
 		ShaderProgram* GetShaderProgram() const;
 
 		bool IsVisible() const;

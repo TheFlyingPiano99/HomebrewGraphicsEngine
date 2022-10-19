@@ -114,68 +114,63 @@ namespace Hogra {
 
 	void ControlActionManager::RegisterDefault()
 	{
-		RegisterAction(Allocator<MoveAvatarForward>::New());
-		RegisterAction(Allocator<MoveAvatarBackward>::New());
-		RegisterAction(Allocator<MoveAvatarRight>::New());
-		RegisterAction(Allocator<MoveAvatarLeft>::New());
-		RegisterAction(Allocator<MoveAvatarUp>::New());
-		RegisterAction(Allocator<MoveAvatarDown>::New());
-		RegisterAction(Allocator<ToggleGUI>::New());
-		RegisterAction(Allocator<TogglePause>::New());
-		RegisterAction(Allocator<ToggleFullScreenMode>::New());
-		RegisterAction(Allocator<JumpAvatar>::New());
-		RegisterAction(Allocator<ToggleDebugInfo>::New());
-		RegisterAction(Allocator<RestartAction>::New());
-		RegisterAction(Allocator<QuitAction>::New());
+		RegisterAction(Allocator::New<MoveAvatarForward>());
+		RegisterAction(Allocator::New<MoveAvatarBackward>());
+		RegisterAction(Allocator::New<MoveAvatarRight>());
+		RegisterAction(Allocator::New<MoveAvatarLeft>());
+		RegisterAction(Allocator::New<MoveAvatarUp>());
+		RegisterAction(Allocator::New<MoveAvatarDown>());
+		RegisterAction(Allocator::New<ToggleGUI>());
+		RegisterAction(Allocator::New<TogglePause>());
+		RegisterAction(Allocator::New<ToggleFullScreenMode>());
+		RegisterAction(Allocator::New<JumpAvatar>());
+		RegisterAction(Allocator::New<ToggleDebugInfo>());
+		RegisterAction(Allocator::New<RestartAction>());
+		RegisterAction(Allocator::New<QuitAction>());
 
-		pressLeftMouseButtonAction = Allocator<PrimaryAction>::New();
-		pressRightMouseButtonAction = Allocator<SecondaryAction>::New();
+		pressLeftMouseButtonAction = Allocator::New<PrimaryAction>();
+		pressRightMouseButtonAction = Allocator::New<SecondaryAction>();
 		releaseLeftMouseButtonAction = nullptr;
 		releaseRightMouseButtonAction = nullptr;
-		mouseMoveAction = Allocator<CameraMoveAction>::New();
-		mouseScrollAction = Allocator<CameraZoomAction>::New();
+		mouseMoveAction = Allocator::New<CameraMoveAction>();
+		mouseScrollAction = Allocator::New<CameraZoomAction>();
 
 	}
 
 	void ControlActionManager::RegisterDefaultForVoxelObserving()
 	{
-		RegisterAction(Allocator<MoveAvatarForward>::New());
-		RegisterAction(Allocator<MoveAvatarBackward>::New());
-		RegisterAction(Allocator<MoveAvatarRight>::New());
-		RegisterAction(Allocator<MoveAvatarLeft>::New());
-		RegisterAction(Allocator<MoveAvatarUp>::New());
-		RegisterAction(Allocator<MoveAvatarDown>::New());
-		RegisterAction(Allocator<ToggleGUI>::New());
-		RegisterAction(Allocator<ToggleHUD>::New());
-		RegisterAction(Allocator<TogglePause>::New());
-		RegisterAction(Allocator<ToggleFullScreenMode>::New());
-		RegisterAction(Allocator<JumpAvatar>::New());
-		RegisterAction(Allocator<ToggleDebugInfo>::New());
-		RegisterAction(Allocator<RestartAction>::New());
-		RegisterAction(Allocator<QuitAction>::New());
+		RegisterAction(Allocator::New<ToggleGUI>());
+		RegisterAction(Allocator::New<ToggleHUD>());
+		RegisterAction(Allocator::New<TogglePause>());
+		RegisterAction(Allocator::New<ToggleFullScreenMode>());
+		RegisterAction(Allocator::New<ToggleDebugInfo>());
+		RegisterAction(Allocator::New<RestartAction>());
+		RegisterAction(Allocator::New<QuitAction>());
+		RegisterAction(Allocator::New<StepFeature>());
 
-		pressLeftMouseButtonAction = Allocator<ClickOnScreen>::New();
-		pressRightMouseButtonAction = Allocator<GrabAction>::New();
-		releaseLeftMouseButtonAction = nullptr;
-		releaseRightMouseButtonAction = Allocator<ReleaseAction>::New();
+		pressLeftMouseButtonAction = Allocator::New<ClickOnScreen>();
+		pressRightMouseButtonAction = Allocator::New<GrabAction>();
+		releaseLeftMouseButtonAction = Allocator::New<ReleaseClickOnScreen>();
+		releaseRightMouseButtonAction = Allocator::New<ReleaseAction>();
 
-		mouseMoveAction = Allocator<CameraMoveAction>::New();
-		mouseScrollAction = Allocator<CameraZoomAction>::New();
+		mouseMoveAction = Allocator::New<CameraMoveAction>();
+		mouseScrollAction = Allocator::New<CameraZoomAction>();
 
 	}
 
 	void ControlActionManager::UnregisterControls() {
 		ClearQueue();
 		for (auto& act : registeredKeyActions) {
-			Allocator<ButtonKeyAction>::Delete(act.second);
+			auto p = act.second;
+			Allocator::Delete(p);
 		}
 		registeredKeyActions.clear();
-		Allocator<ButtonKeyAction>::Delete(pressLeftMouseButtonAction);
-		Allocator<ButtonKeyAction>::Delete(pressRightMouseButtonAction);
-		Allocator<ButtonKeyAction>::Delete(releaseLeftMouseButtonAction);
-		Allocator<ButtonKeyAction>::Delete(releaseRightMouseButtonAction);
-		Allocator<AxisMoveAction>::Delete(mouseMoveAction);
-		Allocator<AxisMoveAction>::Delete(mouseScrollAction);
+		Allocator::Delete(pressLeftMouseButtonAction);
+		Allocator::Delete(pressRightMouseButtonAction);
+		Allocator::Delete(releaseLeftMouseButtonAction);
+		Allocator::Delete(releaseRightMouseButtonAction);
+		Allocator::Delete(mouseMoveAction);
+		Allocator::Delete(mouseScrollAction);
 	}
 
 	void ControlActionManager::RegisterAction(ButtonKeyAction* toRegister)
@@ -200,12 +195,12 @@ namespace Hogra {
 
 	ControlActionManager* ControlActionManager::getInstance() {
 		if (nullptr == instance) {
-			instance = Allocator<ControlActionManager>::New();
+			instance = Allocator::New<ControlActionManager>();
 		}
 		return instance;
 	}
 
 	void ControlActionManager::DestroyInstance() {
-		Allocator<ControlActionManager>::Delete(instance);
+		Allocator::Delete(instance);
 	}
 }

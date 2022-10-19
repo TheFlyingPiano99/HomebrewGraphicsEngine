@@ -8,7 +8,7 @@
 namespace Hogra {
 	class MaterialFactory
 	{
-		friend class Allocator<MaterialFactory>;
+		friend class Allocator;
 	public:
 		static MaterialFactory* GetInstance();
 		static void DestroyInstance();

@@ -10,7 +10,6 @@ namespace Hogra {
 	
 	void Texture3D::Init(const std::string& directory, GLuint slot, GLenum format)
 	{
-		maxValue = std::pow(2, dimensions.bytesPerVoxel * 8) - 1;
 		std::string name;	// Discarded !!!
 		if (!ReadDimensions(std::string(directory).append("/dimensions.txt").c_str(), name, this->dimensions)) {
 			throw std::exception("Failed to read dimensions of voxel data!");
@@ -29,6 +28,7 @@ namespace Hogra {
 		}
 
 		bytes = std::vector<char>(dimensions.width * dimensions.height * dimensions.depth * dimensions.bytesPerVoxel);
+		maxValue = (int)std::powf(2.0f, (float)dimensions.bytesPerVoxel * 8.0f) - 1;
 
 		// Flips the image so it appears right side up
 		//stbi_set_flip_vertically_on_load(false);
@@ -90,6 +90,57 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_3D, 0);
 	}
 
+	void Texture3D::Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum format)
+	{
+		dimensions.width = resolution.x;
+		dimensions.height = resolution.y;
+		dimensions.depth = resolution.z;
+		dimensions.bytesPerVoxel = 1;
+
+		bytes.resize(resolution.x * resolution.y * resolution.z);
+
+		for (int x = 0; x < resolution.x; x++) {
+			for (int y = 0; y < resolution.y; y++) {
+				for (int z = 0; z < resolution.z; z++) {
+					unsigned int idx = z * dimensions.height * dimensions.width * dimensions.bytesPerVoxel + y * dimensions.width * dimensions.bytesPerVoxel + x * dimensions.bytesPerVoxel;
+					float f = func((float)x / (float)resolution.x, (float)y / (float)resolution.y, (float)z / (float)resolution.z);
+					char v = 255 * f;
+					if (f > 0.01f) {
+						v = 200;
+					}
+					else {
+						v = 0;
+					}
+					bytes[idx] = v;
+				}
+			}
+		}
+		// Generates an OpenGL texture object
+		glGenTextures(1, &ID);
+		// Assigns the texture to a Texture Unit
+		glActiveTexture(GL_TEXTURE0 + slot);
+		unit = slot;
+		glBindTexture(GL_TEXTURE_3D, ID);
+
+		// Configures the type of algorithm that is used to make the image smaller or bigger
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		// Configures the way the texture repeats (if it does at all)
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
+
+		// Assigns the image to the OpenGL Texture object
+		//TODO
+		glTexImage3D(GL_TEXTURE_3D, 0, format, dimensions.width, dimensions.height, dimensions.depth, 0, format, GL_UNSIGNED_BYTE, &bytes[0]);
+		// Generates MipMaps
+		glGenerateMipmap(GL_TEXTURE_3D);
+
+		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
+		glBindTexture(GL_TEXTURE_3D, 0);
+	}
+
 	Texture3D::~Texture3D()
 	{
 		this->Delete();
@@ -112,7 +163,7 @@ namespace Hogra {
 
 	const glm::vec4 Texture3D::ResampleGradientAndDensity(glm::ivec3 position)
 	{
-		float intensity = operator()(position);
+		float intensity = this->operator()(position);
 		glm::vec3 stepSize = glm::vec3(1.0);
 		glm::vec3 sample0, sample1;
 		sample0.x = operator()(glm::ivec3(position.x - stepSize.x, position.y, position.z));
@@ -137,7 +188,7 @@ namespace Hogra {
 			|| position.y < 0
 			|| position.z >= dimensions.depth
 			|| position.z < 0) {
-			return 0.0f;	// Prevent access violation error.
+			return 0.0f;
 		}
 		int idx = position.z * dimensions.height * dimensions.width * dimensions.bytesPerVoxel + position.y * dimensions.width * dimensions.bytesPerVoxel + position.x * dimensions.bytesPerVoxel;
 		float result;

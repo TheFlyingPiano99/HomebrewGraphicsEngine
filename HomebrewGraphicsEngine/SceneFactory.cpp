@@ -27,34 +27,34 @@ namespace Hogra {
 
 	SceneFactory* SceneFactory::getInstance() {
 		if (nullptr == instance) {
-			instance = Allocator<SceneFactory>::New();
+			instance = Allocator::New<SceneFactory>();
 		}
 		return instance;
 	}
 	
 	void SceneFactory::DestroyInstance() {
-		Allocator<SceneFactory>::Delete(instance);
+		Allocator::Delete(instance);
 	}
 
 	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
-		Scene* scene = Allocator<Scene>::New();
+		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
-		auto* light = Allocator<Light>::New();
+		auto* light = Allocator::New<Light>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
 		
-		light = Allocator<Light>::New();
+		light = Allocator::New<Light>();
 		light->Init(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
 		scene->AddLight(light);
-		light = Allocator<Light>::New();
+		light = Allocator::New<Light>();
 		light->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(50.0f, 250.0f, 50.0f));
 		scene->AddLight(light);
-		light = Allocator<Light>::New();
+		light = Allocator::New<Light>();
 		light->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(50.0f, 50.0f, 250.0f));
 		scene->AddLight(light);
 		std::srand(0);
 		for (int i = 0; i < 10; i++) {
-			auto* lightInst = Allocator<Light>::New();
+			auto* lightInst = Allocator::New<Light>();
 			lightInst->Init(glm::vec4(std::rand() % 1000 - 500, 2.0f, std::rand() % 1000 - 500, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
 			scene->AddLight(lightInst);
 		}
@@ -87,7 +87,7 @@ namespace Hogra {
 		}
 		for (int i = 10; i < 15; i++) {
 			auto* obj = InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "glowing");
-			auto* light = Allocator<Light>::New();
+			auto* light = Allocator::New<Light>();
 			light->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.0f, 10.0f));
 			obj->addComponent(light);
 			light->SetPositionProvider(obj);
@@ -98,7 +98,7 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/mario-bros-hd.png"),
 			&scene->GetCamera()
 		);
-		auto* marioColl = Allocator<AABBCollider>::New();
+		auto* marioColl = Allocator::New<AABBCollider>();
 		marioColl->Init();
 		marioColl->SetPositionProvider(mario);
 		marioColl->setMinRelToPosition(glm::vec3(-0.5f, -0.5f, -0.5f));
@@ -136,16 +136,16 @@ namespace Hogra {
 
 		InitAudio(scene, control);
 
-		auto* stage0 = Allocator<PostProcessStage>::New();
+		auto* stage0 = Allocator::New<PostProcessStage>();
 		stage0->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
 			contextWidth, contextHeight);
 		scene->AddPostProcessStage(stage0);
 
-		auto* bloom = Allocator<Bloom>::New();
+		auto* bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
 		scene->AddPostProcessStage(bloom);
 
-		auto* stage1 = Allocator<PostProcessStage>::New();
+		auto* stage1 = Allocator::New<PostProcessStage>();
 		stage1->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		scene->AddPostProcessStage(stage1);
@@ -156,28 +156,42 @@ namespace Hogra {
 	{
 
 		//Test mem allocator:
-		Texture2D* textureInstance = Allocator<Hogra::Texture2D>::New();
+		Texture2D* textureInstance = Allocator::New<Hogra::Texture2D>();
 
-		Scene* scene = Allocator<Scene>::New();
+		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
 
 		// Volume:
 		const char* dataSetName = "Shoulder";
-		auto* voxelTexture = Allocator<Texture3D>::New();
+		//const char* dataSetName = "cthead-8bit";
+		auto* voxelTexture = Allocator::New<Texture3D>();
+		
 		voxelTexture->Init(
-//			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
 	AssetFolderPathManager::getInstance()->getTextureFolderPath().append(dataSetName),
 		3,
 			GL_RED
 		);
 
-		auto* volumeLight = Allocator<Light>::New();
+		//TODO
+		/*
+		voxelTexture->Init(
+			glm::ivec3(50, 50, 50),
+			std::function([](float x, float y, float z) {
+				float l = sqrtf((x - 0.5) * (x - 0.5) + (y - 0.5) * (y - 0.5) + (z - 0.5) * (z - 0.5));
+				return (x > 0.5f)? 1.0f : 0.0f;
+				}),
+			(GLuint)3,
+			(GLenum)GL_RED
+		);
+		*/
+
+		auto* volumeLight = Allocator::New<Light>();
 		volumeLight->Init(
 			glm::vec4(10, 10, 10, 1.0),
 			glm::vec3(10000.0f, 10000.0f, 10000.0f)
 		);
 		volumeLight->SetCastShadow(false);
-		auto* volumeObject = Allocator<Volumetric::VolumeObject>::New();
+		auto* volumeObject = Allocator::New<Volumetric::VolumeObject>();
 		volumeObject->Init(
 			voxelTexture,
 			glm::vec3(0, 0, 0),
@@ -188,7 +202,7 @@ namespace Hogra {
 		scene->AddLight(volumeLight);
 		scene->AddVolumeObject(volumeObject);
 		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
-		auto* posConnector = Allocator<PositionConnector>::New();
+		auto* posConnector = Allocator::New<PositionConnector>();
 		posConnector->Init(volumeLight);
 		bulbSprite->SetPositionConnector(posConnector);
 		scene->AddSceneObject(bulbSprite, "bulbSprite");
@@ -196,11 +210,11 @@ namespace Hogra {
 		InitVoxelCaption(scene, dataSetName);
 		
 		
-		auto* bloom = Allocator<Bloom>::New();
+		auto* bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
 		scene->AddPostProcessStage(bloom);
 
-		auto* hdr = Allocator<PostProcessStage>::New();
+		auto* hdr = Allocator::New<PostProcessStage>();
 		hdr->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
@@ -212,9 +226,9 @@ namespace Hogra {
 	
 	ForceField* SceneFactory::InitGravitation(Scene* scene)
 	{
-		SceneObject* obj = Allocator<SceneObject>::New();
+		SceneObject* obj = Allocator::New<SceneObject>();
 		obj->Init();
-		auto* field = Allocator<HomogeneForceField>::New();
+		auto* field = Allocator::New<HomogeneForceField>();
 		field->SetStrength(9.8f);
 
 		obj->addComponent(field);
@@ -225,90 +239,90 @@ namespace Hogra {
 	CompositeCollider* SceneFactory::InitCompositeCollider()
 	{
 		// 1, 1 quarter
-		CompositeCollider* col = Allocator<CompositeCollider>::New();
+		CompositeCollider* col = Allocator::New<CompositeCollider>();
 		col->Init();
-		auto* subCol = Allocator<AABBCollider>::New();
+		auto* subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, 2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, 2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, 7.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, 7.5f));
 
 		// -1, 1 quarter
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, 2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, 2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, 7.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, 7.5f));
 
 		// 1, -1 quarter
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, -2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, -2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(2.5f, 0.0f, -7.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(7.5f, 0.0f, -7.5f));
 
 		// -1, -1 quarter
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, -2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-7.5f, 0.0f, -2.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
 		col->addSubCollider(subCol, glm::vec3(-2.5f, 0.0f, -7.5f));
-		subCol = Allocator<AABBCollider>::New();
+		subCol = Allocator::New<AABBCollider>();
 		subCol->Init();
 		subCol->setMinRelToPosition(glm::vec3(-2.5f, -0.5f, -2.5f));
 		subCol->setMaxRelToPosition(glm::vec3(2.5f, 0.5f, 2.5f));
@@ -322,14 +336,14 @@ namespace Hogra {
 		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
 		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
 		Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
-		auto* cubeMesh = Allocator<Mesh>::New();
+		auto* cubeMesh = Allocator::New<Mesh>();
 		cubeMesh->Init(material, cubeGeometry);
-		auto* obj = Allocator<SceneObject>::New();
+		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(cubeMesh);
 		obj->SetPosition(pos);
 		obj->SetScale(glm::vec3(10.0f, 0.5f, 10.0f));
 
-		auto* cubePhysics = Allocator<Physics>::New();
+		auto* cubePhysics = Allocator::New<Physics>();
 		cubePhysics->Init(obj);
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 		cubePhysics->setWorldSpaceDrag(glm::vec3(0.5f, 100.5f, 0.5f));
@@ -348,14 +362,13 @@ namespace Hogra {
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
 		obj->addComponent(collider);
-		obj->Update();
 		scene->AddCollider(collider);
 		scene->AddSceneObject(obj, "cube");
 	}
 	
 	SceneObject* SceneFactory::InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName)
 	{
-		SphericalCollider* collider = Allocator<SphericalCollider>::New();
+		SphericalCollider* collider = Allocator::New<SphericalCollider>();
 		collider->Init();
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
@@ -367,14 +380,14 @@ namespace Hogra {
 			material = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
 		}
 		Geometry* geometry = GeometryFactory::GetInstance()->getSphere();
-		auto* mesh = Allocator<Mesh>::New();
+		auto* mesh = Allocator::New<Mesh>();
 		mesh->Init(material, geometry);
-		auto* obj = Allocator<SceneObject>::New();
+		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(mesh);
 		obj->SetPosition(pos);
 		obj->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 
-		auto* physics = Allocator<Physics>::New();
+		auto* physics = Allocator::New<Physics>();
 		physics->Init(obj);
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
@@ -399,28 +412,40 @@ namespace Hogra {
 	
 	void SceneFactory::InitCaptions(Scene* scene)
 	{
-		auto* font = Allocator<Font>::New();
+		auto* font = Allocator::New<Font>();
 		font->Init("arial.ttf");
 
-		Caption* caption1 = Allocator<Caption>::New();
+		Caption* caption1 = Allocator::New<Caption>();
 		caption1->Init("Homebrew Graphics Engine Demo", font,
 			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.95), 1.5f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
-		Allocator<Font>::Delete(font);
+		Allocator::Delete(font);
 	}
 
 	void SceneFactory::InitVoxelCaption(Scene* scene, const char* dataSetName) {
-		auto* font = Allocator<Font>::New();
+		auto* font = Allocator::New<Font>();
 		font->Init("arial.ttf");
-		auto* caption1 = Allocator<Caption>::New();
+		auto* caption1 = Allocator::New<Caption>();
 		caption1->Init("Volume rendering", font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.95), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.96), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
-		auto* caption2 = Allocator<Caption>::New();
-		caption2->Init(std::string("Data set: ").append(dataSetName), font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.91), 1.0f, glm::vec4(1, 1, 1, 1));
+
+		auto* caption2 = Allocator::New<Caption>();
+		caption2->Init(std::string("Dataset: ").append(dataSetName), font,
+			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.93), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
-		Allocator<Font>::Delete(font);
+
+		caption2 = Allocator::New<Caption>();
+		caption2->Init(std::string("Toggle transfer function [H]"), font,
+			glm::vec2(GlobalVariables::renderResolutionWidth * 0.9f, GlobalVariables::renderResolutionHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
+		scene->AddCaption(caption2);
+
+		caption2 = Allocator::New<Caption>();
+		caption2->Init(std::string("Toggle options [O]"), font,
+			glm::vec2(GlobalVariables::renderResolutionWidth * 0.1f, GlobalVariables::renderResolutionHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
+		scene->AddCaption(caption2);
+
+		Allocator::Delete(font);
 	}
 	
 	void SceneFactory::InitGroud(Scene* scene)
@@ -429,17 +454,17 @@ namespace Hogra {
 			for (int j = 0; j < 10; j++) {
 				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
 				Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
-				auto* cubeMesh = Allocator<Mesh>::New();
+				auto* cubeMesh = Allocator::New<Mesh>();
 				cubeMesh->Init(material, cubeGeometry);
-				auto* obj = Allocator<SceneObject>::New();
+				auto* obj = Allocator::New<SceneObject>();
 				obj->Init(cubeMesh);
 				obj->SetPosition(glm::vec3(i * 100.0f - 500.0f, 0.0f, j * 100.0f - 500.0f));
 				obj->SetScale(glm::vec3(50.0f, 1.0f, 50.0f));
 
-				auto* cubePhysics = Allocator<Physics>::New();
+				auto* cubePhysics = Allocator::New<Physics>();
 				cubePhysics->Init(obj);
 				cubePhysics->setPositionForcingLevel(0.0f);
-				auto* collider = Allocator<AABBCollider>::New();
+				auto* collider = Allocator::New<AABBCollider>();
 				collider->Init();
 				cubePhysics->setElasticity(0.2f);
 				cubePhysics->setFriction(0.9f);
@@ -457,7 +482,7 @@ namespace Hogra {
 	
 	void SceneFactory::InitSkyBox(Scene* scene)
 	{
-		ShaderProgram* skyboxShader = Allocator<ShaderProgram>::New();
+		ShaderProgram* skyboxShader = Allocator::New<ShaderProgram>();
 		skyboxShader->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 			"",
@@ -470,24 +495,24 @@ namespace Hogra {
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
-		auto* cubeMap = Allocator<TextureCube>::New();
+		auto* cubeMap = Allocator::New<TextureCube>();
 		cubeMap->Init(imagePaths, SKYBOX_UNIT);
-		auto* skyBoxMaterial = Allocator<Material>::New();
+		auto* skyBoxMaterial = Allocator::New<Material>();
 		skyBoxMaterial->Init(skyboxShader);
 		skyBoxMaterial->addTexture(cubeMap);
 		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
-		auto* skyBoxMesh = Allocator<Mesh>::New();
+		auto* skyBoxMesh = Allocator::New<Mesh>();
 		skyBoxMesh->Init(skyBoxMaterial, fullscreenQuad);
 		skyBoxMesh->setDepthTest(false);
 		skyBoxMesh->setStencilTest(false);
-		auto* obj = Allocator<SceneObject>::New();
+		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(skyBoxMesh);
 		scene->AddSceneObject(obj);
 	}
 	
 	void SceneFactory::InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field)
 	{
-		SphericalCollider* collider = Allocator<SphericalCollider>::New();
+		SphericalCollider* collider = Allocator::New<SphericalCollider>();
 		collider->Init();
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
@@ -495,15 +520,15 @@ namespace Hogra {
 		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("planks");
 		Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->SetFaceCulling(false);
-		auto* mesh = Allocator<Mesh>::New();
+		auto* mesh = Allocator::New<Mesh>();
 		mesh->Init(material, geometry);
-		auto* obj = Allocator<SceneObject>::New();
+		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(mesh);
 		obj->SetPosition(pos);
 		obj->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
-		auto* physics = Allocator<Physics>::New();
+		auto* physics = Allocator::New<Physics>();
 		physics->Init(obj);
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
@@ -525,17 +550,17 @@ namespace Hogra {
 	
 	void SceneFactory::InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control)
 	{
-		auto* avatar = Allocator<SceneObject>::New();
+		auto* avatar = Allocator::New<SceneObject>();
 		avatar->Init();
 		avatar->SetPosition(glm::vec3(-60.0f, 2.0f, -60.0f));
-		auto* posConnector = Allocator<PositionConnector>::New();
+		auto* posConnector = Allocator::New<PositionConnector>();
 		posConnector->Init(avatar, glm::vec3(0.0f, 0.8f, 0.0f));
 		scene->GetCamera().SetPositionConnetor(posConnector);
-		auto* collider = Allocator<AABBCollider>::New();
+		auto* collider = Allocator::New<AABBCollider>();
 		collider->Init();
 		collider->setMinRelToPosition(glm::vec3(-0.2f, -1.0f, -0.2f));
 		collider->setMaxRelToPosition(glm::vec3(0.2f, 1.0f, 0.2f));
-		auto* physics = Allocator<Physics>::New();
+		auto* physics = Allocator::New<Physics>();
 		physics->Init(avatar);
 		physics->setMass(80.0f);
 		physics->setWorldSpaceDrag(glm::vec3(200.0f, 0.01f, 200.0f));
@@ -547,7 +572,7 @@ namespace Hogra {
 		collider->SetPhysics(physics);
 		collider->SetPositionProvider(avatar);
 		scene->AddCollider(collider, "avatar");
-		control = Allocator<FirstPersonControl>::New();
+		control = Allocator::New<FirstPersonControl>();
 		control->SetScene(scene);
 		control->setPhysics(physics);
 		control->setCamera(&scene->GetCamera());
@@ -555,7 +580,7 @@ namespace Hogra {
 		control->setInitialUp(scene->getPreferedUp());
 		control->setJumpImpulse(600.0f);
 		control->setPropellingForce(2000.0f);
-		auto* jumpCollider = Allocator<AABBCollider>::New();
+		auto* jumpCollider = Allocator::New<AABBCollider>();
 		jumpCollider->Init();
 		jumpCollider->setMinRelToPosition(glm::vec3(-0.2f, -1.1f, -0.2f));
 		jumpCollider->setMaxRelToPosition(glm::vec3(0.2f, -0.9f, 0.2f));
@@ -577,27 +602,35 @@ namespace Hogra {
 
 	void SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
 	{
-		auto control = Allocator<ObservObjectControl>::New();
+		auto control = Allocator::New<ObservObjectControl>();
 		control->SetCamera(scene->GetCamera());
 		if (nullptr != volumeObject) {
 			control->SetVolumeObject(*volumeObject);
 		}
+		control->SetScene(scene);
+		auto collider = Allocator::New<AABBCollider>();
+		collider->Init();
+		collider->SetMin(glm::vec3(-2.0f, -2.0f, -2.0f));
+		collider->SetMax(glm::vec3(2.0f, 2.0f, 2.0f));
+		collider->SetPosition(glm::vec3(0,0,0));
+		control->AddCollider(collider);
+		scene->AddCollider(collider, "volumePlane");
 		scene->SetUserControl(control);
 	}
 	
 	void SceneFactory::InitLaserBeam(Hogra::Scene* scene, Hogra::FirstPersonControl* control)
 	{
-		auto obj = Allocator<SceneObject>::New();
+		auto obj = Allocator::New<SceneObject>();
 		auto geom = GeometryFactory::GetInstance()->getCilinder();
 		auto material = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 100.0f);
-		auto mesh = Allocator<Mesh>::New();
+		auto mesh = Allocator::New<Mesh>();
 		mesh->Init(material, geom);
 		obj->Init(mesh);
 		obj->SetIsVisible(false);
 		obj->SetIsCastingShadow(false);
 		scene->AddSceneObject(obj);
 		control->SetLaserObject(obj);
-		Light* laserInpactLight = Allocator<Light>::New();
+		Light* laserInpactLight = Allocator::New<Light>();
 		laserInpactLight->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(25.0f, 20.0f, 10.0f));
 		scene->AddLight(laserInpactLight);
 		control->SetLaserInpactLight(laserInpactLight);
@@ -607,34 +640,34 @@ namespace Hogra {
 	{
 
 
-		auto buffer = Allocator<AudioBuffer>::New();
+		auto buffer = Allocator::New<AudioBuffer>();
 		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("human-impact.wav"));
 
-		auto source = Allocator<AudioSource>::New();
+		auto source = Allocator::New<AudioSource>();
 		source->Init(buffer);
 		source->SetGain(0.3f);
 
-		auto sceneSource = Allocator<SceneAudioSource>::New();
+		auto sceneSource = Allocator::New<SceneAudioSource>();
 		sceneSource->Init(source);
 		scene->AddSceneAudioSource(sceneSource);
 		control->SetJumpAudioSource(sceneSource);
 		
 		// Steps:
-		auto footstepsBuffer = Allocator<AudioBuffer>::New();
+		auto footstepsBuffer = Allocator::New<AudioBuffer>();
 		footstepsBuffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("footsteps.wav"));
-		auto footstepsSource = Allocator<AudioSource>::New();
+		auto footstepsSource = Allocator::New<AudioSource>();
 		footstepsSource->Init(footstepsBuffer);
-		auto footstepsSceneAudioSource = Allocator<SceneAudioSource>::New();
+		auto footstepsSceneAudioSource = Allocator::New<SceneAudioSource>();
 		footstepsSceneAudioSource->Init(footstepsSource);
 		scene->AddSceneAudioSource(footstepsSceneAudioSource);
 		control->SetFootstepAudioSource(footstepsSceneAudioSource);
 
 		// Laser:
-		auto laserBuffer = Allocator<AudioBuffer>::New();
+		auto laserBuffer = Allocator::New<AudioBuffer>();
 		laserBuffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("bruteLaser.wav"));
-		auto laserSource = Allocator<AudioSource>::New();
+		auto laserSource = Allocator::New<AudioSource>();
 		laserSource->Init(laserBuffer);
-		auto laserSceneAudioSource = Allocator<SceneAudioSource>::New();
+		auto laserSceneAudioSource = Allocator::New<SceneAudioSource>();
 		laserSceneAudioSource->Init(laserSource);
 		scene->AddSceneAudioSource(laserSceneAudioSource);
 		control->SetLaserAudioSource(laserSceneAudioSource);
@@ -649,11 +682,11 @@ namespace Hogra {
 		control->SetLaserChargeupAudioSource(laserChargeup);
 
 		// Ambient:
-		auto ambientBuffer = Allocator<AudioBuffer>::New();
+		auto ambientBuffer = Allocator::New<AudioBuffer>();
 		ambientBuffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("wind.wav"));
-		auto ambientSource = Allocator<AudioSource>::New();
+		auto ambientSource = Allocator::New<AudioSource>();
 		ambientSource->Init(ambientBuffer);
-		auto ambientSceneSource = Allocator<SceneAudioSource>::New();
+		auto ambientSceneSource = Allocator::New<SceneAudioSource>();
 		ambientSceneSource->Init(ambientSource);
 		scene->AddSceneAudioSource(ambientSceneSource);
 		ambientSceneSource->SetLoop(true);
@@ -661,11 +694,11 @@ namespace Hogra {
 	}
 	
 	SceneAudioSource* SceneFactory::buildAudioSource(const std::string& fileName) {
-		auto buffer = Allocator<AudioBuffer>::New();
+		auto buffer = Allocator::New<AudioBuffer>();
 		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append(fileName));
-		auto source = Allocator<AudioSource>::New();
+		auto source = Allocator::New<AudioSource>();
 		source->Init(buffer);
-		auto sceneSource = Allocator<SceneAudioSource>::New();
+		auto sceneSource = Allocator::New<SceneAudioSource>();
 		sceneSource->Init(source);
 		return sceneSource;
 	}
@@ -677,7 +710,7 @@ namespace Hogra {
 		
 		// TODO
 
-		auto* scene = Allocator<Scene>::New();
+		auto* scene = Allocator::New<Scene>();
 		return scene;
 	}
 }

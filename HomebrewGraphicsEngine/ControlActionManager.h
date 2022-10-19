@@ -9,7 +9,7 @@ namespace Hogra {
 
 	class ControlActionManager
 	{
-		friend class Allocator<ControlActionManager>;
+		friend class Allocator;
 	public:
 
 		static ControlActionManager* getInstance();

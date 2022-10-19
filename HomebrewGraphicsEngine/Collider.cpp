@@ -29,7 +29,7 @@ namespace Hogra {
             isCollision = TestCollision(collider);
         }
         if (isCollision) {
-            auto event = Allocator<CollisionEvent>::New();
+            auto event = Allocator::New<CollisionEvent>();
             event->Init((const Collider*)this, collider);
             SceneEventManager::getInstance()->pushEvent(event);
             haveCollided = true;
@@ -92,7 +92,7 @@ namespace Hogra {
     {
     }
 
-    void Collider::Update()
+    void Collider::LatePhysicsUpdate(float dt)
     {
         if (nullptr != positionProvider) {
             position = positionProvider->GetPosition();
@@ -104,4 +104,5 @@ namespace Hogra {
             scale = scaleProvider->GetScale();
         }
     }
+
 }

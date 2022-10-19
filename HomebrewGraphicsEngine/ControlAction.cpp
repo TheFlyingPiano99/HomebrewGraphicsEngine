@@ -4,6 +4,7 @@
 #include <iostream>
 #include "FirstPersonControl.h"
 #include "ControlActionManager.h"
+#include "ObservObjectControl.h"
 
 namespace Hogra {
 
@@ -64,6 +65,13 @@ namespace Hogra {
 	{
 		for (auto* volume : scene.GetVolumeObjects()) {
 			volume->GetTransferFunction().ToggleVisibility();
+		}
+	}
+
+	void StepFeature::Execute(Scene& scene)
+	{
+		for (auto* volume : scene.GetVolumeObjects()) {
+			volume->CycleSelectedFeature();
 		}
 	}
 
@@ -178,8 +186,23 @@ namespace Hogra {
 		double x;
 		double y;
 		glfwGetCursorPos(GlobalVariables::window, &x, &y);
-		scene.GetVolumeObjects()[0]->SelectTransferFunctionRegion(x / (double)GlobalVariables::windowWidth * 2.0 - 1.0, y / (double)GlobalVariables::windowHeight * 2.0 - 1.0);
+		float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+		float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+		bool isSuccess = scene.GetVolumeObjects()[0]->SelectTransferFunctionRegion(ndc_x, ndc_y);
+		if (!isSuccess) {
+			((ObservObjectControl*)scene.GetUserControl())->grabPlane(ndc_x, ndc_y);
+		}
 	}
+
+	void ReleaseClickOnScreen::Execute(Scene& scene) {
+		double x;
+		double y;
+		glfwGetCursorPos(GlobalVariables::window, &x, &y);
+		float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+		float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+		((ObservObjectControl*)scene.GetUserControl())->releasePlane(ndc_x, ndc_y);
+	}
+
 
 	void CameraZoomAction::Execute(Scene& scene)
 	{

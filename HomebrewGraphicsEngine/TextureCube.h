@@ -12,7 +12,7 @@ namespace Hogra {
 
 	class TextureCube : public Texture
 	{
-		friend class Allocator<TextureCube>;
+		friend class Allocator;
 	
 		glm::ivec2 dimensions;
 		glm::vec4 nullVector;

@@ -11,7 +11,7 @@ namespace Hogra {
 
 	class Material
 	{
-		friend class Allocator<Material>;
+		friend class Allocator;
 	public:
 
 		void Init(ShaderProgram* program);

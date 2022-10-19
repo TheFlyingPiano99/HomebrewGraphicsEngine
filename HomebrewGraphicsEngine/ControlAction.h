@@ -81,6 +81,13 @@ namespace Hogra {
 		void Execute(Scene& scene) override;
 	};
 
+	class ReleaseClickOnScreen : public ButtonKeyAction {
+	public:
+		ReleaseClickOnScreen() : ButtonKeyAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerOnRelease) {}
+
+		void Execute(Scene& scene) override;
+	};
+
 	class GrabAction : public ButtonKeyAction {
 	public:
 		GrabAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerOnPress) {}
@@ -163,6 +170,14 @@ namespace Hogra {
 	class ToggleHUD : public ButtonKeyAction {
 	public:
 		ToggleHUD() : ButtonKeyAction(GLFW_KEY_H) {
+		}
+
+		void Execute(Scene& scene) override;
+	};
+
+	class StepFeature : public ButtonKeyAction {
+	public:
+		StepFeature() : ButtonKeyAction(GLFW_KEY_SPACE) {
 		}
 
 		void Execute(Scene& scene) override;

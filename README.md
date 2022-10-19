@@ -9,9 +9,12 @@ A grahics/videogame engine writen in C++ using OpenGL.
 - Font rendering
 - Audio
 
-![HoGraEngine logo](HoGraEngineLogo.png "HoGraEngine logo")
+![HoGraEngine_logo](Resources/Icons/HoGraEngineLogo.png "HoGraEngine logo")
 
-===
+
+<hr>
+
+![Screenshot_01](Documentation/Screenshots/2022-07-25_01.jpg "Screenshot 01")
 
 <hr>
 

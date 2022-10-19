@@ -20,7 +20,7 @@ namespace Hogra {
 
 		void EarlyPhysicsUpdate(float dt) override;
 
-		void Update() override;
+		void LatePhysicsUpdate(float dt) override;
 
 		void AfterPhysicsLoopUpdate() override;
 
