@@ -29,9 +29,9 @@ namespace Hogra {
 		fbo.Bind();
 	}
 
-	void PostProcessStage::Draw(const FBO& nextTargetFbo, const Texture2D& depthTexture)
+	void PostProcessStage::Draw(const FBO& outFBO, const Texture2D& depthTexture, const Camera& camera)
 	{
-		nextTargetFbo.Bind();
+		outFBO.Bind();
 		mesh->Bind();
 		glDisable(GL_BLEND);
 		depthTexture.Bind();
@@ -39,7 +39,7 @@ namespace Hogra {
 			var->Bind(*(mesh->getMaterial()->GetShaderProgram()));
 		}
 		mesh->Draw();
-		nextTargetFbo.Unbind();
+		outFBO.Unbind();
 	}
 
 	FBO& PostProcessStage::GetFBO()

@@ -138,7 +138,6 @@ namespace Hogra {
 		camera.ExportData();
 		lightManager.ExportData();
 
-		/*
 		// Shadow pass:
 		for (auto& group : instanceGroups) {
 			group.second->GatherInstanceDataForShadow();
@@ -150,41 +149,44 @@ namespace Hogra {
 			}
 		}
 
-		// Geometry pass:
-		for (auto& group : instanceGroups) {
-			group.second->GatherInstanceData();
-		}
-
-		lightManager.BindGBuffer();
-		for (auto& group : instanceGroups) {
-			group.second->Draw();
-		}
-		*/
-
 		const Texture2D& depth = lightManager.GetDepthTexture();
 		FBO defaultFBO = FBO::GetDefault();
-		// Deferred lighting pass:
-		if (renderLayers.empty()) {
-			defaultFBO.Bind();
+		FBO* outFBO = nullptr;
+		int layerIdxWithFBO = 0;	// First can be only the second Layer
+		while (nullptr == outFBO) {
+			layerIdxWithFBO++;	
+			if (layerIdxWithFBO >= renderLayers.size()) {
+				outFBO = &defaultFBO;
+				break;
+			}
+			outFBO = renderLayers[layerIdxWithFBO]->GetInFBO();
 		}
-		else {
-			renderLayers.front()->GetInFBO().Bind();
-			renderLayers.front()->GetInFBO().LinkTexture(GL_DEPTH_ATTACHMENT, depth, 0);
-		}
+		outFBO->LinkTexture(GL_DEPTH_ATTACHMENT, depth, 0);
+		outFBO->Bind();
+
 		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
-		glClearDepth(1);
-		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LESS);
-		glDisable(GL_BLEND);
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
+		glClearDepth(1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		glStencilMask(0x00);
-		lightManager.RenderDeferredLighting();
+		glStencilMask(GL_FALSE);
 
 		for (int i = 0; i < renderLayers.size(); i++) {
-			renderLayers[i]->Render((i < renderLayers.size() - 1)? renderLayers[i + 1]->GetInFBO() : defaultFBO, depth, camera);
+			if (layerIdxWithFBO == i && outFBO != &defaultFBO) {
+				FBO* fbo = nullptr;
+				while (nullptr == fbo) {
+					layerIdxWithFBO++;
+					if (layerIdxWithFBO == renderLayers.size()) {
+						fbo = &defaultFBO;
+						break;
+					}
+					fbo = renderLayers[layerIdxWithFBO]->GetInFBO();
+				}
+				outFBO = fbo;
+			}
+			renderLayers[i]->Render(*outFBO, depth, camera, lightManager);
 		}
 
 		// Text pass:
@@ -201,14 +203,22 @@ namespace Hogra {
 		camera.SetIsMoved(false);
 	}
 
-	void Scene::AddSceneObject(SceneObject* object, const std::string& instanceGroupName)
+	void Scene::AddSceneObject(SceneObject* object, const std::string& instanceGroupName, const std::string& renderLayerName)
 	{
-		if (auto objectIter = std::find(sceneObjects.begin(), sceneObjects.end(), object); objectIter != sceneObjects.end()) {		// If already contains
+		// If already contains:
+		if (auto objectIter = std::find(sceneObjects.begin(), sceneObjects.end(), object); objectIter != sceneObjects.end()) {		
+			return;
+		}
+
+		auto* layer = GetRenderLayer(renderLayerName);
+		if (nullptr == layer) {
+			std::cerr << "Scene Error: Trying to add scene object to unknown render layer!" << std::endl;
 			return;
 		}
 
 		sceneObjects.push_back(object);
 
+		// Add to instance group:
 		static int defaultName = 0;
 		if (object->GetMesh() != nullptr) {
 			if (instanceGroupName.length() > 0) {
@@ -220,13 +230,24 @@ namespace Hogra {
 					auto* group = Allocator::New<InstanceGroup>();
 					group->addObject(object);
 					instanceGroups.emplace(instanceGroupName, group);
+					if (layer->IsInstanced()) {	// Add to layer
+						layer->AddInstanceGroup(group);
+					}
 				}
 			}
 			else {
 				auto* group = Allocator::New<InstanceGroup>();
 				group->addObject(object);
 				instanceGroups.emplace(std::to_string(defaultName++), group);
+				if (layer->IsInstanced()) {	// Add to layer
+					layer->AddInstanceGroup(group);
+				}
 			}
+		}
+
+		// Add to layer if the layer is not using instanced rendering:
+		if (!layer->IsInstanced()) {
+			layer->AddObject(object);
 		}
 	}
 
@@ -246,9 +267,18 @@ namespace Hogra {
 		collisionManager.AddCollider(collider, colliderGroupName);
 	}
 
-	void Scene::AddPostProcessStage(PostProcessStage* stage) {
+	void Scene::AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName) {
+		if (renderLayerName.empty()) {
+			stage->AddUniformVariable(&timeSpent);
+			(*renderLayers.cend())->AddPostProcessStage(stage);
+		}
+		auto layer = renderLayersMap.find(renderLayerName);
+		if (layer == renderLayersMap.end()) {
+			std::cerr << "Trying to add post process effect to unknown render layer!" << std::endl;
+			return;
+		}
 		stage->AddUniformVariable(&timeSpent);
-		postProcessStages.push_back(stage);
+		layer->second->AddPostProcessStage(stage);
 	}
 
 	void Scene::AddLight(Light* light)

@@ -40,6 +40,10 @@ namespace Hogra {
 	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
 		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
+		auto* defLayer = Allocator::New<RenderLayer>();
+		defLayer->SetRenderMode(RenderLayer::RenderMode::deferredRenderMode);
+		defLayer->SetName("DeferredLayer");
+		scene->AddRenderLayer(defLayer);
 		auto* light = Allocator::New<Light>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
@@ -162,6 +166,30 @@ namespace Hogra {
 		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
 
+		// Render layer:
+
+		auto* forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetName("ForwardLayer");
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(forwardLayer);
+		
+		auto* deferedLayer = Allocator::New<RenderLayer>();
+		deferedLayer->SetName("DeferredLayer");
+		deferedLayer->SetRenderMode(RenderLayer::RenderMode::deferredRenderMode);
+		scene->AddRenderLayer(deferedLayer);
+
+		auto* volumeLayer = Allocator::New<RenderLayer>();
+		volumeLayer->SetName("VolumeLayer");
+		volumeLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(volumeLayer);
+
+		//InitSkyBox(scene);
+
+		auto* light = Allocator::New<Light>();
+		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
+		scene->AddLight(light);	// Directional light
+
+
 		// Volume:
 		const char* dataSetName = "Shoulder";
 		//const char* dataSetName = "cthead-8bit";
@@ -192,6 +220,13 @@ namespace Hogra {
 			glm::vec3(10000.0f, 10000.0f, 10000.0f)
 		);
 		volumeLight->SetCastShadow(false);
+
+		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
+		auto* posConnector = Allocator::New<PositionConnector>();
+		posConnector->Init(volumeLight);
+		bulbSprite->SetPositionConnector(posConnector);
+		scene->AddSceneObject(bulbSprite, "bulbSprite", "ForwardLayer");
+
 		auto* volumeObject = Allocator::New<Volumetric::VolumeObject>();
 		volumeObject->Init(
 			voxelTexture,
@@ -205,32 +240,20 @@ namespace Hogra {
 		auto* volumeSceneObj = Allocator::New<SceneObject>();
 		volumeSceneObj->Init();
 		volumeSceneObj->addComponent(volumeObject);
-		scene->AddSceneObject(volumeSceneObj);
+		scene->AddSceneObject(volumeSceneObj, "volumeObj", "VolumeLayer");
 
-		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
-		auto* posConnector = Allocator::New<PositionConnector>();
-		auto* forwardLayer = Allocator::New<RenderLayer>();
-		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
-		posConnector->Init(volumeLight);
-		bulbSprite->SetPositionConnector(posConnector);
-		scene->AddSceneObject(bulbSprite, "bulbSprite");
-		forwardLayer->AddObject(bulbSprite);
-		forwardLayer->AddObject(volumeSceneObj);
-
-		scene->AddRenderLayer(forwardLayer);
+		auto* ball = InitSphere(scene, glm::vec3(0,5,10), nullptr, "gold");
 		InitObjectObserverControl(scene, volumeObject);
 		InitVoxelCaption(scene, dataSetName);
 		auto* bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
-		forwardLayer->AddPostProcessStage(bloom);
-		//scene->AddPostProcessStage(bloom);
+		scene->AddPostProcessStage(bloom, "VolumeLayer");
 
 		auto* hdr = Allocator::New<PostProcessStage>();
 		hdr->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
-		forwardLayer->AddPostProcessStage(hdr);
-		//scene->AddPostProcessStage(hdr);
+		scene->AddPostProcessStage(hdr, "VolumeLayer");
 
 		return scene;
 	}
@@ -417,7 +440,7 @@ namespace Hogra {
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
 		obj->addComponent(collider);
-		scene->AddSceneObject(obj, std::string("sphere").append(materialName));
+		scene->AddSceneObject(obj, std::string("sphere").append(materialName), "DeferredLayer");
 		return obj;
 	}
 	
@@ -518,7 +541,7 @@ namespace Hogra {
 		skyBoxMesh->setStencilTest(false);
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(skyBoxMesh);
-		scene->AddSceneObject(obj);
+		scene->AddSceneObject(obj, "skybox", "DeferredLayer");
 	}
 	
 	void SceneFactory::InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field)

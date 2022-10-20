@@ -30,19 +30,16 @@ namespace Hogra {
 		ubo.Init(uniformDataSizes, CAMERA_UBO_BINDING);
 	}
 
-	bool Camera::Update()
+	void Camera::Update()
 	{
-		// Makes camera look in the right direction from the right position
-		view = glm::lookAt(eye + animationOffset, lookAt + animationOffset, prefUp);
+		// View matrix was constructed in LatePhysicsUpdate
+
 		// Adds perspective to the scene
 		projection = glm::perspective(glm::radians(FOVdeg), aspectRatio, nearPlane, farPlane);
 
 		viewProjMatrix = projection * view;
 		invViewProjMatrix = glm::inverse(viewProjMatrix);
 		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye + animationOffset));
-		orientation = glm::quat_cast(glm::transpose(glm::mat3(view)));
-		bool prevMooved = moved;
-		return prevMooved;
 	}
 
 	void Camera::LatePhysicsUpdate(float dt)
@@ -60,6 +57,10 @@ namespace Hogra {
 			up = glm::cross(right, lookDir);
 			lookAt = eye + lookDir;
 		}
+		// Makes camera look in the right direction from the right position
+		view = glm::lookAt(eye + animationOffset, lookAt + animationOffset, prefUp);
+		orientation = glm::quat_cast(glm::transpose(glm::mat3(view)));
+
 	}
 
 	void Camera::UpdatePreferedUp(glm::vec3 newPrefUp)

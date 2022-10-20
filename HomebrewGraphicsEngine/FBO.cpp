@@ -46,6 +46,9 @@ namespace Hogra {
 
 	void FBO::LinkTexture(GLenum attachment, const Texture2D& texture, GLint level)
 	{
+		if (0 == ID) {
+			return;
+		}
 		glm::ivec2 dim = texture.getDimensions() / (level + 1);
 		viewport = glm::vec4(0, 0, dim.x, dim.y);
 		Bind();

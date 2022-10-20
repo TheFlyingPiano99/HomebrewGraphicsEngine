@@ -62,7 +62,7 @@ void Hogra::Bloom::OnResize(unsigned int width, unsigned int height) {
 	fbo.Unbind();
 }
 
-void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture) {
+void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) {
 	fbo.Bind();
 	glDisable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
