@@ -324,7 +324,7 @@
     <ClCompile Include="UniformVariable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObservObjectControl.cpp">
+    <ClCompile Include="ObserveObjectControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneObjectFactory.cpp">
@@ -614,7 +614,7 @@
     <ClInclude Include="TransferFunction.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="ObservObjectControl.h">
+    <ClInclude Include="ObserveObjectControl.h">
       <Filter>Header Files\Model\UserControls</Filter>
     </ClInclude>
     <ClInclude Include="SceneObjectFactory.h">

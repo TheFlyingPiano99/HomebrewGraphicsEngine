@@ -16,7 +16,7 @@
 #include "AudioListener.h"
 
 #include "SceneAudioSource.h"
-#include "ObservObjectControl.h"
+#include "ObserveObjectControl.h"
 #include "MemoryManager.h"
 #include "PositionConnector.h"
 #include "SceneObjectFactory.h"
@@ -731,9 +731,9 @@ namespace Hogra {
 		InitLaserBeam(scene, control);
 	}
 
-	ObservObjectControl* SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
+	ObserveObjectControl* SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
 	{
-		auto control = Allocator::New<ObservObjectControl>();
+		auto control = Allocator::New<ObserveObjectControl>();
 		control->SetCamera(scene->GetCamera());
 		if (nullptr != volumeObject) {
 			control->SetVolumeObject(*volumeObject);

@@ -4,7 +4,7 @@
 #include <iostream>
 #include "FirstPersonControl.h"
 #include "ControlActionManager.h"
-#include "ObservObjectControl.h"
+#include "ObserveObjectControl.h"
 
 namespace Hogra {
 

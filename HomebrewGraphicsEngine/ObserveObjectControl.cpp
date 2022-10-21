@@ -1,27 +1,27 @@
-#include "ObservObjectControl.h"
+#include "ObserveObjectControl.h"
 
-Hogra::ObservObjectControl::ObservObjectControl() : rotationSpeed(0.01f), zoomSpeed(0.1f) {
+Hogra::ObserveObjectControl::ObserveObjectControl() : rotationSpeed(0.01f), zoomSpeed(0.1f) {
 	GlobalVariables::hideCursor = false;
 }
 
-void Hogra::ObservObjectControl::Rotate(const glm::vec2& delta)
+void Hogra::ObserveObjectControl::Rotate(const glm::vec2& delta)
 {
 	if (nullptr == camera || !GlobalVariables::hideCursor) {
 		return;
 	}
 	if (isPlaneGrabbed) {
 		std::cout << delta.x << ", " << delta.y << std::endl;
-		glm::vec3 w_d = (camera->getRight() * delta.x + camera->getUp() * delta.y) / length(planePosition - camera->GetPosition());
+		glm::vec3 w_d = (-camera->getRight() * delta.x + camera->getUp() * delta.y) / length(planePosition - camera->GetPosition());
 		float d = glm::dot(planeNormal, w_d);
 		std::cout << "Delta: " << w_d.x << ", " << w_d.y << ", " << w_d.z << std::endl;
 		std::cout << "D: " << d << std::endl;
-		DragPlane(-0.2f);
+		DragPlane(d);
 		return;
 	}
 	camera->RotateAroundPoint(delta * rotationSpeed);
 }
 
-void Hogra::ObservObjectControl::Zoom(float delta)
+void Hogra::ObserveObjectControl::Zoom(float delta)
 {
 	if (nullptr == camera) {
 		return;
@@ -30,22 +30,22 @@ void Hogra::ObservObjectControl::Zoom(float delta)
 	camera->ApproachCenter(delta * zoomSpeed);
 }
 
-void Hogra::ObservObjectControl::primaryAction()
+void Hogra::ObserveObjectControl::primaryAction()
 {
 
 }
 
-void Hogra::ObservObjectControl::grab()
+void Hogra::ObserveObjectControl::grab()
 {
 	GlobalVariables::hideCursor = true;
 }
 
-void Hogra::ObservObjectControl::release()
+void Hogra::ObserveObjectControl::release()
 {
 	GlobalVariables::hideCursor = false;
 }
 
-void Hogra::ObservObjectControl::grabPlane(float x, float y) {
+void Hogra::ObserveObjectControl::grabPlane(float x, float y) {
 
 	glm::vec4 wDir = camera->GetRayDirMatrix() * glm::vec4(x, y, 0.0, 1.0f);
 	wDir /= wDir.w;
@@ -65,19 +65,18 @@ void Hogra::ObservObjectControl::grabPlane(float x, float y) {
 		GlobalVariables::hideCursor = true;
 		isPlaneGrabbed = true;
 		planePosition = w_point;
-		//planeNormal = w_normal;
-		planeNormal = glm::vec3(1, 0, 0);
+		planeNormal = w_normal;
 		std::cout << "N: " << planeNormal.x << ", " << planeNormal.y << ", " << planeNormal.z << std::endl;
 	}
 }
 
-void Hogra::ObservObjectControl::releasePlane(float x, float y) {
+void Hogra::ObserveObjectControl::releasePlane(float x, float y) {
 	isPlaneGrabbed = false;
 	GlobalVariables::hideCursor = false;
 
 }
 
-void Hogra::ObservObjectControl::DragPlane(float delta) {
+void Hogra::ObserveObjectControl::DragPlane(float delta) {
 	if (nullptr == camera) {
 		return;
 	}

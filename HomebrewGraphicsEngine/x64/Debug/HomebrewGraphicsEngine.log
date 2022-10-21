@@ -1,10 +1,1 @@
-﻿  SceneFactory.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(70,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(230,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(302,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(303,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(320,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(321,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture2D.h(42): warning C4172: returning address of local variable or temporary: v
-  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe
+﻿  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe
