@@ -3,34 +3,29 @@
 #include "Scene.h"
 #include <queue>
 #include <GLFW/glfw3.h>
+
 namespace Hogra {
 
 	class AbstractControlAction {
 	public:
 		virtual ~AbstractControlAction() = default;
 		virtual bool PopIsTriggering() = 0;
-
-		virtual void Execute(Scene& scene) = 0;
+		virtual void Execute() = 0;
 	};
 
 	class ButtonKeyAction : public AbstractControlAction
 	{
-	protected:
+	public:
 		enum class TriggerType {
 			triggerOnPress,
 			triggerContinuosly,
 			triggerOnRelease
 		};
+		ButtonKeyAction() = default;
 
-	private:
-		int key;
-		bool pressed = false;
-		bool pressedPreviously = false;
-
-		TriggerType triggerType;
-
-	public:
-		ButtonKeyAction(int _key, TriggerType trigger = TriggerType::triggerOnPress) : key(_key), triggerType(trigger) {
+		void Init(int _key, TriggerType trigger = TriggerType::triggerOnPress) {
+			key = _key;
+			triggerType = trigger;
 		}
 
 		virtual ~ButtonKeyAction() = default;
@@ -41,6 +36,21 @@ namespace Hogra {
 		void OnRelease(int _key, int _scancode, int _mods);
 		bool PopIsTriggering() override;
 
+		void SetAction(std::function<void()> fun) {
+			action = fun;
+		}
+
+		void Execute() override {
+			action();
+		}
+
+	private:
+		int key;
+		bool pressed = false;
+		bool pressedPreviously = false;
+		std::function<void()> action = []() {};
+
+		TriggerType triggerType;
 	};
 
 	class AxisMoveAction : public AbstractControlAction {
@@ -53,53 +63,41 @@ namespace Hogra {
 
 		void OnAxisMove(const glm::vec2& _pixPos, bool isFirst = false);
 
-	protected:
+		void SetAction(std::function<void(const glm::vec2& pixDelta, const glm::vec2& pixPos)> fun) {
+			action = fun;
+		}
+
+		void Execute() override {
+			action(pixDelta, pixPos);
+		}
+
+	private:
 		glm::vec2 pixDelta;
 		glm::vec2 pixPos;
 		glm::vec2 cumulatedDelta;
 		bool movedInThisFrame;
+		std::function<void(const glm::vec2& pixDelta, const glm::vec2& pixPos)> action = [](const glm::vec2& pixDelta, const glm::vec2& pixPos) {};
 	};
 
-	class CameraMoveAction : public AxisMoveAction {
-	public:
-		CameraMoveAction() : AxisMoveAction() {}
-
-		void Execute(Scene& scene) override;
-	};
-
-	class CameraZoomAction : public AxisMoveAction {
-	public:
-		CameraZoomAction() : AxisMoveAction() {}
-
-		void Execute(Scene& scene) override;
-	};
-
-	class ClickOnScreen : public ButtonKeyAction {
+	/*
+	* 	class ClickOnScreen : public ButtonKeyAction {
 	public:
 		ClickOnScreen() : ButtonKeyAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerOnPress) {}
-
-		void Execute(Scene& scene) override;
 	};
 
 	class ReleaseClickOnScreen : public ButtonKeyAction {
 	public:
 		ReleaseClickOnScreen() : ButtonKeyAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerOnRelease) {}
-
-		void Execute(Scene& scene) override;
 	};
 
 	class GrabAction : public ButtonKeyAction {
 	public:
 		GrabAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerOnPress) {}
-
-		void Execute(Scene& scene) override;
 	};
 
 	class ReleaseAction : public ButtonKeyAction {
 	public:
 		ReleaseAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerOnRelease) {}
-
-		void Execute(Scene& scene) override;
 	};
 
 	class MoveAvatarForward : public ButtonKeyAction {
@@ -108,7 +106,7 @@ namespace Hogra {
 
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class MoveAvatarBackward : public ButtonKeyAction {
@@ -116,7 +114,7 @@ namespace Hogra {
 		MoveAvatarBackward() : ButtonKeyAction(GLFW_KEY_S, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class MoveAvatarRight : public ButtonKeyAction {
@@ -124,7 +122,7 @@ namespace Hogra {
 		MoveAvatarRight() : ButtonKeyAction(GLFW_KEY_D, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class MoveAvatarLeft : public ButtonKeyAction {
@@ -132,7 +130,7 @@ namespace Hogra {
 		MoveAvatarLeft() : ButtonKeyAction(GLFW_KEY_A, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class MoveAvatarUp : public ButtonKeyAction {
@@ -140,7 +138,7 @@ namespace Hogra {
 		MoveAvatarUp() : ButtonKeyAction(GLFW_KEY_E, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class MoveAvatarDown : public ButtonKeyAction {
@@ -148,7 +146,7 @@ namespace Hogra {
 		MoveAvatarDown() : ButtonKeyAction(GLFW_KEY_Q, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class JumpAvatar : public ButtonKeyAction {
@@ -156,7 +154,7 @@ namespace Hogra {
 		JumpAvatar() : ButtonKeyAction(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerOnPress) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class ToggleGUI : public ButtonKeyAction {
@@ -164,7 +162,7 @@ namespace Hogra {
 		ToggleGUI() : ButtonKeyAction(GLFW_KEY_O) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class ToggleHUD : public ButtonKeyAction {
@@ -172,7 +170,7 @@ namespace Hogra {
 		ToggleHUD() : ButtonKeyAction(GLFW_KEY_H) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class StepFeature : public ButtonKeyAction {
@@ -180,7 +178,7 @@ namespace Hogra {
 		StepFeature() : ButtonKeyAction(GLFW_KEY_SPACE) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class FastForward : public ButtonKeyAction {
@@ -188,7 +186,7 @@ namespace Hogra {
 		FastForward() : ButtonKeyAction(GLFW_KEY_F, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class Rewind : public ButtonKeyAction {
@@ -196,7 +194,7 @@ namespace Hogra {
 		Rewind() : ButtonKeyAction(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class TogglePause : public ButtonKeyAction {
@@ -204,7 +202,7 @@ namespace Hogra {
 		TogglePause() : ButtonKeyAction(GLFW_KEY_P) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class ToggleFullScreenMode : public ButtonKeyAction {
@@ -212,7 +210,7 @@ namespace Hogra {
 		ToggleFullScreenMode() : ButtonKeyAction(GLFW_KEY_TAB) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class ToggleDebugInfo : public ButtonKeyAction {
@@ -220,7 +218,7 @@ namespace Hogra {
 		ToggleDebugInfo() : ButtonKeyAction(GLFW_KEY_I) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class PrimaryAction : public ButtonKeyAction {
@@ -228,7 +226,7 @@ namespace Hogra {
 		PrimaryAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_LEFT, TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class SecondaryAction : public ButtonKeyAction {
@@ -236,7 +234,7 @@ namespace Hogra {
 		SecondaryAction() : ButtonKeyAction(GLFW_MOUSE_BUTTON_RIGHT, TriggerType::triggerContinuosly) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class RestartAction : public ButtonKeyAction {
@@ -244,7 +242,7 @@ namespace Hogra {
 		RestartAction() : ButtonKeyAction(GLFW_KEY_R) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
 
 	class QuitAction : public ButtonKeyAction {
@@ -252,7 +250,7 @@ namespace Hogra {
 		QuitAction() : ButtonKeyAction(GLFW_KEY_ESCAPE) {
 		}
 
-		void Execute(Scene& scene) override;
+		
 	};
-
+	*/
 }

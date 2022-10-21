@@ -21,7 +21,8 @@
 #include "PositionConnector.h"
 #include "SceneObjectFactory.h"
 #include "RenderLayer.h"
-
+#include "ControlActionManager.h"
+#include "GUI.h"
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -243,7 +244,7 @@ namespace Hogra {
 		scene->AddSceneObject(volumeSceneObj, "volumeObj", "VolumeLayer");
 
 		auto* ball = InitSphere(scene, glm::vec3(0,5,10), nullptr, "gold");
-		InitObjectObserverControl(scene, volumeObject);
+		auto* control = InitObjectObserverControl(scene, volumeObject);
 		InitVoxelCaption(scene, dataSetName);
 		auto* bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
@@ -254,6 +255,102 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
 		scene->AddPostProcessStage(hdr, "VolumeLayer");
+
+		// Init controls:
+		{
+			auto* rotateCam = Allocator::New<AxisMoveAction>();
+			rotateCam->SetAction(
+				[scene](const glm::vec2& pixDelta, const glm::vec2& pixPos) {
+					scene->GetUserControl()->Rotate(-pixDelta);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseMoveAction(rotateCam);
+
+			auto* grabCam = Allocator::New<ButtonKeyAction>();
+			grabCam->Init(GLFW_MOUSE_BUTTON_RIGHT, ButtonKeyAction::TriggerType::triggerOnPress);
+			grabCam->SetAction(
+				[scene]() {
+					scene->GetUserControl()->grab();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(grabCam);
+
+			auto* releaseCam = Allocator::New<ButtonKeyAction>();
+			releaseCam->Init(GLFW_MOUSE_BUTTON_RIGHT, ButtonKeyAction::TriggerType::triggerOnRelease);
+			releaseCam->SetAction(
+				[scene]() {
+					scene->GetUserControl()->release();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(releaseCam);
+
+			auto* zoomCam = Allocator::New<AxisMoveAction>();
+			zoomCam->SetAction(
+				[scene](const glm::vec2& pixDelta, const glm::vec2& pixPos) {
+					scene->GetUserControl()->Zoom(pixPos.y);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseScrollAction(zoomCam);
+
+			auto* leftClick = Allocator::New<ButtonKeyAction>();
+			leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnPress);
+			leftClick->SetAction(
+				[control, volumeObject]() {
+					double x;
+					double y;
+					glfwGetCursorPos(GlobalVariables::window, &x, &y);
+					float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+					float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+
+					bool isSuccess = volumeObject->SelectTransferFunctionRegion(ndc_x, ndc_y);
+					if (!isSuccess) {
+						control->grabPlane(ndc_x, ndc_y);
+					}
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);
+
+			auto* leftRelease = Allocator::New<ButtonKeyAction>();
+			leftRelease->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnRelease);
+			leftRelease->SetAction(
+				[control]() {
+					double x;
+					double y;
+					glfwGetCursorPos(GlobalVariables::window, &x, &y);
+					float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+					float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+					control->releasePlane(ndc_x, ndc_y);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftRelease);
+
+			auto* toggleTransferVis = Allocator::New<ButtonKeyAction>();
+			toggleTransferVis->Init(GLFW_KEY_H, ButtonKeyAction::TriggerType::triggerOnPress);
+			toggleTransferVis->SetAction(
+				[volumeObject]() {
+					volumeObject->GetTransferFunction().ToggleVisibility();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(toggleTransferVis);
+
+			auto* toggleMenu = Allocator::New<ButtonKeyAction>();
+			toggleMenu->Init(GLFW_KEY_O, ButtonKeyAction::TriggerType::triggerOnPress);
+			toggleMenu->SetAction(
+				[]() {
+					GUI::getInstance()->setVisible(!(GUI::getInstance()->IsVisible()));
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(toggleMenu);
+
+			auto* nextFeature = Allocator::New<ButtonKeyAction>();
+			nextFeature->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerOnPress);
+			nextFeature->SetAction(
+			[volumeObject]() {
+					volumeObject->CycleSelectedFeature();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(nextFeature);
+		}
 
 		return scene;
 	}
@@ -634,7 +731,7 @@ namespace Hogra {
 		InitLaserBeam(scene, control);
 	}
 
-	void SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
+	ObservObjectControl* SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
 	{
 		auto control = Allocator::New<ObservObjectControl>();
 		control->SetCamera(scene->GetCamera());
@@ -650,6 +747,7 @@ namespace Hogra {
 		control->AddCollider(collider);
 		scene->AddCollider(collider, "volumePlane");
 		scene->SetUserControl(control);
+		return control;
 	}
 	
 	void SceneFactory::InitLaserBeam(Hogra::Scene* scene, Hogra::FirstPersonControl* control)

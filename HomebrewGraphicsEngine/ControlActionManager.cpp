@@ -7,71 +7,44 @@ namespace Hogra {
 
 	void ControlActionManager::OnPress(const int _key, const int _scancode, const int _mods)
 	{
-		auto iter = registeredKeyActions.find(_key);
-		if (iter != registeredKeyActions.end()) {
-			iter->second->OnPress(_key, _scancode, _mods);
+		for (auto iterPair = registeredKeyActions.equal_range(_key); iterPair.first != iterPair.second; iterPair.first++) {
+			iterPair.first->second->OnPress(_key, _scancode, _mods);
 		}
 	}
 
 	void ControlActionManager::OnRelease(const int _key, const int _scancode, const int _mods)
 	{
-		auto iter = registeredKeyActions.find(_key);
-		if (iter != registeredKeyActions.end()) {
-			iter->second->OnRelease(_key, _scancode, _mods);
+		for (auto iterPair = registeredKeyActions.equal_range(_key); iterPair.first != iterPair.second; iterPair.first++) {
+			iterPair.first->second->OnRelease(_key, _scancode, _mods);
 		}
 	}
 
-	void ControlActionManager::OnMouseLeftButtonPress(const glm::vec2& pixCoords)
+	void ControlActionManager::OnMouseButtonPress(const int _key, const glm::vec2& pixCoords)
 	{
-		if (nullptr != pressLeftMouseButtonAction) {
-			pressLeftMouseButtonAction->OnPress(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
-		}
-		if (nullptr != releaseLeftMouseButtonAction) {
-			releaseLeftMouseButtonAction->OnPress(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
+		for (auto iterPair = registeredMouseButtonActions.equal_range(_key); iterPair.first != iterPair.second; iterPair.first++) {
+			iterPair.first->second->OnPress(_key, 0, 0);
 		}
 	}
 
-	void ControlActionManager::OnMouseLeftButtonRelease(const glm::vec2& pixCoords)
+	void ControlActionManager::OnMouseButtonRelease(const int _key, const glm::vec2& pixCoords)
 	{
-		if (nullptr != pressLeftMouseButtonAction) {
-			pressLeftMouseButtonAction->OnRelease(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
-		}
-		if (nullptr != releaseLeftMouseButtonAction) {
-			releaseLeftMouseButtonAction->OnRelease(GLFW_MOUSE_BUTTON_LEFT, 0, 0);
-		}
-	}
-
-	void ControlActionManager::OnMouseRightButtonPress(const glm::vec2& pixCoords)
-	{
-		if (nullptr != pressRightMouseButtonAction) {
-			pressRightMouseButtonAction->OnPress(GLFW_MOUSE_BUTTON_RIGHT, 0, 0);
-		}
-		if (nullptr != releaseRightMouseButtonAction) {
-			releaseRightMouseButtonAction->OnPress(GLFW_MOUSE_BUTTON_RIGHT, 0, 0);
-		}
-	}
-
-	void ControlActionManager::OnMouseRightButtonRelease(const glm::vec2& pixCoords)
-	{
-		if (nullptr != pressRightMouseButtonAction) {
-			pressRightMouseButtonAction->OnRelease(GLFW_MOUSE_BUTTON_RIGHT, 0, 0);
-		}
-		if (nullptr != releaseRightMouseButtonAction) {
-			releaseRightMouseButtonAction->OnRelease(GLFW_MOUSE_BUTTON_RIGHT, 0, 0);
+		for (auto iterPair = registeredMouseButtonActions.equal_range(_key); iterPair.first != iterPair.second; iterPair.first++) {
+			iterPair.first->second->OnRelease(_key, 0, 0);
 		}
 	}
 
 	void ControlActionManager::OnMouseMove(const glm::vec2& pixPos, bool isFirst)
 	{
-		if (nullptr == mouseMoveAction) {
-			return;
+		for (auto& action : mouseMoveAction) {
+			action->OnAxisMove(pixPos, isFirst);
 		}
-		mouseMoveAction->OnAxisMove(pixPos, isFirst);
 	}
 
 	void ControlActionManager::OnMouseScroll(float x)
 	{
-		mouseScrollAction->OnAxisMove(glm::vec2(x));
+		for (auto& action : mouseScrollAction) {
+			action->OnAxisMove(glm::vec2(x));
+		}
 	}
 
 	void ControlActionManager::ClearQueue()
@@ -92,70 +65,21 @@ namespace Hogra {
 		}
 
 		// Mouse:
-		if (nullptr!= pressLeftMouseButtonAction && pressLeftMouseButtonAction->PopIsTriggering()) {
-			queuedActions.push(pressLeftMouseButtonAction);
+		for (auto action : registeredMouseButtonActions) {
+			if (action.second->PopIsTriggering()) {
+				queuedActions.push(action.second);
+			}
 		}
-		if (nullptr != pressRightMouseButtonAction && pressRightMouseButtonAction->PopIsTriggering()) {
-			queuedActions.push(pressRightMouseButtonAction);
+		for (auto action : mouseMoveAction) {
+			if (action->PopIsTriggering()) {
+				queuedActions.push(action);
+			}
 		}
-		if (nullptr != releaseLeftMouseButtonAction && releaseLeftMouseButtonAction->PopIsTriggering()) {
-			queuedActions.push(releaseLeftMouseButtonAction);
+		for (auto action : mouseScrollAction) {
+			if (action->PopIsTriggering()) {
+				queuedActions.push(action);
+			}
 		}
-		if (nullptr != releaseRightMouseButtonAction && releaseRightMouseButtonAction->PopIsTriggering()) {
-			queuedActions.push(releaseRightMouseButtonAction);
-		}
-		if (nullptr != mouseMoveAction && mouseMoveAction->PopIsTriggering()) {
-			queuedActions.push(mouseMoveAction);
-		}
-		if (nullptr != mouseScrollAction && mouseScrollAction->PopIsTriggering()) {
-			queuedActions.push(mouseScrollAction);
-		}
-	}
-
-	void ControlActionManager::RegisterDefault()
-	{
-		RegisterAction(Allocator::New<MoveAvatarForward>());
-		RegisterAction(Allocator::New<MoveAvatarBackward>());
-		RegisterAction(Allocator::New<MoveAvatarRight>());
-		RegisterAction(Allocator::New<MoveAvatarLeft>());
-		RegisterAction(Allocator::New<MoveAvatarUp>());
-		RegisterAction(Allocator::New<MoveAvatarDown>());
-		RegisterAction(Allocator::New<ToggleGUI>());
-		RegisterAction(Allocator::New<TogglePause>());
-		RegisterAction(Allocator::New<ToggleFullScreenMode>());
-		RegisterAction(Allocator::New<JumpAvatar>());
-		RegisterAction(Allocator::New<ToggleDebugInfo>());
-		RegisterAction(Allocator::New<RestartAction>());
-		RegisterAction(Allocator::New<QuitAction>());
-
-		pressLeftMouseButtonAction = Allocator::New<PrimaryAction>();
-		pressRightMouseButtonAction = Allocator::New<SecondaryAction>();
-		releaseLeftMouseButtonAction = nullptr;
-		releaseRightMouseButtonAction = nullptr;
-		mouseMoveAction = Allocator::New<CameraMoveAction>();
-		mouseScrollAction = Allocator::New<CameraZoomAction>();
-
-	}
-
-	void ControlActionManager::RegisterDefaultForVoxelObserving()
-	{
-		RegisterAction(Allocator::New<ToggleGUI>());
-		RegisterAction(Allocator::New<ToggleHUD>());
-		RegisterAction(Allocator::New<TogglePause>());
-		RegisterAction(Allocator::New<ToggleFullScreenMode>());
-		RegisterAction(Allocator::New<ToggleDebugInfo>());
-		RegisterAction(Allocator::New<RestartAction>());
-		RegisterAction(Allocator::New<QuitAction>());
-		RegisterAction(Allocator::New<StepFeature>());
-
-		pressLeftMouseButtonAction = Allocator::New<ClickOnScreen>();
-		pressRightMouseButtonAction = Allocator::New<GrabAction>();
-		releaseLeftMouseButtonAction = Allocator::New<ReleaseClickOnScreen>();
-		releaseRightMouseButtonAction = Allocator::New<ReleaseAction>();
-
-		mouseMoveAction = Allocator::New<CameraMoveAction>();
-		mouseScrollAction = Allocator::New<CameraZoomAction>();
-
 	}
 
 	void ControlActionManager::UnregisterControls() {
@@ -165,22 +89,67 @@ namespace Hogra {
 			Allocator::Delete(p);
 		}
 		registeredKeyActions.clear();
-		Allocator::Delete(pressLeftMouseButtonAction);
-		Allocator::Delete(pressRightMouseButtonAction);
-		Allocator::Delete(releaseLeftMouseButtonAction);
-		Allocator::Delete(releaseRightMouseButtonAction);
-		Allocator::Delete(mouseMoveAction);
-		Allocator::Delete(mouseScrollAction);
+		for (auto act : registeredMouseButtonActions) {
+			auto p = act.second;
+			Allocator::Delete(p);
+		}
+		registeredMouseButtonActions.clear();
+		for (auto act : mouseMoveAction) {
+			Allocator::Delete(act);
+		}
+		mouseMoveAction.clear();
+		for (auto act : mouseScrollAction) {
+			Allocator::Delete(act);
+		}
+		mouseScrollAction.clear();
 	}
 
-	void ControlActionManager::RegisterAction(ButtonKeyAction* toRegister)
+	void ControlActionManager::RegisterKeyAction(ButtonKeyAction* toRegister)
 	{
 		registeredKeyActions.emplace(toRegister->getKey(), toRegister);
 	}
 
-	void ControlActionManager::UnregisterAction(ButtonKeyAction* toDeregister)
+	void ControlActionManager::UnregisterKeyAction(ButtonKeyAction* toDeregister)
 	{
-		registeredKeyActions.erase(toDeregister->getKey());
+		auto&& range = registeredKeyActions.equal_range(toDeregister->getKey());
+		for (; range.first != range.second; range.first++) {
+			if (range.first->second == toDeregister) {
+				registeredKeyActions.erase(range.first);
+				break;
+			}
+		}
+	}
+
+	void ControlActionManager::RegisterMouseButtonAction(ButtonKeyAction* toRegister) {
+		registeredMouseButtonActions.emplace(toRegister->getKey(), toRegister);
+	}
+
+	void ControlActionManager::UnregisterMouseButtonAction(ButtonKeyAction* toDeregister) {
+		auto&& range = registeredMouseButtonActions.equal_range(toDeregister->getKey());
+		for (; range.first != range.second; range.first++) {
+			if (range.first->second == toDeregister) {
+				registeredKeyActions.erase(range.first);
+				break;
+			}
+		}
+	}
+
+	void ControlActionManager::RegisterMouseMoveAction(AxisMoveAction* toRegister) {
+		mouseMoveAction.push_back(toRegister);
+	}
+
+	void ControlActionManager::UnregisterMouseMoveAction(AxisMoveAction* toDeregister) {
+		auto iter = std::find(mouseMoveAction.begin(), mouseMoveAction.end(), toDeregister);
+		mouseMoveAction.erase(iter);
+	}
+
+	void ControlActionManager::RegisterMouseScrollAction(AxisMoveAction* toRegister) {
+		mouseScrollAction.push_back(toRegister);
+	}
+
+	void ControlActionManager::UnregisterMouseScrollAction(AxisMoveAction* toDeregister) {
+		auto iter = std::find(mouseScrollAction.begin(), mouseScrollAction.end(), toDeregister);
+		mouseScrollAction.erase(iter);
 	}
 
 	AbstractControlAction* ControlActionManager::PopNextQueuedAction()
