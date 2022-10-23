@@ -25,8 +25,8 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 };
 
 struct SceneObject {
-mat4 modelMatrix;		// Instanced array
-mat4 invModelMatrix;	// Instanced array 
+	mat4 modelMatrix;	
+	mat4 invModelMatrix;
 };
 uniform SceneObject sceneObject;
 

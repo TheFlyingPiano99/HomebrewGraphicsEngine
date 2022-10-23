@@ -23,6 +23,7 @@
 #include "RenderLayer.h"
 #include "ControlActionManager.h"
 #include "GUI.h"
+#include "Callbacks.h"
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -350,6 +351,15 @@ namespace Hogra {
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(nextFeature);
+
+			auto* fullScreen = Allocator::New<ButtonKeyAction>();
+			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
+			fullScreen->SetAction(
+				[scene]() {
+					Callbacks::toggleFullScreen();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
 		}
 
 		return scene;

@@ -22,7 +22,7 @@ namespace Hogra {
 		for (int m = 0; m < scene->mNumMeshes; m++) {	// Obsolate loop (only one mesh)
 			auto* mesh = scene->mMeshes[m];
 			std::vector<Vertex> vertices;
-			std::vector<GLint> indices;
+			std::vector<GLuint> indices;
 			for (int v = 0; v < mesh->mNumVertices; v++) {
 				auto aiVertex = mesh->mVertices[v];
 				auto aiNormal = mesh->mNormals[v];

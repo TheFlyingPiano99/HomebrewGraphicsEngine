@@ -204,8 +204,15 @@ namespace Hogra {
 				ImGui::EndGroup();
 			}
 			if (ImGui::Button("Redraw", buttonSize)) {
-				volumeObject.ResizeDisplayBoundingBox(glm::vec3(-1.0f), glm::vec3(1.0f));
 				volumeObject.ForceRedraw();
+			}
+			if (volumeObject.GetShowNormals()) {
+				if (ImGui::Button("Shading", buttonSize)) {
+					volumeObject.SetShowNormals(false);
+				}
+			}
+			else if (ImGui::Button("Normals", buttonSize)) {
+				volumeObject.SetShowNormals(true);
 			}
 			ImGui::End();
 		}

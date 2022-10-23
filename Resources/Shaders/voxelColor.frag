@@ -25,6 +25,7 @@ uniform bool isBackToFront;
 uniform vec3 scale;
 uniform vec3 w_sliceDelta;
 uniform float opacityScale;
+uniform bool showNormals;
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 	vec3 cameraPosition;			// 16				0
@@ -172,6 +173,13 @@ void main() {
 	vec4 color = transferFunctionFromTexture(currentPos);
 
 	vec3 transferGrad = resampleGradientAndDensityFromTransfer(currentPos,  trilinearInterpolationFromTransfer(currentPos)).xyz;
+	if (showNormals) {
+		transferGrad *= w_delta * 0.1;
+		color.rgb = vec3(max(abs(transferGrad.x), 0.0), max(abs(transferGrad.y), 0.0), max(abs(transferGrad.z), 0.0));
+		color.a = max(min(1.0 - pow(1.0 - color.a, w_delta), 1.0), 0.0);
+		FragColor = color;
+		return;
+	}
 
 	// Calculate opacity of this segment:
 	float w_lightDistance = length(light.position - worldPos);

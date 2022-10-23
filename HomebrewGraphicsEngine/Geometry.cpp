@@ -5,7 +5,7 @@
 
 namespace Hogra {
 
-	void Geometry::Init(std::vector<Vertex>& _vertices, std::vector<GLint>& _indices)
+	void Geometry::Init(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices)
 	{
 		this->vertices = _vertices;
 		this->indices = _indices;

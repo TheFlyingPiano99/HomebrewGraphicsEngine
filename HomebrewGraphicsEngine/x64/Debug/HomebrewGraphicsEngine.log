@@ -1,1 +1,9 @@
-﻿  HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe
+﻿  Callbacks.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Collider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  ControlAction.cpp

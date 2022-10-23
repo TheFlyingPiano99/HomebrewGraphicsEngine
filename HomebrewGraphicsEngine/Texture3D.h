@@ -38,9 +38,9 @@ namespace Hogra {
 
 		const Dimensions& GetDimensions() const;
 
-		const glm::vec4 ResampleGradientAndDensity(glm::ivec3 position);
+		const glm::vec4 ResampleGradientAndDensity(glm::ivec3 position) const;
 
-		const float operator()(glm::ivec3 position);
+		float operator()(glm::ivec3 position) const;
 
 	private:
 		bool ReadDimensions(const char* path, std::string& name, Dimensions& dimensions);

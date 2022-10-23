@@ -216,13 +216,13 @@ namespace Hogra::Volumetric {
 
 		Feature* getFeatureFromPosition(glm::vec2 pos);
 
-		glm::vec4& operator()(glm::ivec2 position) {
+		const glm::vec4& operator()(glm::ivec2 position) const {
 			if (texture == nullptr)
 				return nullVector;
 			return texture->operator()(position);
 		}
 
-		glm::vec4& operator()(glm::vec2 normalisedPosition) {
+		const glm::vec4& operator()(glm::vec2 normalisedPosition) const {
 			if (texture == nullptr)
 				return nullVector;
 			return texture->operator()(normalisedPosition);

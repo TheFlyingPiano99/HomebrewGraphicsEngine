@@ -33,7 +33,7 @@ namespace Hogra {
 
 		const std::vector<glm::vec4>& GetBytes() const;
 
-		glm::vec4& operator()(glm::ivec2 position) {
+		const glm::vec4& operator()(glm::ivec2 position) const {
 			if (position.x >= dimensions.x || position.x < 0
 				|| position.y >= dimensions.y || position.y < 0) {
 				return nullVector;
@@ -42,7 +42,7 @@ namespace Hogra {
 			return v;
 		}
 
-		glm::vec4& operator()(glm::vec2 normalisedPosition) {
+		const glm::vec4& operator()(glm::vec2 normalisedPosition) const {
 			return operator()(glm::ivec2(
 				normalisedPosition.x * (dimensions.x - 1),
 				normalisedPosition.y * (dimensions.y - 1)));

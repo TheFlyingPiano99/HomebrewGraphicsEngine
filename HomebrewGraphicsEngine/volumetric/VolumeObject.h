@@ -3,6 +3,7 @@
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "TransferFunction.h"
+#include "BoundingGeometry.h"
 #include "../Component.h"
 #include "../Texture2D.h"
 #include "../Light.h"
@@ -315,7 +316,7 @@ namespace Hogra::Volumetric {
 			return false;
 		}
 
-		const char* GetCurrentTransferRegionSelectMode() {
+		const char* GetCurrentTransferRegionSelectMode() const {
 			return currentTransferRegionSelectMode;
 		}
 
@@ -340,6 +341,24 @@ namespace Hogra::Volumetric {
 		void GetMinAndMax(glm::vec3& w_min, glm::vec3& w_max);
 
 		void UpdateGui() override;
+
+		bool GetShowNormals() const {
+			return showNormals;
+		}
+
+		void SetShowNormals(bool b) {
+			showNormals = b;
+			isChanged = true;
+		}
+
+		bool GetHalfAngleSlicing() const {
+			return useHalfAngleSlicing;
+		}
+
+		void ToggleHalfAngleSlicing() {
+			useHalfAngleSlicing = !useHalfAngleSlicing;
+			isChanged = true;
+		}
 
 	private:
 
@@ -366,6 +385,10 @@ namespace Hogra::Volumetric {
 			return false;
 		}
 
+		void RayCasting(const Camera& camera, const Texture2D& depthTexture);
+
+		void HalfAngleSlicing(const Camera& camera, const Texture2D& depthTexture);
+
 		void DrawProxyGeometry(
 			const Camera& camera,
 			const Texture2D& depthTexture,
@@ -383,14 +406,14 @@ namespace Hogra::Volumetric {
 
 		BoundingBox originalBoundingBox;
 		BoundingBox boundingBox;
+		BoundingGeometry boundingGeometry;
 		glm::vec3 w_position;
 		glm::vec3 scale;
 		glm::quat orientation;
 		glm::mat4 modelMatrix;
 		glm::mat4 invModelMatrix;
-		int sliceCount = 0;
-		float w_diameter = 0;
 
+		// Spatial Transfer function:
 		float STFradius;
 		float STFOpacity;
 		float STFEmission;
@@ -398,17 +421,7 @@ namespace Hogra::Volumetric {
 
 		Light* light;
 		Texture3D* voxels = nullptr;
-		Texture2D colorTextures[2];
-		Texture2D attenuationTextures[2];
-		Texture2D prevCompleteImage;
-		FBO pingpongFBO;
-		FBO prevCompleteImageFBO;
-		ShaderProgram colorProgram;
-		ShaderProgram attenuationProgram;
-		ShaderProgram colorCheapProgram;
-		ShaderProgram attenuationCheapProgram;
-		ShaderProgram combineProgram;
-		Geometry* fullScreenQuad = nullptr;
+
 		glm::vec3 resolution = glm::vec3(1.0f);
 		std::vector<FeatureGroup> featureGroups;
 		TransferFunction transferFunction;
@@ -418,10 +431,47 @@ namespace Hogra::Volumetric {
 		float transferFloodFillTreshold;
 		float lightPower = 100.0f;
 		float levelOfDetail = 1.0f;		// (0..1]
+		int nextGroupIdx = 1;
+		bool showNormals = false;
+		bool isChanged = true;
+
+		// For rendering finished image on screen:
+		FBO prevCompleteImageFBO;	// Stores the last finished render of the volume
+		Texture2D prevCompleteImage;
+		ShaderProgram combineProgram;
+		Geometry* fullScreenQuad = nullptr;
+
+		//---------------------------------------------
+		// For Half-angle slicing:
+		FBO pingpongFBO;
+		Texture2D colorTextures[2];
+		Texture2D attenuationTextures[2];
+		
+		ShaderProgram colorProgram;
+		ShaderProgram attenuationProgram;
+		ShaderProgram colorCheapProgram;
+		ShaderProgram attenuationCheapProgram;
+
+		int sliceCount = 0;
 		int firstSlice = 0;
 		int out = 0;				// Idx of Out texture from the pingpong buffer
-		bool isChanged = true;
-		int nextGroupIdx = 1;
+		float w_diameter = 0;
+
+		bool isBackToFront = true;
+		bool useHalfAngleSlicing = true;
+
+		glm::vec3 w_center = glm::vec3(0.0f);
+		glm::vec3 w_halfway = glm::vec3(1,0,0);
+
+		//---------------------------------------------
+		// For Ray casting:
+		FBO quadrantFBO;
+		FBO rayCastOutFBO;
+		Texture2D quadrantTexture;
+		Texture2D rayCastOutTexture;
+		
+		glm::ivec2 quadrantToRender = glm::ivec2(0, 0);
+		ShaderProgram rayCastProgram;
 
 	};
 }

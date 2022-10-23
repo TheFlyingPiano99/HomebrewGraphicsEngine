@@ -245,6 +245,7 @@
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
+    <ClCompile Include="volumetric\BoundingGeometry.cpp" />
     <ClCompile Include="volumetric\TransferFunction.cpp" />
     <ClCompile Include="volumetric\VolumeObject.cpp" />
   </ItemGroup>
@@ -338,21 +339,21 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
-    <ClInclude Include="TransferFunction.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="UniformVariable.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
-    <ClInclude Include="VolumeObject.h" />
+    <ClInclude Include="volumetric\BoundingGeometry.h" />
     <ClInclude Include="volumetric\TransferFunction.h" />
     <ClInclude Include="volumetric\VolumeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
-    <None Include="..\Resources\Shaders\bounding.frag" />
-    <None Include="..\Resources\Shaders\bounding.vert" />
+    <None Include="..\Resources\Shaders\screenQuadrant.vert" />
+    <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag" />
+    <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert" />
     <None Include="..\Resources\Shaders\bypass.frag" />
     <None Include="..\Resources\Shaders\caption.frag" />
     <None Include="..\Resources\Shaders\debug.frag" />
@@ -367,7 +368,7 @@
     <None Include="..\Resources\Shaders\bloomDownSampling.frag" />
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
     <None Include="..\Resources\Shaders\emissive.frag" />
-    <None Include="..\Resources\Shaders\flatColor.frag" />
+    <None Include="..\Resources\Shaders\boundingGeometryFlatColor.frag" />
     <None Include="..\Resources\Shaders\gausianBlur.frag" />
     <None Include="..\Resources\Shaders\glyph.frag" />
     <None Include="..\Resources\Shaders\lightVolume.vert" />
@@ -397,6 +398,7 @@
     <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag" />
     <None Include="..\Resources\Shaders\voxelColor.frag" />
     <None Include="..\Resources\Shaders\voxelColorCheap.frag" />
+    <None Include="..\Resources\Shaders\voxelRayCast.frag" />
     <None Include="ClassDiagram.cd" />
     <None Include="imgui.ini" />
   </ItemGroup>
