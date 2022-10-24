@@ -402,7 +402,23 @@ namespace Hogra::Volumetric {
 
 		void InitBoundingBox(const Dimensions& dimensions, BoundingBox& boundingBox);
 
-		void ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera& camera, const glm::vec3& w_sliceDelta);
+		void ExportHalfAngleData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera& camera, const glm::vec3& w_sliceDelta);
+
+		void ExportRayCastData(const ShaderProgram& program, const glm::mat4& quadModelMatrix, const glm::mat4& lightViewProjMatrix, const Camera& camera, float w_delta) {
+			program.Activate();
+			program.SetUniform("quadModelMatrix", quadModelMatrix);
+			program.SetUniform("sceneObject.modelMatrix", modelMatrix);
+			program.SetUniform("sceneObject.invModelMatrix", invModelMatrix);
+			program.SetUniform("light.viewProjMatrix", lightViewProjMatrix);
+			program.SetUniform("resolution", resolution);
+			program.SetUniform("scale", scale);
+			program.SetUniform("w_delta", w_delta);
+			program.SetUniform("light.position", light->GetPosition());
+			program.SetUniform("light.powerDensity", light->getPowerDensity());
+			program.SetUniform("isBackToFront", (isBackToFront) ? 1 : 0);
+			program.SetUniform("opacityScale", density);
+			program.SetUniform("showNormals", showNormals);
+		}
 
 		BoundingBox originalBoundingBox;
 		BoundingBox boundingBox;
@@ -434,6 +450,8 @@ namespace Hogra::Volumetric {
 		int nextGroupIdx = 1;
 		bool showNormals = false;
 		bool isChanged = true;
+		glm::mat4 lightViewProjMatrix;
+
 
 		// For rendering finished image on screen:
 		FBO prevCompleteImageFBO;	// Stores the last finished render of the volume
@@ -465,14 +483,12 @@ namespace Hogra::Volumetric {
 
 		//---------------------------------------------
 		// For Ray casting:
-		FBO quadrantFBO;
 		FBO rayCastOutFBO;
-		Texture2D quadrantTexture;
 		Texture2D rayCastOutTexture;
 		
 		glm::ivec2 quadrantToRender = glm::ivec2(0, 0);
 		ShaderProgram rayCastProgram;
-
+		float w_delta = 0.1f;
 	};
 }
 

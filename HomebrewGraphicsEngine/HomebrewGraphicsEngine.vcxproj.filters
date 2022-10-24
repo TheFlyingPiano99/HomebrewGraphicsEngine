@@ -64,9 +64,6 @@
     <Filter Include="Header Files\View\Text">
       <UniqueIdentifier>{c0ecc28f-5d13-4569-b3fa-cde09786736d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Model\Volumetric">
-      <UniqueIdentifier>{b5b1237b-e428-4baf-9215-3e0342bc351f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\volumetric">
       <UniqueIdentifier>{e34f44c3-a9a5-40b6-9cc0-57ac28052bce}</UniqueIdentifier>
     </Filter>

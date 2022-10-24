@@ -200,7 +200,7 @@ void main() {
 	vec4 attenuation = texture(attenuationTexture, attenuationTexCoords);
 
 	// Light Attenuation from lights direction:
-	vec3 l = 1.0 - attenuation.rgb - attenuation.a;
+	vec3 l = (1.0 - attenuation.a) * (1.0 - attenuation.rgb);
 	color.rgb *= vec3(max(l.x, 0.0), max(l.y, 0.0), max(l.z, 0.0));
 	color.a = max(min(1.0 - pow(1.0 - color.a, w_delta), 1.0), 0.0);
 	FragColor = color;

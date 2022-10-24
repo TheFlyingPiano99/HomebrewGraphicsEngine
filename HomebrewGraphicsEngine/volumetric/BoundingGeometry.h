@@ -40,6 +40,8 @@ namespace Hogra::Volumetric {
 			float opacity
 		);
 
+		void BindTextures();
+
 	private:
 		ShaderProgram modelPosShader;
 		ShaderProgram flatColorShader;

@@ -360,6 +360,24 @@ namespace Hogra {
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
+
+			auto* renderMode = Allocator::New<ButtonKeyAction>();
+			renderMode->Init(GLFW_KEY_M, ButtonKeyAction::TriggerType::triggerOnPress);
+			renderMode->SetAction(
+				[volumeObject]() {
+					volumeObject->ToggleHalfAngleSlicing();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(renderMode);
+
+			auto* reloadShaders = Allocator::New<ButtonKeyAction>();
+			reloadShaders->Init(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerOnPress);
+			reloadShaders->SetAction(
+				[]() {
+					ShaderProgram::ReloadAll();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(reloadShaders);
 		}
 
 		return scene;

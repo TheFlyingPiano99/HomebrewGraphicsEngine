@@ -36,7 +36,6 @@ namespace Hogra::Volumetric {
 
 		boundingGeometry.Init();
 		pingpongFBO.Init();
-		quadrantFBO.Init();
 		rayCastOutFBO.Init();
 		colorProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryViewCamera.vert"), 
@@ -74,10 +73,8 @@ namespace Hogra::Volumetric {
 		prevCompleteImageFBO.Init();
 		prevCompleteImageFBO.LinkTexture(GL_COLOR_ATTACHMENT0, prevCompleteImage);
 
-		quadrantTexture.Init(GL_RGBA16F, contextSize / glm::ivec2(4, 2), 0, GL_RGBA, GL_FLOAT);
 		rayCastOutTexture.Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 
-		quadrantFBO.LinkTexture(GL_COLOR_ATTACHMENT0, quadrantTexture);
 		rayCastOutFBO.LinkTexture(GL_COLOR_ATTACHMENT0, rayCastOutTexture);
 
 		// Full screen quad mesh for combine scene with volume:
@@ -90,9 +87,9 @@ namespace Hogra::Volumetric {
 		
 		transferFunction.Init();
 		LoadFeatures();
-
-		boundingGeometry.UpdateGeometry(*voxels, transferFunction, 0.001f);
+		boundingGeometry.UpdateGeometry(*voxels, transferFunction, 0.00001f);
 	}
+
 
 	void VolumeObject::Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera)
 	{
@@ -110,7 +107,7 @@ namespace Hogra::Volumetric {
 		prevCompleteImage.Bind();
 		fullScreenQuad->Draw();
 
-		boundingGeometry.DrawOnScreen(outFBO, camera, modelMatrix, invModelMatrix, 0.01f);
+		//boundingGeometry.DrawOnScreen(outFBO, camera, modelMatrix, invModelMatrix, 0.1f);
 
 		transferFunction.Draw(outFBO);
 		outFBO.Unbind();
@@ -234,11 +231,9 @@ namespace Hogra::Volumetric {
 			pingpongFBO.Bind();
 			if (isBackToFront) {
 				glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-				//glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE, GL_ZERO);
 			}
 			else {
 				glBlendFuncSeparate(GL_ONE_MINUS_DST_ALPHA, GL_ONE, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
-				//glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE, GL_ZERO);
 			}
 
 			VAO.Bind();
@@ -528,7 +523,7 @@ namespace Hogra::Volumetric {
 		}
 	}
 
-	void VolumeObject::ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)
+	void VolumeObject::ExportHalfAngleData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)
 	{
 		program.Activate();
 		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
@@ -568,7 +563,6 @@ namespace Hogra::Volumetric {
 		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f 
 			|| (quadrantToRender.x > 0 || quadrantToRender.y > 0)
 			) {
-			isFinishedVolume = true;
 			bool isCheapRender = false;
 			if (isCameraMoved || isChanged) {
 				isCheapRender = true;
@@ -585,49 +579,11 @@ namespace Hogra::Volumetric {
 
 			// Calculate once per image:
 			if (0 == quadrantToRender.x && quadrantToRender.y == 0) {
+
 				// Clear textures:
-				quadrantFBO.Bind();
+				rayCastOutFBO.Bind();
 				glClearColor(0.0, 0.0, 0.0, 0.0);
 				glClear(GL_COLOR_BUFFER_BIT);
-
-				auto m_center = glm::vec3(0.0f);
-				for (int i = 0; i < 8; i++) {
-					m_center += boundingBox.corners[i];
-				}
-				m_center /= 8.0f;
-				auto w_center4 = modelMatrix * glm::vec4(m_center, 1.0f);
-				w_center = glm::vec3(w_center4) / w_center4.w;
-
-				// Calculate directions and transformations:
-				auto w_lightDir = glm::normalize(glm::vec3(light->GetPosition()) - w_center);
-				auto w_viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - w_center);
-				isBackToFront = false;
-				if (glm::dot(w_lightDir, w_viewDir) < 0.0f) {	// Negate viewDir if the camera is on the opposite side of the volume as the light source.
-					w_viewDir *= -1.0f;
-					isBackToFront = true;
-				}
-				w_halfway = normalize((w_lightDir + w_viewDir) * 0.5f);
-
-				glm::vec3 w_toCorner;
-				float maxCos = 0.0f;
-				for (int i = 0; i < 8; i++) {
-					auto temp4 = glm::vec4(boundingBox.corners[i], 1.0f);
-					temp4 = modelMatrix * temp4;
-					glm::vec3 w_tempDir = glm::vec3(temp4 / temp4.w) - w_center;
-					float cos = glm::dot(glm::normalize(w_tempDir), w_halfway);
-					if (cos > maxCos) {
-						maxCos = cos;
-						w_toCorner = w_tempDir;
-					}
-				}
-				w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
-				if (levelOfDetail < 0.05) {
-					sliceCount = 50;
-				}
-				else {
-					sliceCount = (int)(glm::length(resolution) * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
-				}
-				glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
 
 				// Export matrices:
 				glm::mat4 view = glm::lookAt(
@@ -643,10 +599,7 @@ namespace Hogra::Volumetric {
 				);
 
 				light->SetPowerDensity(glm::vec3(lightPower));
-				glm::mat4 lightViewProjMatrix = projection * view;
-				ExportData(isCheapRender ? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
-				ExportData(isCheapRender ? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
-
+				lightViewProjMatrix = projection * view;
 				boundingGeometry.RenderFrontAndBack(
 					camera,
 					modelMatrix,
@@ -656,40 +609,50 @@ namespace Hogra::Volumetric {
 				);
 			}
 
-			// Half-angle slicing:
-			pingpongFBO.Bind();
-			glEnable(GL_BLEND);
-			glEnable(GL_DEPTH_TEST);
+			// Ray casting:
+			rayCastOutFBO.Bind();
+			glDisable(GL_BLEND);
+			glDisable(GL_DEPTH_TEST);
 			glDepthMask(GL_FALSE);
 			glDisable(GL_CULL_FACE);
-			int in = 0;
-			int slicePerCurrentFrame = 0;
-			int maxSlicePerFrame = isCheapRender ? 1000 : 25;
-			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
-			for (int slice = firstSlice; slice < sliceCount; slice++) {
-				in = slice % 2;
-				out = (slice + 1) % 2;
-				auto w_slicePos = w_center + w_halfway * (1.0f - ((float)slice / (float)sliceCount) * 2.0f) * w_diameter * 0.5f;
-				auto m_slicePos = invModelMatrix * glm::vec4(w_slicePos, 1.0f);
-				DrawProxyGeometry(camera,
-					depthTexture,
-					isBackToFront,
-					in,
-					out,
-					glm::vec3(m_slicePos) / m_slicePos.w,
-					m_sliceNorm,
-					isCheapRender
-				);
-				slicePerCurrentFrame++;
-				if (slicePerCurrentFrame >= maxSlicePerFrame && sliceCount > maxSlicePerFrame) {
-					firstSlice = slice + 1;
-					isFinishedVolume = false;
-					break;
+
+			rayCastProgram.Activate();
+			glm::mat4 quadModelMatrix;
+			if (isCheapRender) {
+				quadModelMatrix = glm::mat4(1.0f);
+			}
+			else {
+				quadModelMatrix =
+					glm::translate(
+						glm::vec3(0.5, 1.0, 0.0) * glm::vec3(quadrantToRender.x, quadrantToRender.y, 0.0)
+						- glm::vec3(0.75, 0.5, 0.0)) * glm::scale(glm::vec3(0.25, 0.5, 1.0)
+						);
+			}
+			boundingGeometry.BindTextures();
+			transferFunction.Bind();
+			voxels->Bind();
+
+			ExportRayCastData(rayCastProgram, quadModelMatrix, lightViewProjMatrix, camera, w_delta);
+
+			fullScreenQuad->BindVAO();
+			fullScreenQuad->Draw();
+			rayCastOutFBO.Unbind();
+
+			if (!isCheapRender) {
+				quadrantToRender.x++;
+				if (4 == quadrantToRender.x) {
+					if (1 == quadrantToRender.y) {
+						quadrantToRender = glm::ivec2(0, 0);
+						isFinishedVolume = true;
+					}
+					else {
+						quadrantToRender.x = 0;
+						quadrantToRender.y = 1;
+					}
 				}
 			}
-			pingpongFBO.Unbind();
-			if (isFinishedVolume) {
-				firstSlice = 0;
+			else {
+				isFinishedVolume = true;
 			}
 			glDepthMask(GL_TRUE);
 		}
@@ -771,12 +734,7 @@ namespace Hogra::Volumetric {
 					}
 				}
 				w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
-				if (levelOfDetail < 0.05) {
-					sliceCount = 50;
-				}
-				else {
-					sliceCount = (int)(glm::length(resolution) * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
-				}
+				sliceCount = (int)(glm::length(resolution) * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
 				glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
 
 				// Export matrices:
@@ -794,16 +752,9 @@ namespace Hogra::Volumetric {
 
 				light->SetPowerDensity(glm::vec3(lightPower));
 				glm::mat4 lightViewProjMatrix = projection * view;
-				ExportData(isCheapRender ? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
-				ExportData(isCheapRender ? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
+				ExportHalfAngleData(isCheapRender ? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
+				ExportHalfAngleData(isCheapRender ? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
 
-				boundingGeometry.RenderFrontAndBack(
-					camera,
-					modelMatrix,
-					invModelMatrix,
-					lightViewProjMatrix,
-					light->GetPosition4D()
-				);
 			}
 
 			// Half-angle slicing:
@@ -814,7 +765,7 @@ namespace Hogra::Volumetric {
 			glDisable(GL_CULL_FACE);
 			int in = 0;
 			int slicePerCurrentFrame = 0;
-			int maxSlicePerFrame = isCheapRender ? 1000 : 25;
+			int maxSlicePerFrame = isCheapRender ? 1000 : 10;
 			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
 			for (int slice = firstSlice; slice < sliceCount; slice++) {
 				in = slice % 2;

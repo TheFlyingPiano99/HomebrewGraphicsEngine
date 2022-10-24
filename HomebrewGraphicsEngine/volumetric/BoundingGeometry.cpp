@@ -49,24 +49,24 @@ namespace Hogra::Volumetric {
 		);
 
 		frontFaceTexture.Init(
-			GL_RGBA,
+			GL_RGBA16F,
 			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight),
 			0,
-			GL_RGB,
+			GL_RGBA,
 			GL_FLOAT
 		);
 		backFaceTexture.Init(
-			GL_RGBA,
+			GL_RGBA16F,
 			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight),
-			0,
-			GL_RGB,
+			2,
+			GL_RGBA,
 			GL_FLOAT
 		);
 		lightFaceTexture.Init(
-			GL_RGBA,
+			GL_RGBA16F,
 			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight),
-			0,
-			GL_RGB,
+			4,
+			GL_RGBA,
 			GL_FLOAT
 		);
 		enterFBO.LinkTexture(GL_COLOR_ATTACHMENT0, frontFaceTexture);
@@ -111,8 +111,8 @@ namespace Hogra::Volumetric {
 		unsigned int& zDivision
 	)
 	{
-		unsigned int initX = 128;
-		unsigned int initY = 128;
+		unsigned int initX = 64;
+		unsigned int initY = 64;
 		unsigned int initZ = 64;
 		for (unsigned int i = initX; i >= 1; i--) {
 			if (dimensions.width % i == 0) {
@@ -445,6 +445,7 @@ namespace Hogra::Volumetric {
 		glClearDepth(0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDisable(GL_CULL_FACE);
+		glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);
 		glDepthFunc(GL_GREATER);
@@ -499,5 +500,11 @@ namespace Hogra::Volumetric {
 		glDepthMask(GL_TRUE);
 		vao.Unbind();
 		fbo.Unbind();
+	}
+
+	void BoundingGeometry::BindTextures() {
+		frontFaceTexture.Bind();
+		backFaceTexture.Bind();
+		lightFaceTexture.Bind();
 	}
 }
