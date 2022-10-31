@@ -168,7 +168,7 @@ namespace Hogra {
 					dt = realDelta;
 					realDelta = 0.0;
 				}
-				dt = (float)dt;
+				Time::dt = (float)dt;
 				Time::totalTime += dt;
 				retVal = SceneManager::getInstance()->PhysicsUpdate(dt);
 				if (-1 == retVal) {

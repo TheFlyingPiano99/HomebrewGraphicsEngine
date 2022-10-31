@@ -488,7 +488,10 @@ namespace Hogra::Volumetric {
 		
 		glm::ivec2 quadrantToRender = glm::ivec2(0, 0);
 		ShaderProgram rayCastProgram;
-		float w_delta = 0.1f;
+		ShaderProgram rayCastCheapProgram;
+		unsigned int xQuadCount = 32;
+		unsigned int yQuadCount = 16;
+		float w_delta = 0.05f;
 	};
 }
 

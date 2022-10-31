@@ -70,35 +70,35 @@ namespace Hogra {
 		* get velocity in m/s
 		*/
 		glm::vec3 getVelocity() const {
-			return momentum * invMass;
+			return momentum * density;
 		}
 
 		/*
 		* set velocity in m/s
 		*/
 		void setVelocity(const glm::vec3& v) {
-			momentum = v / invMass;
+			momentum = v / density;
 		}
 
 		/*
 		* get mass in kg
 		*/
 		float getMass() const {
-			return 1.0f / invMass;
+			return 1.0f / density;
 		}
 
 		/*
 		* get inverse of mass in 1/kg
 		*/
 		float getInvMass() const {
-			return invMass;
+			return density;
 		}
 
 		/*
 		* set mass in kg
 		*/
 		void setMass(const float m) {
-			invMass = 1.0f / m;
+			density = 1.0f / m;
 		}
 
 		glm::vec3 getModelSpaceDrag() const {
@@ -251,7 +251,7 @@ namespace Hogra {
 		glm::vec3 appliedTransientForce = glm::vec3(0.0f);
 		glm::vec3 impulse = glm::vec3(0.0f);
 		glm::vec3 momentum = glm::vec3(0.0f);
-		float invMass = 0.0f;
+		float density = 0.0f;
 		glm::vec3 modelSpaceDrag = glm::vec3(0.0f);
 		glm::vec3 worldSpaceDrag = glm::vec3(0.0f);
 

@@ -36,7 +36,7 @@ namespace Hogra {
 		glDisable(GL_BLEND);
 		depthTexture.Bind();
 		for (auto& var : uniformVariables) {
-			var->Bind(*(mesh->getMaterial()->GetShaderProgram()));
+			var->Bind(mesh->getMaterial()->GetShaderProgram()->ID);
 		}
 		mesh->Draw();
 		outFBO.Unbind();

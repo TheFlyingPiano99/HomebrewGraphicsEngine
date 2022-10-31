@@ -63,6 +63,11 @@ namespace Hogra::Volumetric {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelRayCast.frag")
 		);
+		rayCastCheapProgram.Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("screenQuadrant.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelRayCastCheap.frag")
+		);
 		colorTextures[0].Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 		colorTextures[1].Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 		// Unit 1 is reserved for depth texture!
@@ -576,10 +581,10 @@ namespace Hogra::Volumetric {
 					levelOfDetail = 1.0f;
 				}
 			}
+			w_delta = 0.005f / levelOfDetail;
 
 			// Calculate once per image:
 			if (0 == quadrantToRender.x && quadrantToRender.y == 0) {
-
 				// Clear textures:
 				rayCastOutFBO.Bind();
 				glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -624,15 +629,15 @@ namespace Hogra::Volumetric {
 			else {
 				quadModelMatrix =
 					glm::translate(
-						glm::vec3(0.5, 1.0, 0.0) * glm::vec3(quadrantToRender.x, quadrantToRender.y, 0.0)
-						- glm::vec3(0.75, 0.5, 0.0)) * glm::scale(glm::vec3(0.25, 0.5, 1.0)
-						);
+						glm::vec3(2.0f / (float)xQuadCount, 2.0f / (float)yQuadCount, 0.0f) * glm::vec3(quadrantToRender.x, quadrantToRender.y, 0.0)
+						- glm::vec3(1.0f - 1.0f / (float)xQuadCount, 1.0f - 1.0f / (float)yQuadCount, 0.0f))
+					* glm::scale(glm::vec3(1.0f / (float)xQuadCount, 1.0f / (float)yQuadCount, 1.0));
 			}
 			boundingGeometry.BindTextures();
 			transferFunction.Bind();
 			voxels->Bind();
 
-			ExportRayCastData(rayCastProgram, quadModelMatrix, lightViewProjMatrix, camera, w_delta);
+			ExportRayCastData(isCheapRender? rayCastCheapProgram : rayCastProgram, quadModelMatrix, lightViewProjMatrix, camera, w_delta);
 
 			fullScreenQuad->BindVAO();
 			fullScreenQuad->Draw();
@@ -640,14 +645,12 @@ namespace Hogra::Volumetric {
 
 			if (!isCheapRender) {
 				quadrantToRender.x++;
-				if (4 == quadrantToRender.x) {
-					if (1 == quadrantToRender.y) {
+				if (xQuadCount == quadrantToRender.x) {
+					quadrantToRender.x = 0;
+					quadrantToRender.y++;
+					if (yQuadCount == quadrantToRender.y) {
 						quadrantToRender = glm::ivec2(0, 0);
 						isFinishedVolume = true;
-					}
-					else {
-						quadrantToRender.x = 0;
-						quadrantToRender.y = 1;
 					}
 				}
 			}
@@ -690,6 +693,7 @@ namespace Hogra::Volumetric {
 
 			// Calculate once per image:
 			if (0 == firstSlice) {
+
 				// Clear textures:
 				pingpongFBO.Bind();
 				glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -752,6 +756,7 @@ namespace Hogra::Volumetric {
 
 				light->SetPowerDensity(glm::vec3(lightPower));
 				glm::mat4 lightViewProjMatrix = projection * view;
+				std::cout << "w_delta: " << glm::length(w_sliceDelta) << std::endl;
 				ExportHalfAngleData(isCheapRender ? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
 				ExportHalfAngleData(isCheapRender ? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
 

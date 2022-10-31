@@ -67,6 +67,9 @@
     <Filter Include="Header Files\volumetric">
       <UniqueIdentifier>{e34f44c3-a9a5-40b6-9cc0-57ac28052bce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\fallingSand">
+      <UniqueIdentifier>{f658a671-17ea-4da2-97c0-3c1a51a5c3bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -349,6 +352,30 @@
       <Filter>Header Files\Model</Filter>
     </ClCompile>
     <ClCompile Include="volumetric\BoundingGeometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\chunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\gas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\liquid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\sand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\solid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\stone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\water.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -644,6 +671,33 @@
     <ClInclude Include="volumetric\VolumeObject.h">
       <Filter>Header Files\volumetric</Filter>
     </ClInclude>
+    <ClInclude Include="UniformVariableImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\chunk.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\gas.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\liquid.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\particle.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\sand.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\solid.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\stone.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\water.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -796,6 +850,15 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\screenQuadrant.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\voxelRayCastCheap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\pixelPhysics.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\pixelPhysics2.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

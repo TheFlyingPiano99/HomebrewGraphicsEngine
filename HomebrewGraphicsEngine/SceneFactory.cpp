@@ -24,6 +24,14 @@
 #include "ControlActionManager.h"
 #include "GUI.h"
 #include "Callbacks.h"
+#include "ScriptObject.h"
+#include "UniformVariableImpl.h"
+#include "HograTime.h"
+#include "fallingSand/chunk.h"
+#include "fallingSand/water.h"
+#include "fallingSand/sand.h"
+#include "fallingSand/stone.h"
+
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -355,7 +363,7 @@ namespace Hogra {
 			auto* fullScreen = Allocator::New<ButtonKeyAction>();
 			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
 			fullScreen->SetAction(
-				[scene]() {
+				[]() {
 					Callbacks::toggleFullScreen();
 				}
 			);
@@ -382,6 +390,138 @@ namespace Hogra {
 
 		return scene;
 	}
+
+	Scene* SceneFactory::CreatePixelPhysicsDemoScene(int contextWidth, int contextHeight) {
+
+		auto scene = Allocator::New<Scene>();
+		scene->Init(contextWidth, contextHeight);
+
+		auto* forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetName("ForwardLayer");
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(forwardLayer);
+
+		auto chunkObj = Allocator::New<SceneObject>();
+		chunkObj->Init();
+
+		auto chunk = Allocator::New<FallingSand::Chunk>();
+
+		// Sand:
+		chunk->GetGrid().Write(100, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 104, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 104, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 104, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 104, Allocator::New<FallingSand::Sand>());
+
+		for (int i = 0; i < 256; i++) {
+			chunk->GetGrid().Write(i, 3, Allocator::New<FallingSand::Stone>());
+			chunk->GetGrid().Write(i, 2, Allocator::New<FallingSand::Stone>());
+			chunk->GetGrid().Write(i, 1, Allocator::New<FallingSand::Stone>());
+			chunk->GetGrid().Write(i, 0, Allocator::New<FallingSand::Stone>());
+		}
+		chunk->GetGrid().Write(0, 4, Allocator::New<FallingSand::Stone>());
+		chunk->GetGrid().Write(0, 5, Allocator::New<FallingSand::Stone>());
+		chunk->GetGrid().Write(255, 4, Allocator::New<FallingSand::Stone>());
+		chunk->GetGrid().Write(255, 5, Allocator::New<FallingSand::Stone>());
+
+		chunkObj->addComponent(chunk);
+
+		auto* bloom = Allocator::New<Bloom>();
+			bloom->Init(contextWidth, contextHeight);
+		scene->AddPostProcessStage(bloom, "ForwardLayer");
+
+		auto* hdr = Allocator::New<PostProcessStage>();
+		hdr->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+			contextWidth, contextHeight);
+		scene->AddPostProcessStage(hdr, "ForwardLayer");
+
+		auto fbo = Allocator::New<FBO>();
+		fbo->Init();
+		auto drawMode = Allocator::New<int>();
+		*drawMode = 0;
+
+
+		scene->AddSceneObject(chunkObj, "", "ForwardLayer");
+
+		{
+			auto* fullScreen = Allocator::New<ButtonKeyAction>();
+			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
+			fullScreen->SetAction(
+				[]() {
+					Callbacks::toggleFullScreen();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
+
+			auto* reloadShaders = Allocator::New<ButtonKeyAction>();
+			reloadShaders->Init(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerOnPress);
+			reloadShaders->SetAction(
+				[]() {
+					ShaderProgram::ReloadAll();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(reloadShaders);
+
+			auto* switchDrawMode = Allocator::New<ButtonKeyAction>();
+			switchDrawMode->Init(GLFW_KEY_T, ButtonKeyAction::TriggerType::triggerOnPress);
+			switchDrawMode->SetAction(
+				[drawMode]() {
+					(*drawMode)++;
+					if (*drawMode > 2) {
+						*drawMode = 0;
+					}
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(switchDrawMode);
+
+			auto* leftClick = Allocator::New<ButtonKeyAction>();
+			leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerContinuosly);
+			leftClick->SetAction(
+				[chunk, drawMode]() {
+					double x;
+					double y;
+					glfwGetCursorPos(GlobalVariables::window, &x, &y);
+					float u = x / (double)GlobalVariables::windowWidth;
+					float v = 1.0f - y / (double)GlobalVariables::windowHeight;
+
+					FallingSand::Particle* particle = nullptr;
+					switch (*drawMode) {
+					case 0:
+						particle = Allocator::New<FallingSand::Water>();
+						break;
+					case 1:
+						particle = Allocator::New<FallingSand::Sand>();
+						particle->SetDebug(true);
+						break;
+					case 2:
+						particle = Allocator::New<FallingSand::Stone>();
+						break;
+					}
+					chunk->GetGrid().PutIfEmpty(u * 255.0f, v * 255.0f, particle);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);
+		}
+
+		return scene;
+	}
+
 	
 	ForceField* SceneFactory::InitGravitation(Scene* scene)
 	{

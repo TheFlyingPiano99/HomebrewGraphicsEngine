@@ -180,6 +180,14 @@
     <ClCompile Include="DeferredLightingSystem.cpp" />
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
+    <ClCompile Include="fallingSand\chunk.cpp" />
+    <ClCompile Include="fallingSand\gas.cpp" />
+    <ClCompile Include="fallingSand\liquid.cpp" />
+    <ClCompile Include="fallingSand\particle.cpp" />
+    <ClCompile Include="fallingSand\sand.cpp" />
+    <ClCompile Include="fallingSand\solid.cpp" />
+    <ClCompile Include="fallingSand\stone.cpp" />
+    <ClCompile Include="fallingSand\water.cpp" />
     <ClCompile Include="FBO.cpp" />
     <ClCompile Include="FirstPersonControl.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -276,6 +284,14 @@
     <ClInclude Include="DeferredLightingSystem.h" />
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
+    <ClInclude Include="fallingSand\chunk.h" />
+    <ClInclude Include="fallingSand\gas.h" />
+    <ClInclude Include="fallingSand\liquid.h" />
+    <ClInclude Include="fallingSand\particle.h" />
+    <ClInclude Include="fallingSand\sand.h" />
+    <ClInclude Include="fallingSand\solid.h" />
+    <ClInclude Include="fallingSand\stone.h" />
+    <ClInclude Include="fallingSand\water.h" />
     <ClInclude Include="FBO.h" />
     <ClInclude Include="FirstPersonControl.h" />
     <ClInclude Include="Font.h" />
@@ -341,6 +357,7 @@
     <ClInclude Include="TextureCube.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="UniformVariable.h" />
+    <ClInclude Include="UniformVariableImpl.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
@@ -351,6 +368,8 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
+    <None Include="..\Resources\Shaders\pixelPhysics.frag" />
+    <None Include="..\Resources\Shaders\pixelPhysics2.frag" />
     <None Include="..\Resources\Shaders\screenQuadrant.vert" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert" />
@@ -399,6 +418,7 @@
     <None Include="..\Resources\Shaders\voxelColor.frag" />
     <None Include="..\Resources\Shaders\voxelColorCheap.frag" />
     <None Include="..\Resources\Shaders\voxelRayCast.frag" />
+    <None Include="..\Resources\Shaders\voxelRayCastCheap.frag" />
     <None Include="ClassDiagram.cd" />
     <None Include="imgui.ini" />
   </ItemGroup>

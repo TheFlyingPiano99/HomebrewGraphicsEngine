@@ -5,7 +5,7 @@
 #include <vector>
 #include<glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include "UniformVariable.h"
 
 namespace Hogra {
 
@@ -24,6 +24,7 @@ namespace Hogra {
 
 		// Activates the Shader Program
 		void Activate() const;
+
 		// Deletes the Shader Program
 		void Delete() const;
 
@@ -96,6 +97,14 @@ namespace Hogra {
 			return fragmentShaderPath;
 		}
 
+		void BindUniformVariable(AbstractUniformVariable* uniform) {
+			uniforms.push_back(uniform);
+		}
+
+		void ClearUniformBindings() {
+			uniforms.clear();
+		}
+
 	private:
 
 		std::string vertexShaderPath;
@@ -107,7 +116,10 @@ namespace Hogra {
 
 		std::string getFileContent(const std::string& filename) const;
 
+		std::vector<AbstractUniformVariable*> uniforms;
+
 		static std::vector<ShaderProgram*> instances;	// Used to reload all shaders
+
 	};
 
 

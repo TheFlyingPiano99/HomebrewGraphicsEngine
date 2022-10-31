@@ -102,6 +102,9 @@ namespace Hogra {
 	void ShaderProgram::Activate() const
 	{
 		glUseProgram(ID);
+		for (auto& uniform : uniforms) {
+			uniform->Bind(ID);
+		}
 	}
 
 	// Deletes the Shader Program

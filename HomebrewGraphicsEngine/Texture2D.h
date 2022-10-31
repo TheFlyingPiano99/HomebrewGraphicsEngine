@@ -17,7 +17,9 @@ namespace Hogra {
 
 		void Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType);
 
-		void Init(const std::vector<glm::vec4>& bytes, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
+		void Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType);
+
+		void Init(const std::vector<int>& data, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
 
 		void Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
 
@@ -48,10 +50,14 @@ namespace Hogra {
 				normalisedPosition.y * (dimensions.y - 1)));
 		}
 
+		void SetData(const std::vector<glm::vec4>& _data);
+
 	private:
 		glm::ivec2 dimensions;
 		glm::vec4 nullVector;
 		std::vector<glm::vec4> bytes;
+		GLenum format = GL_RGBA;
+		GLenum pixelType = GL_FLOAT;
 
 		friend class Allocator;
 	};

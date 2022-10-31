@@ -34,9 +34,9 @@ namespace Hogra {
 		glm::quat orientation = owner->GetOrientation();
 		glm::vec3 rotatedModelSpaceDrag = abs(orientation * modelSpaceDrag);
 		glm::vec3 drag = worldSpaceDrag + rotatedModelSpaceDrag;
-		momentum *= glm::vec3(std::expf(-drag.x * dt * invMass), std::expf(-drag.y * dt * invMass), std::expf(-drag.z * dt * invMass));
+		momentum *= glm::vec3(std::expf(-drag.x * dt * density), std::expf(-drag.y * dt * density), std::expf(-drag.z * dt * density));
 		glm::vec3 pos = owner->GetPosition();
-		pos += momentum * invMass * dt;
+		pos += momentum * density * dt;
 		owner->SetPosition(pos);
 
 		//Rotation:

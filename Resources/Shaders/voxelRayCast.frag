@@ -161,7 +161,7 @@ void main()
     }
     vec3 rayDir = normalize(m_exit - m_enter);
     vec3 colorSum = vec3(0.0);
-    vec4 attenuation = vec4(1.0);
+    vec4 oneMinusAttenuation = vec4(1.0);
     vec4 m_step = sceneObject.invModelMatrix * (normalize(w_rayDir) * w_delta);
     float m_stepSize = length(m_step);
     unsigned int stepCount = unsigned int(m_distanceInVolume / m_stepSize);
@@ -169,24 +169,29 @@ void main()
     for (int i = 0; i < stepCount; i++) {
 		vec3 m_currentPos = m_enter + rayDir * m_stepSize * i;
 		vec4 color = transferFunctionFromTexture(m_currentPos);
-		color.rgb *= w_delta * opacityScale;									// Correct color
-		vec4 absorption = vec4(
-			min(max(1.0 - pow(1.0 - color.g - color.b, w_delta * opacityScale), 0.0), 1.0),
-			min(max(1.0 - pow(1.0 - color.r - color.b, w_delta * opacityScale), 0.0), 1.0),
-			min(max(1.0 - pow(1.0 - color.r - color.g, w_delta * opacityScale), 0.0), 1.0),
-			min(max(1.0 - pow(1.0 - color.a, w_delta * opacityScale), 0.0), 1.0)
-		);
 		vec4 w_currentPos = sceneObject.modelMatrix * vec4(m_currentPos, 1.0);
 		w_currentPos /= w_currentPos.w;
 		
+		vec3 transferGrad = resampleGradientAndDensityFromTransfer(m_currentPos,  trilinearInterpolationFromTransfer(m_currentPos)).xyz;
+
 		// Calculate light contribution:
+		vec3 w_lightDir = normalize(light.position - w_currentPos.xyz);
 		float w_lightDistance = length(light.position - w_currentPos.xyz);
+		vec3 w_halfway = (w_lightDir - normalize(w_rayDir.xyz)) * 0.5;
+		vec4 m_halfway = sceneObject.invModelMatrix * vec4(w_halfway, 0.0);
+
+		// Blinn-Phong local illumination:
+		float shininess = 10.0;
+		float t = min(max(pow(length(transferGrad), 1.0), 0.0), 1.0);
+		color.rgb = color.rgb * (1.0 - t) + color.rgb * t * pow(max(dot(normalize(-transferGrad.xyz), normalize(m_halfway.xyz)), 0.0), shininess);
 		color.rgb *= light.powerDensity / w_lightDistance / w_lightDistance;
+		color.rgb *= w_delta * opacityScale;									// Correct color
 
-		color.rgb *= attenuation.rgb * attenuation.a;							// Attenuate light in camera direction
 
-		colorSum += color.rgb;
-		attenuation *= 1.0 - absorption;
+		color.rgb *= oneMinusAttenuation.rgb;							// Attenuate light in camera direction
+
+		colorSum += color.rgb;												
+		oneMinusAttenuation *= pow(1.0 - color.a, w_delta * opacityScale);	// Correct attenuation
     }
-    FragColor = vec4(colorSum, 1.0 - attenuation);
+    FragColor = vec4(colorSum, 1.0 - oneMinusAttenuation);
 }

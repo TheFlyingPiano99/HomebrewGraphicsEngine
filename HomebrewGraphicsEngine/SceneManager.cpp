@@ -18,7 +18,7 @@ namespace Hogra {
 		if (nullptr != currentScene) {
 			return;
 		}
-		currentScene = SceneFactory::getInstance()->CreateVoxelDemoScene(contextWidth, contextHeight);		
+		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
 	}
 
 	void SceneManager::RestartScene()

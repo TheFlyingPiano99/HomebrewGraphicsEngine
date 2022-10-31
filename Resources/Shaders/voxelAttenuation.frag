@@ -123,7 +123,7 @@ void main() {
 	vec2 texCoords = ndc_attenuationCoords.xy * 0.5 + 0.5;
 
 	float offset = w_delta * tan(0.01 / 2.0);
-	vec3 bluredIndirectAttenuation = vec3(0, 0, 0);
+	vec3 bluredIndirectAttenuation = vec3(0, 0, 0);	
 	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords).rgb;
 	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + vec2(offset, 0)).rgb;
 	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + vec2(-offset, 0)).rgb;

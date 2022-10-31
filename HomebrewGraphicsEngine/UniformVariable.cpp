@@ -1,27 +1,29 @@
-#include "UniformVariable.h"
+#include "UniformVariableImpl.h"
 #include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include<glad/glad.h>
+
 
 namespace Hogra {
-
 	
-	void UniformVariable<float>::Bind(const ShaderProgram& program) {
-		glUniform1f(glGetUniformLocation(program.ID, key), value);
+	void UniformVariable<float>::Bind(unsigned int id) {
+		glUniform1f(glGetUniformLocation(id, key), value);
 	}
 
-	void UniformVariable<int>::Bind(const ShaderProgram& program) {
-		glUniform1i(glGetUniformLocation(program.ID, key), value);
+	void UniformVariable<int>::Bind(unsigned int id) {
+		glUniform1i(glGetUniformLocation(id, key), value);
 	}
 
-	void UniformVariable<glm::vec2>::Bind(const ShaderProgram& program) {
-		glUniform2f(glGetUniformLocation(program.ID, key), value.x, value.y);
+	void UniformVariable<glm::vec2>::Bind(unsigned int id) {
+		glUniform2f(glGetUniformLocation(id, key), value.x, value.y);
 	}
 
-	void UniformVariable<glm::vec3>::Bind(const ShaderProgram& program) {
-		glUniform3f(glGetUniformLocation(program.ID, key), value.x, value.y, value.z);
+	void UniformVariable<glm::vec3>::Bind(unsigned int id) {
+		glUniform3f(glGetUniformLocation(id, key), value.x, value.y, value.z);
 	}
 
-	void UniformVariable<glm::vec4>::Bind(const ShaderProgram& program) {
-		glUniform4f(glGetUniformLocation(program.ID, key), value.x, value.y, value.z, value.w);
+	void UniformVariable<glm::vec4>::Bind(unsigned int id) {
+		glUniform4f(glGetUniformLocation(id, key), value.x, value.y, value.z, value.w);
 	}
 
 	template<typename T>
