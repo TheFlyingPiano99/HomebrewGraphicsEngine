@@ -5,7 +5,7 @@
 #include <vector>
 #include<glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include "UniformVariable.h"
 
 namespace Hogra {
 
@@ -18,10 +18,13 @@ namespace Hogra {
 
 		void Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile);
 
+		ShaderProgram();
+
 		~ShaderProgram();
 
 		// Activates the Shader Program
 		void Activate() const;
+
 		// Deletes the Shader Program
 		void Delete() const;
 
@@ -69,13 +72,54 @@ namespace Hogra {
 			glUniformMatrix3fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(value));
 		}
 
+		static void ReloadAll() {
+			for (auto instance : instances) {
+				instance->Delete();
+				if (!instance->GetVertexPath().empty() && !instance->GetFragmentPath().empty()) {
+					instance->Init(
+						instance->GetVertexPath(),
+						instance->GetGeometryPath(),
+						instance->GetFragmentPath()
+					);
+				}
+			}
+		}
+
+		const std::string& GetVertexPath() {
+			return vertexShaderPath;
+		}
+
+		const std::string& GetGeometryPath() {
+			return geometryShaderPath;
+		}
+
+		const std::string& GetFragmentPath() {
+			return fragmentShaderPath;
+		}
+
+		void BindUniformVariable(AbstractUniformVariable* uniform) {
+			uniforms.push_back(uniform);
+		}
+
+		void ClearUniformBindings() {
+			uniforms.clear();
+		}
 
 	private:
+
+		std::string vertexShaderPath;
+		std::string geometryShaderPath;
+		std::string fragmentShaderPath;
 
 		// Checks if the different Shaders have compiled properly
 		void compileErrors(unsigned int shader, const char* type) const;
 
 		std::string getFileContent(const std::string& filename) const;
+
+		std::vector<AbstractUniformVariable*> uniforms;
+
+		static std::vector<ShaderProgram*> instances;	// Used to reload all shaders
+
 	};
 
 

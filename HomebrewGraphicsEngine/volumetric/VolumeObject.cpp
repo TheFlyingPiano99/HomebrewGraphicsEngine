@@ -34,7 +34,9 @@ namespace Hogra::Volumetric {
 		resolution = glm::vec3(voxels->GetDimensions().width, voxels->GetDimensions().height, voxels->GetDimensions().depth);
 		scale *= glm::vec3(voxels->GetDimensions().widthScale, voxels->GetDimensions().heightScale, voxels->GetDimensions().depthScale);
 
+		boundingGeometry.Init();
 		pingpongFBO.Init();
+		rayCastOutFBO.Init();
 		colorProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("proxyGeometryViewCamera.vert"), 
 			"",
@@ -56,7 +58,16 @@ namespace Hogra::Volumetric {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelAttenuationCheap.frag")
 		);
-
+		rayCastProgram.Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("screenQuadrant.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelRayCast.frag")
+		);
+		rayCastCheapProgram.Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("screenQuadrant.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("voxelRayCastCheap.frag")
+		);
 		colorTextures[0].Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 		colorTextures[1].Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 		// Unit 1 is reserved for depth texture!
@@ -66,6 +77,10 @@ namespace Hogra::Volumetric {
 		prevCompleteImage.Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
 		prevCompleteImageFBO.Init();
 		prevCompleteImageFBO.LinkTexture(GL_COLOR_ATTACHMENT0, prevCompleteImage);
+
+		rayCastOutTexture.Init(GL_RGBA16F, contextSize, 0, GL_RGBA, GL_FLOAT);
+
+		rayCastOutFBO.LinkTexture(GL_COLOR_ATTACHMENT0, rayCastOutTexture);
 
 		// Full screen quad mesh for combine scene with volume:
 		combineProgram.Init(
@@ -77,156 +92,27 @@ namespace Hogra::Volumetric {
 		
 		transferFunction.Init();
 		LoadFeatures();
+		boundingGeometry.UpdateGeometry(*voxels, transferFunction, 0.00001f);
 	}
+
 
 	void VolumeObject::Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera)
 	{
-		bool isCameraMoved = camera.IsMoved();
-		bool isFinishedVolume = false;
-		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f || firstSlice > 0) {
-			isFinishedVolume = true;
-			bool isCheapRender = false;
-			if (isCameraMoved || isChanged) {
-				isCheapRender = true;
-				levelOfDetail = 0.25f;
-				firstSlice = 0;
-				isChanged = false;
-			}
-			else if (0 == firstSlice) {
-				levelOfDetail *= 2.0f;
-				if (1.0f < levelOfDetail) {	// max
-					levelOfDetail = 1.0f;
-				}
-			}
-
-			auto m_center = glm::vec3(0.0f);
-			for (int i = 0; i < 8; i++) {
-				m_center += boundingBox.corners[i];
-			}
-			m_center /= 8.0f;
-			auto w_center4 = modelMatrix * glm::vec4(m_center, 1.0f);
-			auto w_center = glm::vec3(w_center4) / w_center4.w;
-
-			// Calculate directions and transformations:
-			auto w_lightDir = glm::normalize(glm::vec3(light->GetPosition()) - w_center);
-			auto w_viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - w_center);
-			bool isBackToFront = false;
-			if (glm::dot(w_lightDir, w_viewDir) < 0.0f) {	// Negate viewDir if the camera is on the opposite side of the volume as the light source.
-				w_viewDir *= -1.0f;
-				isBackToFront = true;
-			}
-			auto w_halfway = normalize((w_lightDir + w_viewDir) * 0.5f);
-
-			glm::vec3 w_toCorner;
-			float maxCos = 0.0f;
-			for (int i = 0; i < 8; i++) {
-				auto temp4 = glm::vec4(boundingBox.corners[i], 1.0f);
-				temp4 = modelMatrix * temp4;
-				glm::vec3 w_tempDir = glm::vec3(temp4 / temp4.w) - w_center;
-				float cos = glm::dot(glm::normalize(w_tempDir), w_halfway);
-				if (cos > maxCos) {
-					maxCos = cos;
-					w_toCorner = w_tempDir;
-				}
-			}
-			w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
-			if (levelOfDetail < 0.05) {
-				sliceCount = 50;
-			}
-			else {
-				sliceCount = (int)(glm::length(resolution) * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
-			}
-			glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
-
-			// Clear textures: (working)
-			pingpongFBO.Bind();
-			glEnable(GL_BLEND);
-			glEnable(GL_DEPTH_TEST);
-			glDepthMask(GL_FALSE);
-			glDisable(GL_CULL_FACE);
-			if (0 == firstSlice) {
-				glClearColor(0.0, 0.0, 0.0, 0.0);
-				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[0], 0);
-				glClear(GL_COLOR_BUFFER_BIT);
-				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[1], 0);
-				glClear(GL_COLOR_BUFFER_BIT);
-				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[0], 0);
-				glClear(GL_COLOR_BUFFER_BIT);
-				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[1], 0);
-				glClear(GL_COLOR_BUFFER_BIT);
-				pingpongFBO.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
-
-				// Export matrices:
-				glm::mat4 view = glm::lookAt(
-					glm::vec3(light->GetPosition().x, light->GetPosition().y, light->GetPosition().z),
-					w_center,
-					camera.getPreferedUp()
-				);
-				glm::mat4 projection = glm::perspective(
-					glm::radians(45.0f),
-					(float)VOXEL_ATTENUATION_TEXTURE_WIDTH / (float)VOXEL_ATTENUATION_TEXTURE_HEIGHT,
-					0.1f,
-					1000.0f
-				);
-
-				light->SetPowerDensity(glm::vec3(lightPower));
-
-				glm::mat4 lightViewProjMatrix = projection * view;
-				ExportData((isCheapRender)? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
-				ExportData((isCheapRender)? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
-			}
-
-
-			// Half-angle slicing:
-			int in = 0;
-			int slicePerCurrentFrame = 0;
-			int maxSlicePerFrame = (isCheapRender)? 1000 : 25;
-			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
-			for (int slice = firstSlice; slice < sliceCount; slice++) {
-				in = slice % 2;
-				out = (slice + 1) % 2;
-				auto w_slicePos = w_center + w_halfway * (1.0f - ((float)slice / (float)sliceCount) * 2.0f) * w_diameter * 0.5f;
-				auto m_slicePos = invModelMatrix * glm::vec4(w_slicePos, 1.0f);
-				DrawProxyGeometry(camera,
-					depthTexture,
-					isBackToFront,
-					in,
-					out,
-					glm::vec3(m_slicePos) / m_slicePos.w,
-					m_sliceNorm,
-					isCheapRender
-				);
-				slicePerCurrentFrame++;
-				if (slicePerCurrentFrame >= maxSlicePerFrame && sliceCount > maxSlicePerFrame) {
-					firstSlice = slice + 1;
-					isFinishedVolume = false;
-					break;
-				}
-			}
-			pingpongFBO.Unbind();
-			if (isFinishedVolume) {
-				firstSlice = 0;
-			}
-			glDepthMask(GL_TRUE);
+		if (useHalfAngleSlicing) {
+			HalfAngleSlicing(camera, depthTexture);
+		}
+		else {
+			RayCasting(camera, depthTexture);
 		}
 
-		// Combine volume with the earlier rendered scened
-		combineProgram.Activate();
-		fullScreenQuad->BindVAO();
-		if (isFinishedVolume) {
-			prevCompleteImageFBO.Bind();
-			glDisable(GL_DEPTH_TEST);
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_ONE, GL_ZERO);
-			colorTextures[0].Bind();
-			fullScreenQuad->Draw();
-		}
 		outFBO.Bind();
 		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		prevCompleteImage.Bind();
 		fullScreenQuad->Draw();
+
+		//boundingGeometry.DrawOnScreen(outFBO, camera, modelMatrix, invModelMatrix, 0.1f);
 
 		transferFunction.Draw(outFBO);
 		outFBO.Unbind();
@@ -295,7 +181,7 @@ namespace Hogra::Volumetric {
 			}
 		}
 		if (vertices.size() >= 3) {
-			std::vector<GLint> indices;
+			std::vector<GLuint> indices;
 
 			if (vertices.size() == 3) {	// Single triangle
 				indices.push_back(0);
@@ -347,18 +233,18 @@ namespace Hogra::Volumetric {
 			//colorTextures[in].Bind();
 			attenuationTextures[in].Bind();
 			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[0], 0);
+			pingpongFBO.Bind();
 			if (isBackToFront) {
 				glBlendFuncSeparate(GL_ONE, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-				//glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE, GL_ZERO);
 			}
 			else {
 				glBlendFuncSeparate(GL_ONE_MINUS_DST_ALPHA, GL_ONE, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
-				//glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE, GL_ZERO);
 			}
 
 			VAO.Bind();
 			VBO.Bind();
 			EBO.Bind();
+			glEnable(GL_DEPTH_TEST);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 			// Attenuation:
@@ -371,10 +257,11 @@ namespace Hogra::Volumetric {
 			transferFunction.Bind();
 			attenuationTextures[in].Bind();
 			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[out], 0);
-
+			pingpongFBO.Bind();
 			// For light always front-to-back
 			glBlendFuncSeparate(GL_ONE_MINUS_DST_COLOR, GL_ONE, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
 
+			glDisable(GL_DEPTH_TEST);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			VBO.Delete();
 			EBO.Delete();
@@ -596,8 +483,8 @@ namespace Hogra::Volumetric {
 	}
 
 	void VolumeObject::GetMinAndMax(glm::vec3& w_min, glm::vec3& w_max) {
-		auto m_originalMin = glm::vec3(0.0f);
-		auto m_originalMax = glm::vec3(0.0f);
+		auto m_originalMin = glm::vec3(10000000.0f);
+		auto m_originalMax = glm::vec3(-10000000.0f);
 		for (int i = 0; i < 8; i++) {
 			if (boundingBox.corners[i].x < m_originalMin.x) {
 				m_originalMin.x = boundingBox.corners[i].x;
@@ -641,7 +528,7 @@ namespace Hogra::Volumetric {
 		}
 	}
 
-	void VolumeObject::ExportData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)
+	void VolumeObject::ExportHalfAngleData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)
 	{
 		program.Activate();
 		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
@@ -654,6 +541,7 @@ namespace Hogra::Volumetric {
 		glUniform3f(glGetUniformLocation(program.ID, "light.powerDensity"), light->getPowerDensity().x, light->getPowerDensity().y, light->getPowerDensity().z);
 		glUniform1i(glGetUniformLocation(program.ID, "isBackToFront"), (isBackToFront)? 1 : 0);
 		glUniform1f(glGetUniformLocation(program.ID, "opacityScale"), density);
+		glUniform1i(glGetUniformLocation(program.ID, "showNormals"), showNormals);
 	}
 
 	void VolumeObject::Serialize() {
@@ -668,11 +556,261 @@ namespace Hogra::Volumetric {
 		}
 	}
 
+
 	void VolumeObject::UpdateGui() {
 		GUI::getInstance()->UpdateGUI(*this);
 	}
 
 
+	void VolumeObject::RayCasting(const Camera& camera, const Texture2D& depthTexture) {
+		bool isCameraMoved = camera.IsMoved();
+		bool isFinishedVolume = false;
+		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f 
+			|| (quadrantToRender.x > 0 || quadrantToRender.y > 0)
+			) {
+			bool isCheapRender = false;
+			if (isCameraMoved || isChanged) {
+				isCheapRender = true;
+				levelOfDetail = 0.25f;
+				quadrantToRender = glm::ivec2(0, 0);
+				isChanged = false;
+			}
+			else if (0 == quadrantToRender.x && quadrantToRender.y == 0) {
+				levelOfDetail *= 2.0f;
+				if (1.0f < levelOfDetail) {	// max
+					levelOfDetail = 1.0f;
+				}
+			}
+			w_delta = 0.005f / levelOfDetail;
+
+			// Calculate once per image:
+			if (0 == quadrantToRender.x && quadrantToRender.y == 0) {
+				// Clear textures:
+				rayCastOutFBO.Bind();
+				glClearColor(0.0, 0.0, 0.0, 0.0);
+				glClear(GL_COLOR_BUFFER_BIT);
+
+				// Export matrices:
+				glm::mat4 view = glm::lookAt(
+					glm::vec3(light->GetPosition().x, light->GetPosition().y, light->GetPosition().z),
+					w_center,
+					camera.getPreferedUp()
+				);
+				glm::mat4 projection = glm::perspective(
+					glm::radians(45.0f),
+					(float)VOXEL_ATTENUATION_TEXTURE_WIDTH / (float)VOXEL_ATTENUATION_TEXTURE_HEIGHT,
+					0.1f,
+					1000.0f
+				);
+
+				light->SetPowerDensity(glm::vec3(lightPower));
+				lightViewProjMatrix = projection * view;
+				boundingGeometry.RenderFrontAndBack(
+					camera,
+					modelMatrix,
+					invModelMatrix,
+					lightViewProjMatrix,
+					light->GetPosition4D()
+				);
+			}
+
+			// Ray casting:
+			rayCastOutFBO.Bind();
+			glDisable(GL_BLEND);
+			glDisable(GL_DEPTH_TEST);
+			glDepthMask(GL_FALSE);
+			glDisable(GL_CULL_FACE);
+
+			rayCastProgram.Activate();
+			glm::mat4 quadModelMatrix;
+			if (isCheapRender) {
+				quadModelMatrix = glm::mat4(1.0f);
+			}
+			else {
+				quadModelMatrix =
+					glm::translate(
+						glm::vec3(2.0f / (float)xQuadCount, 2.0f / (float)yQuadCount, 0.0f) * glm::vec3(quadrantToRender.x, quadrantToRender.y, 0.0)
+						- glm::vec3(1.0f - 1.0f / (float)xQuadCount, 1.0f - 1.0f / (float)yQuadCount, 0.0f))
+					* glm::scale(glm::vec3(1.0f / (float)xQuadCount, 1.0f / (float)yQuadCount, 1.0));
+			}
+			boundingGeometry.BindTextures();
+			transferFunction.Bind();
+			voxels->Bind();
+
+			ExportRayCastData(isCheapRender? rayCastCheapProgram : rayCastProgram, quadModelMatrix, lightViewProjMatrix, camera, w_delta);
+
+			fullScreenQuad->BindVAO();
+			fullScreenQuad->Draw();
+			rayCastOutFBO.Unbind();
+
+			if (!isCheapRender) {
+				quadrantToRender.x++;
+				if (xQuadCount == quadrantToRender.x) {
+					quadrantToRender.x = 0;
+					quadrantToRender.y++;
+					if (yQuadCount == quadrantToRender.y) {
+						quadrantToRender = glm::ivec2(0, 0);
+						isFinishedVolume = true;
+					}
+				}
+			}
+			else {
+				isFinishedVolume = true;
+			}
+			glDepthMask(GL_TRUE);
+		}
+
+		// Update last finisned image:
+		combineProgram.Activate();
+		fullScreenQuad->BindVAO();
+		if (isFinishedVolume) {
+			prevCompleteImageFBO.Bind();
+			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_BLEND);
+			rayCastOutTexture.Bind();
+			fullScreenQuad->Draw();
+		}
+	}
+
+	void VolumeObject::HalfAngleSlicing(const Camera& camera, const Texture2D& depthTexture) {
+		bool isCameraMoved = camera.IsMoved();
+		bool isFinishedVolume = false;
+		if (isCameraMoved || isChanged || levelOfDetail < 0.999999f || firstSlice > 0) {
+			isFinishedVolume = true;
+			bool isCheapRender = false;
+			if (isCameraMoved || isChanged) {
+				isCheapRender = true;
+				levelOfDetail = 0.25f;
+				firstSlice = 0;
+				isChanged = false;
+			}
+			else if (0 == firstSlice) {
+				levelOfDetail *= 2.0f;
+				if (1.0f < levelOfDetail) {	// max
+					levelOfDetail = 1.0f;
+				}
+			}
+
+			// Calculate once per image:
+			if (0 == firstSlice) {
+
+				// Clear textures:
+				pingpongFBO.Bind();
+				glClearColor(0.0, 0.0, 0.0, 0.0);
+				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[0], 0);
+				glClear(GL_COLOR_BUFFER_BIT);
+				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, colorTextures[1], 0);
+				glClear(GL_COLOR_BUFFER_BIT);
+				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[0], 0);
+				glClear(GL_COLOR_BUFFER_BIT);
+				pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[1], 0);
+				glClear(GL_COLOR_BUFFER_BIT);
+				pingpongFBO.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
+
+				auto m_center = glm::vec3(0.0f);
+				for (int i = 0; i < 8; i++) {
+					m_center += boundingBox.corners[i];
+				}
+				m_center /= 8.0f;
+				auto w_center4 = modelMatrix * glm::vec4(m_center, 1.0f);
+				w_center = glm::vec3(w_center4) / w_center4.w;
+
+				// Calculate directions and transformations:
+				auto w_lightDir = glm::normalize(glm::vec3(light->GetPosition()) - w_center);
+				auto w_viewDir = glm::normalize(glm::vec3(camera.GetPosition()) - w_center);
+				isBackToFront = false;
+				if (glm::dot(w_lightDir, w_viewDir) < 0.0f) {	// Negate viewDir if the camera is on the opposite side of the volume as the light source.
+					w_viewDir *= -1.0f;
+					isBackToFront = true;
+				}
+				w_halfway = normalize((w_lightDir + w_viewDir) * 0.5f);
+
+				glm::vec3 w_toCorner;
+				float maxCos = 0.0f;
+				for (int i = 0; i < 8; i++) {
+					auto temp4 = glm::vec4(boundingBox.corners[i], 1.0f);
+					temp4 = modelMatrix * temp4;
+					glm::vec3 w_tempDir = glm::vec3(temp4 / temp4.w) - w_center;
+					float cos = glm::dot(glm::normalize(w_tempDir), w_halfway);
+					if (cos > maxCos) {
+						maxCos = cos;
+						w_toCorner = w_tempDir;
+					}
+				}
+				w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
+				sliceCount = (int)(glm::length(resolution) * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
+				glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
+
+				// Export matrices:
+				glm::mat4 view = glm::lookAt(
+					glm::vec3(light->GetPosition().x, light->GetPosition().y, light->GetPosition().z),
+					w_center,
+					camera.getPreferedUp()
+				);
+				glm::mat4 projection = glm::perspective(
+					glm::radians(45.0f),
+					(float)VOXEL_ATTENUATION_TEXTURE_WIDTH / (float)VOXEL_ATTENUATION_TEXTURE_HEIGHT,
+					0.1f,
+					1000.0f
+				);
+
+				light->SetPowerDensity(glm::vec3(lightPower));
+				glm::mat4 lightViewProjMatrix = projection * view;
+				std::cout << "w_delta: " << glm::length(w_sliceDelta) << std::endl;
+				ExportHalfAngleData(isCheapRender ? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
+				ExportHalfAngleData(isCheapRender ? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
+
+			}
+
+			// Half-angle slicing:
+			pingpongFBO.Bind();
+			glEnable(GL_BLEND);
+			glEnable(GL_DEPTH_TEST);
+			glDepthMask(GL_FALSE);
+			glDisable(GL_CULL_FACE);
+			int in = 0;
+			int slicePerCurrentFrame = 0;
+			int maxSlicePerFrame = isCheapRender ? 1000 : 10;
+			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
+			for (int slice = firstSlice; slice < sliceCount; slice++) {
+				in = slice % 2;
+				out = (slice + 1) % 2;
+				auto w_slicePos = w_center + w_halfway * (1.0f - ((float)slice / (float)sliceCount) * 2.0f) * w_diameter * 0.5f;
+				auto m_slicePos = invModelMatrix * glm::vec4(w_slicePos, 1.0f);
+				DrawProxyGeometry(camera,
+					depthTexture,
+					isBackToFront,
+					in,
+					out,
+					glm::vec3(m_slicePos) / m_slicePos.w,
+					m_sliceNorm,
+					isCheapRender
+				);
+				slicePerCurrentFrame++;
+				if (slicePerCurrentFrame >= maxSlicePerFrame && sliceCount > maxSlicePerFrame) {
+					firstSlice = slice + 1;
+					isFinishedVolume = false;
+					break;
+				}
+			}
+			pingpongFBO.Unbind();
+			if (isFinishedVolume) {
+				firstSlice = 0;
+			}
+			glDepthMask(GL_TRUE);
+		}
+
+		// Update last finisned image:
+		combineProgram.Activate();
+		fullScreenQuad->BindVAO();
+		if (isFinishedVolume) {
+			prevCompleteImageFBO.Bind();
+			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_BLEND);
+			colorTextures[0].Bind();
+			fullScreenQuad->Draw();
+		}
+	}
 }
 
 

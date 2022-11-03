@@ -17,7 +17,9 @@ namespace Hogra {
 
 		void Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType);
 
-		void Init(const std::vector<glm::vec4>& bytes, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
+		void Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType);
+
+		void Init(const std::vector<int>& data, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
 
 		void Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
 
@@ -33,7 +35,7 @@ namespace Hogra {
 
 		const std::vector<glm::vec4>& GetBytes() const;
 
-		glm::vec4& operator()(glm::ivec2 position) {
+		const glm::vec4& operator()(glm::ivec2 position) const {
 			if (position.x >= dimensions.x || position.x < 0
 				|| position.y >= dimensions.y || position.y < 0) {
 				return nullVector;
@@ -42,16 +44,20 @@ namespace Hogra {
 			return v;
 		}
 
-		glm::vec4& operator()(glm::vec2 normalisedPosition) {
+		const glm::vec4& operator()(glm::vec2 normalisedPosition) const {
 			return operator()(glm::ivec2(
 				normalisedPosition.x * (dimensions.x - 1),
 				normalisedPosition.y * (dimensions.y - 1)));
 		}
 
+		void SetData(const std::vector<glm::vec4>& _data);
+
 	private:
 		glm::ivec2 dimensions;
 		glm::vec4 nullVector;
 		std::vector<glm::vec4> bytes;
+		GLenum format = GL_RGBA;
+		GLenum pixelType = GL_FLOAT;
 
 		friend class Allocator;
 	};

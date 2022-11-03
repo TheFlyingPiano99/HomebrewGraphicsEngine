@@ -58,6 +58,7 @@ namespace Hogra {
 				Allocator::Delete(event);
 			}
 		}
+
 	private:
 		static SceneEventManager* instance;
 		std::queue<SceneEvent*> events;

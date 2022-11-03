@@ -161,7 +161,7 @@ namespace Hogra {
 		return dimensions;
 	}
 
-	const glm::vec4 Texture3D::ResampleGradientAndDensity(glm::ivec3 position)
+	const glm::vec4 Texture3D::ResampleGradientAndDensity(glm::ivec3 position) const
 	{
 		float intensity = this->operator()(position);
 		glm::vec3 stepSize = glm::vec3(1.0);
@@ -180,7 +180,7 @@ namespace Hogra {
 		return glm::vec4(sample1 - sample0, intensity);
 	}
 
-	const float Texture3D::operator()(glm::ivec3 position)
+	float Texture3D::operator()(glm::ivec3 position) const
 	{
 		if (position.x >= dimensions.width
 			|| position.x < 0
@@ -190,7 +190,11 @@ namespace Hogra {
 			|| position.z < 0) {
 			return 0.0f;
 		}
-		int idx = position.z * dimensions.height * dimensions.width * dimensions.bytesPerVoxel + position.y * dimensions.width * dimensions.bytesPerVoxel + position.x * dimensions.bytesPerVoxel;
+		int idx = 
+			position.z * dimensions.height * dimensions.width * dimensions.bytesPerVoxel 
+			+ position.y * dimensions.width * dimensions.bytesPerVoxel 
+			+ position.x * dimensions.bytesPerVoxel;
+
 		float result;
 		if (dimensions.bytesPerVoxel == 1) {
 			result = (float)bytes[idx] / (float)maxValue;

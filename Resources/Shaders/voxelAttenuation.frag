@@ -118,11 +118,28 @@ void main() {
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
 	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
 	
+	vec4 ndc_attenuationCoords = light.viewProjMatrix * vec4(worldPos, 1.0);
+	ndc_attenuationCoords /= ndc_attenuationCoords.w;
+	vec2 texCoords = ndc_attenuationCoords.xy * 0.5 + 0.5;
+
+	float offset = w_delta * tan(0.01 / 2.0);
+	vec3 bluredIndirectAttenuation = vec3(0, 0, 0);	
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + vec2(offset, 0)).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + vec2(-offset, 0)).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + vec2(0, offset)).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + vec2(0, -offset)).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + 0.707 * vec2(offset, offset)).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + 0.707 * vec2(-offset, offset)).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + 0.707 * vec2(offset, -offset)).rgb;
+	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + 0.707 * vec2(-offset, -offset)).rgb;
+	bluredIndirectAttenuation /= 9;
+	bluredIndirectAttenuation *= vec3(0.8, 0.9, 1.0);
 	// Calculate attenuation:
-	FragColor = vec4(
-		min(max(1.0 - pow(1.0 - color.g - color.b, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - color.r - color.b, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - color.r - color.g, w_delta), 0.0), 1.0),
+	FragColor = vec4(	
+		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.r * 0.5 - color.a * 0.5, w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.g * 0.5 - color.a * 0.5, w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.b * 0.5 - color.a * 0.5, w_delta), 0.0), 1.0),
 		min(max(1.0 - pow(1.0 - color.a, w_delta), 0.0), 1.0)
 	);
 }

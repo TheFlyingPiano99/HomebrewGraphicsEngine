@@ -1,8 +1,10 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "InstanceGroup.h"
 #include "PostProcessStage.h"
 #include "DeferredLightingSystem.h"
+#include "LightManager.h"
 
 namespace Hogra {
 	
@@ -19,15 +21,10 @@ namespace Hogra {
 			deferredInstancedRenderMode = 3
 		};
 
-		void Render(FBO& outFbo, const Texture2D& depthTexture, const Camera& camera);
+		void Render(FBO& outFbo, const Texture2D& depthTexture, const Camera& camera, LightManager& lightManager);
 
-		FBO& GetInFBO() {
-			if (renderMode == RenderMode::deferredRenderMode) {
-				return deferredFBO;
-			}
-			else if (renderMode == RenderMode::forwardRenderMode) {
-				return (postProcessStages.empty()) ? defaultFBO : postProcessStages.front()->GetFBO();
-			}
+		FBO* GetInFBO() {
+			return (postProcessStages.empty()) ? nullptr : &postProcessStages.front()->GetFBO();
 		}
 
 		void AddObject(SceneObject* obj) {
@@ -35,7 +32,7 @@ namespace Hogra {
 		}
 
 		void AddInstanceGroup(InstanceGroup* group) {
-			groups.push_back(group);
+			instanceGroups.push_back(group);
 		}
 
 		void AddPostProcessStage(PostProcessStage* stage) {
@@ -44,12 +41,39 @@ namespace Hogra {
 
 		void SetRenderMode(RenderMode mode) {
 			renderMode = mode;
+			switch (renderMode)
+			{
+			case Hogra::RenderLayer::RenderMode::forwardRenderMode:
+				break;
+			case Hogra::RenderLayer::RenderMode::forwardInstancedRenderMode:
+				break;
+			case Hogra::RenderLayer::RenderMode::deferredRenderMode:
+				break;
+			case Hogra::RenderLayer::RenderMode::deferredInstancedRenderMode:
+				break;
+			default:
+				break;
+			}
 		}
 		
+		const std::string& GetName() const {
+			return name;
+		}
+
+		void SetName(const std::string& _name) {
+			name = _name;
+		}
+
+		bool IsInstanced() {
+			return renderMode == RenderMode::forwardInstancedRenderMode 
+				|| renderMode == RenderMode::deferredInstancedRenderMode;
+		}
+
 	private:
+		std::string name;
 		RenderMode renderMode;
 		std::vector<SceneObject*> objects;
-		std::vector<InstanceGroup*> groups;
+		std::vector<InstanceGroup*> instanceGroups;
 		std::vector<PostProcessStage*> postProcessStages;
 		FBO deferredFBO;	// Not always used!
 		FBO defaultFBO;

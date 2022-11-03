@@ -103,14 +103,14 @@ namespace Hogra {
 
 				current_item = (volumeObject.GetSelectedFeatureGroup() != nullptr) ?
 					volumeObject.GetSelectedFeatureGroup()->name.c_str() : "Select group";
-				std::vector<Volumetric::FeatureGroup>& groups = volumeObject.GetFeatureGroups();
+				std::vector<Volumetric::FeatureGroup>& instanceGroups = volumeObject.GetFeatureGroups();
 				if (ImGui::BeginCombo("Group", current_item)) // The second parameter is the label previewed before opening the combo.
 				{
-					for (int n = 0; n < groups.size(); n++)
+					for (int n = 0; n < instanceGroups.size(); n++)
 					{
-						bool is_selected = (current_item == groups[n].name.c_str()); // You can store your selection however you want, outside or inside your objects
-						if (ImGui::Selectable(groups[n].name.c_str(), is_selected)) {
-							current_item = groups[n].name.c_str();
+						bool is_selected = (current_item == instanceGroups[n].name.c_str()); // You can store your selection however you want, outside or inside your objects
+						if (ImGui::Selectable(instanceGroups[n].name.c_str(), is_selected)) {
+							current_item = instanceGroups[n].name.c_str();
 							volumeObject.SetSelectedFeatureGroup(current_item);
 						}
 						if (is_selected) {
@@ -204,8 +204,15 @@ namespace Hogra {
 				ImGui::EndGroup();
 			}
 			if (ImGui::Button("Redraw", buttonSize)) {
-				volumeObject.ResizeDisplayBoundingBox(glm::vec3(-1.0f), glm::vec3(1.0f));
 				volumeObject.ForceRedraw();
+			}
+			if (volumeObject.GetShowNormals()) {
+				if (ImGui::Button("Shading", buttonSize)) {
+					volumeObject.SetShowNormals(false);
+				}
+			}
+			else if (ImGui::Button("Normals", buttonSize)) {
+				volumeObject.SetShowNormals(true);
 			}
 			ImGui::End();
 		}

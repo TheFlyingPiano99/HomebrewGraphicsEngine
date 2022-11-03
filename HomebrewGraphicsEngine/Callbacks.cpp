@@ -29,9 +29,6 @@ namespace Hogra {
 		glViewport(0, 0, width, height);
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
-		// Set control layout
-		ControlActionManager::getInstance()->RegisterDefaultForVoxelObserving();
-
 		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 		GUI::getInstance()->InitGUI(window);
 	}
@@ -97,19 +94,19 @@ namespace Hogra {
 		if (button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			if (GLFW_PRESS == action) {
-				ControlActionManager::getInstance()->OnMouseLeftButtonPress(pixPos);
+				ControlActionManager::getInstance()->OnMouseButtonPress(GLFW_MOUSE_BUTTON_LEFT, pixPos);
 			}
 			else if (GLFW_RELEASE == action) {
-				ControlActionManager::getInstance()->OnMouseLeftButtonRelease(pixPos);
+				ControlActionManager::getInstance()->OnMouseButtonRelease(GLFW_MOUSE_BUTTON_LEFT, pixPos);
 			}
 		}
 		if (button == GLFW_MOUSE_BUTTON_RIGHT)
 		{
 			if (GLFW_PRESS == action) {
-				ControlActionManager::getInstance()->OnMouseRightButtonPress(pixPos);
+				ControlActionManager::getInstance()->OnMouseButtonPress(GLFW_MOUSE_BUTTON_RIGHT, pixPos);
 			}
 			else if (GLFW_RELEASE == action) {
-				ControlActionManager::getInstance()->OnMouseRightButtonRelease(pixPos);
+				ControlActionManager::getInstance()->OnMouseButtonRelease(GLFW_MOUSE_BUTTON_RIGHT, pixPos);
 			}
 		}
 	}

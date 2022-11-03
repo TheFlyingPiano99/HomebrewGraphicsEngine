@@ -7,13 +7,13 @@
 
 namespace Hogra {
 
-    class ObservObjectControl :
+    class ObserveObjectControl :
         public UserControl
     {
     public:
-        ObservObjectControl();
+        ObserveObjectControl();
 
-        ~ObservObjectControl() override = default;
+        ~ObserveObjectControl() override = default;
 
         void Rotate(const glm::vec2& delta) override;
 

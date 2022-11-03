@@ -18,7 +18,7 @@ namespace Hogra {
 		if (nullptr != currentScene) {
 			return;
 		}
-		currentScene = SceneFactory::getInstance()->CreateVoxelDemoScene(contextWidth, contextHeight);		
+		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
 	}
 
 	void SceneManager::RestartScene()
@@ -28,7 +28,6 @@ namespace Hogra {
 		}
 		Allocator::Delete(currentScene);
 		ControlActionManager::getInstance()->UnregisterControls();
-		ControlActionManager::getInstance()->RegisterDefault();
 		currentScene = SceneFactory::getInstance()->CreateDemoScene(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 	}
 

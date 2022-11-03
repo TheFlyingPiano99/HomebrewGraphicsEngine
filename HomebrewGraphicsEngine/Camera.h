@@ -19,7 +19,7 @@ namespace Hogra {
 		void Init(float aspectRatio, glm::vec3 eye, glm::vec3 lookAt);
 			
 		// Updates the camera matrix to the Vertex Shader
-		bool Update();
+		void Update();
 
 		// Updates the camera matrix to the Vertex Shader
 		void LatePhysicsUpdate(float dt);

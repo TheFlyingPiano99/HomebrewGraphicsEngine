@@ -3,8 +3,10 @@
 
 namespace Hogra {
 	
-	void Texture2D::Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType)
+	void Texture2D::Init(const std::string& path, GLuint unit, GLenum _format, GLenum _pixelType)
 	{
+		this->format = _format;
+		this->pixelType = _pixelType;
 
 		// Stores the width, height, and the number of color channels of the image
 		int widthImg, heightImg, numColCh;
@@ -47,8 +49,10 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture2D::Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum format, GLenum pixelType)
+	void Texture2D::Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType)
 	{
+		this->format = _format;
+		this->pixelType = _pixelType;
 		this->dimensions = _dimensions;
 		this->bytes = _bytes;
 			// Generates an OpenGL texture object
@@ -67,9 +71,12 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
+		
+		/*
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_2D);
+		*/
 
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -77,6 +84,9 @@ namespace Hogra {
 
 	void Texture2D::Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType)
 	{
+		this->format = format;
+		this->pixelType = pixelType;
+
 		// Generates an OpenGL texture object
 		glGenTextures(1, &ID);
 		// Assigns the texture to a Texture Unit
@@ -112,6 +122,7 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+
 	const glm::ivec2 Texture2D::getDimensions() const {
 		return dimensions;
 	}
@@ -130,4 +141,13 @@ namespace Hogra {
 	const std::vector<glm::vec4>& Texture2D::GetBytes() const {
 		return bytes;
 	}
+
+	void Texture2D::SetData(const std::vector<glm::vec4>& _data) {
+		this->bytes = _data;
+		glActiveTexture(GL_TEXTURE0 + unit);
+		glBindTexture(GL_TEXTURE_2D, ID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
 }

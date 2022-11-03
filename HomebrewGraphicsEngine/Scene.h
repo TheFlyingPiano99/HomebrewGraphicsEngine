@@ -27,6 +27,8 @@
 #include "UniformVariable.h"
 #include "volumetric/VolumeObject.h"
 #include "RenderLayer.h"
+#include "UniformVariableImpl.h"
+
 
 namespace Hogra {
 
@@ -60,7 +62,7 @@ namespace Hogra {
 
 		void Draw();
 
-		void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "");
+		void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "", const std::string& renderLayerName = "layer0");
 
 		/*
 		* Not complete!
@@ -69,7 +71,7 @@ namespace Hogra {
 
 		void AddCollider(Collider* collider, const std::string& colliderGroupName = "");
 
-		void AddPostProcessStage(PostProcessStage* stage);
+		void AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName = "");
 
 		void AddLight(Light* light);
 
@@ -119,8 +121,34 @@ namespace Hogra {
 
 		void UpdateGUI();
 
-		void AddRenderLayer(RenderLayer* renderLayer) {
-			renderLayers.push_back(renderLayer);
+		void AddRenderLayer(RenderLayer* renderLayer, int place = -1) {
+			// To map:
+			auto name = renderLayer->GetName();
+			if (name.empty()) {	// Prevent unnamed layers
+				name = "layer" + std::to_string(renderLayers.size());
+				renderLayer->SetName(name);
+			}
+			renderLayersMap.emplace(name, renderLayer);
+
+			// To vector:
+			if (-1 < place) {
+				auto iter = renderLayers.begin();
+				for (int i = 0; i < place; i++) {
+					std::next(iter);
+				}
+				renderLayers.emplace(iter, renderLayer);
+			}
+			else {
+				renderLayers.push_back(renderLayer);
+			}
+		}
+
+		RenderLayer* GetRenderLayer(const std::string& name) const {
+			auto val = renderLayersMap.find(name);
+			if (renderLayersMap.end() == val) {
+				return nullptr;
+			}
+			return val->second;
 		}
 
 	private:
@@ -139,8 +167,9 @@ namespace Hogra {
 		std::vector<Caption*> captions;
 		UserControl* userControl = nullptr;
 		ShadowCaster* shadowCaster = nullptr;
-		std::vector<PostProcessStage*> postProcessStages;
+		std::map<std::string, RenderLayer*> renderLayersMap;
 		std::vector<RenderLayer*> renderLayers;
+		std::vector<PostProcessStage*> postProcessStages;
 
 		CollisionManager collisionManager;
 		UniformVariable<float> timeSpent;

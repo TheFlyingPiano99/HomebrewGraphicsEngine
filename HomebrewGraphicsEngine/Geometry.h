@@ -11,7 +11,7 @@ namespace Hogra {
 		friend class Allocator;
 	public:
 
-		void Init(std::vector <Vertex>& vertices, std::vector <GLint>& indices);
+		void Init(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
 
 		~Geometry() {
 			if (0 != instancedBuffer) {
@@ -57,7 +57,7 @@ namespace Hogra {
 
 		unsigned int instancedBuffer = 0;
 		std::vector <Vertex> vertices;
-		std::vector <GLint> indices;
+		std::vector <GLuint> indices;
 		VAO vao;
 		VBO vbo;
 

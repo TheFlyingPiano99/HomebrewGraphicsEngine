@@ -19,7 +19,7 @@ namespace Hogra {
 	{
 		if (nullptr == wireFrameSphere) {
 			std::vector<Vertex> vertices;
-			std::vector<int> indices;
+			std::vector<GLuint> indices;
 			int zRes = 100;
 			int yRes = 100;
 			int xRes = 100;
@@ -77,7 +77,7 @@ namespace Hogra {
 		if (nullptr == cilinder) {
 			int resolution = 20;
 			std::vector<Vertex> vertices;
-			std::vector<int> indices;
+			std::vector<GLuint> indices;
 
 			//Lower circle:
 			for (int i = 0; i < resolution; i++) {
@@ -188,7 +188,7 @@ namespace Hogra {
 		positions.push_back(z3);
 		positions.push_back(z4);
 
-		std::vector<GLint> indices;
+		std::vector<GLuint> indices;
 
 		int resolution = 5;
 
@@ -236,7 +236,7 @@ namespace Hogra {
 		return geom;
 	}
 
-	void GeometryFactory::generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLint>* indices)
+	void GeometryFactory::generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLuint>* indices)
 	{
 		if (0.0 > glm::dot(glm::cross(b - a, c - a), a)) {
 			glm::vec3 temp = a;
@@ -314,7 +314,7 @@ Geometry* GeometryFactory::getFullScreenQuad()
 		return fullScreenQuad;
 	}
 	std::vector<Vertex> vertices;
-	std::vector<GLint> indices;
+	std::vector<GLuint> indices;
 	float quadVertices[] =
 	{
 		//Coord	//texCoords
@@ -392,7 +392,7 @@ Geometry* GeometryFactory::getCube()
 		return cube;
 	}
 	std::vector<Vertex> vertices;
-	std::vector<GLint> indices;
+	std::vector<GLuint> indices;
 
 	glm::vec3 normal;
 	glm::vec3 tangent;
@@ -688,7 +688,7 @@ Geometry* GeometryFactory::getWireframeCube()
 		return wireframeCube;
 	}
 	std::vector<Vertex> vertices;
-	std::vector<int> indices;
+	std::vector<GLuint> indices;
 	Vertex v;
 	v.position = glm::vec3(-1, -1, -1);
 	vertices.push_back(v);

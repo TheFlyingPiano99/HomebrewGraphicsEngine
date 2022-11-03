@@ -24,6 +24,10 @@ namespace Hogra {
 
 		const Texture2D& GetDepthTexture();
 
+		FBO& GetGBuffer() {
+			return gBuffer;
+		}
+
 	private:
 		FBO gBuffer;
 		ShaderProgram fullScreenProgram;

@@ -7,6 +7,8 @@
 
 
 namespace Hogra {
+	
+	std::vector<ShaderProgram*> ShaderProgram::instances = std::vector<ShaderProgram*>();
 
 	// Reads a text file and outputs a string with everything in the text file
 	std::string ShaderProgram::getFileContent(const std::string& filename) const
@@ -26,6 +28,10 @@ namespace Hogra {
 
 	void ShaderProgram::Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile)
 	{
+		vertexShaderPath = vertexFile;
+		geometryShaderPath = geometryFile;
+		fragmentShaderPath = fragmentFile;
+
 		// Read vertexFile and fragmentFile and store the strings
 		std::string vertexCode = getFileContent(vertexFile);
 		std::string fragmentCode = getFileContent(fragmentFile);
@@ -82,14 +88,23 @@ namespace Hogra {
 		}
 	}
 
+	ShaderProgram::ShaderProgram() {
+		instances.push_back(this);
+	}
+
 	ShaderProgram::~ShaderProgram() {
 		Delete();
+		auto iter = std::find(instances.begin(), instances.end(), this);
+		instances.erase(iter);
 	}
 
 	// Activates the Shader Program
 	void ShaderProgram::Activate() const
 	{
 		glUseProgram(ID);
+		for (auto& uniform : uniforms) {
+			uniform->Bind(ID);
+		}
 	}
 
 	// Deletes the Shader Program

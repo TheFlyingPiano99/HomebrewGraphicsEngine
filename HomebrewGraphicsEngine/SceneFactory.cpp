@@ -16,11 +16,23 @@
 #include "AudioListener.h"
 
 #include "SceneAudioSource.h"
-#include "ObservObjectControl.h"
+#include "ObserveObjectControl.h"
 #include "MemoryManager.h"
 #include "PositionConnector.h"
 #include "SceneObjectFactory.h"
 #include "RenderLayer.h"
+#include "ControlActionManager.h"
+#include "GUI.h"
+#include "Callbacks.h"
+#include "ScriptObject.h"
+#include "UniformVariableImpl.h"
+#include "HograTime.h"
+#include "fallingSand/chunk.h"
+#include "fallingSand/water.h"
+#include "fallingSand/sand.h"
+#include "fallingSand/stone.h"
+#include "fallingSand/smoke.h"
+#include "fallingSand/lava.h"
 
 
 namespace Hogra {
@@ -40,6 +52,10 @@ namespace Hogra {
 	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
 		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
+		auto* defLayer = Allocator::New<RenderLayer>();
+		defLayer->SetRenderMode(RenderLayer::RenderMode::deferredRenderMode);
+		defLayer->SetName("DeferredLayer");
+		scene->AddRenderLayer(defLayer);
 		auto* light = Allocator::New<Light>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
@@ -162,6 +178,30 @@ namespace Hogra {
 		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
 
+		// Render layer:
+
+		auto* forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetName("ForwardLayer");
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(forwardLayer);
+		
+		auto* deferedLayer = Allocator::New<RenderLayer>();
+		deferedLayer->SetName("DeferredLayer");
+		deferedLayer->SetRenderMode(RenderLayer::RenderMode::deferredRenderMode);
+		scene->AddRenderLayer(deferedLayer);
+
+		auto* volumeLayer = Allocator::New<RenderLayer>();
+		volumeLayer->SetName("VolumeLayer");
+		volumeLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(volumeLayer);
+
+		//InitSkyBox(scene);
+
+		auto* light = Allocator::New<Light>();
+		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
+		scene->AddLight(light);	// Directional light
+
+
 		// Volume:
 		const char* dataSetName = "Shoulder";
 		//const char* dataSetName = "cthead-8bit";
@@ -192,6 +232,13 @@ namespace Hogra {
 			glm::vec3(10000.0f, 10000.0f, 10000.0f)
 		);
 		volumeLight->SetCastShadow(false);
+
+		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
+		auto* posConnector = Allocator::New<PositionConnector>();
+		posConnector->Init(volumeLight);
+		bulbSprite->SetPositionConnector(posConnector);
+		scene->AddSceneObject(bulbSprite, "bulbSprite", "ForwardLayer");
+
 		auto* volumeObject = Allocator::New<Volumetric::VolumeObject>();
 		volumeObject->Init(
 			voxelTexture,
@@ -205,35 +252,304 @@ namespace Hogra {
 		auto* volumeSceneObj = Allocator::New<SceneObject>();
 		volumeSceneObj->Init();
 		volumeSceneObj->addComponent(volumeObject);
-		scene->AddSceneObject(volumeSceneObj);
+		scene->AddSceneObject(volumeSceneObj, "volumeObj", "VolumeLayer");
 
-		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
-		auto* posConnector = Allocator::New<PositionConnector>();
-		auto* forwardLayer = Allocator::New<RenderLayer>();
-		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
-		posConnector->Init(volumeLight);
-		bulbSprite->SetPositionConnector(posConnector);
-		scene->AddSceneObject(bulbSprite, "bulbSprite");
-		forwardLayer->AddObject(bulbSprite);
-		forwardLayer->AddObject(volumeSceneObj);
-
-		scene->AddRenderLayer(forwardLayer);
-		InitObjectObserverControl(scene, volumeObject);
+		auto* ball = InitSphere(scene, glm::vec3(0,5,10), nullptr, "gold");
+		auto* control = InitObjectObserverControl(scene, volumeObject);
 		InitVoxelCaption(scene, dataSetName);
 		auto* bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
-		forwardLayer->AddPostProcessStage(bloom);
-		//scene->AddPostProcessStage(bloom);
+		scene->AddPostProcessStage(bloom, "VolumeLayer");
 
 		auto* hdr = Allocator::New<PostProcessStage>();
 		hdr->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
 			contextWidth, contextHeight);
-		forwardLayer->AddPostProcessStage(hdr);
-		//scene->AddPostProcessStage(hdr);
+		scene->AddPostProcessStage(hdr, "VolumeLayer");
+
+		// Init controls:
+		{
+			auto* rotateCam = Allocator::New<AxisMoveAction>();
+			rotateCam->SetAction(
+				[scene](const glm::vec2& pixDelta, const glm::vec2& pixPos) {
+					scene->GetUserControl()->Rotate(-pixDelta);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseMoveAction(rotateCam);
+
+			auto* grabCam = Allocator::New<ButtonKeyAction>();
+			grabCam->Init(GLFW_MOUSE_BUTTON_RIGHT, ButtonKeyAction::TriggerType::triggerOnPress);
+			grabCam->SetAction(
+				[scene]() {
+					scene->GetUserControl()->grab();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(grabCam);
+
+			auto* releaseCam = Allocator::New<ButtonKeyAction>();
+			releaseCam->Init(GLFW_MOUSE_BUTTON_RIGHT, ButtonKeyAction::TriggerType::triggerOnRelease);
+			releaseCam->SetAction(
+				[scene]() {
+					scene->GetUserControl()->release();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(releaseCam);
+
+			auto* zoomCam = Allocator::New<AxisMoveAction>();
+			zoomCam->SetAction(
+				[scene](const glm::vec2& pixDelta, const glm::vec2& pixPos) {
+					scene->GetUserControl()->Zoom(pixPos.y);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseScrollAction(zoomCam);
+
+			auto* leftClick = Allocator::New<ButtonKeyAction>();
+			leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnPress);
+			leftClick->SetAction(
+				[control, volumeObject]() {
+					double x;
+					double y;
+					glfwGetCursorPos(GlobalVariables::window, &x, &y);
+					float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+					float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+
+					bool isSuccess = volumeObject->SelectTransferFunctionRegion(ndc_x, ndc_y);
+					if (!isSuccess) {
+						control->grabPlane(ndc_x, ndc_y);
+					}
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);
+
+			auto* leftRelease = Allocator::New<ButtonKeyAction>();
+			leftRelease->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnRelease);
+			leftRelease->SetAction(
+				[control]() {
+					double x;
+					double y;
+					glfwGetCursorPos(GlobalVariables::window, &x, &y);
+					float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+					float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+					control->releasePlane(ndc_x, ndc_y);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftRelease);
+
+			auto* toggleTransferVis = Allocator::New<ButtonKeyAction>();
+			toggleTransferVis->Init(GLFW_KEY_H, ButtonKeyAction::TriggerType::triggerOnPress);
+			toggleTransferVis->SetAction(
+				[volumeObject]() {
+					volumeObject->GetTransferFunction().ToggleVisibility();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(toggleTransferVis);
+
+			auto* toggleMenu = Allocator::New<ButtonKeyAction>();
+			toggleMenu->Init(GLFW_KEY_O, ButtonKeyAction::TriggerType::triggerOnPress);
+			toggleMenu->SetAction(
+				[]() {
+					GUI::getInstance()->setVisible(!(GUI::getInstance()->IsVisible()));
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(toggleMenu);
+
+			auto* nextFeature = Allocator::New<ButtonKeyAction>();
+			nextFeature->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerOnPress);
+			nextFeature->SetAction(
+			[volumeObject]() {
+					volumeObject->CycleSelectedFeature();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(nextFeature);
+
+			auto* fullScreen = Allocator::New<ButtonKeyAction>();
+			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
+			fullScreen->SetAction(
+				[]() {
+					Callbacks::toggleFullScreen();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
+
+			auto* renderMode = Allocator::New<ButtonKeyAction>();
+			renderMode->Init(GLFW_KEY_M, ButtonKeyAction::TriggerType::triggerOnPress);
+			renderMode->SetAction(
+				[volumeObject]() {
+					volumeObject->ToggleHalfAngleSlicing();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(renderMode);
+
+			auto* reloadShaders = Allocator::New<ButtonKeyAction>();
+			reloadShaders->Init(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerOnPress);
+			reloadShaders->SetAction(
+				[]() {
+					ShaderProgram::ReloadAll();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(reloadShaders);
+		}
 
 		return scene;
 	}
+
+	Scene* SceneFactory::CreatePixelPhysicsDemoScene(int contextWidth, int contextHeight) {
+
+		auto scene = Allocator::New<Scene>();
+		scene->Init(contextWidth, contextHeight);
+
+		auto* forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetName("ForwardLayer");
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(forwardLayer);
+
+		auto chunkObj = Allocator::New<SceneObject>();
+		chunkObj->Init();
+
+		auto chunk = Allocator::New<FallingSand::Chunk>();
+
+		// Sand:
+		chunk->GetGrid().Write(100, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(100, 104, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(101, 104, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(102, 104, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 100, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 101, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 102, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 103, Allocator::New<FallingSand::Sand>());
+		chunk->GetGrid().Write(103, 104, Allocator::New<FallingSand::Sand>());
+
+		for (int i = 0; i < 256; i++) {
+			chunk->GetGrid().Write(i, 3, Allocator::New<FallingSand::Stone>());
+			chunk->GetGrid().Write(i, 2, Allocator::New<FallingSand::Stone>());
+			chunk->GetGrid().Write(i, 1, Allocator::New<FallingSand::Stone>());
+			chunk->GetGrid().Write(i, 0, Allocator::New<FallingSand::Stone>());
+		}
+		chunk->GetGrid().Write(0, 4, Allocator::New<FallingSand::Stone>());
+		chunk->GetGrid().Write(0, 5, Allocator::New<FallingSand::Stone>());
+		chunk->GetGrid().Write(255, 4, Allocator::New<FallingSand::Stone>());
+		chunk->GetGrid().Write(255, 5, Allocator::New<FallingSand::Stone>());
+
+		chunkObj->addComponent(chunk);
+
+		auto* bloom = Allocator::New<Bloom>();
+			bloom->Init(contextWidth, contextHeight);
+		scene->AddPostProcessStage(bloom, "ForwardLayer");
+
+		auto* hdr = Allocator::New<PostProcessStage>();
+		hdr->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+			contextWidth, contextHeight);
+		scene->AddPostProcessStage(hdr, "ForwardLayer");
+
+		auto fbo = Allocator::New<FBO>();
+		fbo->Init();
+		auto drawMode = Allocator::New<int>();
+		*drawMode = 0;
+
+
+		scene->AddSceneObject(chunkObj, "", "ForwardLayer");
+
+		{
+			auto* fullScreen = Allocator::New<ButtonKeyAction>();
+			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
+			fullScreen->SetAction(
+				[]() {
+					Callbacks::toggleFullScreen();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
+
+			auto* reloadShaders = Allocator::New<ButtonKeyAction>();
+			reloadShaders->Init(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerOnPress);
+			reloadShaders->SetAction(
+				[]() {
+					ShaderProgram::ReloadAll();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(reloadShaders);
+
+			auto* switchDrawMode = Allocator::New<ButtonKeyAction>();
+			switchDrawMode->Init(GLFW_KEY_T, ButtonKeyAction::TriggerType::triggerOnPress);
+			switchDrawMode->SetAction(
+				[drawMode]() {
+					(*drawMode)++;
+					if (*drawMode > 4) {
+						*drawMode = 0;
+					}
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(switchDrawMode);
+
+			auto* leftClick = Allocator::New<ButtonKeyAction>();
+			leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerContinuosly);
+			leftClick->SetAction(
+				[chunk, drawMode]() {
+					double x;
+					double y;
+					glfwGetCursorPos(GlobalVariables::window, &x, &y);
+					float u = x / (double)GlobalVariables::windowWidth * 255.0f;
+					float v = 255.0f - y / (double)GlobalVariables::windowHeight * 255.0f;
+
+					FallingSand::Particle* particle[9] = { nullptr };
+					switch (*drawMode) {
+					case 0:
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Water>();
+						}
+						break;
+					case 1:
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Sand>();
+						}
+						break;
+					case 2:
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Stone>();
+						}
+						break;
+					case 3:
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Smoke>();
+						}
+						break;
+					case 4:
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Lava>();
+						}
+						break;
+					}
+					if (u > 0 && u < 255 && v > 0 && v < 255) {
+						chunk->GetGrid().PutIfEmpty(u - 1, v - 1, particle[0]);
+						chunk->GetGrid().PutIfEmpty(u + 0, v - 1, particle[1]);
+						chunk->GetGrid().PutIfEmpty(u + 1, v - 1, particle[2]);
+						chunk->GetGrid().PutIfEmpty(u - 1, v + 0, particle[3]);
+						chunk->GetGrid().PutIfEmpty(u + 0, v + 0, particle[4]);
+						chunk->GetGrid().PutIfEmpty(u + 1, v + 0, particle[5]);
+						chunk->GetGrid().PutIfEmpty(u - 1, v + 1, particle[6]);
+						chunk->GetGrid().PutIfEmpty(u + 0, v + 1, particle[7]);
+						chunk->GetGrid().PutIfEmpty(u + 1, v + 1, particle[8]);
+
+					}
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);
+		}
+
+		return scene;
+	}
+
 	
 	ForceField* SceneFactory::InitGravitation(Scene* scene)
 	{
@@ -417,7 +733,7 @@ namespace Hogra {
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
 		obj->addComponent(collider);
-		scene->AddSceneObject(obj, std::string("sphere").append(materialName));
+		scene->AddSceneObject(obj, std::string("sphere").append(materialName), "DeferredLayer");
 		return obj;
 	}
 	
@@ -518,7 +834,7 @@ namespace Hogra {
 		skyBoxMesh->setStencilTest(false);
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(skyBoxMesh);
-		scene->AddSceneObject(obj);
+		scene->AddSceneObject(obj, "skybox", "DeferredLayer");
 	}
 	
 	void SceneFactory::InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field)
@@ -611,9 +927,9 @@ namespace Hogra {
 		InitLaserBeam(scene, control);
 	}
 
-	void SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
+	ObserveObjectControl* SceneFactory::InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject)
 	{
-		auto control = Allocator::New<ObservObjectControl>();
+		auto control = Allocator::New<ObserveObjectControl>();
 		control->SetCamera(scene->GetCamera());
 		if (nullptr != volumeObject) {
 			control->SetVolumeObject(*volumeObject);
@@ -627,6 +943,7 @@ namespace Hogra {
 		control->AddCollider(collider);
 		scene->AddCollider(collider, "volumePlane");
 		scene->SetUserControl(control);
+		return control;
 	}
 	
 	void SceneFactory::InitLaserBeam(Hogra::Scene* scene, Hogra::FirstPersonControl* control)

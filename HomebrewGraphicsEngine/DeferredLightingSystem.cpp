@@ -64,16 +64,19 @@ namespace Hogra {
 	void DeferredLightingSystem::BindGBuffer() {
 		gBuffer.Bind();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glClearDepth(1);
 		glDepthFunc(GL_LESS);
 		glFrontFace(GL_CCW);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		glStencilMask(0x00);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	
 	void DeferredLightingSystem::Draw(const std::vector<Light*>& pointLights, const Light& directionalLight) {
 		meshFullScreen->Bind();
+		glDisable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glDisable(GL_BLEND);
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CCW);
 		glm::vec4 pos = directionalLight.GetPosition4D();
 		glm::vec3 pow = directionalLight.getPowerDensity();
 		if (directionalLight.IsCastShadow()) {
@@ -95,7 +98,9 @@ namespace Hogra {
 					instanceData.push_back(d);
 				}
 			}
-			mesh->DrawInstanced(instanceData);
+			if (!instanceData.empty()) {
+				mesh->DrawInstanced(instanceData);
+			}
 		}
 	}
 

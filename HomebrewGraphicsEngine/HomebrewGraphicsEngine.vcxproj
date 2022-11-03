@@ -180,6 +180,18 @@
     <ClCompile Include="DeferredLightingSystem.cpp" />
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
+    <ClCompile Include="fallingSand\chunk.cpp" />
+    <ClCompile Include="fallingSand\gas.cpp" />
+    <ClCompile Include="fallingSand\ice.cpp" />
+    <ClCompile Include="fallingSand\lava.cpp" />
+    <ClCompile Include="fallingSand\liquid.cpp" />
+    <ClCompile Include="fallingSand\particle.cpp" />
+    <ClCompile Include="fallingSand\sand.cpp" />
+    <ClCompile Include="fallingSand\smoke.cpp" />
+    <ClCompile Include="fallingSand\solid.cpp" />
+    <ClCompile Include="fallingSand\steam.cpp" />
+    <ClCompile Include="fallingSand\stone.cpp" />
+    <ClCompile Include="fallingSand\water.cpp" />
     <ClCompile Include="FBO.cpp" />
     <ClCompile Include="FirstPersonControl.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -207,7 +219,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="ObservObjectControl.cpp" />
+    <ClCompile Include="ObserveObjectControl.cpp" />
     <ClCompile Include="OrientationProvider.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -215,6 +227,7 @@
     <ClCompile Include="PostProcessStage.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RBO.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderLayer.cpp" />
     <ClCompile Include="ScaleProvider.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -244,6 +257,7 @@
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
+    <ClCompile Include="volumetric\BoundingGeometry.cpp" />
     <ClCompile Include="volumetric\TransferFunction.cpp" />
     <ClCompile Include="volumetric\VolumeObject.cpp" />
   </ItemGroup>
@@ -274,6 +288,18 @@
     <ClInclude Include="DeferredLightingSystem.h" />
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
+    <ClInclude Include="fallingSand\chunk.h" />
+    <ClInclude Include="fallingSand\gas.h" />
+    <ClInclude Include="fallingSand\ice.h" />
+    <ClInclude Include="fallingSand\lava.h" />
+    <ClInclude Include="fallingSand\liquid.h" />
+    <ClInclude Include="fallingSand\particle.h" />
+    <ClInclude Include="fallingSand\sand.h" />
+    <ClInclude Include="fallingSand\smoke.h" />
+    <ClInclude Include="fallingSand\solid.h" />
+    <ClInclude Include="fallingSand\steam.h" />
+    <ClInclude Include="fallingSand\stone.h" />
+    <ClInclude Include="fallingSand\water.h" />
     <ClInclude Include="FBO.h" />
     <ClInclude Include="FirstPersonControl.h" />
     <ClInclude Include="Font.h" />
@@ -302,7 +328,7 @@
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="ObservObjectControl.h" />
+    <ClInclude Include="ObserveObjectControl.h" />
     <ClInclude Include="OrientationConnector.h" />
     <ClInclude Include="OrientationProvider.h" />
     <ClInclude Include="Physics.h" />
@@ -312,6 +338,7 @@
     <ClInclude Include="PostProcessStage.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RBO.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderLayer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScaleProvider.h" />
@@ -336,21 +363,24 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
-    <ClInclude Include="TransferFunction.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="UniformVariable.h" />
+    <ClInclude Include="UniformVariableImpl.h" />
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
-    <ClInclude Include="VolumeObject.h" />
+    <ClInclude Include="volumetric\BoundingGeometry.h" />
     <ClInclude Include="volumetric\TransferFunction.h" />
     <ClInclude Include="volumetric\VolumeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
-    <None Include="..\Resources\Shaders\bounding.frag" />
-    <None Include="..\Resources\Shaders\bounding.vert" />
+    <None Include="..\Resources\Shaders\pixelPhysics.frag" />
+    <None Include="..\Resources\Shaders\pixelPhysics2.frag" />
+    <None Include="..\Resources\Shaders\screenQuadrant.vert" />
+    <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag" />
+    <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert" />
     <None Include="..\Resources\Shaders\bypass.frag" />
     <None Include="..\Resources\Shaders\caption.frag" />
     <None Include="..\Resources\Shaders\debug.frag" />
@@ -365,7 +395,7 @@
     <None Include="..\Resources\Shaders\bloomDownSampling.frag" />
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
     <None Include="..\Resources\Shaders\emissive.frag" />
-    <None Include="..\Resources\Shaders\flatColor.frag" />
+    <None Include="..\Resources\Shaders\boundingGeometryFlatColor.frag" />
     <None Include="..\Resources\Shaders\gausianBlur.frag" />
     <None Include="..\Resources\Shaders\glyph.frag" />
     <None Include="..\Resources\Shaders\lightVolume.vert" />
@@ -395,6 +425,8 @@
     <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag" />
     <None Include="..\Resources\Shaders\voxelColor.frag" />
     <None Include="..\Resources\Shaders\voxelColorCheap.frag" />
+    <None Include="..\Resources\Shaders\voxelRayCast.frag" />
+    <None Include="..\Resources\Shaders\voxelRayCastCheap.frag" />
     <None Include="ClassDiagram.cd" />
     <None Include="imgui.ini" />
   </ItemGroup>

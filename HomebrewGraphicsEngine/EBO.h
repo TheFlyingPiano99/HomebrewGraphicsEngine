@@ -10,9 +10,9 @@ namespace Hogra {
 		// ID reference of Elements Buffer Object
 		GLuint ID;
 
-		void Init(std::vector<GLint>& indices);
+		void Init(const std::vector<GLuint>& indices);
 
-		void Load(std::vector<GLint>& indices);
+		void Load(const std::vector<GLuint>& indices);
 
 		// Bind's the EBO
 		void Bind();

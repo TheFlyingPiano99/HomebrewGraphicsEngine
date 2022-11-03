@@ -18,7 +18,7 @@ namespace Hogra {
 
 		void Init(unsigned int width, unsigned int height);
 
-		void Draw(const FBO& outFBO, const Texture2D& depthTexture) override;
+		void Draw(const FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) override;
 
 		float getTreshold() const {
 			return treshold;

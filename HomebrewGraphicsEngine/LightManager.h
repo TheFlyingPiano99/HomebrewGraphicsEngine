@@ -40,6 +40,10 @@ namespace Hogra {
 		
 		void Update();
 
+		FBO& GetGBuffer() {
+			return deferredLightingSystem.GetGBuffer();
+		}
+
 		const Texture2D& GetDepthTexture();
 
 	private:

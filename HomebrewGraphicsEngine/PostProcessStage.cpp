@@ -29,17 +29,17 @@ namespace Hogra {
 		fbo.Bind();
 	}
 
-	void PostProcessStage::Draw(const FBO& nextTargetFbo, const Texture2D& depthTexture)
+	void PostProcessStage::Draw(const FBO& outFBO, const Texture2D& depthTexture, const Camera& camera)
 	{
-		nextTargetFbo.Bind();
+		outFBO.Bind();
 		mesh->Bind();
 		glDisable(GL_BLEND);
 		depthTexture.Bind();
 		for (auto& var : uniformVariables) {
-			var->Bind(*(mesh->getMaterial()->GetShaderProgram()));
+			var->Bind(mesh->getMaterial()->GetShaderProgram()->ID);
 		}
 		mesh->Draw();
-		nextTargetFbo.Unbind();
+		outFBO.Unbind();
 	}
 
 	FBO& PostProcessStage::GetFBO()
