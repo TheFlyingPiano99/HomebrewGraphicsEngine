@@ -1,25 +1,14 @@
-﻿  SceneFactory.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(137,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(82,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(87,11): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(88,11): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(94,31): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(95,32): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(105,31): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(106,32): warning C4018: '<': signed/unsigned mismatch
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(311,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(312,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(329,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(330,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(500,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(501,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(516,48): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(516,36): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+﻿  gas.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(110,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(115,11): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(116,11): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(123,31): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(124,32): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(139,31): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\fallingSand\particle.h(140,32): warning C4018: '<': signed/unsigned mismatch
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  0 of 7190 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  0 of 7528 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

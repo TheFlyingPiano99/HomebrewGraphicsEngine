@@ -378,6 +378,18 @@
     <ClCompile Include="fallingSand\water.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fallingSand\smoke.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\steam.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\lava.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fallingSand\ice.cpp">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -696,6 +708,18 @@
       <Filter>Header Files\fallingSand</Filter>
     </ClInclude>
     <ClInclude Include="fallingSand\water.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\smoke.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\lava.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\steam.h">
+      <Filter>Header Files\fallingSand</Filter>
+    </ClInclude>
+    <ClInclude Include="fallingSand\ice.h">
       <Filter>Header Files\fallingSand</Filter>
     </ClInclude>
   </ItemGroup>

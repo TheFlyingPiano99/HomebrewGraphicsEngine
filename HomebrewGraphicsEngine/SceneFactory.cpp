@@ -31,6 +31,8 @@
 #include "fallingSand/water.h"
 #include "fallingSand/sand.h"
 #include "fallingSand/stone.h"
+#include "fallingSand/smoke.h"
+#include "fallingSand/lava.h"
 
 
 namespace Hogra {
@@ -483,7 +485,7 @@ namespace Hogra {
 			switchDrawMode->SetAction(
 				[drawMode]() {
 					(*drawMode)++;
-					if (*drawMode > 2) {
+					if (*drawMode > 4) {
 						*drawMode = 0;
 					}
 				}
@@ -497,23 +499,49 @@ namespace Hogra {
 					double x;
 					double y;
 					glfwGetCursorPos(GlobalVariables::window, &x, &y);
-					float u = x / (double)GlobalVariables::windowWidth;
-					float v = 1.0f - y / (double)GlobalVariables::windowHeight;
+					float u = x / (double)GlobalVariables::windowWidth * 255.0f;
+					float v = 255.0f - y / (double)GlobalVariables::windowHeight * 255.0f;
 
-					FallingSand::Particle* particle = nullptr;
+					FallingSand::Particle* particle[9] = { nullptr };
 					switch (*drawMode) {
 					case 0:
-						particle = Allocator::New<FallingSand::Water>();
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Water>();
+						}
 						break;
 					case 1:
-						particle = Allocator::New<FallingSand::Sand>();
-						particle->SetDebug(true);
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Sand>();
+						}
 						break;
 					case 2:
-						particle = Allocator::New<FallingSand::Stone>();
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Stone>();
+						}
+						break;
+					case 3:
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Smoke>();
+						}
+						break;
+					case 4:
+						for (int i = 0; i < 9; i++) {
+							particle[i] = Allocator::New<FallingSand::Lava>();
+						}
 						break;
 					}
-					chunk->GetGrid().PutIfEmpty(u * 255.0f, v * 255.0f, particle);
+					if (u > 0 && u < 255 && v > 0 && v < 255) {
+						chunk->GetGrid().PutIfEmpty(u - 1, v - 1, particle[0]);
+						chunk->GetGrid().PutIfEmpty(u + 0, v - 1, particle[1]);
+						chunk->GetGrid().PutIfEmpty(u + 1, v - 1, particle[2]);
+						chunk->GetGrid().PutIfEmpty(u - 1, v + 0, particle[3]);
+						chunk->GetGrid().PutIfEmpty(u + 0, v + 0, particle[4]);
+						chunk->GetGrid().PutIfEmpty(u + 1, v + 0, particle[5]);
+						chunk->GetGrid().PutIfEmpty(u - 1, v + 1, particle[6]);
+						chunk->GetGrid().PutIfEmpty(u + 0, v + 1, particle[7]);
+						chunk->GetGrid().PutIfEmpty(u + 1, v + 1, particle[8]);
+
+					}
 				}
 			);
 			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);

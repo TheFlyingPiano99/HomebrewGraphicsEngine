@@ -5,7 +5,8 @@ namespace Hogra::FallingSand {
 	
 	std::mt19937 RandomEngine::rng = std::mt19937(std::random_device{}());
 
-	void Particle::Update(ParticleGrid& grid, unsigned int x, unsigned int y, float dt) {
+	bool Particle::Update(ParticleGrid& grid, unsigned int x, unsigned int y, float dt) {
+		return false;
 	}
 
 	void Particle::MarchAlongLine(const glm::ivec2& start, const glm::vec2& direction, std::function<bool(unsigned int, unsigned int, float)> func, float maxDistance) {
@@ -33,6 +34,26 @@ namespace Hogra::FallingSand {
 			if (!func((unsigned int)x, (unsigned int)y, distanceTravelled)) {
 				break;
 			}
+		}
+	}
+
+	void Particle::RadiateHeat(ParticleGrid& grid, unsigned int x, unsigned int y, float dt) {
+		float radiation = temperature * dt;
+		if (nullptr != grid(x, y + 1)) {
+			grid(x, y + 1)->AddTemperature(radiation);
+			temperature -= radiation;
+		}
+		if (nullptr != grid(x - 1, y + 0)) {
+			grid(x - 1, y + 0)->AddTemperature(radiation);
+			temperature -= radiation;
+		}
+		if (nullptr != grid(x + 1, y + 0)) {
+			grid(x + 1, y + 0)->AddTemperature(radiation);
+			temperature -= radiation;
+		}
+		if (nullptr != grid(x, y - 1)) {
+			grid(x, y - 1)->AddTemperature(radiation);
+			temperature -= radiation;
 		}
 	}
 

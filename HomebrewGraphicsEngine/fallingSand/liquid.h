@@ -9,9 +9,12 @@ namespace Hogra::FallingSand {
 			type = Type::LiquidParticle;
 		}
 
-		void Update(ParticleGrid& grid, unsigned int x, unsigned int y, float dt);
+		bool Update(ParticleGrid& grid, unsigned int x, unsigned int y, float dt);
 
-	private:
-
+	protected:
+		float boilingTemperature = 100.0f;
+		float freezingTemperature = 0.0f;
+		std::function<Particle* ()> gasConstructor;
+		std::function<Particle* ()> solidConstructor;
 	};
 }

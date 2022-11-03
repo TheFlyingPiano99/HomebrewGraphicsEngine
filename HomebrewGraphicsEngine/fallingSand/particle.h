@@ -27,7 +27,7 @@ namespace Hogra::FallingSand {
 			UndefinedParticle
 		};
 
-		virtual void Update(ParticleGrid& grid, unsigned int x, unsigned int y, float dt);
+		virtual bool Update(ParticleGrid& grid, unsigned int x, unsigned int y, float dt);
 
 		const glm::vec4& GetColor() const {
 			return color;
@@ -51,14 +51,39 @@ namespace Hogra::FallingSand {
 			isDebug = b;
 		}
 
+		float GetTemperature() const {
+			return temperature;
+		}
+
+		void AddTemperature(float t) {
+			temperature += t;
+		}
+
+		void SetTemperature(float t) {
+			temperature = t;
+		}
+
+		void RadiateHeat(ParticleGrid& grid, unsigned int x, unsigned int y, float dt);
+
+		void SetActualPosition(unsigned int _x, unsigned int _y) {
+			actualX = _x;
+			actualY = _y;
+		}
+
 	protected:
 		glm::vec4 color;
 		glm::vec2 unperformedStep = { 0.0f, 0.0f };	// When the delta time is too small and a frame is not enough to move between positions.
 		glm::vec2 velocity = { 0.0f, 0.0f };
+		unsigned int actualX = 0;
+		unsigned int actualY = 0;
 		float density = 0.0f;
-		float airResistance = 0.01f;
+		float airResistance = 0.001f;
 		float friction = 0.1f;
 		bool isDebug = false;
+		float lifeTime = -1.0f;
+		float age = 0.0f;
+		float temperature = 26.0f;
+		bool isStaticPosition = false;
 
 		Type type = Type::UndefinedParticle;
 	};
@@ -72,6 +97,9 @@ namespace Hogra::FallingSand {
 
 		void Write(unsigned int x, unsigned int y, Particle* particle) {
 			elements[PosToLinIdx(x, y)] = particle;
+			if (nullptr != particle) {
+				particle->SetActualPosition(x, y);
+			}
 		}
 
 		const glm::ivec2& GetDimensions() {
@@ -90,14 +118,20 @@ namespace Hogra::FallingSand {
 		}
 
 		void Update(float dt) {
-			auto elementsCopy = elements;
+			const auto elementsCopy = elements;
+			std::vector<Particle*> toDelete;
 			for (unsigned int y = 0; y < dimensions.y; y++) {
 				for (unsigned int x = 0; x < dimensions.x; x++) {
 					auto idx = PosToLinIdx(x, y);
 					if (nullptr != elementsCopy[idx]) {
-						elementsCopy[idx]->Update(*this, x, y, dt);
+						if (!elementsCopy[idx]->Update(*this, x, y, dt)) {
+							toDelete.push_back(elementsCopy[idx]);
+						}
 					}
 				}
+			}
+			for (auto element : toDelete) {
+				Allocator::Delete(element);
 			}
 		}
 
@@ -128,9 +162,11 @@ namespace Hogra::FallingSand {
 		bool PutIfEmpty(unsigned int x, unsigned int y, Particle* particle) {
 			if (nullptr == operator()(x, y)) {
 				Write(x, y, particle);
+				return true;
 			}
 			else {
 				Allocator::Delete(particle);
+				return false;
 			}
 		}
 

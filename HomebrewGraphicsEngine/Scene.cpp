@@ -152,7 +152,7 @@ namespace Hogra {
 		const Texture2D& depth = lightManager.GetDepthTexture();
 		FBO defaultFBO = FBO::GetDefault();
 		FBO* outFBO = nullptr;
-		int layerIdxWithFBO = 0;	// First can be only the second Layer
+		int layerIdxWithFBO = -1;	// First can be only the second Layer
 		while (nullptr == outFBO) {
 			layerIdxWithFBO++;	
 			if (layerIdxWithFBO >= renderLayers.size()) {

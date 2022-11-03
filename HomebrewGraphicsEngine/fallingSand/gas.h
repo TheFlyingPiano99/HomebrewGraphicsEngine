@@ -9,7 +9,10 @@ namespace Hogra::FallingSand {
 			type = Type::GasParticle;
 		}
 
-	private:
+		bool Update(ParticleGrid& grid, unsigned int x, unsigned int y, float dt);
 
+	protected:
+		float condensationTemperature = 0.0f;
+		std::function<Particle* ()> liquidConstructor;
 	};
 }
