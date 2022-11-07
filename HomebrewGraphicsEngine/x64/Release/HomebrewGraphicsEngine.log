@@ -1,4 +1,177 @@
-﻿  VolumeObject.cpp
+﻿  AABBCollider.cpp
+  AudioManager.cpp
+  Bloom.cpp
+  Camera.cpp
+  CameraAnimation.cpp
+  Caption.cpp
+  Collider.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  ColliderGroup.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\ColliderGroup.cpp(92,1): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  CollisionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\CollisionManager.cpp(27,49): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Component.cpp
+  CompositeCollider.cpp
+  ControlAction.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  ControlActionManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  CuboidCollider.cpp
+  DeferredLightingSystem.cpp
+  FBO.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\FBO.cpp(67,38): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  FirstPersonControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Font.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(66,37): warning C4838: conversion from 'FT_Pos' to 'unsigned int' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(172,41): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(172,41): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(173,36): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(173,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(174,36): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(174,36): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(176,41): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(176,41): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(177,38): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(177,38): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(178,43): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(178,43): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(205,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Font.cpp(213,22): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  ForceField.cpp
+  GUI.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(172,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(178,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(184,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(189,50): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(195,50): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(201,50): warning C4305: 'argument': truncation from 'double' to 'float'
+  Compiling...
+  HoGraEngineApplication.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Libraries\include\glad\glad.h(33): message : see previous definition of 'APIENTRY'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(173,57): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  HograTime.cpp
+  InstanceGroup.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(6,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(12,20): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(23,37): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(29,20): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\InstanceGroup.cpp(41,28): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  Light.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  LightManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\LightManager.cpp(24,28): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\LightManager.cpp(68,56): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  Material.cpp
+  MaterialFactory.cpp
+  MemoryManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Mesh.cpp
+  ObserveObjectControl.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Physics.cpp
+  Plane.cpp
+  PostProcessStage.cpp
+  RenderLayer.cpp
+  Renderer.cpp
+  Scene.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(102,23): warning C4244: 'argument': conversion from 'double' to 'const T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  SceneAudioSource.cpp
+  SceneEvent.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  SceneEventImplementation.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  SceneEventManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Compiling...
+  SceneFactory.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(303,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(304,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(321,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(322,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  SceneManager.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  SceneObject.cpp
+  SceneObjectFactory.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+  ScriptObject.cpp
+  ShaderProgram.cpp
+  ShaderProgramFactory.cpp
+  ShadowCaster.cpp
+  SphericalCollider.cpp
+  Texture1D.cpp
+  Texture2D.cpp
+  Texture3D.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(45,72): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(51,6): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(107,13): warning C4244: 'initializing': conversion from 'float' to 'char', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture3D.cpp(109,11): warning C4309: '=': truncation of constant value
+  TextureCube.cpp
+  UniformVariable.cpp
+  UserControl.cpp
+  BoundingGeometry.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(97,36): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(322,21): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(348,21): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(356,21): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(357,22): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(358,23): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(360,13): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(368,13): warning C4018: '<': signed/unsigned mismatch
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\BoundingGeometry.cpp(376,13): warning C4018: '<': signed/unsigned mismatch
+  TransferFunction.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(364,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(365,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+          with
+          [
+              T=float
+          ]
+  VolumeObject.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(231,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(135,15): warning C4834: discarding return value of function with 'nodiscard' attribute
@@ -6,12 +179,9 @@ D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObje
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(260,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Texture2D.h(42): warning C4172: returning address of local variable or temporary: v
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\FBO.cpp(83): warning C4172: returning address of local variable or temporary: fbo
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(154): warning C4715: 'Hogra::Volumetric::FeatureGroup::load': not all control paths return a value
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.h(97): warning C4715: 'Hogra::Volumetric::Feature::load': not all control paths return a value
-  All 7863 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  687 of 7863 functions ( 8.7%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    255 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\glfw.pdb'; linking object as if no debug info
 glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\glfw.pdb'; linking object as if no debug info
@@ -28,4 +198,98 @@ glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw
 glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\glfw.pdb'; linking object as if no debug info
 glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\glfw.pdb'; linking object as if no debug info
 glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\glfw.pdb'; linking object as if no debug info
+Animation.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Animation.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AssetFolderPathManager.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'AssetFolderPathManager.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AudioBuffer.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'AudioBuffer.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AudioContext.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'AudioContext.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AudioDevice.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'AudioDevice.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AudioSource.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'AudioSource.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AudioUtils.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'AudioUtils.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+Callbacks.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Callbacks.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+CollisionEventListener.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'CollisionEventListener.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+DualNumber.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'DualNumber.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+EBO.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'EBO.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+Geometry.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Geometry.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+GeometryFactory.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'GeometryFactory.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+GeometryLoader.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'GeometryLoader.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+glad.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'glad.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+GlobalVariables.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'GlobalVariables.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+imgui.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'imgui.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+imgui_demo.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'imgui_demo.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+imgui_draw.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'imgui_draw.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+imgui_impl_glfw.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'imgui_impl_glfw.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+imgui_impl_opengl3.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'imgui_impl_opengl3.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+imgui_tables.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'imgui_tables.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+imgui_widgets.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'imgui_widgets.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+Application.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Application.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AudioListener.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'AudioListener.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+OrientationProvider.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'OrientationProvider.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+PositionProvider.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'PositionProvider.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+Ray.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Ray.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+RBO.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'RBO.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+ScaleProvider.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'ScaleProvider.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+SceneChange.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'SceneChange.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+stb.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'stb.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+Texture.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Texture.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+UniformBuffer.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'UniformBuffer.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+VAO.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'VAO.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+VBO.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'VBO.obj' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\vc143.pdb'; linking object as if no debug info
+AudioManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Caption.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Caption.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Collider.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+CompositeCollider.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ControlAction.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ControlAction.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ControlAction.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ControlAction.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+CuboidCollider.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+CuboidCollider.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+DeferredLightingSystem.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+DeferredLightingSystem.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+FBO.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+FBO.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+FirstPersonControl.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ForceField.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ForceField.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ForceField.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+HograTime.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Light.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LightManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LightManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+LightManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Material.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Material.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Mesh.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ObserveObjectControl.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Plane.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Plane.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Renderer.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Renderer.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Renderer.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+RenderLayer.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+SceneEvent.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+SceneEvent.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+SceneEventManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+SceneEventManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+SceneEventManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+SceneObject.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ScriptObject.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ScriptObject.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ShaderProgramFactory.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+ShadowCaster.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+MemoryManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Texture1D.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+Texture2D.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+TextureCube.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+UniformVariable.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+UserControl.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+UserControl.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+BoundingGeometry.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+BoundingGeometry.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+BoundingGeometry.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+TransferFunction.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+TransferFunction.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+TransferFunction.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
+AssetFolderPathManager.obj : warning LNK4020: a type record in 'd:\visualcpp\homebrewgraphicsengine\homebrewgraphicsengine\x64\release\vc143.pdb' is corrupted; some symbols and types may not be accessible from the debugger
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\HomebrewGraphicsEngine.exe

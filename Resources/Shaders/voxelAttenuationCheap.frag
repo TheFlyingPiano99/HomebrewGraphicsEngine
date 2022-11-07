@@ -113,16 +113,16 @@ vec4 transferFunctionFromTexture(float i, float g) {
 void main() {	
 
 	vec3 viewDir = normalize(cameraPosition - worldPos);
-	float w_delta = opacityScale * length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
+	float w_delta = length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
 	vec3 currentPos = modelPos + resolution * 0.5;
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, texture(voxels, currentPos / resolution).r);
 	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
 	
 	// Calculate attenuation:
 	FragColor = vec4(
-		min(max(1.0 - pow(1.0 - color.g - color.b, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - color.r - color.b, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - color.r - color.g, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - color.a, w_delta), 0.0), 1.0)
+		min(max(1.0 - pow(1.0 - color.g - color.b, opacityScale * w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - color.r - color.b, opacityScale * w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - color.r - color.g, opacityScale * w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - color.a, opacityScale * w_delta), 0.0), 1.0)
 	);
 }

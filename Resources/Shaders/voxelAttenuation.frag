@@ -113,7 +113,7 @@ vec4 transferFunctionFromTexture(float i, float g) {
 void main() {	
 
 	vec3 viewDir = normalize(cameraPosition - worldPos);
-	float w_delta = opacityScale * length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
+	float w_delta = length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
 	vec3 currentPos = modelPos + resolution * 0.5;
 	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
 	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
@@ -137,9 +137,9 @@ void main() {
 	bluredIndirectAttenuation *= vec3(0.8, 0.9, 1.0);
 	// Calculate attenuation:
 	FragColor = vec4(	
-		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.r * 0.5 - color.a * 0.5, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.g * 0.5 - color.a * 0.5, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.b * 0.5 - color.a * 0.5, w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - color.a, w_delta), 0.0), 1.0)
+		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.r * 0.5 - color.a * 0.5, opacityScale * w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.g * 0.5 - color.a * 0.5, opacityScale * w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.b * 0.5 - color.a * 0.5, opacityScale * w_delta), 0.0), 1.0),
+		min(max(1.0 - pow(1.0 - color.a, opacityScale * w_delta), 0.0), 1.0)
 	);
 }
