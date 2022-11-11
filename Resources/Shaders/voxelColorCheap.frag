@@ -25,6 +25,7 @@ uniform bool isBackToFront;
 uniform vec3 scale;
 uniform vec3 w_sliceDelta;
 uniform float opacityScale;
+uniform bool usePBR;
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 	vec3 cameraPosition;			// 16				0

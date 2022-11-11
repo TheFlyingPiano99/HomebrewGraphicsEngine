@@ -177,7 +177,7 @@ namespace Hogra::Volumetric {
 			Allocator::Delete(texture);
 		}
 
-		void crop(glm::vec2 min, glm::vec2 max);
+		void generalArea(glm::vec2 min, glm::vec2 max);
 		void floodFill(glm::vec2 startPos, glm::vec4 color, float threshold);
 		void blur(int kernelSize);
 		void normalize();
@@ -189,6 +189,7 @@ namespace Hogra::Volumetric {
 		void Bind();
 		void Unbind();
 		void clear();
+		void intensityBand(glm::vec2 min, glm::vec2 max);
 
 		const glm::ivec2 getDimensions() {
 			if (texture == nullptr)

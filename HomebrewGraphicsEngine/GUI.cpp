@@ -56,6 +56,7 @@ namespace Hogra {
 				ImGui::BeginGroup();
 				ImGui::Text("General");
 				ImGui::SliderFloat((const char*)"Light power", &volumeObject.GetLightPower(), 1.0f, 1000.0f);
+				ImGui::ColorEdit3("Light color", &(volumeObject.GetLightColor().x));
 				ImGui::SliderFloat("Density", &volumeObject.GetDensity(), 1.0, 100.0);
 				ImGui::EndGroup();
 			}
@@ -169,36 +170,36 @@ namespace Hogra {
 				ImGui::Text("Rotate");
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 				if (ImGui::Button("+X", squareButtonSize)) {
-					volumeObject.RotateModelAroundX(M_PI / 4.0f);
+					volumeObject.RotateModelAroundX(M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::SameLine();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
 				if (ImGui::Button("+Y", squareButtonSize)) {
-					volumeObject.RotateModelAroundY(M_PI / 4.0f);
+					volumeObject.RotateModelAroundY(M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::SameLine();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
 				if (ImGui::Button("+Z", squareButtonSize)) {
-					volumeObject.RotateModelAroundZ(M_PI / 4.0f);
+					volumeObject.RotateModelAroundZ(M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 				if (ImGui::Button("-X", squareButtonSize)) {
-					volumeObject.RotateModelAroundX(-M_PI / 4.0f);
+					volumeObject.RotateModelAroundX(-M_PI / 2.0f);
 				}
 				ImGui::SameLine();
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
 				if (ImGui::Button("-Y", squareButtonSize)) {
-					volumeObject.RotateModelAroundY(-M_PI / 4.0f);
+					volumeObject.RotateModelAroundY(-M_PI / 2.0f);
 				}
 				ImGui::SameLine();
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
 				if (ImGui::Button("-Z", squareButtonSize)) {
-					volumeObject.RotateModelAroundZ(-M_PI / 4.0f);
+					volumeObject.RotateModelAroundZ(-M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::EndGroup();
@@ -214,6 +215,11 @@ namespace Hogra {
 			else if (ImGui::Button("Normals", buttonSize)) {
 				volumeObject.SetShowNormals(true);
 			}
+			if (ImGui::Button("Phong / PBR", buttonSize)) {
+				volumeObject.ToggleUsePBR();
+			}
+			ImGui::SliderFloat((const char*)"Gradient based local illum", &volumeObject.GetGradientBasedIllumination(), 0.0f, 20.0f);
+			ImGui::SliderFloat((const char*)"Local shadows", &volumeObject.GetLocalShadows(), 0.0f, 1.0f);
 			ImGui::End();
 		}
 		{

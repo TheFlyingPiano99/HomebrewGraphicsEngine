@@ -110,5 +110,4 @@ namespace Hogra {
 		static std::vector<ShaderProgram*> instances;	// Used to reload all shaders
 	};
 
-
 }

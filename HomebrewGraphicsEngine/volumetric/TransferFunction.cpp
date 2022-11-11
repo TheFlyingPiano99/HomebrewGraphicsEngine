@@ -43,7 +43,7 @@ namespace Hogra::Volumetric {
 		setCamSpacePosition(glm::vec2(0.0f, -0.65f));
 	}
 
-	void TransferFunction::crop(glm::vec2 min, glm::vec2 max)
+	void TransferFunction::generalArea(glm::vec2 min, glm::vec2 max)
 	{
 		glm::ivec2 dim = getDimensions();
 		glm::ivec2 iMin = glm::ivec2(dim.x * min.x, dim.y * min.y);
@@ -66,6 +66,33 @@ namespace Hogra::Volumetric {
 		texture = Allocator::New<Texture2D>();
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
+
+	void TransferFunction::intensityBand(glm::vec2 min, glm::vec2 max) {
+		glm::ivec2 dim = getDimensions();
+		glm::ivec2 iMin = glm::ivec2(dim.x * min.x, dim.y * min.y);
+		glm::ivec2 iMax = glm::ivec2(dim.x * max.x, dim.y * max.y);
+		glm::vec2 center = (min + max) / 2.0f;
+		glm::ivec2 iCenter = glm::ivec2(dim.x * center.x, dim.y * center.y);
+		std::vector<glm::vec4> bytes(dim.x * dim.y);
+		float radius = (max.x - min.x) / 2.0f;
+		for (int y = 0; y < dim.y; y++) {
+			for (int x = 0; x < dim.x; x++) {
+				if (x >= iMin.x && x <= (iMin.x + iMax.x) / 2.0f) {
+					bytes[y * dim.x + x] = glm::vec4(0.999f, 0.05f, 0.01f, 0.5f);
+				}
+				else if (x >= (iMin.x + iMax.x) / 2.0f  + 10 && x <= iMax.x + 60) {
+					bytes[y * dim.x + x] = glm::vec4(239.0f, 217.0f, 168.0f, 200.0f) / 255.0f;
+				}
+				else {
+					bytes[y * dim.x + x] = glm::vec4(0.0f);
+				}
+			}
+		}
+		Allocator::Delete(texture);
+		texture = Allocator::New<Texture2D>();
+		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
+	}
+
 
 	void TransferFunction::floodFill(glm::vec2 startPos, glm::vec4 color, float threshold)
 	{

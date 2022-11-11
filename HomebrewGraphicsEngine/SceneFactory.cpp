@@ -97,7 +97,9 @@ namespace Hogra {
 			auto* light = Allocator::New<Light>();
 			light->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.0f, 10.0f));
 			obj->addComponent(light);
-			light->SetPositionProvider(obj);
+			auto* provider = Allocator::New<PositionConnector>();
+			provider->Init(obj);
+			light->SetPositionProvider(provider);
 			scene->AddLight(light);
 		}
 
@@ -167,7 +169,8 @@ namespace Hogra {
 
 		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
-
+		scene->SetBackgroundColor(glm::vec3(0.91f, 0.93f, 1.0f));
+		
 		// Render layer:
 
 		auto* forwardLayer = Allocator::New<RenderLayer>();
@@ -219,7 +222,7 @@ namespace Hogra {
 		auto* volumeLight = Allocator::New<Light>();
 		volumeLight->Init(
 			glm::vec4(10, 10, 10, 1.0),
-			glm::vec3(10000.0f, 10000.0f, 10000.0f)
+			glm::vec3(1000.0f, 1000.0f, 1000.0f)
 		);
 		volumeLight->SetCastShadow(false);
 
@@ -228,7 +231,9 @@ namespace Hogra {
 		posConnector->Init(volumeLight);
 		bulbSprite->SetPositionConnector(posConnector);
 		scene->AddSceneObject(bulbSprite, "bulbSprite", "ForwardLayer");
-
+		auto* camPosProvider = Allocator::New<PositionConnector>();
+		camPosProvider->Init(&(scene->GetCamera()), glm::vec3(5,1,0));
+		//volumeLight->SetPositionProvider(camPosProvider);
 		auto* volumeObject = Allocator::New<Volumetric::VolumeObject>();
 		volumeObject->Init(
 			voxelTexture,

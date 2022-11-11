@@ -20,7 +20,7 @@
 
 #define VOLUME_TEXTURE_WIDTH 1024
 #define VOLUME_TEXTURE_HEIGHT 1024
-#define TRANSFER_MODE_COUNT 4
+#define TRANSFER_MODE_COUNT 5
 #define ALL_FEATURES_STR "All features"
 
 namespace Hogra::Volumetric {
@@ -222,6 +222,10 @@ namespace Hogra::Volumetric {
 			return STFMinContributions;
 		}
 
+		void ToggleUsePBR() {
+			usePBR = !usePBR;
+		}
+
 		void GenerateSTF()
 		{
 			transferFunction.SpatialTransferFunction(glm::ivec2(256, 128), *voxels, STFradius, STFOpacity, STFEmission, STFMinContributions);
@@ -281,7 +285,13 @@ namespace Hogra::Volumetric {
 				}
 				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[1])) {
 					transferFunction.clear();
-					transferFunction.crop(texCoords - glm::vec2(0.2, 0.3), texCoords + glm::vec2(0.2, 0.3));
+					transferFunction.generalArea(texCoords - glm::vec2(0.2, 0.3), texCoords + glm::vec2(0.2, 0.3));
+					transferFunction.blur(3);
+					isChanged = true;
+				}
+				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[4])) {
+					transferFunction.clear();
+					transferFunction.intensityBand(texCoords - glm::vec2(0.05, 0.3), texCoords + glm::vec2(0.05, 0.3));
 					transferFunction.blur(3);
 					isChanged = true;
 				}
@@ -332,6 +342,10 @@ namespace Hogra::Volumetric {
 			return lightPower;
 		}
 
+		glm::vec3& GetLightColor() {
+			return lightColor;
+		}
+
 		void ForceRedraw() {
 			isChanged = true;
 		}
@@ -360,9 +374,18 @@ namespace Hogra::Volumetric {
 			isChanged = true;
 		}
 
+		float& GetLocalShadows() {
+			return localShadows;
+		}
+
+		float& GetGradientBasedIllumination() {
+			return gradientBasedLocalIllumination;
+		}
+
+
 	private:
 
-		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Select class", "Remove class" };
+		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Select class", "Remove class", "Intensity band" };
 		const char* currentTransferRegionSelectMode = "Select class";
 
 		struct BoxEdge {
@@ -418,6 +441,7 @@ namespace Hogra::Volumetric {
 			program.SetUniform("isBackToFront", (isBackToFront) ? 1 : 0);
 			program.SetUniform("opacityScale", density);
 			program.SetUniform("showNormals", showNormals);
+			program.SetUniform("usePBR", usePBR);
 		}
 
 		BoundingBox originalBoundingBox;
@@ -446,9 +470,13 @@ namespace Hogra::Volumetric {
 		float density = 10.0f;
 		float transferFloodFillTreshold;
 		float lightPower = 100.0f;
+		glm::vec3 lightColor = glm::vec3(1,1,1);
 		float levelOfDetail = 1.0f;		// (0..1]
 		int nextGroupIdx = 1;
 		bool showNormals = false;
+		bool usePBR = false;
+		float localShadows = 0.0f;
+		float gradientBasedLocalIllumination = 1.0;
 		bool isChanged = true;
 		glm::mat4 lightViewProjMatrix;
 

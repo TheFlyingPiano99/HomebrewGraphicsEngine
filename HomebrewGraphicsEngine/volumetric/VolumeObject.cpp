@@ -537,6 +537,10 @@ namespace Hogra::Volumetric {
 		glUniform1i(glGetUniformLocation(program.ID, "isBackToFront"), (isBackToFront)? 1 : 0);
 		glUniform1f(glGetUniformLocation(program.ID, "opacityScale"), density);
 		glUniform1i(glGetUniformLocation(program.ID, "showNormals"), showNormals);
+		program.SetUniform("usePBR", usePBR);
+		program.SetUniform("localShadows", localShadows);
+		program.SetUniform("gradientBasedLocalIllumination", gradientBasedLocalIllumination);
+
 	}
 
 	void VolumeObject::Serialize() {
@@ -598,7 +602,7 @@ namespace Hogra::Volumetric {
 					1000.0f
 				);
 
-				light->SetPowerDensity(glm::vec3(lightPower));
+				light->SetPowerDensity(lightPower * lightColor);
 				lightViewProjMatrix = projection * view;
 				boundingGeometry.RenderFrontAndBack(
 					camera,
@@ -750,7 +754,7 @@ namespace Hogra::Volumetric {
 					1000.0f
 				);
 
-				light->SetPowerDensity(glm::vec3(lightPower));
+				light->SetPowerDensity(lightPower * lightColor);
 				glm::mat4 lightViewProjMatrix = projection * view;
 				ExportHalfAngleData(isCheapRender ? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
 				ExportHalfAngleData(isCheapRender ? attenuationCheapProgram : attenuationProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
