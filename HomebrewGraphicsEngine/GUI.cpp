@@ -218,7 +218,7 @@ namespace Hogra {
 			if (ImGui::Button("Phong / PBR", buttonSize)) {
 				volumeObject.ToggleUsePBR();
 			}
-			ImGui::SliderFloat((const char*)"Gradient based local illum", &volumeObject.GetGradientBasedIllumination(), 0.0f, 20.0f);
+			ImGui::SliderFloat((const char*)"Gradient based local illum", &volumeObject.GetGradientBasedIllumination(), 0.0f, 5.0f);
 			ImGui::SliderFloat((const char*)"Local shadows", &volumeObject.GetLocalShadows(), 0.0f, 1.0f);
 			ImGui::End();
 		}

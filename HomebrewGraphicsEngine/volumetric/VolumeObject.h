@@ -467,16 +467,16 @@ namespace Hogra::Volumetric {
 		TransferFunction transferFunction;
 		Feature* selectedFeature = nullptr;
 		FeatureGroup* selectedFeatureGroup = nullptr;
-		float density = 10.0f;
+		float density = 30.0f;
 		float transferFloodFillTreshold;
 		float lightPower = 100.0f;
-		glm::vec3 lightColor = glm::vec3(1,1,1);
+		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 0.9f);
 		float levelOfDetail = 1.0f;		// (0..1]
 		int nextGroupIdx = 1;
 		bool showNormals = false;
 		bool usePBR = false;
-		float localShadows = 0.0f;
-		float gradientBasedLocalIllumination = 1.0;
+		float localShadows = 0.2f;
+		float gradientBasedLocalIllumination = 0.6f;
 		bool isChanged = true;
 		glm::mat4 lightViewProjMatrix;
 
