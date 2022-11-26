@@ -157,7 +157,6 @@ namespace Hogra::Volumetric {
 		transferFunction.Animate(dt);
 	}
 
-
 	void VolumeObject::DrawProxyGeometry(
 		const Camera& camera, 
 		const Texture2D& depthTexture, 
@@ -253,8 +252,8 @@ namespace Hogra::Volumetric {
 			attenuationTextures[in].Bind();
 			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[out], 0);
 			pingpongFBO.Bind();
-			// For light always front-to-back
-			glBlendFuncSeparate(GL_ONE_MINUS_DST_COLOR, GL_ONE, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+			// For light always front-to-back [but for indirect attenuation calcualted in shader]
+			glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
 
 			glDisable(GL_DEPTH_TEST);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -738,7 +737,7 @@ namespace Hogra::Volumetric {
 					}
 				}
 				w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
-				sliceCount = (int)(glm::length(resolution) * 1.1f * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
+				sliceCount = (int)(glm::length(resolution) * 1.2f * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
 				glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
 
 				// Export matrices:

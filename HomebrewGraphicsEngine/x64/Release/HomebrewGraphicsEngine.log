@@ -1,98 +1,14 @@
-﻿  Callbacks.cpp
+﻿  SceneFactory.cpp
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
 D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  Collider.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  ControlAction.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  ControlActionManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  FirstPersonControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  GUI.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(173,49): warning C4305: 'argument': truncation from 'double' to 'float'
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(179,49): warning C4305: 'argument': truncation from 'double' to 'float'
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(185,49): warning C4305: 'argument': truncation from 'double' to 'float'
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(190,50): warning C4305: 'argument': truncation from 'double' to 'float'
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(196,50): warning C4305: 'argument': truncation from 'double' to 'float'
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(202,50): warning C4305: 'argument': truncation from 'double' to 'float'
-  HoGraEngineApplication.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Libraries\include\glad\glad.h(33): message : see previous definition of 'APIENTRY'
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\HoGraEngineApplication.cpp(173,57): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Light.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  MemoryManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  ObserveObjectControl.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  Scene.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.cpp(102,23): warning C4244: 'argument': conversion from 'double' to 'const T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  SceneEvent.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  SceneEventImplementation.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  SceneEventManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  SceneFactory.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(308,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(309,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(326,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(327,18): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  SceneManager.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  SceneObjectFactory.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-  VolumeObject.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(71,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(235,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(243,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.cpp(260,67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(307,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(308,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(325,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\SceneFactory.cpp(326,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  4 of 7869 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 7908 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     43 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

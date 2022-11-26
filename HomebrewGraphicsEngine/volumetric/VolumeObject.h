@@ -382,6 +382,11 @@ namespace Hogra::Volumetric {
 			return gradientBasedLocalIllumination;
 		}
 
+		void SetChanged() {
+			isChanged = true;
+		}
+
+
 
 	private:
 

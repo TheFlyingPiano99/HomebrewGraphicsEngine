@@ -194,9 +194,8 @@ namespace Hogra {
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
 
-
 		// Volume:
-		const char* dataSetName = "Shoulder";
+		const char* dataSetName = "Hip_male";
 		//const char* dataSetName = "cthead-8bit";
 		auto* voxelTexture = Allocator::New<Texture3D>();
 		
@@ -285,105 +284,132 @@ namespace Hogra {
 			releaseCam->Init(GLFW_MOUSE_BUTTON_RIGHT, ButtonKeyAction::TriggerType::triggerOnRelease);
 			releaseCam->SetAction(
 				[scene]() {
-					scene->GetUserControl()->release();
+scene->GetUserControl()->release();
 				}
-			);
-			ControlActionManager::getInstance()->RegisterMouseButtonAction(releaseCam);
+				);
+				ControlActionManager::getInstance()->RegisterMouseButtonAction(releaseCam);
 
-			auto* zoomCam = Allocator::New<AxisMoveAction>();
-			zoomCam->SetAction(
-				[scene](const glm::vec2& pixDelta, const glm::vec2& pixPos) {
-					scene->GetUserControl()->Zoom(pixPos.y);
-				}
-			);
-			ControlActionManager::getInstance()->RegisterMouseScrollAction(zoomCam);
-
-			auto* leftClick = Allocator::New<ButtonKeyAction>();
-			leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnPress);
-			leftClick->SetAction(
-				[control, volumeObject]() {
-					double x;
-					double y;
-					glfwGetCursorPos(GlobalVariables::window, &x, &y);
-					float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
-					float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
-
-					bool isSuccess = volumeObject->SelectTransferFunctionRegion(ndc_x, ndc_y);
-					if (!isSuccess) {
-						control->grabPlane(ndc_x, ndc_y);
+				auto* zoomCam = Allocator::New<AxisMoveAction>();
+				zoomCam->SetAction(
+					[scene](const glm::vec2& pixDelta, const glm::vec2& pixPos) {
+						scene->GetUserControl()->Zoom(pixPos.y);
 					}
-				}
-			);
-			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);
+				);
+				ControlActionManager::getInstance()->RegisterMouseScrollAction(zoomCam);
 
-			auto* leftRelease = Allocator::New<ButtonKeyAction>();
-			leftRelease->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnRelease);
-			leftRelease->SetAction(
-				[control]() {
-					double x;
-					double y;
-					glfwGetCursorPos(GlobalVariables::window, &x, &y);
-					float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
-					float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
-					control->releasePlane(ndc_x, ndc_y);
-				}
-			);
-			ControlActionManager::getInstance()->RegisterMouseButtonAction(leftRelease);
+				auto* leftClick = Allocator::New<ButtonKeyAction>();
+				leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnPress);
+				leftClick->SetAction(
+					[control, volumeObject]() {
+						double x;
+						double y;
+						glfwGetCursorPos(GlobalVariables::window, &x, &y);
+						float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+						float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
 
-			auto* toggleTransferVis = Allocator::New<ButtonKeyAction>();
-			toggleTransferVis->Init(GLFW_KEY_H, ButtonKeyAction::TriggerType::triggerOnPress);
-			toggleTransferVis->SetAction(
-				[volumeObject]() {
-					volumeObject->GetTransferFunction().ToggleVisibility();
-				}
-			);
-			ControlActionManager::getInstance()->RegisterKeyAction(toggleTransferVis);
+						bool isSuccess = volumeObject->SelectTransferFunctionRegion(ndc_x, ndc_y);
+						if (!isSuccess) {
+							control->grabPlane(ndc_x, ndc_y);
+						}
+					}
+				);
+				ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);
 
-			auto* toggleMenu = Allocator::New<ButtonKeyAction>();
-			toggleMenu->Init(GLFW_KEY_O, ButtonKeyAction::TriggerType::triggerOnPress);
-			toggleMenu->SetAction(
-				[]() {
-					GUI::getInstance()->setVisible(!(GUI::getInstance()->IsVisible()));
-				}
-			);
-			ControlActionManager::getInstance()->RegisterKeyAction(toggleMenu);
+				auto* leftRelease = Allocator::New<ButtonKeyAction>();
+				leftRelease->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnRelease);
+				leftRelease->SetAction(
+					[control]() {
+						double x;
+						double y;
+						glfwGetCursorPos(GlobalVariables::window, &x, &y);
+						float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
+						float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+						control->releasePlane(ndc_x, ndc_y);
+					}
+				);
+				ControlActionManager::getInstance()->RegisterMouseButtonAction(leftRelease);
 
-			auto* nextFeature = Allocator::New<ButtonKeyAction>();
-			nextFeature->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerOnPress);
-			nextFeature->SetAction(
-			[volumeObject]() {
-					volumeObject->CycleSelectedFeature();
-				}
-			);
-			ControlActionManager::getInstance()->RegisterKeyAction(nextFeature);
+				auto* toggleTransferVis = Allocator::New<ButtonKeyAction>();
+				toggleTransferVis->Init(GLFW_KEY_H, ButtonKeyAction::TriggerType::triggerOnPress);
+				toggleTransferVis->SetAction(
+					[volumeObject]() {
+						volumeObject->GetTransferFunction().ToggleVisibility();
+					}
+				);
+				ControlActionManager::getInstance()->RegisterKeyAction(toggleTransferVis);
 
-			auto* fullScreen = Allocator::New<ButtonKeyAction>();
-			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
-			fullScreen->SetAction(
-				[scene]() {
-					Callbacks::toggleFullScreen();
-				}
-			);
-			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
+				auto* toggleMenu = Allocator::New<ButtonKeyAction>();
+				toggleMenu->Init(GLFW_KEY_O, ButtonKeyAction::TriggerType::triggerOnPress);
+				toggleMenu->SetAction(
+					[]() {
+						GUI::getInstance()->setVisible(!(GUI::getInstance()->IsVisible()));
+					}
+				);
+				ControlActionManager::getInstance()->RegisterKeyAction(toggleMenu);
 
-			auto* renderMode = Allocator::New<ButtonKeyAction>();
-			renderMode->Init(GLFW_KEY_M, ButtonKeyAction::TriggerType::triggerOnPress);
-			renderMode->SetAction(
-				[volumeObject]() {
-					volumeObject->ToggleHalfAngleSlicing();
-				}
-			);
-			ControlActionManager::getInstance()->RegisterKeyAction(renderMode);
+				auto* nextFeature = Allocator::New<ButtonKeyAction>();
+				nextFeature->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerOnPress);
+				nextFeature->SetAction(
+					[volumeObject]() {
+						volumeObject->CycleSelectedFeature();
+					}
+				);
+				ControlActionManager::getInstance()->RegisterKeyAction(nextFeature);
 
-			auto* reloadShaders = Allocator::New<ButtonKeyAction>();
-			reloadShaders->Init(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerOnPress);
-			reloadShaders->SetAction(
-				[]() {
-					ShaderProgram::ReloadAll();
-				}
-			);
-			ControlActionManager::getInstance()->RegisterKeyAction(reloadShaders);
+				auto* fullScreen = Allocator::New<ButtonKeyAction>();
+				fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
+				fullScreen->SetAction(
+					[scene]() {
+						Callbacks::toggleFullScreen();
+					}
+				);
+				ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
+
+				auto* renderMode = Allocator::New<ButtonKeyAction>();
+				renderMode->Init(GLFW_KEY_M, ButtonKeyAction::TriggerType::triggerOnPress);
+				renderMode->SetAction(
+					[volumeObject]() {
+						volumeObject->ToggleHalfAngleSlicing();
+					}
+				);
+				ControlActionManager::getInstance()->RegisterKeyAction(renderMode);
+
+				auto* reloadShaders = Allocator::New<ButtonKeyAction>();
+				reloadShaders->Init(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerOnPress);
+				reloadShaders->SetAction(
+					[]() {
+						ShaderProgram::ReloadAll();
+					}
+				);
+				ControlActionManager::getInstance()->RegisterKeyAction(reloadShaders);
 		}
+
+		{
+			auto* rotateLightPos = Allocator::New<ButtonKeyAction>();
+			rotateLightPos->Init(GLFW_KEY_EQUAL, ButtonKeyAction::TriggerType::triggerOnPress);
+			rotateLightPos->SetAction(
+				[volumeObject, volumeLight]() {
+					auto pos = volumeLight->GetPosition();
+					volumeLight->SetPosition(glm::angleAxis(0.1f, glm::vec3(0, 1, 0)) * pos);
+					volumeObject->SetChanged();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(rotateLightPos);
+		}
+
+		{
+			auto* rotateLightNeg = Allocator::New<ButtonKeyAction>();
+			rotateLightNeg->Init(GLFW_KEY_MINUS, ButtonKeyAction::TriggerType::triggerOnPress);
+			rotateLightNeg->SetAction(
+				[volumeObject, volumeLight]() {
+					auto pos = volumeLight->GetPosition();
+					volumeLight->SetPosition(glm::angleAxis(-0.1f, glm::vec3(0, 1, 0))* pos);
+					volumeObject->SetChanged();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(rotateLightNeg);
+		}
+			
 
 		return scene;
 	}

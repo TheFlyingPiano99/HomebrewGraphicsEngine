@@ -115,14 +115,15 @@ void main() {
 	vec3 viewDir = normalize(cameraPosition - worldPos);
 	float w_delta = length(w_sliceDelta) / abs(dot(normalize(w_sliceDelta), viewDir));
 	vec3 currentPos = modelPos + resolution * 0.5;
-	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, trilinearInterpolation(currentPos));
+	vec4 gradientIntesity = resampleGradientAndDensity(currentPos, texture(voxels, currentPos / resolution).r);
 	vec4 color = transferFunctionFromTexture(gradientIntesity.w, length(gradientIntesity.xyz));
 	
 	vec4 ndc_attenuationCoords = light.viewProjMatrix * vec4(worldPos, 1.0);
 	ndc_attenuationCoords /= ndc_attenuationCoords.w;
 	vec2 texCoords = ndc_attenuationCoords.xy * 0.5 + 0.5;
 
-	float offset = w_delta * tan(0.01 / 2.0);
+	float theta = 0.05;
+	float offset = w_delta * tan(theta / 2.0);
 	vec3 bluredIndirectAttenuation = vec3(0, 0, 0);
 	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords).rgb;
 	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + vec2(offset, 0)).rgb;
@@ -134,12 +135,16 @@ void main() {
 	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + 0.707 * vec2(offset, -offset)).rgb;
 	bluredIndirectAttenuation.rgb += texture(attenuationTexture, texCoords + 0.707 * vec2(-offset, -offset)).rgb;
 	bluredIndirectAttenuation /= 9;
-	bluredIndirectAttenuation *= vec3(0.8, 0.9, 1.0);
+	
+	vec3 currentIndirectAttenuation = color.a * vec3(0.3, 0.9, 1.0);
+	currentIndirectAttenuation.r = min(max(1.0 - pow(1.0 - currentIndirectAttenuation.r, opacityScale * w_delta), 0.0), 1.0);
+	currentIndirectAttenuation.g = min(max(1.0 - pow(1.0 - currentIndirectAttenuation.g, opacityScale * w_delta), 0.0), 1.0);
+	currentIndirectAttenuation.b = min(max(1.0 - pow(1.0 - currentIndirectAttenuation.b, opacityScale * w_delta), 0.0), 1.0);
+	vec3 blendedIndirect = currentIndirectAttenuation * (vec3(1.0) - bluredIndirectAttenuation) + bluredIndirectAttenuation;
+	
 	// Calculate attenuation:
-	FragColor = vec4(	
-		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.r * 0.5 - color.a * 0.5, opacityScale * w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.g * 0.5 - color.a * 0.5, opacityScale * w_delta), 0.0), 1.0),
-		min(max(1.0 - pow(1.0 - bluredIndirectAttenuation.b * 0.5 - color.a * 0.5, opacityScale * w_delta), 0.0), 1.0),
+	FragColor = vec4(
+		blendedIndirect,
 		min(max(1.0 - pow(1.0 - color.a, opacityScale * w_delta), 0.0), 1.0)
 	);
 }
