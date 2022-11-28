@@ -13,6 +13,7 @@
 #include "../VAO.h"
 #include "../EBO.h"
 #include "../Geometry.h"
+#include "../Mesh.h"
 #include "../AssetFolderPathManager.h"
 #include <algorithm>
 #include <iostream>
@@ -54,6 +55,12 @@ namespace Hogra::Volumetric {
 			return voxels;
 		}
 
+		const glm::mat4& GetModelMatrix() const {
+			return modelMatrix;
+		}
+
+		void BeforePhysicsLoopUpdate() override;
+
 		void LatePhysicsUpdate(float dt) override;
 
 		void SetTexture(Texture3D* texture) {
@@ -92,6 +99,8 @@ namespace Hogra::Volumetric {
 				SetSelectedFeature(selectedFeature->name.c_str());
 			}
 		}
+
+		void CreateBoundingBoxWireFrameGeometry();
 
 		void ShowAll() {
 			SetSelectedFeatureGroup(ALL_FEATURES_STR);
@@ -135,6 +144,10 @@ namespace Hogra::Volumetric {
 			ShowSelectedFeatureGroup();
 
 			isChanged = true;
+		}
+
+		void FixateTransferFunction() {
+			transferFunction.FixateFunction();
 		}
 
 		Feature* GetSelectedFeature() {
@@ -262,69 +275,7 @@ namespace Hogra::Volumetric {
 			return transferFunction;
 		}
 
-		bool SelectTransferFunctionRegion(double x, double y) {
-			if (!transferFunction.IsVisible()) {
-				return false;
-			}
-			glm::vec4 camPos = glm::vec4(x, -y, 0, 1);
-			glm::vec4 modelPos = transferFunction.getInvModelMatrix() * camPos;
-			modelPos /= modelPos.w;
-			glm::vec2 texCoords = glm::vec2(modelPos.x / 2.0f + 0.5f, 0.5f + modelPos.y / 2.0f);
-			bool inBound = false;
-			if (texCoords.x >= 0.0f && texCoords.x <= 1.0f
-				&& texCoords.y >= 0.0f && texCoords.y <= 1.0f) {
-				inBound = true;
-			}
-
-			if (inBound) {
-				if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[0])) {
-					glm::vec3 color = transferFunction(texCoords);
-					transferFunction.floodFill(texCoords, glm::vec4(color.r, color.g, color.b, 1), transferFloodFillTreshold);
-					transferFunction.blur(3);
-					isChanged = true;
-				}
-				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[1])) {
-					transferFunction.clear();
-					transferFunction.generalArea(texCoords - glm::vec2(0.2, 0.3), texCoords + glm::vec2(0.2, 0.3));
-					transferFunction.blur(3);
-					isChanged = true;
-				}
-				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[4])) {
-					transferFunction.clear();
-					transferFunction.intensityBand(texCoords - glm::vec2(0.05, 0.3), texCoords + glm::vec2(0.05, 0.3));
-					transferFunction.blur(3);
-					isChanged = true;
-				}
-				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[2])) {
-					Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
-					if (nullptr != feature) {
-						std::cout << "Selected: " << feature->name << std::endl;
-						std::cout << "Feature element count: " << feature->elements.size() << std::endl;
-						transferFunction.clear();
-						transferFunction.setFeatureVisibility(*feature, true);
-						transferFunction.blur(3);
-						if (selectedFeature != feature) {
-							selectedFeature = feature;
-							isChanged = true;
-						}
-					}
-				}
-				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[3])) {
-					Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
-					if (nullptr != feature) {
-						std::cout << "Removed: " << feature->name << std::endl;
-						std::cout << "Feature element count: " << feature->elements.size() << std::endl;
-						bool update = transferFunction.setFeatureVisibility(*feature, false);
-						transferFunction.blur(3);
-						if (update) {
-							isChanged = true;
-						}
-					}
-				}
-				return true;
-			}
-			return false;
-		}
+		bool SelectTransferFunctionRegion(double x, double y);
 
 		const char* GetCurrentTransferRegionSelectMode() const {
 			return currentTransferRegionSelectMode;
@@ -386,7 +337,13 @@ namespace Hogra::Volumetric {
 			isChanged = true;
 		}
 
+		void SetIsPlaneGrabbed(bool b) {
+			isPlaneGrabbed = b;
+		}
 
+		glm::vec4& GetTransferDrawColor() {
+			return transferDrawColor;
+		}
 
 	private:
 
@@ -432,26 +389,16 @@ namespace Hogra::Volumetric {
 
 		void ExportHalfAngleData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera& camera, const glm::vec3& w_sliceDelta);
 
-		void ExportRayCastData(const ShaderProgram& program, const glm::mat4& quadModelMatrix, const glm::mat4& lightViewProjMatrix, const Camera& camera, float w_delta) {
-			program.Activate();
-			program.SetUniform("quadModelMatrix", quadModelMatrix);
-			program.SetUniform("sceneObject.modelMatrix", modelMatrix);
-			program.SetUniform("sceneObject.invModelMatrix", invModelMatrix);
-			program.SetUniform("light.viewProjMatrix", lightViewProjMatrix);
-			program.SetUniform("resolution", resolution);
-			program.SetUniform("scale", scale);
-			program.SetUniform("w_delta", w_delta);
-			program.SetUniform("light.position", light->GetPosition());
-			program.SetUniform("light.powerDensity", light->getPowerDensity());
-			program.SetUniform("isBackToFront", (isBackToFront) ? 1 : 0);
-			program.SetUniform("opacityScale", density);
-			program.SetUniform("showNormals", showNormals);
-			program.SetUniform("usePBR", usePBR);
-		}
+		void ExportRayCastData(const ShaderProgram& program, const glm::mat4& quadModelMatrix, const glm::mat4& lightViewProjMatrix, const Camera& camera, float w_delta);
+
+		void DrawBoundingBox();
 
 		BoundingBox originalBoundingBox;
-		BoundingBox boundingBox;
-		BoundingGeometry boundingGeometry;
+		BoundingBox boundingBox;			// Actually used box
+		Mesh boundingBoxMesh;				// To display bounding box
+		bool isPlaneGrabbed = false;
+
+		BoundingGeometry boundingGeometry;	// Optimised box grid
 		glm::vec3 w_position;
 		glm::vec3 scale;
 		glm::quat orientation;
@@ -484,6 +431,8 @@ namespace Hogra::Volumetric {
 		float gradientBasedLocalIllumination = 0.6f;
 		bool isChanged = true;
 		glm::mat4 lightViewProjMatrix;
+
+		glm::vec4 transferDrawColor = glm::vec4(1.0f, 0.95f, 0.8f, 1.0f);
 
 
 		// For rendering finished image on screen:

@@ -41,9 +41,14 @@ namespace Hogra::Volumetric {
 		features.clear();
 		defaultTransferFunction(glm::ivec2(256, 64));
 		setCamSpacePosition(glm::vec2(0.0f, -0.65f));
+		auto dim = getDimensions();
+		fixedColor = std::vector<glm::vec4>(dim.x * dim.y);
+		for (int i = 0; i < fixedColor.size(); i++) {
+			fixedColor[i] = glm::vec4(0.0f);
+		}
 	}
 
-	void TransferFunction::generalArea(glm::vec2 min, glm::vec2 max)
+	void TransferFunction::generalArea(glm::vec2 min, glm::vec2 max, const glm::vec4& color)
 	{
 		glm::ivec2 dim = getDimensions();
 		glm::ivec2 iMin = glm::ivec2(dim.x * min.x, dim.y * min.y);
@@ -55,10 +60,19 @@ namespace Hogra::Volumetric {
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
 				if (x >= iMin.x && x <= iMax.x && y >= iMin.y && y <= iMax.y) {
-					bytes[y * dim.x + x] = glm::vec4(1.0f, 0.95f, 0.8f, 1.0f)/*glm::vec4(0, 0, 0, 1)*/ * (1.0f - glm::length(glm::vec2(center) - glm::vec2(x, y) / glm::vec2(dim.x, dim.y)) / radius);
+					auto c = color * (1.0f - glm::length(glm::vec2(center) - glm::vec2(x, y) / glm::vec2(dim.x, dim.y)) / radius);
+					c.r = (c.r > 1.0) ? 1.0 : c.r;
+					c.r = (c.r < 0.0) ? 0.0 : c.r;
+					c.g = (c.g > 1.0) ? 1.0 : c.g;
+					c.g = (c.g < 0.0) ? 0.0 : c.g;
+					c.b = (c.b > 1.0) ? 1.0 : c.b;
+					c.b = (c.b < 0.0) ? 0.0 : c.b;
+					c.a = (c.a > 1.0) ? 1.0 : c.a;
+					c.a = (c.a < 0.0) ? 0.0 : c.a;
+					bytes[y * dim.x + x] = (1.0f - c.a) * fixedColor[y * dim.x + x] + c;
 				}
 				else {
-					bytes[y * dim.x + x] = glm::vec4(0.0f);
+					bytes[y * dim.x + x] = fixedColor[y * dim.x + x];
 				}
 			}
 		}
@@ -67,7 +81,7 @@ namespace Hogra::Volumetric {
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
-	void TransferFunction::intensityBand(glm::vec2 min, glm::vec2 max) {
+	void TransferFunction::intensityBand(glm::vec2 min, glm::vec2 max, glm::vec4& color) {
 		glm::ivec2 dim = getDimensions();
 		glm::ivec2 iMin = glm::ivec2(dim.x * min.x, dim.y * min.y);
 		glm::ivec2 iMax = glm::ivec2(dim.x * max.x, dim.y * max.y);
@@ -77,14 +91,12 @@ namespace Hogra::Volumetric {
 		float radius = (max.x - min.x) / 2.0f;
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
-				if (x >= iMin.x && x <= (iMin.x + iMax.x) / 2.0f) {
-					bytes[y * dim.x + x] = glm::vec4(0.999f, 0.05f, 0.01f, 0.5f);
-				}
-				else if (x >= (iMin.x + iMax.x) / 2.0f  + 10 && x <= iMax.x + 60) {
-					bytes[y * dim.x + x] = glm::vec4(239.0f, 217.0f, 168.0f, 200.0f) / 255.0f;
+				if (x >= iMin.x && x <= iMax.x) {
+					auto c = color;
+					bytes[y * dim.x + x] = (1.0f - c.a) * fixedColor[y * dim.x + x] + c;
 				}
 				else {
-					bytes[y * dim.x + x] = glm::vec4(0.0f);
+					bytes[y * dim.x + x] = fixedColor[y * dim.x + x];
 				}
 			}
 		}

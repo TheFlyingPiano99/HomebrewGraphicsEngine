@@ -22,7 +22,11 @@ namespace Hogra::Volumetric {
 
 		void Init();
 
-		void UpdateGeometry(const Texture3D& voxelTexture, const TransferFunction& transferFunction, float threshold);
+		struct FullBox {};	// Tag
+
+		void UpdateGeometry(FullBox _, const Texture3D& voxelTexture, const TransferFunction& transferFunction);
+
+		void UpdateGeometry(const Texture3D& voxelTexture, const TransferFunction& transferFunction, float threshold, bool forceRestart);
 
 		void RenderFrontAndBack(
 			const Camera& camera, 
@@ -74,7 +78,8 @@ namespace Hogra::Volumetric {
 			const unsigned int& zDivision,
 			bool* isFilled,
 			const Texture3D& voxelTexture,
-			const TransferFunction& transferFunction
+			const TransferFunction& transferFunction,
+			unsigned int step = 0
 		);
 
 		void CreateIndices(const unsigned int& xDivision, const unsigned int& yDivision, const unsigned int& zDivision, bool* isFilled);

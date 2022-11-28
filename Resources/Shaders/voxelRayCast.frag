@@ -35,6 +35,7 @@ uniform float opacityScale;
 uniform bool showNormals;
 uniform bool usePBR;
 uniform float localShadows;
+uniform float gradientBasedLocalIllumination;
 
 
 struct Light {
@@ -202,7 +203,7 @@ void main()
     }
     vec3 rayDir = normalize(m_exit - m_enter);
     vec3 colorSum = vec3(0.0);
-    vec4 attenuation = vec4(1.0);
+    float attenuation = 0.0;
     vec4 m_step = sceneObject.invModelMatrix * (normalize(w_rayDir) * w_delta);
     float m_stepSize = length(m_step);
     unsigned int stepCount = unsigned int(m_distanceInVolume / m_stepSize);
@@ -213,12 +214,7 @@ void main()
 
 
 		color.rgb *= w_delta * opacityScale;									// Correct color
-		vec4 absorption = vec4(
-			min(max(1.0 - pow(1.0 - color.g - color.b, w_delta * opacityScale), 0.0), 1.0),
-			min(max(1.0 - pow(1.0 - color.r - color.b, w_delta * opacityScale), 0.0), 1.0),
-			min(max(1.0 - pow(1.0 - color.r - color.g, w_delta * opacityScale), 0.0), 1.0),
-			min(max(1.0 - pow(1.0 - color.a, w_delta * opacityScale), 0.0), 1.0)
-		);
+		float absorption = min(max(1.0 - pow(1.0 - color.a, w_delta * opacityScale), 0.0), 1.0);
 		vec4 w_currentPos = sceneObject.modelMatrix * vec4(m_currentPos, 1.0);
 		w_currentPos /= w_currentPos.w;
 		
@@ -228,14 +224,14 @@ void main()
 		vec3 w_viewDir = normalize(sceneObject.modelMatrix * vec4(-rayDir, 0.0)).xyz;
 		vec3 w_halfway = (w_lightDir + w_viewDir) * 0.5;
 		vec4 m_halfway = sceneObject.invModelMatrix * vec4(w_halfway, 0.0);
+		vec3 transferGrad = resampleGradientAndDensityFromTransfer(m_currentPos, color.a).xyz;
+		vec3 w_normal = normalize(sceneObject.modelMatrix * vec4(-normalize(transferGrad), 0)).xyz;
 
 		// Blinn-Phong local illumination:
-		float shininess = 10.0;
-		vec3 transferGrad = resampleGradientAndDensityFromTransfer(m_currentPos,  trilinearInterpolationFromTransfer(m_currentPos)).xyz;
-		float t = min(max(pow(length(transferGrad) * color.a, 0.5), 0.0), 1.0);
+		float shininess = 20.0 * color.a;
+		float t = min(max(pow(length(transferGrad) * color.a, 1.0 / (gradientBasedLocalIllumination + 0.0000001)), 0.0), 1.0);
 	
 		if (usePBR) {
-			vec3 w_normal = normalize(sceneObject.modelMatrix * vec4(-normalize(transferGrad), 0)).xyz;
 			vec3 albedo = color.rgb;
 			float roughness = 0.0001;
 			float metallic = 0.9;
@@ -256,15 +252,15 @@ void main()
 							);
 		}
 		else {
-			color.rgb += t * pow(max(dot(normalize(-transferGrad.xyz), normalize(m_halfway.xyz)), 0.0), shininess);		
+			float kS = color.a * 5.0;
+			color.rgb = (1.0 - t * localShadows) * color.rgb + t * (max(dot(w_normal, w_lightDir), 0.0) * color.rgb + kS * pow(max(dot(normalize(-transferGrad.xyz), normalize(m_halfway.xyz)), 0.0), shininess));		
 		}
 		color.rgb *= light.powerDensity / w_lightDistance / w_lightDistance;
 
 		// Calculate opacity of this segment:
-		color.rgb *= attenuation.rgb * attenuation.a;							// Attenuate light in camera direction
 
-		colorSum += color.rgb;
-		attenuation *= 1.0 - absorption;
+		colorSum = colorSum + (1 - attenuation) * color.rgb;
+		attenuation = attenuation + absorption * (1 - attenuation);
     }
-    FragColor = vec4(colorSum, 1.0 - attenuation);
+    FragColor = vec4(colorSum, attenuation);
 }

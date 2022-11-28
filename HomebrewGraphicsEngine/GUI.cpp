@@ -92,6 +92,10 @@ namespace Hogra {
 					}
 					ImGui::EndCombo();
 				}
+				ImGui::ColorEdit3("Draw color", &(volumeObject.GetTransferDrawColor().x));
+				if (ImGui::Button("Fixate", buttonSize)) {
+					volumeObject.FixateTransferFunction();
+				}
 				ImGui::EndGroup();
 			}
 

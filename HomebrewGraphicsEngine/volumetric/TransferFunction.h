@@ -166,6 +166,7 @@ namespace Hogra::Volumetric {
 		float displayGamma = 1.0f;
 		glm::vec4 nullVector = glm::vec4(0.0f);
 		std::vector<Feature> features;
+		std::vector<glm::vec4> fixedColor;
 		bool visible = true;
 		glm::vec2 preferedCameraSpacePosition = glm::vec2(0, 0);
 		glm::vec2 cameraSpacePosition = glm::vec2(0, 0);
@@ -177,7 +178,7 @@ namespace Hogra::Volumetric {
 			Allocator::Delete(texture);
 		}
 
-		void generalArea(glm::vec2 min, glm::vec2 max);
+		void generalArea(glm::vec2 min, glm::vec2 max, const glm::vec4& color);
 		void floodFill(glm::vec2 startPos, glm::vec4 color, float threshold);
 		void blur(int kernelSize);
 		void normalize();
@@ -189,7 +190,7 @@ namespace Hogra::Volumetric {
 		void Bind();
 		void Unbind();
 		void clear();
-		void intensityBand(glm::vec2 min, glm::vec2 max);
+		void intensityBand(glm::vec2 min, glm::vec2 max, glm::vec4& color);
 
 		const glm::ivec2 getDimensions() {
 			if (texture == nullptr)
@@ -203,6 +204,14 @@ namespace Hogra::Volumetric {
 
 		const glm::mat4 getInvModelMatrix() {
 			return invModelMatrix;
+		}
+
+		void FixateFunction() {
+			if (texture != nullptr) {
+				for (int i = 0; i < fixedColor.size(); i++) {
+					fixedColor[i] = texture->GetBytes()[i];
+				}
+			}
 		}
 
 		void defaultTransferFunction(glm::ivec2 dimensions);

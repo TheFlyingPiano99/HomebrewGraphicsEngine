@@ -160,7 +160,8 @@ namespace Hogra {
 		scene->AddPostProcessStage(stage1);
 		return scene;
 	}
-
+	
+	static bool isCrop = false;
 	Scene* SceneFactory::CreateVoxelDemoScene(int contextWidth, int contextHeight)
 	{
 
@@ -195,7 +196,7 @@ namespace Hogra {
 		scene->AddLight(light);	// Directional light
 
 		// Volume:
-		const char* dataSetName = "Hip_male";
+		const char* dataSetName = "Hip_female";
 		//const char* dataSetName = "cthead-8bit";
 		auto* voxelTexture = Allocator::New<Texture3D>();
 		
@@ -284,7 +285,7 @@ namespace Hogra {
 			releaseCam->Init(GLFW_MOUSE_BUTTON_RIGHT, ButtonKeyAction::TriggerType::triggerOnRelease);
 			releaseCam->SetAction(
 				[scene]() {
-scene->GetUserControl()->release();
+					scene->GetUserControl()->release();
 				}
 				);
 				ControlActionManager::getInstance()->RegisterMouseButtonAction(releaseCam);
@@ -297,23 +298,47 @@ scene->GetUserControl()->release();
 				);
 				ControlActionManager::getInstance()->RegisterMouseScrollAction(zoomCam);
 
+				{
+					auto* enableCrop = Allocator::New<ButtonKeyAction>();
+					enableCrop->Init(GLFW_KEY_C, ButtonKeyAction::TriggerType::triggerOnPress);
+					enableCrop->SetAction(
+						[control, volumeObject]() {
+							isCrop = true;
+							volumeObject->SetIsPlaneGrabbed(true);
+						}
+					);
+					ControlActionManager::getInstance()->RegisterKeyAction(enableCrop);
+					auto* disableCrop = Allocator::New<ButtonKeyAction>();
+					disableCrop->Init(GLFW_KEY_C, ButtonKeyAction::TriggerType::triggerOnRelease);
+					disableCrop->SetAction(
+						[control, volumeObject]() {
+							isCrop = false;
+							volumeObject->SetIsPlaneGrabbed(false);
+						}
+					);
+					ControlActionManager::getInstance()->RegisterKeyAction(disableCrop);
+				}
+
 				auto* leftClick = Allocator::New<ButtonKeyAction>();
-				leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnPress);
+				leftClick->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerContinuosly);
 				leftClick->SetAction(
-					[control, volumeObject]() {
+					[control, volumeObject, leftClick]() {
 						double x;
 						double y;
 						glfwGetCursorPos(GlobalVariables::window, &x, &y);
 						float ndc_x = x / (double)GlobalVariables::windowWidth * 2.0 - 1.0;
-						float ndc_y = y / (double)GlobalVariables::windowHeight * 2.0 - 1.0;
+						float ndc_y = 1.0 - y / (double)GlobalVariables::windowHeight * 2.0;
 
-						bool isSuccess = volumeObject->SelectTransferFunctionRegion(ndc_x, ndc_y);
-						if (!isSuccess) {
+						if (!isCrop) {
+							bool isSuccess = volumeObject->SelectTransferFunctionRegion(ndc_x, ndc_y);
+						}
+						else {
 							control->grabPlane(ndc_x, ndc_y);
 						}
 					}
 				);
 				ControlActionManager::getInstance()->RegisterMouseButtonAction(leftClick);
+
 
 				auto* leftRelease = Allocator::New<ButtonKeyAction>();
 				leftRelease->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnRelease);

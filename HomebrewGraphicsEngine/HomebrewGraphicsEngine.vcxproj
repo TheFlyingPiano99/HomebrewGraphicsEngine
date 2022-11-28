@@ -351,6 +351,8 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
+    <None Include="..\Resources\Shaders\boundingBox.frag" />
+    <None Include="..\Resources\Shaders\boundingBox.vert" />
     <None Include="..\Resources\Shaders\screenQuadrant.vert" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert" />

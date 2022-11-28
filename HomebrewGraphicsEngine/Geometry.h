@@ -13,6 +13,8 @@ namespace Hogra {
 
 		void Init(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
 
+		void Update(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
+
 		~Geometry() {
 			if (0 != instancedBuffer) {
 				glDeleteBuffers(1, &instancedBuffer);
