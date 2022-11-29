@@ -170,7 +170,8 @@ namespace Hogra::Volumetric {
 		bool visible = true;
 		glm::vec2 preferedCameraSpacePosition = glm::vec2(0, 0);
 		glm::vec2 cameraSpacePosition = glm::vec2(0, 0);
-		
+		glm::ivec2 dimensions = glm::ivec2(256, 128);
+
 	public:
 		void Init();
 
@@ -214,8 +215,8 @@ namespace Hogra::Volumetric {
 			}
 		}
 
-		void defaultTransferFunction(glm::ivec2 dimensions);
-		void SpatialTransferFunction(glm::ivec2 dimensions, Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions = 1);
+		void defaultTransferFunction();
+		void SpatialTransferFunction(Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions = 1);
 		void gradientWeighted(glm::ivec2 dimensions, float globalOpacity);
 
 		void colorFeature(Feature& feature, glm::vec3 color);
@@ -272,7 +273,7 @@ namespace Hogra::Volumetric {
 			}
 		}
 
-		void loadFeatures(std::istream& stream, std::vector<FeatureGroup>& groups) {
+		void loadFeatures(std::istream& stream, std::vector<FeatureGroup*>& groups) {
 			features.clear();
 			std::string line;
 			while (std::getline(stream, line)) {
@@ -284,8 +285,8 @@ namespace Hogra::Volumetric {
 					}
 				}
 				else if (line.compare("featureGroup") == 0) {
-					FeatureGroup group;
-					if (group.load(stream, features)) {
+					auto* group = Allocator::New<FeatureGroup>();
+					if (group->load(stream, features)) {
 						groups.push_back(group);
 					}
 				}

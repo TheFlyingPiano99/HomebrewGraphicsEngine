@@ -39,7 +39,7 @@ namespace Hogra::Volumetric {
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 		quadVAO.Unbind();
 		features.clear();
-		defaultTransferFunction(glm::ivec2(256, 64));
+		defaultTransferFunction();
 		setCamSpacePosition(glm::vec2(0.0f, -0.65f));
 		auto dim = getDimensions();
 		fixedColor = std::vector<glm::vec4>(dim.x * dim.y);
@@ -350,7 +350,7 @@ namespace Hogra::Volumetric {
 		texture->Init(bytes, dim, 1, GL_RGBA, GL_FLOAT);
 	}
 
-	void TransferFunction::defaultTransferFunction(glm::ivec2 dimensions)
+	void TransferFunction::defaultTransferFunction()
 	{
 		std::vector<glm::vec4> bytes = std::vector<glm::vec4>(dimensions.x * dimensions.y);
 		for (int y = 0; y < dimensions.y; y++) {
@@ -374,28 +374,31 @@ namespace Hogra::Volumetric {
 		texture->Init(bytes, dimensions, 1, GL_RGBA, GL_FLOAT);
 	}
 
-	void TransferFunction::SpatialTransferFunction(glm::ivec2 dimensions, Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions) {
+	void TransferFunction::SpatialTransferFunction(Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions) {
 		features.clear();
-		std::vector<glm::vec4> bytes = std::vector<glm::vec4>(dimensions.x * dimensions.y);
-		std::vector<glm::vec3> barycenters = std::vector<glm::vec3>(dimensions.x * dimensions.y);
-		std::vector <std::vector<glm::vec3>> contributingPositions = std::vector<std::vector<glm::vec3>>(dimensions.x * dimensions.y);
-		std::vector<float> spatialVariances = std::vector<float>(dimensions.x * dimensions.y);
-		for (int i = 0; i < dimensions.x * dimensions.y; i++) {
+		std::vector<glm::vec4> bytes = std::vector<glm::vec4>(dimensions.x * dimensions.y);	// Texture data
+
+		std::vector <std::vector<glm::vec3>> contributingPositions(dimensions.x * dimensions.y);
+		std::vector<glm::vec3> barycenters(dimensions.x * dimensions.y);
+		std::vector<float> spatialVariances(dimensions.x * dimensions.y);
+
+		for (int i = 0; i < dimensions.x * dimensions.y; i++) {	// Init with zero
 			bytes[i] = glm::vec4(0.0f);
 			barycenters[i] = glm::vec3(0.0f);
+			spatialVariances[i] = 0.0f;
 		}
-		for (int y = 0; y < dimensions.y; y++) {
+		for (int y = 0; y < dimensions.y; y++) {		// Init alpha channel
 			for (int x = 0; x < dimensions.x; x++) {
 				bytes[y * dimensions.x + x].r = 0.0f;
 				bytes[y * dimensions.x + x].g = 0.0f;
 				bytes[y * dimensions.x + x].b = 0.0f;
-				bytes[y * dimensions.x + x].a = x / (float)dimensions.x * globalOpacity;
+				bytes[y * dimensions.x + x].a = std::powf(0.05f + y / (float)dimensions.y, 0.5f) * globalOpacity;
 			}
 		}
 		Dimensions voxelDim = voxelTexture.GetDimensions();
 		glm::vec3 posDivider = glm::vec3(voxelDim.width, voxelDim.height, voxelDim.depth);
 
-		//Calculate barycenters:
+		//Calculate contributingPositions and barycenters:
 		for (int z = 0; z < voxelDim.depth; z++) {
 			for (int y = 0; y < voxelDim.height; y++) {
 				for (int x = 0; x < voxelDim.width; x++) {
@@ -404,17 +407,17 @@ namespace Hogra::Volumetric {
 					int yb = glm::length(glm::vec3(gradientIntensity.x, gradientIntensity.y, gradientIntensity.z)) * (dimensions.y - 1);
 					if (xb >= 0 && xb < dimensions.x && yb >= 0 && yb < dimensions.y) {
 						glm::vec3 p = glm::vec3(x, y, z) / posDivider;
-						barycenters[yb * dimensions.x + xb] += p;
 						contributingPositions[yb * dimensions.x + xb].push_back(p);
+						barycenters[yb * dimensions.x + xb] += p;
 					}
 				}
 			}
 		}
+
 		//Calculate spatial variances:
 		for (int i = 0; i < dimensions.x * dimensions.y; i++) {
 			if (contributingPositions[i].size() > 0) {
 				barycenters[i] /= (float)contributingPositions[i].size();
-				spatialVariances[i] = 0.0f;
 				for (int j = 0; j < contributingPositions[i].size(); j++) {
 					spatialVariances[i] += glm::length(contributingPositions[i][j] - barycenters[i]);
 				}
@@ -424,34 +427,59 @@ namespace Hogra::Volumetric {
 
 		// Classification:
 		srand(0);
-		int featureCunter = 0;
+		int featureCounter = 0;
+		auto potentialReferenceTuples = std::vector<int>(dimensions.x * dimensions.y);
 		for (int i = 0; i < dimensions.x * dimensions.y; i++) {
-
-			if (contributingPositions[i].size() > 0 && bytes[i].r == 0.0f && bytes[i].g == 0.0f && bytes[i].b == 0.0f) {
-				glm::vec3 Crgb = glm::vec3(rand() % 255 / 255.0f, rand() % 255 / 255.0f, rand() % 255 / 255.0f);
-				glm::vec3 b0 = barycenters[i];
-				float v0 = spatialVariances[i];
+			potentialReferenceTuples[i] = i;
+		}
+		while (potentialReferenceTuples.size() > 0) {
+			unsigned int maxHistogramVal = 0;
+			int maxIdx = -1;
+			for (auto idx : potentialReferenceTuples) {	// Find tuple with max histogram value
+				if (maxIdx < 0 || maxHistogramVal < contributingPositions[idx].size()) {
+					maxHistogramVal = contributingPositions[idx].size();
+					maxIdx = idx;
+				}
+			}
+			if (contributingPositions[maxIdx].size() > 0 && bytes[maxIdx].r == 0.0f && bytes[maxIdx].g == 0.0f && bytes[maxIdx].b == 0.0f) {
+				glm::vec3 Crgb = glm::vec3(rand() % 256 / 255.0f, rand() % 256 / 255.0f, rand() % 256 / 255.0f);
+				glm::vec3 b0 = barycenters[maxIdx];
+				float v0 = spatialVariances[maxIdx];
 				Feature feature;
 				feature.color = Crgb;
 				feature.visible = true;
-				feature.name = std::string("Feature").append(std::to_string(featureCunter));
+				feature.name = std::string("Feature").append(std::to_string(featureCounter));
 				feature.opacity = globalOpacity;
 				feature.emission = globalEmission;
+				std::vector<int> contributigIdxs;
 				for (int j = 0; j < dimensions.x * dimensions.y; j++) {
-					if (contributingPositions[j].size() >= minimalContributions && bytes[j].r == 0.0f && bytes[j].g == 0.0f && bytes[j].b == 0.0f) {
+					if (contributingPositions[j].size() > 0 && bytes[j].r == 0.0f && bytes[j].g == 0.0f && bytes[j].b == 0.0f) {
 						float distanceNorm = glm::length(barycenters[j] - b0) + std::abs(v0 - spatialVariances[j]);
 						if (distanceNorm < radius) {
-							bytes[j].r = Crgb.r * globalEmission;
-							bytes[j].g = Crgb.g * globalEmission;
-							bytes[j].b = Crgb.b * globalEmission;
+							bytes[j].r = Crgb.r * globalEmission * bytes[j].a;
+							bytes[j].g = Crgb.g * globalEmission * bytes[j].a;
+							bytes[j].b = Crgb.b * globalEmission * bytes[j].a;
 							feature.elements.push_back(glm::ivec2(j % dimensions.x, j / dimensions.x));
+							contributigIdxs.push_back(j);
 						}
 					}
 				}
-				if (0 < feature.elements.size()) {
+				if (feature.elements.size() >= minimalContributions) {
+					for (auto idx : contributigIdxs) {	// Remove selected tuples from potential references
+						auto iter = std::find(
+							potentialReferenceTuples.begin(), potentialReferenceTuples.end(), idx
+						);
+						if (iter != potentialReferenceTuples.end()) {
+							potentialReferenceTuples.erase(iter);
+						}
+					}
 					features.push_back(feature);
-					featureCunter++;
+					featureCounter++;
 				}
+			}
+			auto iter = std::find(potentialReferenceTuples.begin(), potentialReferenceTuples.end(), maxIdx);
+			if (iter != potentialReferenceTuples.end()) {
+				potentialReferenceTuples.erase(iter);
 			}
 		}
 
@@ -485,10 +513,11 @@ namespace Hogra::Volumetric {
 		}
 		for (auto p : feature.elements) {
 			if (p.x < dimensions.x && p.y < dimensions.y) {
-				bytes[p.y * dimensions.x + p.x].r = color.r * feature.emission;
-				bytes[p.y * dimensions.x + p.x].g = color.g * feature.emission;
-				bytes[p.y * dimensions.x + p.x].b = color.b * feature.emission;
-				bytes[p.y * dimensions.x + p.x].w = std::powf((float)p.x / (float)dimensions.x, 0.5) * feature.opacity;
+				float a = std::powf(0.05f + p.y / (float)dimensions.y, 0.5f) * feature.opacity;
+				bytes[p.y * dimensions.x + p.x].r = color.r * feature.emission * a;
+				bytes[p.y * dimensions.x + p.x].g = color.g * feature.emission * a;
+				bytes[p.y * dimensions.x + p.x].b = color.b * feature.emission * a;
+				bytes[p.y * dimensions.x + p.x].w = a;
 			}
 		}
 

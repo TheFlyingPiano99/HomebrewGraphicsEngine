@@ -21,6 +21,13 @@ namespace Hogra::Volumetric {
 
 	}
 
+	VolumeObject::~VolumeObject()
+	{
+		for (auto group : featureGroups) {
+			Allocator::Delete(group);
+		}
+	}
+
 
 	void VolumeObject::Init(Texture3D* _voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize)
 	{
@@ -390,7 +397,6 @@ namespace Hogra::Volumetric {
 					std::cout << "Removed: " << feature->name << std::endl;
 					std::cout << "Feature element count: " << feature->elements.size() << std::endl;
 					bool update = transferFunction.setFeatureVisibility(*feature, false);
-					transferFunction.blur(3);
 					if (update) {
 						isChanged = true;
 					}
@@ -635,12 +641,12 @@ namespace Hogra::Volumetric {
 	}
 
 	void VolumeObject::Serialize() {
-		std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("/features_out.txt"));
+		std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("/features.txt"));
 		if (stream.is_open()) {
 			std::cout << "Serializing volume object" << std::endl;
 			transferFunction.saveFeatures(stream);
-			for (FeatureGroup& group : featureGroups) {
-				group.Serialize(stream);
+			for (auto* group : featureGroups) {
+				group->Serialize(stream);
 			}
 			stream.close();
 		}
@@ -710,6 +716,31 @@ namespace Hogra::Volumetric {
 		material->Init(program);
 		boundingBoxMesh.Init(material, geometry);
 		boundingBoxMesh.setDepthTest(false);
+	}
+
+	void VolumeObject::RemoveFeatureFromGroup(Feature* feature) {
+		if (nullptr != feature && nullptr != selectedFeatureGroup) {
+			if (auto iter = std::ranges::find(selectedFeatureGroup->features.begin(), selectedFeatureGroup->features.end(), feature);
+				iter != selectedFeatureGroup->features.end()
+				) {
+				selectedFeatureGroup->features.erase(iter);
+				if (feature == selectedFeature) {
+					selectedFeature = nullptr;
+				}
+			}
+		}
+	}
+
+	void VolumeObject::DeleteSelectedGroup()
+	{
+		if (nullptr == selectedFeatureGroup) {
+			return;
+		}
+		auto iter = std::find(featureGroups.begin(), featureGroups.end(), selectedFeatureGroup);
+		if (iter != featureGroups.end()) {
+			featureGroups.erase(iter);
+		}
+		selectedFeatureGroup = nullptr;
 	}
 
 

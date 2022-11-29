@@ -196,7 +196,8 @@ namespace Hogra {
 		}
 		float l = length(center - eye);
 		if (l - 0.01f > delta) {	// If not passing the lookAt position
-			eye += delta * normalize(center - eye);
+			lookDir = normalize(center - eye);
+			eye += delta * lookDir;
 			lookAt = eye + lookDir;
 			moved = true;
 		}

@@ -1,59 +1,18 @@
-﻿  TransferFunction.cpp
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(64,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(65,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(66,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(67,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(68,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(69,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(70,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(71,17): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(403,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\TransferFunction.cpp(404,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
-          with
-          [
-              T=float
-          ]
+﻿  GUI.cpp
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(80,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\volumetric\VolumeObject.h(253,1): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\Scene.h(139,15): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(182,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(188,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(194,49): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(199,50): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(205,50): warning C4305: 'argument': truncation from 'double' to 'float'
+D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\GUI.cpp(211,50): warning C4305: 'argument': truncation from 'double' to 'float'
 LINK : warning LNK4098: defaultlib 'MSVCRTD' conflicts with use of other libs; use /NODEFAULTLIB:library
   Generating code
-  2 of 7965 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  1 of 8003 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    44 functions had inline decision re-evaluated but remain unchanged
+    43 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
 glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\glfw.pdb'; linking object as if no debug info
 glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Release\glfw.pdb'; linking object as if no debug info

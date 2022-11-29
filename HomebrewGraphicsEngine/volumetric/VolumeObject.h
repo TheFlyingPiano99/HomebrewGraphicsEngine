@@ -31,6 +31,8 @@ namespace Hogra::Volumetric {
 
 		VolumeObject();
 
+		~VolumeObject();
+
 		void Init(Texture3D* voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize);
 
 		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera);
@@ -77,12 +79,12 @@ namespace Hogra::Volumetric {
 
 				nextGroupIdx = featureGroups.size() + 1;
 
-				FeatureGroup all;
-				all.name = ALL_FEATURES_STR;
+				auto* all = Allocator::New<FeatureGroup>();
+				all->name = ALL_FEATURES_STR;
 				for (Feature& feature : transferFunction.GetFeatures()) {
-					all.features.push_back(&feature);
+					all->features.push_back(&feature);
 				}
-				all.serialize = false;
+				all->serialize = false;
 				featureGroups.emplace(featureGroups.begin(), all);
 				selectedFeature = nullptr;
 				ShowAll();
@@ -110,7 +112,7 @@ namespace Hogra::Volumetric {
 			return selectedFeatureGroup;
 		}
 
-		std::vector<FeatureGroup>& GetFeatureGroups() {
+		std::vector<FeatureGroup*>& GetFeatureGroups() {
 			return featureGroups;
 		}
 
@@ -128,13 +130,13 @@ namespace Hogra::Volumetric {
 		}
 
 		void SetSelectedFeatureGroup(const char* name) {
-			for (FeatureGroup& group : featureGroups) {
-				if (group.name.compare(name) == 0) {
-					if (selectedFeatureGroup != &group) {
+			for (FeatureGroup* group : featureGroups) {
+				if (group->name.compare(name) == 0) {
+					if (selectedFeatureGroup != group) {
 						selectedFeature = nullptr;
 					}
-					selectedFeatureGroup = &group;
-					if (selectedFeatureGroup != &group) {
+					selectedFeatureGroup = group;
+					if (selectedFeatureGroup != group) {
 						selectedFeature = nullptr;
 						ShowSelectedFeatureGroup();
 					}
@@ -165,22 +167,25 @@ namespace Hogra::Volumetric {
 			}
 		}
 
+		void RemoveFeatureFromGroup(Feature* feature);
+
 		void ResetToDefault()
 		{
 			transferFunction.clear();
-			transferFunction.defaultTransferFunction(glm::ivec2(256, 128));
+			transferFunction.defaultTransferFunction();
 			isChanged = true;
 		}
 
-
 		void CreateFeatureGroup()
 		{
-			FeatureGroup group;
-			group.features.clear();
-			group.name = std::string("Group").append(std::to_string(nextGroupIdx++));
+			auto* group = Allocator::New<FeatureGroup>();
+			group->features.clear();
+			group->name = std::string("Group").append(std::to_string(nextGroupIdx++));
 			featureGroups.push_back(group);
-			SetSelectedFeatureGroup(group.name.c_str());
+			SetSelectedFeatureGroup(group->name.c_str());
 		}
+
+		void DeleteSelectedGroup();
 
 		void RemoveSelectedFeatureFromFeatureGroup()
 		{
@@ -241,18 +246,18 @@ namespace Hogra::Volumetric {
 
 		void GenerateSTF()
 		{
-			transferFunction.SpatialTransferFunction(glm::ivec2(256, 128), *voxels, STFradius, STFOpacity, STFEmission, STFMinContributions);
+			transferFunction.SpatialTransferFunction(*voxels, STFradius, STFOpacity, STFEmission, STFMinContributions);
 			std::cout << "STF feature count: " << transferFunction.GetFeatures().size() << std::endl;
 			featureGroups.clear();
 
 			nextGroupIdx = featureGroups.size() + 1;
 
-			FeatureGroup all;
-			all.name = ALL_FEATURES_STR;
+			auto* all = Allocator::New<FeatureGroup>();
+			all->name = ALL_FEATURES_STR;
 			for (Feature& feature : transferFunction.GetFeatures()) {
-				all.features.push_back(&feature);
+				all->features.push_back(&feature);
 			}
-			all.serialize = false;
+			all->serialize = false;
 			featureGroups.emplace(featureGroups.begin(), all);
 			selectedFeature = nullptr;
 			ShowAll();
@@ -415,7 +420,7 @@ namespace Hogra::Volumetric {
 		Texture3D* voxels = nullptr;
 
 		glm::vec3 resolution = glm::vec3(1.0f);
-		std::vector<FeatureGroup> featureGroups;
+		std::vector<FeatureGroup*> featureGroups;
 		TransferFunction transferFunction;
 		Feature* selectedFeature = nullptr;
 		FeatureGroup* selectedFeatureGroup = nullptr;
