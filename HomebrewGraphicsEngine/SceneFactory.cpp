@@ -196,7 +196,7 @@ namespace Hogra {
 		scene->AddLight(light);	// Directional light
 
 		// Volume:
-		const char* dataSetName = "Hip_female";
+		const char* dataSetName = "cthead-8bit";
 		//const char* dataSetName = "cthead-8bit";
 		auto* voxelTexture = Allocator::New<Texture3D>();
 		

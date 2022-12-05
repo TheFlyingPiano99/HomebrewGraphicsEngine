@@ -926,7 +926,7 @@ namespace Hogra::Volumetric {
 					}
 				}
 				w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
-				sliceCount = (int)(glm::length(resolution) * 1.2f * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
+				sliceCount = (int)(glm::length(resolution) * 1.75f * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
 				glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
 
 				// Export matrices:
@@ -957,7 +957,7 @@ namespace Hogra::Volumetric {
 			glDisable(GL_CULL_FACE);
 			int in = 0;
 			int slicePerCurrentFrame = 0;
-			int maxSlicePerFrame = isCheapRender ? 1000 : 10;
+			int maxSlicePerFrame = isCheapRender ? 100000 : 10;
 			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
 			for (int slice = firstSlice; slice < sliceCount; slice++) {
 				in = slice % 2;

@@ -39,14 +39,16 @@ vec3 acesTonemap(vec3 color){
 
 void main()
 {   
-    const float gamma = 1.0;
-    const float exposure = 1.0;
     vec3 hdrColor = texture(screenColor, fs_in.texCoords).rgb;
  	float brightness = dot(hdrColor, vec3(0.2126, 0.7152, 0.0722));
     // exposure and tone mapping:
     vec3 mapped = acesTonemap(hdrColor);
-    //:
 
+    const float gamma = 0.7;
+    const float exposure = 3.0;
+
+    // exposure correction 
+    mapped = vec3(1.0) - exp(-mapped * exposure);
     // gamma correction 
     mapped = pow(mapped, vec3(1.0 / gamma));
   
