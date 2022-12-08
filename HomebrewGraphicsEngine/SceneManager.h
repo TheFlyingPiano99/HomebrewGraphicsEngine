@@ -18,7 +18,7 @@ namespace Hogra {
 			}
 		}
 
-		void Init(int contextWidth, int contextHeight);
+		void Init(int contextWidth, int contextHeight, int argc = 0, char* argv[] = nullptr);
 
 		void RestartScene();
 

@@ -22,14 +22,14 @@ namespace Hogra {
 		glfwSetWindowSizeCallback(window, Callbacks::onWindowSize);
 	}
 	
-	void Callbacks::onWindowInit(GLFWwindow* window)
+	void Callbacks::onWindowInit(GLFWwindow* window, int argc, char* argv[])
 	{
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
 		glViewport(0, 0, width, height);
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
-		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
+		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight, argc, argv);
 		GUI::getInstance()->InitGUI(window);
 	}
 

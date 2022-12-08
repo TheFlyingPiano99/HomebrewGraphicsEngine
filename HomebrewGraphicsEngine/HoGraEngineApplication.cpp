@@ -61,8 +61,7 @@ namespace Hogra {
 		std::cout << std::endl;
 	}
 
-	int HoGraEngineApplication::Init(const char* _windowName) {
-
+	int HoGraEngineApplication::Init(const char* _windowName, int argc, char* argv[]) {
 		auto consoleHandle = GetConsoleWindow();
 		if (GlobalVariables::hideConsoleWindow) {
 			// Hide native console
@@ -112,7 +111,7 @@ namespace Hogra {
 		//Load GLAD so it configures OpenGL
 		gladLoadGL();
 
-		Callbacks::onWindowInit(window);
+		Callbacks::onWindowInit(window, argc, argv);
 
 		return 0;
 	}

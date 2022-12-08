@@ -96,6 +96,7 @@ namespace Hogra::Volumetric {
 		LoadFeatures();
 		boundingGeometry.UpdateGeometry(BoundingGeometry::FullBox(), *voxels, transferFunction);
 		CreateBoundingBoxWireFrameGeometry();
+		ResetToDefault();
 	}
 
 
@@ -926,7 +927,7 @@ namespace Hogra::Volumetric {
 					}
 				}
 				w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
-				sliceCount = (int)(glm::length(resolution) * 1.75f * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
+				sliceCount = (int)(glm::length(resolution) * 1.25f * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
 				glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
 
 				// Export matrices:

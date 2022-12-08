@@ -13,12 +13,13 @@ namespace Hogra {
 		}
 		return instance;
 	}
-	void SceneManager::Init(int contextWidth, int contextHeight)
+
+	void SceneManager::Init(int contextWidth, int contextHeight, int argc, char* argv[])
 	{
 		if (nullptr != currentScene) {
 			return;
 		}
-		currentScene = SceneFactory::getInstance()->CreateVoxelDemoScene(contextWidth, contextHeight);		
+		currentScene = SceneFactory::getInstance()->CreateVoxelDemoScene(contextWidth, contextHeight, argc, argv);		
 	}
 
 	void SceneManager::RestartScene()
@@ -28,7 +29,7 @@ namespace Hogra {
 		}
 		Allocator::Delete(currentScene);
 		ControlActionManager::getInstance()->UnregisterControls();
-		currentScene = SceneFactory::getInstance()->CreateDemoScene(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
+		currentScene = SceneFactory::getInstance()->CreateVoxelDemoScene(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
 	}
 
 	void SceneManager::LoadScene(int sceneId)

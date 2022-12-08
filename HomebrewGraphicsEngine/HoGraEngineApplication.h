@@ -9,7 +9,7 @@ namespace Hogra {
 	public:
 		HoGraEngineApplication() = default;
 
-		int Init(const char* windowName);
+		int Init(const char* windowName, int argc = 0, char* argv[] = nullptr);
 
 		void Loop();
 

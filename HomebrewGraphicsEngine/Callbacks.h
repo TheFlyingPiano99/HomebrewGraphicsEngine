@@ -7,7 +7,7 @@ namespace Hogra {
 	{
 		void setCallbacks(GLFWwindow* window);
 
-		void onWindowInit(GLFWwindow* window);
+		void onWindowInit(GLFWwindow* window, int argc = 0, char* argv[] = nullptr);
 		void onWindowRefresh(GLFWwindow* window);
 		void onKey(GLFWwindow* window, int key, int scancode, int action, int mods);
 		void onWindowClose(GLFWwindow* window);

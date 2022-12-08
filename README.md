@@ -1,8 +1,56 @@
-# HomebrewGraphicsEngine
+# GPU volume-rendering
+
+
+## How to install
+
+Under `.\install\` run the `installer.exe` executable!
+
+
+## How to run
+
+Start the application executable.
+
+You can start from command line.
+This way you can specify the foldername of the volume data:
+`volumeRenderer.exe <folder name>`
+The folder must be placed under `<installation directory>\Resources\Textures\`.
+It must contain the slice images of the volume named like `###.tiff` and a `dimensions.txt` file.
+The `dimensions.txt` file must have the following content:
+`name = <name of the dataset>`
+`width = <int>`
+`height = <int>`
+`depth = <int>`
+`bytesPerVoxel = <int>`
+`widthScale = <float>`
+`heightScale = <float>`
+`depthScale = <float>`
+
+We provide you some sample datasets:
+`cthead-8bit`
+`Shoulder`
+`cthead-8bit`
+
+<hr>
+
+## User controls
+
+Toggle options:		`O key`
+Toggle transfer-function: `H key`
+Toggle ray-cast / half-angle slicing: `M key`
+Reload shaders: `R key`
+Move slicing plane: `C key + Left mouse button`
+Rotate camera: `Right mouse button`
+Turn light source: `= key / - key`
+Switch between transfer function features: `Space`
+Toggle fullscreen: `Tab`
+
+<hr>
+
+## The application is powered by HomebrewGraphicsEngine
+Created by Zoltán Simon
 
 A grahics/videogame engine writen in C++ using OpenGL.
 
-## Features
 - Collision and physics engine
 - Deferred PBR shading with bloom
 - Instanced rendering
@@ -10,11 +58,6 @@ A grahics/videogame engine writen in C++ using OpenGL.
 - Audio
 
 ![HoGraEngine_logo](Resources/Icons/HoGraEngineLogo.png "HoGraEngine logo")
-
-
-<hr>
-
-![Screenshot_01](Documentation/Screenshots/2022-07-25_01.jpg "Screenshot 01")
 
 <hr>
 
