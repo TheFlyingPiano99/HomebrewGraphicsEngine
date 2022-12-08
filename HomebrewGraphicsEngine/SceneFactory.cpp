@@ -74,7 +74,7 @@ namespace Hogra {
 		// Volume:
 		std::string dataSetName;
 		if (argc == 1) {	// Load default
-			dataSetName = "Shoulder";
+			dataSetName = "cthead-8bit";
 		}
 		else {
 			dataSetName = argv[1];
@@ -108,7 +108,7 @@ namespace Hogra {
 			voxelTexture,
 			glm::vec3(0, 0, 0),
 			glm::vec3(0.01, 0.01, 0.01),
-			glm::angleAxis(2.0f * 1.57079633f, glm::vec3(0, 0, 1)) * glm::angleAxis(1.57079633f, glm::vec3(1, 0, 0)),
+			glm::angleAxis(1.57079633f, glm::vec3(1, 0, 0)),
 			volumeLight,
 			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
 		scene->AddLight(volumeLight);
