@@ -3,15 +3,16 @@
 
 ## How to run
 
-Start the application executable.
+You can run by clicking on the executable.
 
-You can start from command line.
+You can start from command line;
 This way you can specify the foldername of the volume data:
+
 `volumeRenderer.exe <folder name>`
 
-The folder must be placed under `<installation directory>\Resources\Textures\`
+The folder must be placed under `<project directory>\Resources\Textures\`
 
-It must contain the slice images of the volume named like `###.tiff` and a `dimensions.txt` file.
+It must contain the slice images of the volume named like `###.tif` and a `dimensions.txt` file.
 
 The `dimensions.txt` file must have the following content:
 
