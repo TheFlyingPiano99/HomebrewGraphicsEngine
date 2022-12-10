@@ -4,15 +4,12 @@
 #include "AssetFolderPathManager.h"
 #include "TextureCube.h"
 #include "GeometryFactory.h"
-#include "AudioSource.h"
-#include "AudioListener.h"
 #include "Physics.h"
 #include "SphericalCollider.h"
 #include "AABBCollider.h"
 #include "SceneEventManager.h"
 #include "ForceField.h"
 #include "CompositeCollider.h"
-#include "FirstPersonControl.h"
 #include "GeometryLoader.h"
 #include "MaterialFactory.h"
 #include "ShaderProgramFactory.h"
@@ -50,7 +47,6 @@ namespace Hogra {
 		this->contextWidth = contextWidth;
 		this->contextHeight = contextHeight;
 
-		audioManager.Init();
 		initShadowMap();
 		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		lightManager.initDefferedSystem(contextWidth, contextHeight);
@@ -127,7 +123,6 @@ namespace Hogra {
 			group.second->Optimalize(camera);
 		}
 		lightManager.Update();
-		audioManager.Update();
 	}
 
 	void Scene::Draw()
@@ -297,11 +292,6 @@ namespace Hogra {
 			shaders.push_back(shader);
 		}
 		captions.push_back(caption);
-	}
-
-	void Scene::AddSceneAudioSource(SceneAudioSource* source)
-	{
-		audioManager.AddSource(source);
 	}
 
 	void Scene::SetUserControl(UserControl* uc) {

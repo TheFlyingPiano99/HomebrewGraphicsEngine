@@ -7,15 +7,10 @@
 #include <glm/ext/vector_float4.hpp>
 #include "GeometryLoader.h"
 #include "ShaderProgramFactory.h"
-#include "AudioDevice.h"
 #include "Texture3D.h"
 #include "Texture2D.h"
 #include "Scene.h"
-#include "AudioBuffer.h"
-#include "AudioSource.h"
-#include "AudioListener.h"
 
-#include "SceneAudioSource.h"
 #include "ObserveObjectControl.h"
 #include "MemoryManager.h"
 #include "PositionConnector.h"

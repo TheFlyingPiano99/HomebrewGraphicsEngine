@@ -3,14 +3,15 @@
 
 ## How to run
 
-You can run by clicking on the executable.
+The application runs on Microsoft Windows operation systems.
+You can run by clicking the executable.
 
 You can start from command line;
 This way you can specify the foldername of the volume data:
 
-`volumeRenderer.exe <folder name>`
+`x64/Release/HomebrewGraphicsEngine.exe <folder name>`
 
-The folder must be placed under `<project directory>\Resources\Textures\`
+The folder must be placed under `<project directory>/Resources/Textures/`
 
 It must contain the slice images of the volume named like `###.tif` and a `dimensions.txt` file.
 

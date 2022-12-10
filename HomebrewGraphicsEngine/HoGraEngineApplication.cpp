@@ -97,10 +97,6 @@ namespace Hogra {
 		//Set window icon
 		SetIcon();
 
-		// Init audio
-		audioContext.Init();
-		audioContext.MakeCurrent();
-
 		// Introduce the window into the current context
 		glfwMakeContextCurrent(window);
 

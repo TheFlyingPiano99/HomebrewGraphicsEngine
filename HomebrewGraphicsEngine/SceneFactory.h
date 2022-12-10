@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "Scene.h"
-#include "FirstPersonControl.h"
 #include "ObserveObjectControl.h"
 #include "MemoryManager.h"
 #include<glm/glm.hpp>

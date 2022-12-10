@@ -9,9 +9,6 @@
 #include "ShaderProgramFactory.h"
 #include "SceneManager.h"
 #include "SceneFactory.h"
-#include "AudioBuffer.h"
-#include "AudioSource.h"
-#include "AudioListener.h"
 
 
 namespace Hogra {

@@ -2,7 +2,6 @@
 #include "Callbacks.h"
 #include "GUI.h"
 #include <iostream>
-#include "FirstPersonControl.h"
 #include "ControlActionManager.h"
 #include "ObserveObjectControl.h"
 

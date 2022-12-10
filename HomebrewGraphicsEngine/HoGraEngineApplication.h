@@ -1,7 +1,6 @@
 #pragma once
 #include "GlobalInclude.h"
 #include <string>
-#include "AudioContext.h"
 
 namespace Hogra {
 	class HoGraEngineApplication
@@ -24,7 +23,6 @@ namespace Hogra {
 		void PrintWelcomeConsoleText();
 
 		GLFWwindow* window = nullptr;
-		AudioContext audioContext;
 		std::string windowName;
 	};
 }

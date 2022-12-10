@@ -150,19 +150,13 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;OpenAL32.lib;TinyTIFFShared_Release.lib;assimp-vc143-mt.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;TinyTIFFShared_Release.lib;assimp-vc143-mt.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AABBCollider.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AssetFolderPathManager.cpp" />
-    <ClCompile Include="AudioBuffer.cpp" />
-    <ClCompile Include="AudioContext.cpp" />
-    <ClCompile Include="AudioDevice.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="AudioSource.cpp" />
-    <ClCompile Include="AudioUtils.cpp" />
     <ClCompile Include="Bloom.cpp" />
     <ClCompile Include="Callbacks.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -181,7 +175,6 @@
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="FBO.cpp" />
-    <ClCompile Include="FirstPersonControl.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="ForceField.cpp" />
     <ClCompile Include="Geometry.cpp" />
@@ -203,7 +196,6 @@
     <ClCompile Include="InstanceGroup.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
-    <ClCompile Include="AudioListener.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -219,7 +211,6 @@
     <ClCompile Include="RenderLayer.cpp" />
     <ClCompile Include="ScaleProvider.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneAudioSource.cpp" />
     <ClCompile Include="SceneChange.cpp" />
     <ClCompile Include="SceneEvent.cpp" />
     <ClCompile Include="SceneEventImplementation.cpp" />
@@ -253,12 +244,6 @@
     <ClInclude Include="AABBCollider.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AssetFolderPathManager.h" />
-    <ClInclude Include="AudioBuffer.h" />
-    <ClInclude Include="AudioContext.h" />
-    <ClInclude Include="AudioDevice.h" />
-    <ClInclude Include="AudioManager.h" />
-    <ClInclude Include="AudioSource.h" />
-    <ClInclude Include="AudioUtils.h" />
     <ClInclude Include="Bloom.h" />
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Camera.h" />
@@ -277,7 +262,6 @@
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
     <ClInclude Include="FBO.h" />
-    <ClInclude Include="FirstPersonControl.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="ForceField.h" />
     <ClInclude Include="GeometryFactory.h" />
@@ -299,7 +283,6 @@
     <ClInclude Include="InstanceGroup.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
-    <ClInclude Include="AudioListener.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
     <ClInclude Include="MathUtil.h" />
@@ -319,7 +302,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScaleProvider.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneAudioSource.h" />
     <ClInclude Include="SceneChange.h" />
     <ClInclude Include="SceneEvent.h" />
     <ClInclude Include="SceneEventImplementation.h" />
