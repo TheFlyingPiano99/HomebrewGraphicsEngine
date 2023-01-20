@@ -91,6 +91,10 @@ namespace Hogra {
 
 		void Serialize();
 
+		void SetBackgroundColor(const glm::vec3 color) {
+			backgroundColor = glm::vec4(color, 1.0);
+		}
+
 		~Scene() {
 			Destroy();
 		}

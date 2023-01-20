@@ -21,6 +21,13 @@ namespace Hogra::Volumetric {
 
 	}
 
+	VolumeObject::~VolumeObject()
+	{
+		for (auto group : featureGroups) {
+			Allocator::Delete(group);
+		}
+	}
+
 
 	void VolumeObject::Init(Texture3D* _voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize)
 	{
@@ -92,7 +99,8 @@ namespace Hogra::Volumetric {
 		
 		transferFunction.Init();
 		LoadFeatures();
-		boundingGeometry.UpdateGeometry(*voxels, transferFunction, 0.00001f);
+		boundingGeometry.UpdateGeometry(BoundingGeometry::FullBox(), *voxels, transferFunction);
+		CreateBoundingBoxWireFrameGeometry();
 	}
 
 
@@ -113,6 +121,10 @@ namespace Hogra::Volumetric {
 		fullScreenQuad->Draw();
 
 		//boundingGeometry.DrawOnScreen(outFBO, camera, modelMatrix, invModelMatrix, 0.1f);
+		
+		if (isPlaneGrabbed) {
+			DrawBoundingBox();
+		}
 
 		transferFunction.Draw(outFBO);
 		outFBO.Unbind();
@@ -156,12 +168,16 @@ namespace Hogra::Volumetric {
 		isChanged = true;
 	}
 
+	void VolumeObject::BeforePhysicsLoopUpdate()
+	{
+		boundingGeometry.UpdateGeometry(*voxels, transferFunction, 0.001, false);
+	}
+
 	void VolumeObject::LatePhysicsUpdate(float dt) {
 		modelMatrix = glm::translate(w_position) * glm::toMat4(orientation) * glm::scale(scale);
 		invModelMatrix = glm::inverse(modelMatrix);
 		transferFunction.Animate(dt);
 	}
-
 
 	void VolumeObject::DrawProxyGeometry(
 		const Camera& camera, 
@@ -258,8 +274,8 @@ namespace Hogra::Volumetric {
 			attenuationTextures[in].Bind();
 			pingpongFBO.LinkTexture(GL_COLOR_ATTACHMENT0, attenuationTextures[out], 0);
 			pingpongFBO.Bind();
-			// For light always front-to-back
-			glBlendFuncSeparate(GL_ONE_MINUS_DST_COLOR, GL_ONE, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+			// For light always front-to-back [but for indirect attenuation calcualted in shader]
+			glBlendFuncSeparate(GL_ONE, GL_ZERO, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
 
 			glDisable(GL_DEPTH_TEST);
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -336,6 +352,66 @@ namespace Hogra::Volumetric {
 		box.corners[7] = glm::vec3( 0.5f,  0.5f,  0.5f) * resolution;
 	}
 
+	bool VolumeObject::SelectTransferFunctionRegion(double x, double y) {
+		if (!transferFunction.IsVisible()) {
+			return false;
+		}
+		glm::vec4 camPos = glm::vec4(x, y, 0, 1);
+		glm::vec4 modelPos = transferFunction.getInvModelMatrix() * camPos;
+		modelPos /= modelPos.w;
+		glm::vec2 texCoords = glm::vec2(modelPos.x / 2.0f + 0.5f, 0.5f + modelPos.y / 2.0f);
+		bool inBound = false;
+		if (texCoords.x >= 0.0f && texCoords.x <= 1.0f
+			&& texCoords.y >= 0.0f && texCoords.y <= 1.0f) {
+			inBound = true;
+		}
+
+		if (inBound) {
+			if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[0])) {
+				glm::vec3 color = transferFunction(texCoords);
+				transferFunction.floodFill(texCoords, glm::vec4(color.r, color.g, color.b, 1), transferFloodFillTreshold);
+				isChanged = true;
+			}
+			else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[1])) {
+				transferFunction.clear();
+				transferFunction.generalArea(texCoords - glm::vec2(0.1, 0.4), texCoords + glm::vec2(0.1, 0.4), transferDrawColor);
+				isChanged = true;
+			}
+			else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[4])) {
+				transferFunction.clear();
+				transferFunction.intensityBand(texCoords - glm::vec2(0.01, 0.3), texCoords + glm::vec2(0.01, 0.3), transferDrawColor);
+				isChanged = true;
+			}
+			else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[2])) {
+				Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
+				if (nullptr != feature) {
+					std::cout << "Selected: " << feature->name << std::endl;
+					std::cout << "Feature element count: " << feature->elements.size() << std::endl;
+					transferFunction.clear();
+					transferFunction.setFeatureVisibility(*feature, true);
+					transferFunction.blur(3);
+					if (selectedFeature != feature) {
+						selectedFeature = feature;
+						isChanged = true;
+					}
+				}
+			}
+			else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[3])) {
+				Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
+				if (nullptr != feature) {
+					std::cout << "Removed: " << feature->name << std::endl;
+					std::cout << "Feature element count: " << feature->elements.size() << std::endl;
+					bool update = transferFunction.setFeatureVisibility(*feature, false);
+					if (update) {
+						isChanged = true;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void VolumeObject::ResizeDisplayBoundingBox(const glm::vec3& w_min, const glm::vec3& w_max) {
 		// Find minimum and maximum of original bounding box:
 		auto m_originalMin = glm::vec3(0.0f);
@@ -404,10 +480,6 @@ namespace Hogra::Volumetric {
 		m_max.y = (m_max.y > m_originalMin.y) ? m_max.y : m_originalMin.y;
 		m_max.z = (m_max.z > m_originalMin.z) ? m_max.z : m_originalMin.z;
 
-		// Debug output:
-		std::cout << "Min " << m_min.x << " " << m_min.y << " " << m_min.z << std::endl;
-		std::cout << "Max " << m_max.x << " " << m_max.y << " " << m_max.z << std::endl;
-
 		// Build resized bounding box:
 		auto dimension = m_max - m_min;
 		auto box = BoundingBox();
@@ -465,7 +537,7 @@ namespace Hogra::Volumetric {
 		box.corners[0] = glm::vec3(m_min.x, m_min.y, m_min.z);
 		box.corners[1] = glm::vec3(m_min.x, m_min.y, m_max.z);
 		box.corners[2] = glm::vec3(m_min.x, m_max.y, m_min.z);
-		box.corners[3] = glm::vec3(m_min.y, m_max.y, m_max.z);
+		box.corners[3] = glm::vec3(m_min.x, m_max.y, m_max.z);
 		box.corners[4] = glm::vec3(m_max.x, m_min.y, m_min.z);
 		box.corners[5] = glm::vec3(m_max.x, m_min.y, m_max.z);
 		box.corners[6] = glm::vec3(m_max.x, m_max.y, m_min.z);
@@ -476,10 +548,8 @@ namespace Hogra::Volumetric {
 		auto w_minNew = glm::vec3(0.0f);
 		auto w_maxNew = glm::vec3(0.0f);
 		GetMinAndMax(w_minNew, w_maxNew);
-		auto diffMin = w_minNew - w_minOld;
-		auto diffMax = w_maxNew - w_maxOld;
-		std::cout << "Difference min: " << diffMin.x << " " << diffMin.y << " " << diffMin.z << std::endl;
-		std::cout << "Difference max: " << diffMax.x << " " << diffMax.y << " " << diffMax.z << std::endl;
+
+		CreateBoundingBoxWireFrameGeometry();
 	}
 
 	void VolumeObject::GetMinAndMax(glm::vec3& w_min, glm::vec3& w_max) {
@@ -542,18 +612,140 @@ namespace Hogra::Volumetric {
 		glUniform1i(glGetUniformLocation(program.ID, "isBackToFront"), (isBackToFront)? 1 : 0);
 		glUniform1f(glGetUniformLocation(program.ID, "opacityScale"), density);
 		glUniform1i(glGetUniformLocation(program.ID, "showNormals"), showNormals);
+		program.SetUniform("usePBR", usePBR);
+		program.SetUniform("localShadows", localShadows);
+		program.SetUniform("gradientBasedLocalIllumination", gradientBasedLocalIllumination);
+
+	}
+
+	void VolumeObject::ExportRayCastData(const ShaderProgram& program, const glm::mat4& quadModelMatrix, const glm::mat4& lightViewProjMatrix, const Camera& camera, float w_delta) {
+		program.Activate();
+		program.SetUniform("quadModelMatrix", quadModelMatrix);
+		program.SetUniform("sceneObject.modelMatrix", modelMatrix);
+		program.SetUniform("sceneObject.invModelMatrix", invModelMatrix);
+		program.SetUniform("light.viewProjMatrix", lightViewProjMatrix);
+		program.SetUniform("resolution", resolution);
+		program.SetUniform("scale", scale);
+		program.SetUniform("w_delta", w_delta);
+		program.SetUniform("light.position", light->GetPosition());
+		program.SetUniform("light.powerDensity", light->getPowerDensity());
+		program.SetUniform("isBackToFront", (isBackToFront) ? 1 : 0);
+		program.SetUniform("opacityScale", density);
+		program.SetUniform("showNormals", showNormals);
+		program.SetUniform("usePBR", usePBR);
+		program.SetUniform("localShadows", localShadows);
+		program.SetUniform("gradientBasedLocalIllumination", gradientBasedLocalIllumination);
+	}
+
+	void VolumeObject::DrawBoundingBox()
+	{
+		boundingBoxMesh.Bind();
+		auto program = boundingBoxMesh.getMaterial()->GetShaderProgram();
+		program->SetUniform("sceneObject.modelMatrix", modelMatrix);
+		boundingBoxMesh.Draw();
 	}
 
 	void VolumeObject::Serialize() {
-		std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("/features_out.txt"));
+		std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("/features.txt"));
 		if (stream.is_open()) {
 			std::cout << "Serializing volume object" << std::endl;
 			transferFunction.saveFeatures(stream);
-			for (FeatureGroup& group : featureGroups) {
-				group.Serialize(stream);
+			for (auto* group : featureGroups) {
+				group->Serialize(stream);
 			}
 			stream.close();
 		}
+	}
+
+	void VolumeObject::CreateBoundingBoxWireFrameGeometry()
+	{
+		auto pG = boundingBoxMesh.getGeometry();
+		if (nullptr != pG) {
+			Allocator::Delete(pG);
+		}
+		auto pM = boundingBoxMesh.getMaterial();
+		if (nullptr != pM) {
+			auto pP = pM->GetShaderProgram();
+			if (nullptr != pP) {
+				Allocator::Delete(pP);
+			}
+			Allocator::Delete(pM);
+		}
+		std::vector<Vertex> vertices;
+		std::vector<GLuint> indices;
+		for (int i = 0; i < 8; i++) {
+			Vertex v;
+			v.position = boundingBox.corners[i];
+			vertices.push_back(v);
+		}
+
+		// Bottom:
+		indices.push_back(0);
+		indices.push_back(1);
+		indices.push_back(1);
+		indices.push_back(5);
+		indices.push_back(5);
+		indices.push_back(4);
+		indices.push_back(4);
+		indices.push_back(0);
+
+		//Top:
+		indices.push_back(2);
+		indices.push_back(3);
+		indices.push_back(3);
+		indices.push_back(7);
+		indices.push_back(7);
+		indices.push_back(6);
+		indices.push_back(6);
+		indices.push_back(2);
+		
+		//Vert:
+		indices.push_back(0);
+		indices.push_back(2);
+		indices.push_back(1);
+		indices.push_back(3);
+		indices.push_back(5);
+		indices.push_back(7);
+		indices.push_back(4);
+		indices.push_back(6);
+
+		auto geometry = Allocator::New<Geometry>();
+		geometry->Init(vertices, indices);
+		geometry->SetFaceCulling(false);
+		geometry->SetPrimitiveType(GL_LINES);
+		auto program = Allocator::New<ShaderProgram>();
+		program->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("boundingBox.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("boundingBox.frag"));
+		auto material = Allocator::New<Material>();
+		material->Init(program);
+		boundingBoxMesh.Init(material, geometry);
+		boundingBoxMesh.setDepthTest(false);
+	}
+
+	void VolumeObject::RemoveFeatureFromGroup(Feature* feature) {
+		if (nullptr != feature && nullptr != selectedFeatureGroup) {
+			if (auto iter = std::ranges::find(selectedFeatureGroup->features.begin(), selectedFeatureGroup->features.end(), feature);
+				iter != selectedFeatureGroup->features.end()
+				) {
+				selectedFeatureGroup->features.erase(iter);
+				if (feature == selectedFeature) {
+					selectedFeature = nullptr;
+				}
+			}
+		}
+	}
+
+	void VolumeObject::DeleteSelectedGroup()
+	{
+		if (nullptr == selectedFeatureGroup) {
+			return;
+		}
+		auto iter = std::find(featureGroups.begin(), featureGroups.end(), selectedFeatureGroup);
+		if (iter != featureGroups.end()) {
+			featureGroups.erase(iter);
+		}
+		selectedFeatureGroup = nullptr;
 	}
 
 
@@ -603,7 +795,7 @@ namespace Hogra::Volumetric {
 					1000.0f
 				);
 
-				light->SetPowerDensity(glm::vec3(lightPower));
+				light->SetPowerDensity(lightPower * lightColor);
 				lightViewProjMatrix = projection * view;
 				boundingGeometry.RenderFrontAndBack(
 					camera,
@@ -738,7 +930,7 @@ namespace Hogra::Volumetric {
 					}
 				}
 				w_diameter = 2.0f * glm::dot(w_halfway, w_toCorner);
-				sliceCount = (int)(glm::length(resolution) * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
+				sliceCount = (int)(glm::length(resolution) * 1.75f * 2.0f * levelOfDetail / glm::dot(w_halfway, w_viewDir));
 				glm::vec3 w_sliceDelta = w_diameter * w_halfway / (float)sliceCount;
 
 				// Export matrices:
@@ -754,7 +946,7 @@ namespace Hogra::Volumetric {
 					1000.0f
 				);
 
-				light->SetPowerDensity(glm::vec3(lightPower));
+				light->SetPowerDensity(lightPower * lightColor);
 				glm::mat4 lightViewProjMatrix = projection * view;
 				std::cout << "w_delta: " << glm::length(w_sliceDelta) << std::endl;
 				ExportHalfAngleData(isCheapRender ? colorCheapProgram : colorProgram, lightViewProjMatrix, isBackToFront, camera, w_sliceDelta);
@@ -770,7 +962,7 @@ namespace Hogra::Volumetric {
 			glDisable(GL_CULL_FACE);
 			int in = 0;
 			int slicePerCurrentFrame = 0;
-			int maxSlicePerFrame = isCheapRender ? 1000 : 10;
+			int maxSlicePerFrame = isCheapRender ? 100000 : 10;
 			auto m_sliceNorm = glm::normalize(invModelMatrix * glm::vec4(w_halfway, 0.0f));
 			for (int slice = firstSlice; slice < sliceCount; slice++) {
 				in = slice % 2;

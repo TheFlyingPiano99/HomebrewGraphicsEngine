@@ -6,6 +6,8 @@
 #include<glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#define BOX_STEP_SIZE 1
+
 namespace Hogra::Volumetric {
 
 	glm::vec3 cubeVertices[] =
@@ -315,7 +317,8 @@ namespace Hogra::Volumetric {
 		const unsigned int& zDivision,
 		bool* isFilled,
 		const Texture3D& voxelTexture,
-		const TransferFunction& transferFunction
+		const TransferFunction& transferFunction,
+		unsigned int step
 	)
 	{
 		std::vector<float> averageOpacity = std::vector<float>(xDivision * yDivision * zDivision);
@@ -326,8 +329,8 @@ namespace Hogra::Volumetric {
 		int yBlockSize = dimensions.height / yDivision;
 		int zBlockSize = dimensions.depth / zDivision;
 		int voxelsPerBlock = xBlockSize * yBlockSize * zBlockSize;
-		for (int z = 0; z < dimensions.depth; z++) {
-			if (z % 5 == 0) {
+		for (int z = step; z < dimensions.depth && z < step + BOX_STEP_SIZE; z++) {
+			if (z % 20 == 0) {
 				std::cout << "Completion: " << z / (float)dimensions.depth * 100.0f << "%" << std::endl;
 			}
 			for (int y = 0; y < dimensions.height; y++) {
@@ -342,11 +345,10 @@ namespace Hogra::Volumetric {
 					flatColor.b += colorOpacity.b;
 					averageOpacity[IndexDivisionSized((x / xBlockSize), (y / yBlockSize), (z / zBlockSize), xDivision, yDivision, zDivision)]
 						+= opacity / (float)voxelsPerBlock;
+					isFilled[IndexDivisionSized((x / xBlockSize), (y / yBlockSize), (z / zBlockSize), xDivision, yDivision, zDivision)] 
+						= (threshold <= averageOpacity[IndexDivisionSized((x / xBlockSize), (y / yBlockSize), (z / zBlockSize), xDivision, yDivision, zDivision)]);
 				}
 			}
-		}
-		for (int i = 0; i < xDivision * yDivision * zDivision; i++) {
-			isFilled[i] = (threshold <= averageOpacity[i]);
 		}
 	}
 
@@ -387,10 +389,7 @@ namespace Hogra::Volumetric {
 		};
 	}
 
-
-	void BoundingGeometry::UpdateGeometry(const Texture3D& voxelTexture, const TransferFunction& transferFunction, float threshold)
-	{
-		std::cout << "Updating bounding geometry." << std::endl;
+	void BoundingGeometry::UpdateGeometry(FullBox _, const Texture3D& voxelTexture, const TransferFunction& transferFunction) {
 		this->threshold = threshold;
 		vertices.clear();
 		indices.clear();
@@ -399,17 +398,9 @@ namespace Hogra::Volumetric {
 		unsigned int xDivision, yDivision, zDivision;
 		CalculateDivision(dimensions, xDivision, yDivision, zDivision);
 		bool* isFilled = new bool[xDivision * yDivision * zDivision];
-
-		CalculateFilled(dimensions,
-			xDivision,
-			yDivision,
-			zDivision,
-			isFilled,
-			voxelTexture,
-			transferFunction);
-		flatColor.a = 0.0f;
-		flatColor = normalize(flatColor);
-		flatColor.a = 1.0f;
+		for (int i = 0; i < xDivision * yDivision * zDivision; i++) {
+			isFilled[i] = true;
+		}
 		CreateVertexGrid(dimensions, xDivision, yDivision, zDivision);
 		CreateIndices(xDivision, yDivision, zDivision, isFilled);
 
@@ -420,6 +411,59 @@ namespace Hogra::Volumetric {
 		ebo.Init(indices);
 		vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(glm::vec3), (void*)0);
 		std::cout << "Bounding geometry is ready." << std::endl;
+	}
+
+
+	void BoundingGeometry::UpdateGeometry(const Texture3D& voxelTexture, const TransferFunction& transferFunction, float threshold, bool forceRestart)
+	{
+		static unsigned int step = 0;
+		static bool isFinished = false;
+		static bool* isFilled = nullptr;
+		Dimensions dimensions = voxelTexture.GetDimensions();
+		unsigned int xDivision, yDivision, zDivision;
+		CalculateDivision(dimensions, xDivision, yDivision, zDivision);
+		if (forceRestart) {
+			step = 0;
+			isFinished = false;
+		}
+		if (step == 0) {
+			isFilled = new bool[xDivision * yDivision * zDivision];
+		}
+		if (isFinished) {
+			return;
+		}
+		//std::cout << "Updating bounding geometry." << std::endl;
+		this->threshold = threshold;
+		vertices.clear();
+		indices.clear();
+
+
+		CalculateFilled(dimensions,
+			xDivision,
+			yDivision,
+			zDivision,
+			isFilled,
+			voxelTexture,
+			transferFunction,
+			step);
+
+		if (step >= dimensions.depth) {
+			isFinished = true;
+			flatColor.a = 0.0f;
+			flatColor = normalize(flatColor);
+			flatColor.a = 1.0f;
+			CreateVertexGrid(dimensions, xDivision, yDivision, zDivision);
+			CreateIndices(xDivision, yDivision, zDivision, isFilled);
+			delete[] isFilled;
+			vao.Bind();
+			vbo.Init(vertices);
+			ebo.Init(indices);
+			vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(glm::vec3), (void*)0);
+			std::cout << "Bounding geometry is ready." << std::endl;
+		}
+		else {
+			step += BOX_STEP_SIZE;
+		}
 	}
 
 

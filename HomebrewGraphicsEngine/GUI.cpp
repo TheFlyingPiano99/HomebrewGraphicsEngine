@@ -46,7 +46,9 @@ namespace Hogra {
 		static bool configFeature = false;
 		static bool configSTF = false;
 		static bool addFeatureToGroup = false;
+		static bool removeFeatureFromGroup = false;
 		static Volumetric::Feature* featureToAdd = nullptr;
+		static Volumetric::Feature* featureToRemove = nullptr;
 		const char* current_item;
 		const char** items;
 		char value_buf[64] = {};
@@ -56,6 +58,7 @@ namespace Hogra {
 				ImGui::BeginGroup();
 				ImGui::Text("General");
 				ImGui::SliderFloat((const char*)"Light power", &volumeObject.GetLightPower(), 1.0f, 1000.0f);
+				ImGui::ColorEdit3("Light color", &(volumeObject.GetLightColor().x));
 				ImGui::SliderFloat("Density", &volumeObject.GetDensity(), 1.0, 100.0);
 				ImGui::EndGroup();
 			}
@@ -91,6 +94,10 @@ namespace Hogra {
 					}
 					ImGui::EndCombo();
 				}
+				ImGui::ColorEdit3("Draw color", &(volumeObject.GetTransferDrawColor().x));
+				if (ImGui::Button("Fixate", buttonSize)) {
+					volumeObject.FixateTransferFunction();
+				}
 				ImGui::EndGroup();
 			}
 
@@ -103,14 +110,14 @@ namespace Hogra {
 
 				current_item = (volumeObject.GetSelectedFeatureGroup() != nullptr) ?
 					volumeObject.GetSelectedFeatureGroup()->name.c_str() : "Select group";
-				std::vector<Volumetric::FeatureGroup>& instanceGroups = volumeObject.GetFeatureGroups();
+				std::vector<Volumetric::FeatureGroup*>& instanceGroups = volumeObject.GetFeatureGroups();
 				if (ImGui::BeginCombo("Group", current_item)) // The second parameter is the label previewed before opening the combo.
 				{
 					for (int n = 0; n < instanceGroups.size(); n++)
 					{
-						bool is_selected = (current_item == instanceGroups[n].name.c_str()); // You can store your selection however you want, outside or inside your objects
-						if (ImGui::Selectable(instanceGroups[n].name.c_str(), is_selected)) {
-							current_item = instanceGroups[n].name.c_str();
+						bool is_selected = (current_item == instanceGroups[n]->name.c_str()); // You can store your selection however you want, outside or inside your objects
+						if (ImGui::Selectable(instanceGroups[n]->name.c_str(), is_selected)) {
+							current_item = instanceGroups[n]->name.c_str();
 							volumeObject.SetSelectedFeatureGroup(current_item);
 						}
 						if (is_selected) {
@@ -148,11 +155,14 @@ namespace Hogra {
 				if (ImGui::Button("Show selected group", buttonSize)) {
 					volumeObject.ShowSelectedFeatureGroup();
 				}
-				if (ImGui::Button("Add feature to selected...", buttonSize)) {
+				if (ImGui::Button("Delete selected group", buttonSize)) {
+					volumeObject.DeleteSelectedGroup();
+				}
+				if (ImGui::Button("Add feature to group...", buttonSize)) {
 					addFeatureToGroup = true;
 				}
-				if (ImGui::Button("Remove selected feature from group", buttonSize)) {
-					volumeObject.RemoveSelectedFeatureFromFeatureGroup();
+				if (ImGui::Button("Remove feature from group...", buttonSize)) {
+					removeFeatureFromGroup = true;
 				}
 				if (ImGui::Button("Config selected feature...", buttonSize)) {
 					configFeature = true;
@@ -169,36 +179,36 @@ namespace Hogra {
 				ImGui::Text("Rotate");
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 				if (ImGui::Button("+X", squareButtonSize)) {
-					volumeObject.RotateModelAroundX(M_PI / 4.0f);
+					volumeObject.RotateModelAroundX(M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::SameLine();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
 				if (ImGui::Button("+Y", squareButtonSize)) {
-					volumeObject.RotateModelAroundY(M_PI / 4.0f);
+					volumeObject.RotateModelAroundY(M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::SameLine();
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
 				if (ImGui::Button("+Z", squareButtonSize)) {
-					volumeObject.RotateModelAroundZ(M_PI / 4.0f);
+					volumeObject.RotateModelAroundZ(M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
 				if (ImGui::Button("-X", squareButtonSize)) {
-					volumeObject.RotateModelAroundX(-M_PI / 4.0f);
+					volumeObject.RotateModelAroundX(-M_PI / 2.0f);
 				}
 				ImGui::SameLine();
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
 				if (ImGui::Button("-Y", squareButtonSize)) {
-					volumeObject.RotateModelAroundY(-M_PI / 4.0f);
+					volumeObject.RotateModelAroundY(-M_PI / 2.0f);
 				}
 				ImGui::SameLine();
 				ImGui::PopStyleColor(1);
 				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
 				if (ImGui::Button("-Z", squareButtonSize)) {
-					volumeObject.RotateModelAroundZ(-M_PI / 4.0f);
+					volumeObject.RotateModelAroundZ(-M_PI / 2.0f);
 				}
 				ImGui::PopStyleColor(1);
 				ImGui::EndGroup();
@@ -214,6 +224,11 @@ namespace Hogra {
 			else if (ImGui::Button("Normals", buttonSize)) {
 				volumeObject.SetShowNormals(true);
 			}
+			if (ImGui::Button("Phong / PBR", buttonSize)) {
+				volumeObject.ToggleUsePBR();
+			}
+			ImGui::SliderFloat((const char*)"Gradient based local illum", &volumeObject.GetGradientBasedIllumination(), 0.0f, 5.0f);
+			ImGui::SliderFloat((const char*)"Local shadows", &volumeObject.GetLocalShadows(), 0.0f, 1.0f);
 			ImGui::End();
 		}
 		{
@@ -226,8 +241,14 @@ namespace Hogra {
 					volumeObject.RedrawSelected();
 					configFeature = false;
 				}
+				if (ImGui::Button("Cancel", buttonSize)) {
+					configFeature = false;
+				}
 
 				ImGui::End();
+			}
+			else {
+				configFeature = false;
 			}
 		}
 
@@ -255,11 +276,11 @@ namespace Hogra {
 		{
 			if (addFeatureToGroup) {
 				Volumetric::FeatureGroup* group = volumeObject.GetSelectedFeatureGroup();
-				if (group != nullptr && group->name.compare("All features") != 0) {
+				std::vector<Volumetric::Feature>& features = volumeObject.GetFeatures();
+				if (group != nullptr && features.size() > 0 && group->name.compare("All features") != 0) {
 					ImGui::Begin(std::string("Add feature to ").append(group->name).c_str());
 					current_item = (featureToAdd != nullptr) ?
 						featureToAdd->name.c_str() : "Select feature";
-					std::vector<Volumetric::Feature>& features = volumeObject.GetFeatures();
 					if (ImGui::BeginCombo("Feature to add", current_item)) // The second parameter is the label previewed before opening the combo.
 					{
 						for (int n = 0; n < features.size(); n++)
@@ -292,6 +313,49 @@ namespace Hogra {
 				else {
 					featureToAdd = nullptr;
 					addFeatureToGroup = false;
+				}
+			}
+		}
+		{
+			if (removeFeatureFromGroup) {
+				Volumetric::FeatureGroup* group = volumeObject.GetSelectedFeatureGroup();
+				if (group != nullptr && group->features.size() > 0 && group->name.compare("All features") != 0) {
+					ImGui::Begin(std::string("Remove feature from ").append(group->name).c_str());
+					current_item = (featureToRemove != nullptr) ?
+						featureToRemove->name.c_str() : "Select feature";
+					auto& features = group->features;
+					if (ImGui::BeginCombo("Feature to remove", current_item)) // The second parameter is the label previewed before opening the combo.
+					{
+						for (int n = 0; n < features.size(); n++)
+						{
+							bool is_selected = (current_item == features[n]->name.c_str()); // You can store your selection however you want, outside or inside your objects
+							if (ImGui::Selectable(features[n]->name.c_str(), is_selected)) {
+								current_item = features[n]->name.c_str();
+								featureToRemove = features[n];
+							}
+							if (is_selected) {
+								ImGui::SetItemDefaultFocus();   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+							}
+						}
+						ImGui::EndCombo();
+					}
+					if (ImGui::Button("Remove", ImVec2())) {
+						if (featureToRemove != nullptr) {
+							volumeObject.RemoveFeatureFromGroup(featureToRemove);
+							featureToRemove = nullptr;
+							removeFeatureFromGroup = false;
+						}
+					}
+					ImGui::SameLine();
+					if (ImGui::Button("Cancel", ImVec2())) {
+						featureToRemove = nullptr;
+						removeFeatureFromGroup = false;
+					}
+					ImGui::End();
+				}
+				else {
+					featureToRemove = nullptr;
+					removeFeatureFromGroup = false;
 				}
 			}
 		}

@@ -29,6 +29,15 @@ namespace Hogra {
 		ebo.Unbind();
 	}
 
+	void Geometry::Update(std::vector<Vertex>& _vertices, std::vector<GLuint>& _indices)
+	{
+		if (0 != instancedBuffer) {
+			glDeleteBuffers(1, &instancedBuffer);
+			instancedBuffer = 0;
+		}
+		Init(_vertices, _indices);
+	}
+
 	void Geometry::initInstancedBuffer() {
 		glGenBuffers(1, &instancedBuffer);
 		glBindBuffer(GL_ARRAY_BUFFER, instancedBuffer);

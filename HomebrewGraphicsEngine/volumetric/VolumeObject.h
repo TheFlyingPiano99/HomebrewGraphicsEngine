@@ -13,6 +13,7 @@
 #include "../VAO.h"
 #include "../EBO.h"
 #include "../Geometry.h"
+#include "../Mesh.h"
 #include "../AssetFolderPathManager.h"
 #include <algorithm>
 #include <iostream>
@@ -20,7 +21,7 @@
 
 #define VOLUME_TEXTURE_WIDTH 1024
 #define VOLUME_TEXTURE_HEIGHT 1024
-#define TRANSFER_MODE_COUNT 4
+#define TRANSFER_MODE_COUNT 5
 #define ALL_FEATURES_STR "All features"
 
 namespace Hogra::Volumetric {
@@ -29,6 +30,8 @@ namespace Hogra::Volumetric {
 	public:
 
 		VolumeObject();
+
+		~VolumeObject();
 
 		void Init(Texture3D* voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize);
 
@@ -54,6 +57,12 @@ namespace Hogra::Volumetric {
 			return voxels;
 		}
 
+		const glm::mat4& GetModelMatrix() const {
+			return modelMatrix;
+		}
+
+		void BeforePhysicsLoopUpdate() override;
+
 		void LatePhysicsUpdate(float dt) override;
 
 		void SetTexture(Texture3D* texture) {
@@ -70,12 +79,12 @@ namespace Hogra::Volumetric {
 
 				nextGroupIdx = featureGroups.size() + 1;
 
-				FeatureGroup all;
-				all.name = ALL_FEATURES_STR;
+				auto* all = Allocator::New<FeatureGroup>();
+				all->name = ALL_FEATURES_STR;
 				for (Feature& feature : transferFunction.GetFeatures()) {
-					all.features.push_back(&feature);
+					all->features.push_back(&feature);
 				}
-				all.serialize = false;
+				all->serialize = false;
 				featureGroups.emplace(featureGroups.begin(), all);
 				selectedFeature = nullptr;
 				ShowAll();
@@ -93,6 +102,8 @@ namespace Hogra::Volumetric {
 			}
 		}
 
+		void CreateBoundingBoxWireFrameGeometry();
+
 		void ShowAll() {
 			SetSelectedFeatureGroup(ALL_FEATURES_STR);
 		}
@@ -101,7 +112,7 @@ namespace Hogra::Volumetric {
 			return selectedFeatureGroup;
 		}
 
-		std::vector<FeatureGroup>& GetFeatureGroups() {
+		std::vector<FeatureGroup*>& GetFeatureGroups() {
 			return featureGroups;
 		}
 
@@ -119,13 +130,13 @@ namespace Hogra::Volumetric {
 		}
 
 		void SetSelectedFeatureGroup(const char* name) {
-			for (FeatureGroup& group : featureGroups) {
-				if (group.name.compare(name) == 0) {
-					if (selectedFeatureGroup != &group) {
+			for (FeatureGroup* group : featureGroups) {
+				if (group->name.compare(name) == 0) {
+					if (selectedFeatureGroup != group) {
 						selectedFeature = nullptr;
 					}
-					selectedFeatureGroup = &group;
-					if (selectedFeatureGroup != &group) {
+					selectedFeatureGroup = group;
+					if (selectedFeatureGroup != group) {
 						selectedFeature = nullptr;
 						ShowSelectedFeatureGroup();
 					}
@@ -135,6 +146,10 @@ namespace Hogra::Volumetric {
 			ShowSelectedFeatureGroup();
 
 			isChanged = true;
+		}
+
+		void FixateTransferFunction() {
+			transferFunction.FixateFunction();
 		}
 
 		Feature* GetSelectedFeature() {
@@ -152,22 +167,25 @@ namespace Hogra::Volumetric {
 			}
 		}
 
+		void RemoveFeatureFromGroup(Feature* feature);
+
 		void ResetToDefault()
 		{
 			transferFunction.clear();
-			transferFunction.defaultTransferFunction(glm::ivec2(256, 128));
+			transferFunction.defaultTransferFunction();
 			isChanged = true;
 		}
 
-
 		void CreateFeatureGroup()
 		{
-			FeatureGroup group;
-			group.features.clear();
-			group.name = std::string("Group").append(std::to_string(nextGroupIdx++));
+			auto* group = Allocator::New<FeatureGroup>();
+			group->features.clear();
+			group->name = std::string("Group").append(std::to_string(nextGroupIdx++));
 			featureGroups.push_back(group);
-			SetSelectedFeatureGroup(group.name.c_str());
+			SetSelectedFeatureGroup(group->name.c_str());
 		}
+
+		void DeleteSelectedGroup();
 
 		void RemoveSelectedFeatureFromFeatureGroup()
 		{
@@ -222,20 +240,24 @@ namespace Hogra::Volumetric {
 			return STFMinContributions;
 		}
 
+		void ToggleUsePBR() {
+			usePBR = !usePBR;
+		}
+
 		void GenerateSTF()
 		{
-			transferFunction.SpatialTransferFunction(glm::ivec2(256, 128), *voxels, STFradius, STFOpacity, STFEmission, STFMinContributions);
+			transferFunction.SpatialTransferFunction(*voxels, STFradius, STFOpacity, STFEmission, STFMinContributions);
 			std::cout << "STF feature count: " << transferFunction.GetFeatures().size() << std::endl;
 			featureGroups.clear();
 
 			nextGroupIdx = featureGroups.size() + 1;
 
-			FeatureGroup all;
-			all.name = ALL_FEATURES_STR;
+			auto* all = Allocator::New<FeatureGroup>();
+			all->name = ALL_FEATURES_STR;
 			for (Feature& feature : transferFunction.GetFeatures()) {
-				all.features.push_back(&feature);
+				all->features.push_back(&feature);
 			}
-			all.serialize = false;
+			all->serialize = false;
 			featureGroups.emplace(featureGroups.begin(), all);
 			selectedFeature = nullptr;
 			ShowAll();
@@ -258,63 +280,7 @@ namespace Hogra::Volumetric {
 			return transferFunction;
 		}
 
-		bool SelectTransferFunctionRegion(double x, double y) {
-			if (!transferFunction.IsVisible()) {
-				return false;
-			}
-			glm::vec4 camPos = glm::vec4(x, -y, 0, 1);
-			glm::vec4 modelPos = transferFunction.getInvModelMatrix() * camPos;
-			modelPos /= modelPos.w;
-			glm::vec2 texCoords = glm::vec2(modelPos.x / 2.0f + 0.5f, 0.5f + modelPos.y / 2.0f);
-			bool inBound = false;
-			if (texCoords.x >= 0.0f && texCoords.x <= 1.0f
-				&& texCoords.y >= 0.0f && texCoords.y <= 1.0f) {
-				inBound = true;
-			}
-
-			if (inBound) {
-				if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[0])) {
-					glm::vec3 color = transferFunction(texCoords);
-					transferFunction.floodFill(texCoords, glm::vec4(color.r, color.g, color.b, 1), transferFloodFillTreshold);
-					transferFunction.blur(3);
-					isChanged = true;
-				}
-				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[1])) {
-					transferFunction.clear();
-					transferFunction.crop(texCoords - glm::vec2(0.2, 0.3), texCoords + glm::vec2(0.2, 0.3));
-					transferFunction.blur(3);
-					isChanged = true;
-				}
-				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[2])) {
-					Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
-					if (nullptr != feature) {
-						std::cout << "Selected: " << feature->name << std::endl;
-						std::cout << "Feature element count: " << feature->elements.size() << std::endl;
-						transferFunction.clear();
-						transferFunction.setFeatureVisibility(*feature, true);
-						transferFunction.blur(3);
-						if (selectedFeature != feature) {
-							selectedFeature = feature;
-							isChanged = true;
-						}
-					}
-				}
-				else if (std::string(currentTransferRegionSelectMode) == std::string(transferRegionSelectModes[3])) {
-					Feature* feature = transferFunction.getFeatureFromPosition(texCoords);
-					if (nullptr != feature) {
-						std::cout << "Removed: " << feature->name << std::endl;
-						std::cout << "Feature element count: " << feature->elements.size() << std::endl;
-						bool update = transferFunction.setFeatureVisibility(*feature, false);
-						transferFunction.blur(3);
-						if (update) {
-							isChanged = true;
-						}
-					}
-				}
-				return true;
-			}
-			return false;
-		}
+		bool SelectTransferFunctionRegion(double x, double y);
 
 		const char* GetCurrentTransferRegionSelectMode() const {
 			return currentTransferRegionSelectMode;
@@ -330,6 +296,10 @@ namespace Hogra::Volumetric {
 
 		float& GetLightPower() {
 			return lightPower;
+		}
+
+		glm::vec3& GetLightColor() {
+			return lightColor;
 		}
 
 		void ForceRedraw() {
@@ -360,9 +330,29 @@ namespace Hogra::Volumetric {
 			isChanged = true;
 		}
 
+		float& GetLocalShadows() {
+			return localShadows;
+		}
+
+		float& GetGradientBasedIllumination() {
+			return gradientBasedLocalIllumination;
+		}
+
+		void SetChanged() {
+			isChanged = true;
+		}
+
+		void SetIsPlaneGrabbed(bool b) {
+			isPlaneGrabbed = b;
+		}
+
+		glm::vec4& GetTransferDrawColor() {
+			return transferDrawColor;
+		}
+
 	private:
 
-		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Select class", "Remove class" };
+		const char* transferRegionSelectModes[TRANSFER_MODE_COUNT] = { "Flood fill", "General area", "Select class", "Remove class", "Intensity band" };
 		const char* currentTransferRegionSelectMode = "Select class";
 
 		struct BoxEdge {
@@ -404,25 +394,16 @@ namespace Hogra::Volumetric {
 
 		void ExportHalfAngleData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera& camera, const glm::vec3& w_sliceDelta);
 
-		void ExportRayCastData(const ShaderProgram& program, const glm::mat4& quadModelMatrix, const glm::mat4& lightViewProjMatrix, const Camera& camera, float w_delta) {
-			program.Activate();
-			program.SetUniform("quadModelMatrix", quadModelMatrix);
-			program.SetUniform("sceneObject.modelMatrix", modelMatrix);
-			program.SetUniform("sceneObject.invModelMatrix", invModelMatrix);
-			program.SetUniform("light.viewProjMatrix", lightViewProjMatrix);
-			program.SetUniform("resolution", resolution);
-			program.SetUniform("scale", scale);
-			program.SetUniform("w_delta", w_delta);
-			program.SetUniform("light.position", light->GetPosition());
-			program.SetUniform("light.powerDensity", light->getPowerDensity());
-			program.SetUniform("isBackToFront", (isBackToFront) ? 1 : 0);
-			program.SetUniform("opacityScale", density);
-			program.SetUniform("showNormals", showNormals);
-		}
+		void ExportRayCastData(const ShaderProgram& program, const glm::mat4& quadModelMatrix, const glm::mat4& lightViewProjMatrix, const Camera& camera, float w_delta);
+
+		void DrawBoundingBox();
 
 		BoundingBox originalBoundingBox;
-		BoundingBox boundingBox;
-		BoundingGeometry boundingGeometry;
+		BoundingBox boundingBox;			// Actually used box
+		Mesh boundingBoxMesh;				// To display bounding box
+		bool isPlaneGrabbed = false;
+
+		BoundingGeometry boundingGeometry;	// Optimised box grid
 		glm::vec3 w_position;
 		glm::vec3 scale;
 		glm::quat orientation;
@@ -439,18 +420,24 @@ namespace Hogra::Volumetric {
 		Texture3D* voxels = nullptr;
 
 		glm::vec3 resolution = glm::vec3(1.0f);
-		std::vector<FeatureGroup> featureGroups;
+		std::vector<FeatureGroup*> featureGroups;
 		TransferFunction transferFunction;
 		Feature* selectedFeature = nullptr;
 		FeatureGroup* selectedFeatureGroup = nullptr;
-		float density = 10.0f;
+		float density = 30.0f;
 		float transferFloodFillTreshold;
 		float lightPower = 100.0f;
+		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 0.9f);
 		float levelOfDetail = 1.0f;		// (0..1]
 		int nextGroupIdx = 1;
 		bool showNormals = false;
+		bool usePBR = false;
+		float localShadows = 0.2f;
+		float gradientBasedLocalIllumination = 0.6f;
 		bool isChanged = true;
 		glm::mat4 lightViewProjMatrix;
+
+		glm::vec4 transferDrawColor = glm::vec4(1.0f, 0.95f, 0.8f, 1.0f);
 
 
 		// For rendering finished image on screen:

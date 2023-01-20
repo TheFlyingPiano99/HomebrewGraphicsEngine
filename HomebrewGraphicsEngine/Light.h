@@ -22,12 +22,12 @@ namespace Hogra {
 
 		void LatePhysicsUpdate(float dt) override;
 
-		PositionProvider* getPositionProvider() const {
-			return positionProvider;
+		PositionConnector* getPositionProvider() const {
+			return positionConnector;
 		}
 
-		void SetPositionProvider(PositionProvider* provider) {
-			positionProvider = provider;
+		void SetPositionProvider(PositionConnector* provider) {
+			positionConnector = provider;
 		}
 
 		const glm::vec3& GetPosition() const override {
@@ -80,7 +80,7 @@ namespace Hogra {
 		glm::vec4 position;
 		glm::vec3 powerDensity;
 		glm::mat4 volumeModelMatrix;
-		PositionProvider* positionProvider;
+		PositionConnector* positionConnector = nullptr;
 		float effectiveRadius;
 		bool isActive = true;
 		bool castShadow = true;

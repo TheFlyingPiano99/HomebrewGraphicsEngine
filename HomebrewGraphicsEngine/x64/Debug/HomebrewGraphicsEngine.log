@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(window.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(input.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
@@ -13,4 +14,7 @@ glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw
 glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
 glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\glfw.pdb'; linking object as if no debug info
+=======
+﻿  Camera.cpp
+>>>>>>> attenuation-blur
   HomebrewGraphicsEngine.vcxproj -> D:\VisualCpp\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.exe

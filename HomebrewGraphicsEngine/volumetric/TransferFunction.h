@@ -166,10 +166,12 @@ namespace Hogra::Volumetric {
 		float displayGamma = 1.0f;
 		glm::vec4 nullVector = glm::vec4(0.0f);
 		std::vector<Feature> features;
+		std::vector<glm::vec4> fixedColor;
 		bool visible = true;
 		glm::vec2 preferedCameraSpacePosition = glm::vec2(0, 0);
 		glm::vec2 cameraSpacePosition = glm::vec2(0, 0);
-		
+		glm::ivec2 dimensions = glm::ivec2(256, 128);
+
 	public:
 		void Init();
 
@@ -177,7 +179,7 @@ namespace Hogra::Volumetric {
 			Allocator::Delete(texture);
 		}
 
-		void crop(glm::vec2 min, glm::vec2 max);
+		void generalArea(glm::vec2 min, glm::vec2 max, const glm::vec4& color);
 		void floodFill(glm::vec2 startPos, glm::vec4 color, float threshold);
 		void blur(int kernelSize);
 		void normalize();
@@ -189,6 +191,7 @@ namespace Hogra::Volumetric {
 		void Bind();
 		void Unbind();
 		void clear();
+		void intensityBand(glm::vec2 min, glm::vec2 max, glm::vec4& color);
 
 		const glm::ivec2 getDimensions() {
 			if (texture == nullptr)
@@ -204,8 +207,16 @@ namespace Hogra::Volumetric {
 			return invModelMatrix;
 		}
 
-		void defaultTransferFunction(glm::ivec2 dimensions);
-		void SpatialTransferFunction(glm::ivec2 dimensions, Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions = 1);
+		void FixateFunction() {
+			if (texture != nullptr) {
+				for (int i = 0; i < fixedColor.size(); i++) {
+					fixedColor[i] = texture->GetBytes()[i];
+				}
+			}
+		}
+
+		void defaultTransferFunction();
+		void SpatialTransferFunction(Texture3D& voxelTexture, float radius, float globalOpacity, float globalEmission, int minimalContributions = 1);
 		void gradientWeighted(glm::ivec2 dimensions, float globalOpacity);
 
 		void colorFeature(Feature& feature, glm::vec3 color);
@@ -262,7 +273,7 @@ namespace Hogra::Volumetric {
 			}
 		}
 
-		void loadFeatures(std::istream& stream, std::vector<FeatureGroup>& groups) {
+		void loadFeatures(std::istream& stream, std::vector<FeatureGroup*>& groups) {
 			features.clear();
 			std::string line;
 			while (std::getline(stream, line)) {
@@ -274,8 +285,8 @@ namespace Hogra::Volumetric {
 					}
 				}
 				else if (line.compare("featureGroup") == 0) {
-					FeatureGroup group;
-					if (group.load(stream, features)) {
+					auto* group = Allocator::New<FeatureGroup>();
+					if (group->load(stream, features)) {
 						groups.push_back(group);
 					}
 				}
