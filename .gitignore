@@ -65,3 +65,4 @@ HomebrewGraphicsEngine/HomebrewGraphicsEngine.vcxproj.filters
 *.iobj
 *.log
 *.pdb
+*.tlog
