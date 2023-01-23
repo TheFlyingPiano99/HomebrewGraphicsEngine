@@ -1,1 +1,0 @@
-D:\VisualCpp\HomebrewGraphicsEngine\HomebrewGraphicsEngine\x64\Debug\HomebrewGraphicsEngine.vcxproj.CopyComplete
