@@ -62,7 +62,7 @@ namespace Hogra {
 		return geometry;
 	}
 
-	void Mesh::setDepthTest(bool test)
+	void Mesh::SetDepthTest(bool test)
 	{
 		depthTest = test;
 	}

@@ -23,6 +23,9 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include <iterator>
+
+
 namespace Hogra {
 
 	void Scene::initShadowMap()
@@ -32,6 +35,19 @@ namespace Hogra {
 		}
 		shadowCaster = Allocator::New<ShadowCaster>();
 		shadowCaster->Init(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
+	}
+
+	FBO* Scene::findNextFBO(int currentLayer)
+	{
+		FBO* outFBO = nullptr;
+		for (auto i = currentLayer + 1; i < renderLayers.size(); i++) {
+			auto fbo = renderLayers[i]->GetInFBO();
+			if (nullptr != fbo) {
+				outFBO = fbo;
+				break;
+			}
+		}
+		return outFBO;
 	}
 	
 
@@ -151,15 +167,15 @@ namespace Hogra {
 
 		const Texture2D& depth = lightManager.GetDepthTexture();
 		FBO defaultFBO = FBO::GetDefault();
-		FBO* outFBO = nullptr;
-		int layerIdxWithFBO = -1;	// First can be only the second Layer
-		while (nullptr == outFBO) {
-			layerIdxWithFBO++;	
-			if (layerIdxWithFBO >= renderLayers.size()) {
-				outFBO = &defaultFBO;
-				break;
-			}
-			outFBO = renderLayers[layerIdxWithFBO]->GetInFBO();
+
+		// Get first FBO in pipeline to use for state clearing and initialisation:
+		// |layer0| -> |layer1| -> |layer2|
+		// | null |    | fbo0 |    | fbo2 |
+		//				>this<
+
+		auto* outFBO = findNextFBO(-1);
+		if (nullptr == outFBO) {
+			outFBO = &defaultFBO;
 		}
 		outFBO->LinkTexture(GL_DEPTH_ATTACHMENT, depth, 0);
 		outFBO->Bind();
@@ -174,17 +190,9 @@ namespace Hogra {
 		glStencilMask(GL_FALSE);
 
 		for (int i = 0; i < renderLayers.size(); i++) {
-			if (layerIdxWithFBO == i && outFBO != &defaultFBO) {
-				FBO* fbo = nullptr;
-				while (nullptr == fbo) {
-					layerIdxWithFBO++;
-					if (layerIdxWithFBO == renderLayers.size()) {
-						fbo = &defaultFBO;
-						break;
-					}
-					fbo = renderLayers[layerIdxWithFBO]->GetInFBO();
-				}
-				outFBO = fbo;
+			outFBO = findNextFBO(i);
+			if (nullptr == outFBO) {
+				outFBO = &defaultFBO;
 			}
 			renderLayers[i]->Render(*outFBO, depth, camera, lightManager);
 		}
@@ -210,17 +218,17 @@ namespace Hogra {
 			return;
 		}
 
-		auto* layer = GetRenderLayer(renderLayerName);
-		if (nullptr == layer) {
-			std::cerr << "Scene Error: Trying to add scene object to unknown render layer!" << std::endl;
-			return;
-		}
+		sceneObjects.push_back(object);		// Add to main collection in Scene
 
-		sceneObjects.push_back(object);
 
 		// Add to instance group:
 		static int defaultName = 0;
 		if (object->GetMesh() != nullptr) {
+			auto* layer = GetRenderLayer(renderLayerName);
+			if (nullptr == layer) {
+				std::cerr << "Scene Error: Trying to add scene object to unknown render layer!" << std::endl;
+				return;
+			}
 			if (instanceGroupName.length() > 0) {
 				const auto& iter = instanceGroups.find(instanceGroupName);
 				if (iter != instanceGroups.end()) {
@@ -243,15 +251,14 @@ namespace Hogra {
 					layer->AddInstanceGroup(group);
 				}
 			}
-		}
-
-		// Add to layer if the layer is not using instanced rendering:
-		if (!layer->IsInstanced()) {
-			layer->AddObject(object);
+			// Add to layer if the layer is not using instanced rendering:
+			if (!layer->IsInstanced()) {
+				layer->AddObject(object);
+			}
 		}
 	}
 
-	void Scene::RemoveSceneObejct(SceneObject* object)
+	void Scene::RemoveSceneObject(SceneObject* object)
 	{
 		auto iter = std::ranges::find(sceneObjects.begin(), sceneObjects.end(), object);
 		if (sceneObjects.end() != iter) {

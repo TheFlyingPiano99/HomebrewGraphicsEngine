@@ -35,6 +35,13 @@ namespace Hogra {
 		if (!lights.empty()) {
 			deferredLightingSystem.Draw(lights, *lights[0]);
 		}
+		else {
+			static bool wasPrinted = false;
+			if (!wasPrinted) {
+				std::cerr << "LightManager error: No lights for deferred lighting!" << std::endl;
+				wasPrinted = true;
+			}
+		}
 	}
 
 	void LightManager::initDebug()
@@ -50,7 +57,7 @@ namespace Hogra {
 		debugGeometry = GeometryFactory::GetInstance()->getWireFrameSphere();
 		debugLightVolumeMesh = Allocator::New<Mesh>();
 		debugLightVolumeMesh->Init(&debugMaterial, debugGeometry);
-		debugLightVolumeMesh->setDepthTest(false);
+		debugLightVolumeMesh->SetDepthTest(false);
 	}
 
 	void LightManager::drawDebug()

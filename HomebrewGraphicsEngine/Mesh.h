@@ -32,7 +32,7 @@ namespace Hogra {
 		Material* getMaterial() const;
 		Geometry* getGeometry() const;
 
-		void setDepthTest(bool test);
+		void SetDepthTest(bool test);
 
 		void setStencilTest(bool test);
 

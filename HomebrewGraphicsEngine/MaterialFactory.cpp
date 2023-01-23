@@ -44,7 +44,7 @@ namespace Hogra {
 		aoMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/ao.jpg"), 2, GL_RGB, GL_UNSIGNED_BYTE);
 		
-		// Combining roughness, metallic and AO:
+		// Combining roughness, metallic and AO into a single texture:
 		auto& dim = albedoMap->getDimensions();
 		Texture2D* roughnessMetallicAO = Allocator::New<Texture2D>();
 		roughnessMetallicAO->Init(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
@@ -101,7 +101,7 @@ namespace Hogra {
 	
 	Material* MaterialFactory::getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity)
 	{
-		ShaderProgram* program = ShaderProgramFactory::GetInstance()->GetEmissiveMaterialProgram();
+		ShaderProgram* program = ShaderProgramFactory::GetInstance()->GetDeferredEmissiveMaterialProgram();
 		auto* material = Allocator::New<Material>();
 		material->Init(program);
 		material->setAlbedo(color * intensity);

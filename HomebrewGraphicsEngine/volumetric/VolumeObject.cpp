@@ -720,7 +720,7 @@ namespace Hogra::Volumetric {
 		auto material = Allocator::New<Material>();
 		material->Init(program);
 		boundingBoxMesh.Init(material, geometry);
-		boundingBoxMesh.setDepthTest(false);
+		boundingBoxMesh.SetDepthTest(false);
 	}
 
 	void VolumeObject::RemoveFeatureFromGroup(Feature* feature) {

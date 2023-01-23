@@ -41,7 +41,7 @@ namespace Hogra {
 		return glyphProgram;
 	}
 
-	ShaderProgram* ShaderProgramFactory::GetCaptionProgram()
+	ShaderProgram* ShaderProgramFactory::GetForwardCaptionProgram()
 	{
 		if (nullptr == captionProgram) {
 			captionProgram = Allocator::New<ShaderProgram>();
@@ -54,7 +54,7 @@ namespace Hogra {
 		return captionProgram;
 	}
 
-	ShaderProgram* ShaderProgramFactory::GetEmissiveMaterialProgram()
+	ShaderProgram* ShaderProgramFactory::GetDeferredEmissiveMaterialProgram()
 	{
 		if (nullptr == emissiveMaterial) {
 			emissiveMaterial = Allocator::New<ShaderProgram>();
@@ -67,7 +67,7 @@ namespace Hogra {
 		return emissiveMaterial;
 	}
 
-	ShaderProgram* ShaderProgramFactory::GetSpriteProgram() {
+	ShaderProgram* ShaderProgramFactory::GetForwardSpriteProgram() {
 		if (nullptr == spriteProgram) {
 			spriteProgram = Allocator::New<ShaderProgram>();
 			spriteProgram->Init(

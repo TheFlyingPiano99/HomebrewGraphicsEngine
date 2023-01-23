@@ -13,7 +13,7 @@ namespace Hogra {
 		materialFullScreen->Init(&fullScreenProgram);
 		meshFullScreen = Allocator::New<Mesh>();
 		meshFullScreen->Init(materialFullScreen, GeometryFactory::GetInstance()->getFullScreenQuad());
-		meshFullScreen->setDepthTest(false);
+		meshFullScreen->SetDepthTest(false);
 		meshFullScreen->setStencilTest(false);
 
 		lightVolumeProgram.Init(
@@ -26,7 +26,7 @@ namespace Hogra {
 		material->setBlendFunc(GL_ONE, GL_ONE);
 		mesh = Allocator::New<Mesh>();
 		mesh->Init(material, GeometryFactory::GetInstance()->getLightVolumeSphere());
-		mesh->setDepthTest(false);
+		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
 		Resize(width, height);
 	}

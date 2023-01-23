@@ -413,7 +413,7 @@
     <None Include="..\Resources\Shaders\quad.vert" />
     <None Include="..\Resources\Shaders\shadowCast.frag" />
     <None Include="..\Resources\Shaders\shadowCast.vert" />
-    <None Include="..\Resources\Shaders\skybox.frag" />
+    <None Include="..\Resources\Shaders\forwardSkybox.frag" />
     <None Include="..\Resources\Shaders\fullscreenQuad.vert" />
     <None Include="..\Resources\Shaders\sprite.frag" />
     <None Include="..\Resources\Shaders\spriteDeferred.frag" />

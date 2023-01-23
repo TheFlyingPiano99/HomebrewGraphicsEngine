@@ -19,6 +19,8 @@ namespace Hogra {
 			return;
 		}
 		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
+		//currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
+		//currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
 	}
 
 	void SceneManager::RestartScene()
@@ -47,13 +49,6 @@ namespace Hogra {
 		}
 	}
 
-	void SceneManager::AfterPhysicsLoopUpdate()
-	{
-		if (nullptr != currentScene) {
-			currentScene->AfterPhysicsLoopUpdate();
-		}
-	}
-
 	int SceneManager::PhysicsUpdate(float dt)
 	{
 		currentScene->PhysicsUpdate(dt);
@@ -76,6 +71,13 @@ namespace Hogra {
 			break;
 		}
 		return 0;
+	}
+
+	void SceneManager::AfterPhysicsLoopUpdate()
+	{
+		if (nullptr != currentScene) {
+			currentScene->AfterPhysicsLoopUpdate();
+		}
 	}
 
 	void SceneManager::UnloadScene() {

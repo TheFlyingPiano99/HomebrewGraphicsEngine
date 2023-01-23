@@ -764,7 +764,7 @@
     <None Include="..\Resources\Shaders\quad-depth.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\skybox.frag">
+    <None Include="..\Resources\Shaders\forwardSkybox.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\fullscreenQuad.vert">
@@ -883,12 +883,6 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\pixelPhysics2.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\boundingBox.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\boundingBox.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

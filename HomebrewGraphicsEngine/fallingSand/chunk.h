@@ -4,20 +4,18 @@
 #include "../FBO.h"
 #include "../Component.h"
 #include "../Texture2D.h"
-#include "../Geometry.h"
+#include "../Mesh.h"
 
 namespace Hogra::FallingSand {
 
 	class Chunk : public Component {
 	public:
 
-		Chunk();
+		void Init(Mesh* _mesh);
 
 		void LatePhysicsUpdate(float dt) override;
 
 		void AfterPhysicsLoopUpdate() override;
-
-		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) override;
 
 		ParticleGrid& GetGrid() {
 			return grid;
@@ -27,6 +25,6 @@ namespace Hogra::FallingSand {
 		ParticleGrid grid;
 		Texture2D texture;
 		ShaderProgram program;
-		Geometry* fullScreenQuad = nullptr;
+		Mesh* mesh = nullptr;
 	};
 }

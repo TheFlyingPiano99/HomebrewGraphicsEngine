@@ -10,7 +10,7 @@ namespace Hogra {
 
 	SceneObject* SceneObjectFactory::Create2DSpriteObject(const std::string& texturePath, OrientationProvider* orientationProvider) {
 		auto* geometry = GeometryFactory::GetInstance()->getFullScreenQuad();
-		auto* program = ShaderProgramFactory::GetInstance()->GetSpriteProgram();
+		auto* program = ShaderProgramFactory::GetInstance()->GetForwardSpriteProgram();
 		auto* material = Allocator::New<Material>();
 		material->Init(program);
 		material->setAlphaBlend(true);

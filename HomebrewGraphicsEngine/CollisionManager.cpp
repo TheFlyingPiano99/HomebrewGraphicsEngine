@@ -91,7 +91,7 @@ void Hogra::CollisionManager::InitDebug()
 	debugGeometry = GeometryFactory::GetInstance()->getWireframeCube();
 	debugMaterial.Init(&shaderProgram);
 	debugMesh.Init(&debugMaterial, debugGeometry);
-	debugMesh.setDepthTest(false);
+	debugMesh.SetDepthTest(false);
 	debugObj.Init(&debugMesh);
 	instanceGroup.addObject(&debugObj);
 }

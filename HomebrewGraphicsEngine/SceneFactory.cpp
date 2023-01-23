@@ -50,12 +50,17 @@ namespace Hogra {
 	}
 
 	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
-		Scene* scene = Allocator::New<Scene>();
+		auto* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
+		auto* forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		forwardLayer->SetName("ForwardLayer");
+		scene->AddRenderLayer(forwardLayer);
 		auto* defLayer = Allocator::New<RenderLayer>();
-		defLayer->SetRenderMode(RenderLayer::RenderMode::deferredRenderMode);
+		defLayer->SetRenderMode(RenderLayer::RenderMode::deferredInstancedRenderMode);
 		defLayer->SetName("DeferredLayer");
 		scene->AddRenderLayer(defLayer);
+
 		auto* light = Allocator::New<Light>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
@@ -76,7 +81,9 @@ namespace Hogra {
 			scene->AddLight(lightInst);
 		}
 		
-		InitGroud(scene);
+		InitSkyBox(scene);
+
+		InitGround(scene);
 
 		
 		ForceField* field = InitGravitation(scene);
@@ -106,7 +113,7 @@ namespace Hogra {
 			auto* obj = InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "glowing");
 			auto* light = Allocator::New<Light>();
 			light->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.0f, 10.0f));
-			obj->addComponent(light);
+			obj->AddComponent(light);
 			auto* provider = Allocator::New<PositionConnector>();
 			provider->Init(obj);
 			light->SetPositionProvider(provider);
@@ -117,57 +124,156 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/mario-bros-hd.png"),
 			&scene->GetCamera()
 		);
+		
 		auto* marioColl = Allocator::New<AABBCollider>();
 		marioColl->Init();
 		marioColl->SetPositionProvider(mario);
 		marioColl->setMinRelToPosition(glm::vec3(-0.5f, -0.5f, -0.5f));
 		marioColl->setMaxRelToPosition(glm::vec3(0.5f, 0.5f, 0.5f));
 		scene->AddCollider(marioColl);
-		mario->addComponent(marioColl);
+		mario->AddComponent(marioColl);
+		
 		mario->SetPosition(glm::vec3(-11.0f, 4.0f, -20.0f));
-		scene->AddSceneObject(mario, "mario_sprite");
+		scene->AddSceneObject(mario, "mario_sprite", "ForwardLayer");
 
-		InitSkyBox(scene);
 		InitLoadedGeometry(scene, glm::vec3(-10.0f, 3.0f, -30.0f), field);
-		
-		
-		/*
-		auto* volumeLight = Light::Instantiate();
-		volumeLight->Init(
-			glm::vec4(15, 5, 15, 1.0),
-			glm::vec3(1000.0f, 1000.0f, 1000.0f)
-		);
-		auto volumeObject = new VolumeObject();
-		volumeObject->Init(
-			voxelTexture,
-			glm::vec3(0, 0, 0),
-			glm::vec3(0.01, 0.01, 0.01),
-			glm::angleAxis(90.0f, glm::vec3(1, 0, 0)),
-			volumeLight,
-			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
-		scene->AddVolumeObject(volumeObject);
-		*/
 
 		FirstPersonControl* control = nullptr;
 		InitAvatar(scene, field, control);
-		// InitObjectObserverControl(scene, volumeObject);
 		InitCaptions(scene);
 
 		InitAudio(scene, control);
 
-		auto* stage0 = Allocator::New<PostProcessStage>();
-		stage0->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
-			contextWidth, contextHeight);
-		scene->AddPostProcessStage(stage0);
+		// Post processing:
+		{
+			auto* stage0 = Allocator::New<PostProcessStage>();
+			stage0->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
+				contextWidth, contextHeight);
+			scene->AddPostProcessStage(stage0, "DeferredLayer");
+
+			auto* bloom = Allocator::New<Bloom>();
+			bloom->Init(contextWidth, contextHeight);
+			scene->AddPostProcessStage(bloom, "DeferredLayer");
+
+			auto* stage1 = Allocator::New<PostProcessStage>();
+			stage1->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+				contextWidth, contextHeight);
+			scene->AddPostProcessStage(stage1, "DeferredLayer");
+		}
+
+		//Control:
+		{
+			auto* control = static_cast<FirstPersonControl*>(scene->GetUserControl());
+			auto* fullScreen = Allocator::New<ButtonKeyAction>();
+			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
+			fullScreen->SetAction(
+				[]() {
+					Callbacks::toggleFullScreen();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
+
+			auto* toggleHide = Allocator::New<ButtonKeyAction>();
+			toggleHide->Init(GLFW_KEY_ESCAPE, ButtonKeyAction::TriggerType::triggerOnRelease);
+			toggleHide->SetAction(
+				[]() {
+					GlobalVariables::hideCursor = !GlobalVariables::hideCursor;
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(toggleHide);
+
+			auto* moveForward = Allocator::New<ButtonKeyAction>();
+			moveForward->Init(GLFW_KEY_W, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveForward->SetAction(
+				[control]() {
+					control->MoveForward();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveForward);
+
+			auto* moveBackward = Allocator::New<ButtonKeyAction>();
+			moveBackward->Init(GLFW_KEY_S, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveBackward->SetAction(
+				[control]() {
+					control->MoveBackward();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveBackward);
+
+			auto* moveLeft = Allocator::New<ButtonKeyAction>();
+			moveLeft->Init(GLFW_KEY_A, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveLeft->SetAction(
+				[control]() {
+					control->MoveLeft();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveLeft);
+
+			auto* moveRight = Allocator::New<ButtonKeyAction>();
+			moveRight->Init(GLFW_KEY_D, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveRight->SetAction(
+				[control]() {
+					control->MoveRight();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveRight);
+
+			auto* jump = Allocator::New<ButtonKeyAction>();
+			jump->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerOnPress);
+			jump->SetAction(
+				[control]() {
+					control->Jump();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(jump);
+
+			auto* moveCam = Allocator::New<AxisMoveAction>();
+			moveCam->SetAction(
+			[control](const glm::vec2& delta, const glm::vec2& pos) {
+					control->Rotate(-delta);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseMoveAction(moveCam);
+			
+			// Shooting:
+			auto* shoot = Allocator::New<ButtonKeyAction>();
+			shoot->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerContinuosly);
+			shoot->SetAction(
+				[control]() {
+					control->primaryAction();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterMouseButtonAction(shoot);
+
+		}
+		return scene;
+	}
+
+	Scene* SceneFactory::CreateEasyScene(int contextWidth, int contextHeight)
+	{
+		auto* scene = Allocator::New<Scene>();
+		scene->Init(contextWidth, contextHeight);
+		auto* defLayer = Allocator::New<RenderLayer>();
+		defLayer->SetRenderMode(RenderLayer::RenderMode::deferredInstancedRenderMode);
+		defLayer->SetName("DeferredLayer");
+		scene->AddRenderLayer(defLayer);
+
+		InitSkyBox(scene);
+		InitGround(scene);
+		InitSphere(scene, glm::vec3(0, 2, 0), nullptr, "planks");
+		InitSphere(scene, glm::vec3(1, 2, 1), nullptr, "planks");
+
+		auto* light = Allocator::New<Light>();
+		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
+		scene->AddLight(light);	// Directional light
+		light = Allocator::New<Light>();
+		light->Init(glm::normalize(glm::vec4(-3.0f, 5.0f, 10.0f, 1.0f)), glm::vec3(6.0f, 5.5f, 5.0f));
+		scene->AddLight(light);	// Point light
 
 		auto* bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
-		scene->AddPostProcessStage(bloom);
+		scene->AddPostProcessStage(bloom, "DeferredLayer");
 
-		auto* stage1 = Allocator::New<PostProcessStage>();
-		stage1->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
-			contextWidth, contextHeight);
-		scene->AddPostProcessStage(stage1);
 		return scene;
 	}
 	
@@ -256,7 +362,7 @@ namespace Hogra {
 
 		auto* volumeSceneObj = Allocator::New<SceneObject>();
 		volumeSceneObj->Init();
-		volumeSceneObj->addComponent(volumeObject);
+		volumeSceneObj->AddComponent(volumeObject);
 		scene->AddSceneObject(volumeSceneObj, "volumeObj", "VolumeLayer");
 
 		auto* ball = InitSphere(scene, glm::vec3(0,5,10), nullptr, "gold");
@@ -473,10 +579,26 @@ namespace Hogra {
 		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
 		scene->AddRenderLayer(forwardLayer);
 
-		auto chunkObj = Allocator::New<SceneObject>();
-		chunkObj->Init();
+		auto* program = Allocator::New<ShaderProgram>();
+		program->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bypass.frag")
+		);
 
+		auto* material = Allocator::New<Material>();
+		material->Init(program);
+		material->setAlphaBlend(true);
+		auto* fullScreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
+		auto* mesh = Allocator::New<Mesh>();
+		mesh->Init(material, fullScreenQuad);
+		mesh->SetDepthTest(false);
 		auto chunk = Allocator::New<FallingSand::Chunk>();
+		chunk->Init(mesh);
+
+		auto chunkObj = Allocator::New<SceneObject>();
+		chunkObj->Init(mesh);
+
 
 		// Sand:
 		chunk->GetGrid().Write(100, 100, Allocator::New<FallingSand::Sand>());
@@ -511,7 +633,7 @@ namespace Hogra {
 		chunk->GetGrid().Write(255, 4, Allocator::New<FallingSand::Stone>());
 		chunk->GetGrid().Write(255, 5, Allocator::New<FallingSand::Stone>());
 
-		chunkObj->addComponent(chunk);
+		chunkObj->AddComponent(chunk);
 
 		auto* bloom = Allocator::New<Bloom>();
 			bloom->Init(contextWidth, contextHeight);
@@ -625,10 +747,10 @@ namespace Hogra {
 	{
 		SceneObject* obj = Allocator::New<SceneObject>();
 		obj->Init();
+		obj->SetIsVisible(false);
 		auto* field = Allocator::New<HomogeneForceField>();
 		field->SetStrength(9.8f);
-
-		obj->addComponent(field);
+		obj->AddComponent(field);
 		scene->AddSceneObject(obj);
 		return field;
 	}
@@ -754,13 +876,13 @@ namespace Hogra {
 		if (field != nullptr) {
 			field->AddListener(cubePhysics);
 		}
-		obj->addComponent(cubePhysics);
+		obj->AddComponent(cubePhysics);
 		collider->SetPhysics(cubePhysics);
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
-		obj->addComponent(collider);
+		obj->AddComponent(collider);
 		scene->AddCollider(collider);
-		scene->AddSceneObject(obj, "cube");
+		scene->AddSceneObject(obj, "cube", "DeferredLayer");
 	}
 	
 	SceneObject* SceneFactory::InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName)
@@ -786,10 +908,8 @@ namespace Hogra {
 
 		auto* physics = Allocator::New<Physics>();
 		physics->Init(obj);
-		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
 		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
 		physics->setMass(50.0f);
-		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
 		physics->setMomentOfInertia(Physics::getMomentOfInertiaOfSolidSphere(physics->getMass(), 0.5f));
 		physics->setRotationalDrag(glm::vec3(5.0f, 5.0f, 5.0f));
 		physics->setPositionForcingLevel(1.0f);
@@ -798,11 +918,11 @@ namespace Hogra {
 		if (field != nullptr) {
 			field->AddListener(physics);
 		}
-		obj->addComponent(physics);
+		obj->AddComponent(physics);
 		collider->SetPhysics(physics);
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
-		obj->addComponent(collider);
+		obj->AddComponent(collider);
 		scene->AddSceneObject(obj, std::string("sphere").append(materialName), "DeferredLayer");
 		return obj;
 	}
@@ -845,7 +965,7 @@ namespace Hogra {
 		Allocator::Delete(font);
 	}
 	
-	void SceneFactory::InitGroud(Scene* scene)
+	void SceneFactory::InitGround(Scene* scene)
 	{
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -853,6 +973,7 @@ namespace Hogra {
 				Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
 				auto* cubeMesh = Allocator::New<Mesh>();
 				cubeMesh->Init(material, cubeGeometry);
+				cubeMesh->SetDepthTest(true);
 				auto* obj = Allocator::New<SceneObject>();
 				obj->Init(cubeMesh);
 				obj->SetPosition(glm::vec3(i * 100.0f - 500.0f, 0.0f, j * 100.0f - 500.0f));
@@ -865,14 +986,14 @@ namespace Hogra {
 				collider->Init();
 				cubePhysics->setElasticity(0.2f);
 				cubePhysics->setFriction(0.9f);
-				obj->addComponent(cubePhysics);
+				obj->AddComponent(cubePhysics);
 				collider->SetPhysics(cubePhysics);
 				collider->setMinRelToPosition(glm::vec3(-49.99f, -1.0f, -49.99f));
 				collider->setMaxRelToPosition(glm::vec3(49.99f, 1.0f, 49.99f));
 				collider->SetPositionProvider(obj);
-				obj->addComponent(collider);
+				obj->AddComponent(collider);
 				scene->AddCollider(collider, "ground");
-				scene->AddSceneObject(obj, "ground");
+				scene->AddSceneObject(obj, "ground", "DeferredLayer");
 			}
 		}
 	}
@@ -883,7 +1004,7 @@ namespace Hogra {
 		skyboxShader->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("skybox.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("forwardSkybox.frag")
 		);
 		std::vector<std::string> imagePaths;
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
@@ -900,11 +1021,11 @@ namespace Hogra {
 		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
 		auto* skyBoxMesh = Allocator::New<Mesh>();
 		skyBoxMesh->Init(skyBoxMaterial, fullscreenQuad);
-		skyBoxMesh->setDepthTest(false);
+		skyBoxMesh->SetDepthTest(false);
 		skyBoxMesh->setStencilTest(false);
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(skyBoxMesh);
-		scene->AddSceneObject(obj, "skybox", "DeferredLayer");
+		scene->AddSceneObject(obj, "skybox", "ForwardLayer");
 	}
 	
 	void SceneFactory::InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field)
@@ -939,16 +1060,17 @@ namespace Hogra {
 		if (field != nullptr) {
 			field->AddListener(physics);
 		}
-		obj->addComponent(physics);
+		obj->AddComponent(physics);
 		collider->SetPhysics(physics);
-		obj->addComponent(collider);
-		scene->AddSceneObject(obj);
+		obj->AddComponent(collider);
+		scene->AddSceneObject(obj, "DeferredLayer");
 	}
 	
 	void SceneFactory::InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control)
 	{
 		auto* avatar = Allocator::New<SceneObject>();
 		avatar->Init();
+		avatar->SetIsVisible(false);
 		avatar->SetPosition(glm::vec3(-60.0f, 2.0f, -60.0f));
 		auto* posConnector = Allocator::New<PositionConnector>();
 		posConnector->Init(avatar, glm::vec3(0.0f, 0.8f, 0.0f));
@@ -985,15 +1107,15 @@ namespace Hogra {
 		control->setJumpCollider(jumpCollider);
 		control->SetPositionProvider(avatar);
 		control->SetOrientationProvider(avatar);
-		avatar->addComponent(jumpCollider);
+		avatar->AddComponent(jumpCollider);
 		scene->AddCollider(jumpCollider, "avatar");
 		scene->SetUserControl(control);
-		avatar->addComponent(control);
-		avatar->addComponent(physics);
-		avatar->addComponent(collider);
+		avatar->AddComponent(control);
+		avatar->AddComponent(physics);
+		avatar->AddComponent(collider);
 		scene->getShadowCaster()->SetPositionProvider(avatar);
 		scene->getShadowCaster()->setPositionOffsetToProvider(glm::vec3(-20, 20, -20));
-		scene->AddSceneObject(avatar);
+		scene->AddSceneObject(avatar, "DeferredLayer");
 		InitLaserBeam(scene, control);
 	}
 
@@ -1022,22 +1144,22 @@ namespace Hogra {
 		auto geom = GeometryFactory::GetInstance()->getCilinder();
 		auto material = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 100.0f);
 		auto mesh = Allocator::New<Mesh>();
+		mesh->SetDepthTest(false);
 		mesh->Init(material, geom);
 		obj->Init(mesh);
-		obj->SetIsVisible(false);
+		obj->SetPosition(glm::vec3(0,5,0));
+		obj->SetIsVisible(true);
 		obj->SetIsCastingShadow(false);
-		scene->AddSceneObject(obj);
+		scene->AddSceneObject(obj, "DeferredLayer");
 		control->SetLaserObject(obj);
 		Light* laserInpactLight = Allocator::New<Light>();
-		laserInpactLight->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(25.0f, 20.0f, 10.0f));
+		laserInpactLight->Init(glm::vec4(0.0f, 10.0f, 0.0f, 1.0f), glm::vec3(25.0f, 20.0f, 10.0f));
 		scene->AddLight(laserInpactLight);
 		control->SetLaserInpactLight(laserInpactLight);
 	}
 
 	void SceneFactory::InitAudio(Scene* scene, FirstPersonControl* control)
 	{
-
-
 		auto buffer = Allocator::New<AudioBuffer>();
 		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("human-impact.wav"));
 

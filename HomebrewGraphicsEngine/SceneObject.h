@@ -104,7 +104,7 @@ namespace Hogra {
 			return components;
 		}
 
-		void addComponent(Component* component) {
+		void AddComponent(Component* component) {
 			components.push_back(component);
 		}
 

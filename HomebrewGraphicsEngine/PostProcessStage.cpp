@@ -16,7 +16,7 @@ namespace Hogra {
 		material->addTexture(&colorTexture);
 		mesh = Allocator::New<Mesh>();
 		mesh->Init(material, GeometryFactory::GetInstance()->getFullScreenQuad());
-		mesh->setDepthTest(false);
+		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);
 		fbo.Unbind();
@@ -34,6 +34,7 @@ namespace Hogra {
 		outFBO.Bind();
 		mesh->Bind();
 		glDisable(GL_BLEND);
+		glDisable(GL_DEPTH_TEST);
 		depthTexture.Bind();
 		for (auto& var : uniformVariables) {
 			var->Bind(mesh->getMaterial()->GetShaderProgram()->ID);

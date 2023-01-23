@@ -67,7 +67,7 @@ namespace Hogra {
 		/*
 		* Not complete!
 		*/
-		void RemoveSceneObejct(SceneObject* object);
+		void RemoveSceneObject(SceneObject* object);
 
 		void AddCollider(Collider* collider, const std::string& colliderGroupName = "");
 
@@ -189,6 +189,12 @@ namespace Hogra {
 		void Destroy();
 
 		void initShadowMap();
+
+		/*
+		* Returns the next FBO from the renderLayer pipeline from a layer after the currentLayer.
+		* If no more FBO-s in layers than returns nullptr.
+		*/
+		FBO* findNextFBO(int currentLayer);
 
 		class SceneNotInstanciatedException : public std::exception {
 

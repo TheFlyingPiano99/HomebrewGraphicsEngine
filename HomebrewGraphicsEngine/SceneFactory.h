@@ -17,6 +17,8 @@ namespace Hogra {
 
 		Scene* CreateDemoScene(int contextWidth, int contextHeight);
 
+		Scene* CreateEasyScene(int contextWidth, int contextHeight);
+
 		Scene* CreateVoxelDemoScene(int contextWidth, int contextHeight);
 
 		Scene* CreatePixelPhysicsDemoScene(int contextWidth, int contextHeight);
@@ -33,7 +35,7 @@ namespace Hogra {
 
 		void InitVoxelCaption(Scene* scene, const char* dataSetName);
 
-		void InitGroud(Scene* scene);
+		void InitGround(Scene* scene);
 
 		void InitSkyBox(Scene* scene);
 

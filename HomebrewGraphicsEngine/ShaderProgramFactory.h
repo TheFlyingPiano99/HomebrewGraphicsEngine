@@ -16,11 +16,11 @@ namespace Hogra {
 
 		ShaderProgram* GetGlyphProgram();
 
-		ShaderProgram* GetCaptionProgram();
+		ShaderProgram* GetForwardCaptionProgram();
 
-		ShaderProgram* GetEmissiveMaterialProgram();
+		ShaderProgram* GetDeferredEmissiveMaterialProgram();
 
-		ShaderProgram* GetSpriteProgram();
+		ShaderProgram* GetForwardSpriteProgram();
 
 		void ForgetPointers();
 
