@@ -10,7 +10,7 @@
 namespace Hogra {
 
 
-	void Camera::Init(float aspectRatio, glm::vec3 eye, glm::vec3 lookAt) {
+	void Camera::Init(float aspectRatio, const glm::vec3& eye, const glm::vec3& lookAt) {
 		this->aspectRatio = aspectRatio;
 		this->eye = eye;
 		this->lookAt = lookAt;

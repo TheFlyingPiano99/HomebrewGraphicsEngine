@@ -1,0 +1,28 @@
+{
+  "id": 0,
+  "name": "Demo scene 00",
+  "pause": false,
+  "debugMode": false,
+  "preferedUp": [ 0.0, 1.0, 0.0 ],
+  "backgroundColor": [ 0.07, 0.13, 0.17, 1.0 ],
+  "camera": {
+    "eye": [ -10.0, 5.0, -10.0 ],
+    "lookAt": [ 0.0, 0.0, 0.0 ],
+    "prefUp": [ 0.0, 1.0, 0.0 ],
+    "FOVdeg": 45.0,
+    "nearPlane": 0.1,
+    "farPlane": 2000.0
+  },
+  "lights": [
+    {
+      "id": 1,
+      "name": "",
+      "position": [ 1, 0, 0, 0 ],
+      "powerDensity": [ 1, 1, 1 ],
+      "isActive": true,
+      "castShadow": true
+    }
+  ]
+
+
+}

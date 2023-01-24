@@ -28,15 +28,13 @@
 #include "volumetric/VolumeObject.h"
 #include "RenderLayer.h"
 #include "UniformVariableImpl.h"
-
+#include "Identifiable.h"
 
 namespace Hogra {
 
-	/*
-	* Singleton object
-	*/
-	class Scene
+	class Scene : public Identifiable
 	{
+		friend class SceneFactory;
 	public:
 		void Init(int contextWidth, int contextHeight);
 
@@ -179,8 +177,6 @@ namespace Hogra {
 		UniformVariable<float> timeSpent;
 
 		bool pause = true;
-		unsigned int contextWidth;
-		unsigned int contextHeight;
 		bool debugMode = false;
 		SceneChange sceneChange;
 

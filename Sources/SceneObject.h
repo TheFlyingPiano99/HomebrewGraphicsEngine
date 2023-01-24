@@ -17,10 +17,12 @@
 #include "MemoryManager.h"
 #include "PositionConnector.h"
 #include "OrientationConnector.h"
+#include "Identifiable.h"
+
 
 namespace Hogra {
 
-	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider
+	class SceneObject : public PositionProvider, public OrientationProvider, public ScaleProvider, public Identifiable
 	{
 		friend class Allocator;
 	public:

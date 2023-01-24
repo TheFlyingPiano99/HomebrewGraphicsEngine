@@ -1,6 +1,8 @@
 #include "Light.h"
 #include<glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
+
+
 namespace Hogra {
 
 	void Light::Init(const glm::vec4& _position, const glm::vec3& _powerDensity)
@@ -31,8 +33,10 @@ namespace Hogra {
 		volumeModelMatrix = glm::translate(position3D) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}
 	
+	constexpr float effectiveDownscale = 0.95f;
+
 	float Light::getEffectiveRadius() const {
 		float lightMax = std::fmaxf(std::fmaxf(powerDensity.r, powerDensity.g), powerDensity.b);
-		return std::sqrtf(4.0f * lightMax * 256.0f / 5.0f) / 2.0f;
+		return std::sqrtf(4.0f * lightMax * 256.0f / 5.0f) / 2.0f * effectiveDownscale;
 	}
 }

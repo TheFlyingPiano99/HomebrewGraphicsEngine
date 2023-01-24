@@ -34,6 +34,9 @@
 #include "fallingSand/smoke.h"
 #include "fallingSand/lava.h"
 
+#include "nlohmann/json.hpp"
+#include "jsonParseUtils.h"
+
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -1227,10 +1230,42 @@ namespace Hogra {
 	{
 		auto inputFile = std::ifstream(path);
 		if (inputFile.is_open()) {
-			auto* scene = Allocator::New<Scene>();
-			//TODO read from inputFile 
-
+			auto jsonData = nlohmann::json::parse(inputFile);
 			inputFile.close();
+
+			auto* scene = Allocator::New<Scene>();
+
+			//Basic scene:
+			scene->id = jsonData["id"];
+			scene->name = jsonData["name"];
+			scene->pause = jsonData["pause"];
+			scene->debugMode = jsonData["debugMode"];
+			scene->preferedUp = parseVec3(jsonData["preferedUp"]);
+			scene->backgroundColor = parseVec4(jsonData["backgroundColor"]);
+			scene->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
+
+			//Camera:
+			Camera camera;
+			auto camData = jsonData["camera"];
+			camera.prefUp = parseVec3(camData["prefUp"]);
+			camera.FOVdeg = camData["FOVdeg"];
+			camera.nearPlane = camData["nearPlane"];
+			camera.farPlane = camData["farPlane"];
+			camera.Init((float)GlobalVariables::windowWidth / (float)GlobalVariables::windowHeight, parseVec3(camData["eye"]), parseVec3(camData["lookAt"]));
+			scene->camera = camera;
+
+			//Lights:
+			for (auto& lightData : jsonData["lights"]) {
+				auto* l = Allocator::New<Light>();
+				l->SetId(lightData["id"]);
+				l->SetName(lightData["name"]);
+				l->Init(parseVec4(lightData["position"]), parseVec3(lightData["powerDensity"]));
+				l->SetIsActive(lightData["isActive"]);
+				l->SetCastShadow(lightData["castShadow"]);
+				scene->AddLight(l);
+			}
+
+
 			return scene;
 		}
 		return nullptr;

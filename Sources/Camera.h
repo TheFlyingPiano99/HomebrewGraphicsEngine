@@ -14,9 +14,10 @@ namespace Hogra {
 
 	class Camera : public PositionProvider, public OrientationProvider
 	{
+		friend class SceneFactory;
 	public:
 
-		void Init(float aspectRatio, glm::vec3 eye, glm::vec3 lookAt);
+		void Init(float aspectRatio, const glm::vec3& eye, const glm::vec3& lookAt);
 			
 		// Updates the camera matrix to the Vertex Shader
 		void Update();

@@ -204,6 +204,7 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="HoGraEngineApplication.cpp" />
     <ClCompile Include="HograTime.cpp" />
+    <ClCompile Include="Identifiable.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="GUI.h" />
     <ClInclude Include="HoGraEngineApplication.h" />
     <ClInclude Include="HograTime.h" />
+    <ClInclude Include="Identifiable.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />
@@ -321,6 +323,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="InstanceGroup.h" />
+    <ClInclude Include="jsonParseUtils.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="AudioListener.h" />

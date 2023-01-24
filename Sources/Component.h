@@ -4,10 +4,11 @@
 #include "Camera.h"
 #include "FBO.h"
 #include "Texture2D.h"
+#include "Identifiable.h"
 
 namespace Hogra {
 
-	class Component
+	class Component : public Identifiable
 	{
 		friend class Allocator;
 	public:

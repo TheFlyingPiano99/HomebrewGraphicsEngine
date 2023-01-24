@@ -5,10 +5,11 @@
 #include "PostProcessStage.h"
 #include "DeferredLightingSystem.h"
 #include "LightManager.h"
+#include "Identifiable.h"
 
 namespace Hogra {
 	
-	class RenderLayer {
+	class RenderLayer : public Identifiable {
 	public:
 		RenderLayer() {
 			defaultFBO = FBO::GetDefault();
@@ -55,14 +56,7 @@ namespace Hogra {
 				break;
 			}
 		}
-		
-		const std::string& GetName() const {
-			return name;
-		}
 
-		void SetName(const std::string& _name) {
-			name = _name;
-		}
 
 		bool IsInstanced() {
 			return renderMode == RenderMode::forwardInstancedRenderMode 
@@ -70,7 +64,6 @@ namespace Hogra {
 		}
 
 	private:
-		std::string name;
 		RenderMode renderMode;
 		std::vector<SceneObject*> objects;
 		std::vector<InstanceGroup*> instanceGroups;

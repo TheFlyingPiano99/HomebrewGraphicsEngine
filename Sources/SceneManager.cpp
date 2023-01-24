@@ -30,9 +30,9 @@ namespace Hogra {
 		if (nullptr != currentScene) {
 			return;
 		}
-		//LoadScene(0);
+		LoadScene(0);
 		//currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
-		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
+		//currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
 		//currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
 	}
 

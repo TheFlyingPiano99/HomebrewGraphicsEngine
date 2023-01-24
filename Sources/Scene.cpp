@@ -63,9 +63,6 @@ namespace Hogra {
 
 	void Scene::Init(int contextWidth, int contextHeight)
 	{
-		this->contextWidth = contextWidth;
-		this->contextHeight = contextHeight;
-
 		audioManager.Init();
 		initShadowMap();
 		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
@@ -291,6 +288,7 @@ namespace Hogra {
 	void Scene::AddLight(Light* light)
 	{
 		lightManager.AddLight(light);
+		lights.push_back(light);
 	}
 
 	void Scene::AddCaption(Caption* caption)
@@ -330,8 +328,6 @@ namespace Hogra {
 
 	void Scene::Resize(int _contextWidth, int _contextHeight)
 	{
-		this->contextWidth = _contextWidth;
-		this->contextHeight = _contextHeight;
 		camera.setAspectRatio((float)_contextWidth / (float)_contextHeight);
 		for (auto& stage : postProcessStages) {
 			stage->OnResize(_contextWidth, _contextHeight);
