@@ -3,6 +3,22 @@
 #include "MemoryManager.h"
 #include "GlobalInclude.h"
 #include "ControlActionManager.h"
+#include <string>
+
+#include "ThorSerialize/Traits.h"
+#include "ThorSerialize/SerUtil.h"
+#include "ThorSerialize/JsonThor.h"
+
+
+struct SceneIDToFilenameMapping {
+public:
+	SceneIDToFilenameMapping() {}
+	SceneIDToFilenameMapping(std::map<int, std::string> const& s) : scenes(s) {
+	}
+
+	std::map<int, std::string> scenes;
+};
+
 
 namespace Hogra {
 	SceneManager* SceneManager::instance = nullptr;
@@ -18,6 +34,7 @@ namespace Hogra {
 		if (nullptr != currentScene) {
 			return;
 		}
+		//LoadScene(0);
 		//currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
 		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
 		//currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
@@ -35,13 +52,45 @@ namespace Hogra {
 
 	void SceneManager::LoadScene(int sceneId)
 	{
-		//TODO
+		auto mappingFile = std::fstream(AssetFolderPathManager::getInstance()->getScenesFolderPath().append("sceneIdToFilenameMapping.json"));
+		if (mappingFile.is_open()) {
+			SceneIDToFilenameMapping mapping;
+			mapping.scenes.emplace(0, "myScene.json");
+			//TODO Create demo file
+			//TODO Read demo file
+			mappingFile.close();
+
+			if (mapping.scenes.contains(sceneId)) {
+				std::string fn = mapping.scenes[sceneId];
+					if (fn.empty()) {
+						std::cerr << "Scene manager error: Trying to load scene where the filename for the ID is not specified!" << std::endl;
+					}
+				UnloadCurrentScene();
+				currentScene = SceneFactory::getInstance()->LoadSceneFromFile(AssetFolderPathManager::getInstance()->getScenesFolderPath().append(fn));
+			}
+			else {
+				std::cerr << "Scene manager error: Trying to load scene with unexisting ID!" << std::endl;
+			}
+		}
+		else {
+			std::cerr << "Scene manager error: Scene ID to filename mapping file not found!" << std::endl;
+		}
+	}
+
+	void SceneManager::UnloadCurrentScene()
+	{
+		if (currentScene == nullptr) {
+			return;
+		}
+		currentScene->Serialize();
+		Allocator::Delete(currentScene);
 	}
 
 	void SceneManager::Draw()
 	{
 		currentScene->Draw();
 	}
+
 	void SceneManager::BeforePhysicsLoopUpdate()
 	{
 		if (nullptr != currentScene) {

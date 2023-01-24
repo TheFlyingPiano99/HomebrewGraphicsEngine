@@ -24,6 +24,8 @@ namespace Hogra {
 
 		void LoadScene(int sceneId);
 
+		void UnloadCurrentScene();
+
 		void Draw();
 
 		Scene* getScene() {

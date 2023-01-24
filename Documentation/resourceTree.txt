@@ -1,0 +1,49 @@
+	
+	 _______________________________
+	|								|
+	|	Homebrew Graphics Engine	|
+	|	Resource tree				|
+	|_______________________________|
+	
+------------------------------------------------------------
+	
+	(Root folder)
+		|
+		|
+		V
+	(Resources)
+		|
+		\						
+		|`-> (Fonts) -----> (*.json)
+		| 			\
+		|			 `----> (*.ttf)
+		|			  ...
+		\
+		|`-> (Geometries) -----> (*.json)
+		| 			\
+		|			 `----> (*.obj)
+		\
+		|`-> (Icons) -----> (*.ico)
+		| 			\
+		|			 `----> (*.png)
+		\
+		|`-> (Scenes) -----> (sceneIdToFilenameMapping.json)	// ID -> filename
+		| 			\
+		|			 `----> (*.json)	// Actual scene data
+		\
+		|`-> (Shaders) -----> (*.json)
+		| 			\`----> (*.vert)
+		|			 `----> (*.frag)
+		\
+		|`-> (Sounds) -----> (*.wav)
+		|
+		\
+		 `-> (Textures) -------> (/texture name/.json)
+					   \
+						`------> (/texture name/) ------> (*.jpeg)
+												\
+												 `-----> (*.png)
+
+
+
+

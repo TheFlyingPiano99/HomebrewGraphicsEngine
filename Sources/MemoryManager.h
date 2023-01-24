@@ -36,14 +36,15 @@ namespace Hogra {
 
 		template<typename T>
 		static void Delete(T*& p) {
-			auto toFind = AllocationData();
+			AllocationData toFind;
 			toFind.pointer = p;
 			if (
 				auto iterator = allocations.find(toFind);
 				allocations.end() != iterator && nullptr != iterator->pointer
 				) {
-				iterator->deleteFunc();
 				iterator->pointer = nullptr;
+				iterator->deleteFunc();
+				allocations.erase(iterator);
 			}
 			p = nullptr;
 		}
@@ -52,8 +53,8 @@ namespace Hogra {
 		static void DeleteAll() {
 			for (auto& allocation : allocations) {
 				if (nullptr != allocation.pointer) {
-					allocation.deleteFunc();
 					allocation.pointer = nullptr;
+					allocation.deleteFunc();
 				}
 			}
 			allocations.clear();

@@ -34,6 +34,8 @@
 #include "fallingSand/smoke.h"
 #include "fallingSand/lava.h"
 
+#include "ThorSerialize/JsonThor.h"
+
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;
@@ -1223,14 +1225,16 @@ namespace Hogra {
 		return sceneSource;
 	}
 
-	Scene* SceneFactory::LoadSceneFromFile(const std::string& fileName)
+	Scene* SceneFactory::LoadSceneFromFile(const std::string& path)
 	{
-		// Not working source files missing!
-		//YAML::Node sceneNode = YAML::LoadFile(AssetFolderPathManager::getInstance()->getScenesFolderPath().append(fileName));
-		
-		// TODO
+		auto inputFile = std::ifstream(path);
+		if (inputFile.is_open()) {
+			auto* scene = Allocator::New<Scene>();
+			//TODO read from inputFile 
 
-		auto* scene = Allocator::New<Scene>();
-		return scene;
+			inputFile.close();
+			return scene;
+		}
+		return nullptr;
 	}
 }
