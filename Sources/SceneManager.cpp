@@ -3,11 +3,7 @@
 #include "MemoryManager.h"
 #include "GlobalInclude.h"
 #include "ControlActionManager.h"
-#include <string>
-
-#include "ThorSerialize/Traits.h"
-#include "ThorSerialize/SerUtil.h"
-#include "ThorSerialize/JsonThor.h"
+#include "nlohmann/json.hpp"
 
 
 struct SceneIDToFilenameMapping {
@@ -54,26 +50,28 @@ namespace Hogra {
 	{
 		auto mappingFile = std::fstream(AssetFolderPathManager::getInstance()->getScenesFolderPath().append("sceneIdToFilenameMapping.json"));
 		if (mappingFile.is_open()) {
-			SceneIDToFilenameMapping mapping;
-			mapping.scenes.emplace(0, "myScene.json");
-			//TODO Create demo file
-			//TODO Read demo file
+			nlohmann::json jsonData = nlohmann::json::parse(mappingFile);		// Read from file
 			mappingFile.close();
 
-			if (mapping.scenes.contains(sceneId)) {
-				std::string fn = mapping.scenes[sceneId];
-					if (fn.empty()) {
-						std::cerr << "Scene manager error: Trying to load scene where the filename for the ID is not specified!" << std::endl;
-					}
-				UnloadCurrentScene();
-				currentScene = SceneFactory::getInstance()->LoadSceneFromFile(AssetFolderPathManager::getInstance()->getScenesFolderPath().append(fn));
+			auto& jsonScenes = jsonData["scenes"];
+			auto s = jsonScenes.size();
+			std::string filename;
+			for (auto i = 0; i < s; i++) {
+				if (sceneId == jsonScenes[i]["id"]) {
+					filename = jsonScenes[i]["filename"];
+					break;
+				}
 			}
-			else {
-				std::cerr << "Scene manager error: Trying to load scene with unexisting ID!" << std::endl;
+
+			if (filename.empty()) {
+				std::cerr << "Scene manager error: Trying to load scene where the filename for the ID is not specified!" << std::endl;
+				return;
 			}
+			UnloadCurrentScene();
+			currentScene = SceneFactory::getInstance()->LoadSceneFromFile(AssetFolderPathManager::getInstance()->getScenesFolderPath().append(filename));
 		}
 		else {
-			std::cerr << "Scene manager error: Scene ID to filename mapping file not found!" << std::endl;
+			std::cerr << "Scene manager error: 'Scene ID to filename mapping' file not found!" << std::endl;
 		}
 	}
 

@@ -1,5 +1,7 @@
 #include "Texture2D.h"
 #include "MemoryManager.h"
+#include <stb/stb_image.h>
+
 
 namespace Hogra {
 	

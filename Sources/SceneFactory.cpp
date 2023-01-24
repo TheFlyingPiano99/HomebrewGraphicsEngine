@@ -34,8 +34,6 @@
 #include "fallingSand/smoke.h"
 #include "fallingSand/lava.h"
 
-#include "ThorSerialize/JsonThor.h"
-
 
 namespace Hogra {
 	SceneFactory* SceneFactory::instance = nullptr;

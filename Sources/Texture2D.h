@@ -2,7 +2,6 @@
 #include "Texture.h"
 
 #include <glad/glad.h>
-#include <stb/stb_image.h>
 #include <glm/glm.hpp>
 #include <vector>
 #include "ShaderProgram.h"

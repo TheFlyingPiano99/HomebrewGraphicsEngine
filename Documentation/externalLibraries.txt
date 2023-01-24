@@ -1,0 +1,30 @@
+	 _______________________________
+	|								|
+	|	Homebrew Graphics Engine	|
+	|	Third-party dependencies	|
+	|_______________________________|
+	
+------------------------------------------------------------------------------------------------------------------------------------------
+
+Asset-Importer-Lib (assimp)	|	Homepage: https://assimp-docs.readthedocs.io/en/v5.1.0/		|	License: modified, 3-clause BSD-License
+							|																|
+FreeType			 		|	Homepage: https://freetype.org/								|	License: FreeType License
+							|																|
+glad						|	Homepage: https://glad.dav1d.de/							|	License: Public domain + See Khronos license
+							|																|											
+GLFW OpenGL Library			|	Homepage: https://www.glfw.org/								|	License: zlib/libpng
+							|																|											
+OpenGL Mathematics (glm)	|	Homepage: https://glm.g-truc.net/0.9.9/						|	License: Happy Bunny License or MIT License
+							|																|												 
+KHR							|	Homepage: https://registry.khronos.org/EGL/api/KHR/			|	License: Stated in source file
+							|																|												 
+OpenAL soft					|	Homepage: https://openal-soft.org/							|	License: GNU LIBRARY GENERAL PUBLIC LICENSE
+							|																|												 
+stb							|	Homepage: https://github.com/nothings/stb					|	License: Public Domain (www.unlicense.org)
+							|																|												 
+AudioFile.h					|	Hp: github.com/adamstark/AudioFile/blob/master/AudioFile.h	|	License: Stated in source file
+							|																|												 
+nlohmann/json				|	Homepage: https://github.com/nlohmann/json					|	License: MIT License
+							|																|												 
+------------------------------------------------------------------------------------------------------------------------------------------
+	
