@@ -21,7 +21,6 @@ A grahics/videogame engine writen in C++ using OpenGL.
 
 ![animation01](Documentation/Screenshots/pixelsandclip.gif)
 
-<hr>
 
 ## Third-party libraries
 
