@@ -2,6 +2,10 @@
 
 A grahics/videogame engine writen in C++ using OpenGL.
 
+<img src="Resources/Icons/HoGraEngineLogo.png" alt="HoGraEngine logo" width="25%"/>
+
+<hr>
+
 ## Features
 - Collision and physics engine
 - Deferred PBR shading with bloom
@@ -9,13 +13,29 @@ A grahics/videogame engine writen in C++ using OpenGL.
 - Font rendering
 - Audio
 
-![HoGraEngine_logo](Resources/Icons/HoGraEngineLogo.png "HoGraEngine logo")
+<hr>
 
+<img src="Documentation/Screenshots/2022-07-25_01.jpg" alt="screenshot01" width="50%"/>
+
+<img src="Documentation/Screenshots/2022-09-17_vhs.jpg" alt="screenshot02" width="50%"/>
+
+<img src="Documentation/Screenshots/pixelsandclip.gif" alt="animation01" width="50%"/>
 
 <hr>
 
-![Screenshot_01](Documentation/Screenshots/2022-07-25_01.jpg "Screenshot 01")
+## Third-party libraries
 
-<hr>
+- Asset-Importer-Lib (assimp)
+- FreeType
+- glad
+- GLFW OpenGL Library
+- Imgui
+- OpenGL Mathematics (glm)
+- KHR
+- OpenAL soft
+- stb
+- AudioFile.h
+- nlohmann/json
+
 
 <a href="https://www.flaticon.com/free-icons/idea" title="idea icons">Idea icons created by Good Ware - Flaticon</a>

@@ -14,6 +14,8 @@ glad						|	Homepage: https://glad.dav1d.de/							|	License: Public domain + Se
 							|																|											
 GLFW OpenGL Library			|	Homepage: https://www.glfw.org/								|	License: zlib/libpng
 							|																|											
+Imgui						|	Homepage: https://github.com/ocornut/imgui					|	License: MIT License
+							|																|											
 OpenGL Mathematics (glm)	|	Homepage: https://glm.g-truc.net/0.9.9/						|	License: Happy Bunny License or MIT License
 							|																|												 
 KHR							|	Homepage: https://registry.khronos.org/EGL/api/KHR/			|	License: Stated in source file
