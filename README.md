@@ -1,10 +1,10 @@
 # HomebrewGraphicsEngine
 
+
+<img src="Resources/Icons/HoGraEngineLogo.png" alt="HoGraEngine logo" width="30%" style="float: right;"/>
+
 A grahics/videogame engine writen in C++ using OpenGL.
 
-<img src="Resources/Icons/HoGraEngineLogo.png" alt="HoGraEngine logo" width="25%"/>
-
-<hr>
 
 ## Features
 - Collision and physics engine
@@ -13,13 +13,13 @@ A grahics/videogame engine writen in C++ using OpenGL.
 - Font rendering
 - Audio
 
-<hr>
+## Screenshots
 
-<img src="Documentation/Screenshots/2022-07-25_01.jpg" alt="screenshot01" width="50%"/>
+<img src="Documentation/Screenshots/2022-07-25_01.jpg" alt="screenshot01" width="90%"/>
 
-<img src="Documentation/Screenshots/2022-09-17_vhs.jpg" alt="screenshot02" width="50%"/>
+<img src="Documentation/Screenshots/2022-09-17_vhs.jpg" alt="screenshot02" width="90%"/>
 
-<img src="Documentation/Screenshots/pixelsandclip.gif" alt="animation01" width="50%"/>
+<img src="Documentation/Screenshots/pixelsandclip.gif" alt="animation01" width="90%"/>
 
 <hr>
 
