@@ -15,11 +15,11 @@ A grahics/videogame engine writen in C++ using OpenGL.
 
 ## Screenshots
 
-<img src="Documentation/Screenshots/2022-07-25_01.jpg" alt="screenshot01" width="90%"/>
+![screenshot01](Documentation/Screenshots/2022-07-25_01.jpg)
 
-<img src="Documentation/Screenshots/2022-09-17_vhs.jpg" alt="screenshot02" width="90%"/>
+![screenshot02](Documentation/Screenshots/2022-09-17_vhs.jpg)
 
-<img src="Documentation/Screenshots/pixelsandclip.gif" alt="animation01" width="90%"/>
+![animation01](Documentation/Screenshots/pixelsandclip.gif)
 
 <hr>
 
