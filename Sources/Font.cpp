@@ -90,7 +90,7 @@ namespace Hogra {
         }
         shaderProgram->Activate();
         glUniform3f(glGetUniformLocation(shaderProgram->ID, "textColor"), color.x, color.y, color.z);
-        glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::renderResolutionWidth, 0.0f, (float)GlobalVariables::renderResolutionHeight);
+        glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight);
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(vao);

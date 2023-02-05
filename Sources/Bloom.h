@@ -28,7 +28,7 @@ namespace Hogra {
 			treshold = _treshold;
 		}
 		
-		void OnResize(unsigned int width, unsigned int height) override;
+		void OnContextResize(unsigned int width, unsigned int height) override;
 
 		void Bind() override;
 

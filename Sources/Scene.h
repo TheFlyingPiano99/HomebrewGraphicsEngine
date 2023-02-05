@@ -36,7 +36,8 @@ namespace Hogra {
 	{
 		friend class SceneFactory;
 	public:
-		void Init(int contextWidth, int contextHeight);
+
+		void Init(unsigned int _contextWidth, unsigned int _contextHeight);
 
 		/*
 		* Calls SceneObject::BeforePhysicsLoopUpdate()
@@ -85,7 +86,7 @@ namespace Hogra {
 
 		Camera& GetCamera();
 
-		void Resize(int contextWidth, int contextHeight);
+		void OnContextResize(int _contextWidth, int _contextHeight);
 
 		void Serialize();
 

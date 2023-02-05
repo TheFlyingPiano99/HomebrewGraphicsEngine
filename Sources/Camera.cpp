@@ -94,7 +94,7 @@ namespace Hogra {
 		}
 		eye += dt * speed * lookDir;
 		lookAt += dt * speed * lookDir;
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::MoveBackward(float dt)
@@ -104,7 +104,7 @@ namespace Hogra {
 		}
 		eye += dt * speed * -lookDir;
 		lookAt += dt * speed * -lookDir;
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::MoveLeft(float dt)
@@ -114,7 +114,7 @@ namespace Hogra {
 		}
 		eye += dt * speed * -right;
 		lookAt += dt * speed * -right;
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::MoveRight(float dt)
@@ -124,7 +124,7 @@ namespace Hogra {
 		}
 		eye += dt * speed * right;
 		lookAt += dt * speed * right;
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::MoveUp(float dt)
@@ -134,7 +134,7 @@ namespace Hogra {
 		}
 		eye += dt * speed * up;
 		lookAt += dt * speed * up;
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::MoveDown(float dt)
@@ -144,7 +144,7 @@ namespace Hogra {
 		}
 		eye += dt * speed * -up;
 		lookAt += dt * speed * -up;
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::Rotate(const glm::vec2& deltaAngle)
@@ -165,7 +165,7 @@ namespace Hogra {
 		lookAt = eye + lookDir;
 		right = glm::cross(lookDir, prefUp);
 		up = glm::cross(right, lookDir);
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::RotateAroundPoint(const glm::vec2& deltaAngle, const glm::vec3& rotationCenter)
@@ -186,7 +186,7 @@ namespace Hogra {
 		lookAt = eye + lookDir;
 		right = glm::cross(lookDir, prefUp);
 		up = glm::cross(right, lookDir);
-		moved = true;
+		changed = true;
 	}
 
 	void Camera::ApproachCenter(float delta, const glm::vec3& center)
@@ -199,7 +199,7 @@ namespace Hogra {
 			lookDir = normalize(center - eye);
 			eye += delta * lookDir;
 			lookAt = eye + lookDir;
-			moved = true;
+			changed = true;
 		}
 	}
 

@@ -46,27 +46,27 @@ namespace Hogra::Volumetric {
 
 		depthRBO.Init(
 			GL_DEPTH_COMPONENT,
-			GlobalVariables::renderResolutionWidth,
-			GlobalVariables::renderResolutionHeight
+			GlobalVariables::windowWidth,
+			GlobalVariables::windowHeight
 		);
 
 		frontFaceTexture.Init(
 			GL_RGBA16F,
-			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight),
+			glm::ivec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight),
 			0,
 			GL_RGBA,
 			GL_FLOAT
 		);
 		backFaceTexture.Init(
 			GL_RGBA16F,
-			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight),
+			glm::ivec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight),
 			2,
 			GL_RGBA,
 			GL_FLOAT
 		);
 		lightFaceTexture.Init(
 			GL_RGBA16F,
-			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight),
+			glm::ivec2(GlobalVariables::windowWidth, GlobalVariables::windowHeight),
 			4,
 			GL_RGBA,
 			GL_FLOAT

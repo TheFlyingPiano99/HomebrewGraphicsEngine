@@ -48,7 +48,7 @@ namespace Hogra {
 		return fbo;
 	}
 
-	void PostProcessStage::OnResize(unsigned int contextWidth, unsigned int contextHeight)
+	void PostProcessStage::OnContextResize(unsigned int contextWidth, unsigned int contextHeight)
 	{
 		material->clearTextures();
 		colorTexture.Delete();

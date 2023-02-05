@@ -35,7 +35,7 @@ void Hogra::Caption::Draw() {
 	else if (placing == CaptionPlacing::rightAligned) {
 		pos.x -= scale * (float)texture->getDimensions().x;
 	}
-	glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::renderResolutionWidth, 0.0f, (float)GlobalVariables::renderResolutionHeight)
+	glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight)
 		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(glm::vec3(scale));
 	glUniformMatrix4fv(glGetUniformLocation(program->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniform4f(glGetUniformLocation(program->ID, "textColor"), color.r, color.g, color.b, color.a);

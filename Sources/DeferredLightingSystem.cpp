@@ -3,7 +3,7 @@
 
 namespace Hogra {
 	
-	void DeferredLightingSystem::Init(int width, int height) {
+	void DeferredLightingSystem::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 		gBuffer.Init();
 		fullScreenProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
@@ -28,25 +28,28 @@ namespace Hogra {
 		mesh->Init(material, GeometryFactory::GetInstance()->getLightVolumeSphere());
 		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
-		Resize(width, height);
+		OnContextResize(_contextWidth, _contextHeight);
 	}
-	void DeferredLightingSystem::Resize(int width, int height) {
+
+	void DeferredLightingSystem::OnContextResize(unsigned int _contextWidth, unsigned int _contextHeight)
+	{
 		gPosition.Delete();
 		gNormal.Delete();
 		gAlbedo.Delete();
 		gRoughnessMetallicAO.Delete();
 		depthTexture.Delete();
 
-		gPosition.Init(GL_RGBA32F, glm::ivec2(width, height), 0, GL_RGBA, GL_FLOAT);
-		gNormal.Init(GL_RGBA16F, glm::ivec2(width, height), 1, GL_RGBA, GL_FLOAT);
-		gAlbedo.Init(GL_RGBA16F, glm::ivec2(width, height), 2, GL_RGBA, GL_FLOAT);
-		gRoughnessMetallicAO.Init(GL_RGBA8, glm::ivec2(width, height), 3, GL_RGBA, GL_UNSIGNED_BYTE);
-		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(width, height), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
+		gPosition.Init(GL_RGBA32F, glm::ivec2(_contextWidth, _contextHeight), 0, GL_RGBA, GL_FLOAT);
+		gNormal.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), 1, GL_RGBA, GL_FLOAT);
+		gAlbedo.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), 2, GL_RGBA, GL_FLOAT);
+		gRoughnessMetallicAO.Init(GL_RGBA8, glm::ivec2(_contextWidth, _contextHeight), 3, GL_RGBA, GL_UNSIGNED_BYTE);
+		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(_contextWidth, _contextHeight), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0, gPosition, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT1, gNormal, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT2, gAlbedo, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT3, gRoughnessMetallicAO, 0);
 		gBuffer.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
+		
 		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 		glDrawBuffers(4, attachments);
 		material->clearTextures();
@@ -61,6 +64,7 @@ namespace Hogra {
 		materialFullScreen->addTexture(&gRoughnessMetallicAO);
 		gBuffer.Unbind();
 	}
+
 	void DeferredLightingSystem::BindGBuffer() {
 		gBuffer.Bind();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);

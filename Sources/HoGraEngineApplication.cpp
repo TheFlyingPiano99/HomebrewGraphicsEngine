@@ -107,12 +107,12 @@ namespace Hogra {
 
 		setFullScreenMode(window, GlobalVariables::fullScreenMode);
 
-		Callbacks::setCallbacks(window);
+		Callbacks::SetCallbacks(window);
 
 		//Load GLAD so it configures OpenGL
 		gladLoadGL();
 
-		Callbacks::onWindowInit(window);
+		Callbacks::OnWindowInit(window);
 
 		return 0;
 	}
@@ -183,7 +183,7 @@ namespace Hogra {
 			}
 			prevIterTime = crntTime;
 
-			Callbacks::onWindowRefresh(window);
+			Callbacks::OnWindowRefresh(window);
 
 			// Take care of all GLFW events
 			glfwPollEvents();

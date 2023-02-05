@@ -14,9 +14,9 @@ namespace Hogra {
 			
 		~DeferredLightingSystem() = default;
 
-		void Init(int width, int height);
+		void Init(unsigned int _contextWidth, unsigned int _contextHeight);
 
-		void Resize(int width, int height);
+		void OnContextResize(unsigned int _contextWidth, unsigned int _contextHeight);
 
 		void BindGBuffer();
 

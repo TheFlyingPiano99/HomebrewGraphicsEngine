@@ -41,9 +41,6 @@ namespace Hogra {
 		static bool hideConsoleWindow;
 		static bool hideCursor;
 
-		static int renderResolutionWidth;
-		static int renderResolutionHeight;
-
 		static std::string windowIcon;
 	};
 }

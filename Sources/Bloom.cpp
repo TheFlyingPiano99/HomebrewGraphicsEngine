@@ -10,7 +10,7 @@ Hogra::Bloom::Bloom() {
 	falloff = 0.9f;
 }
 
-void Hogra::Bloom::Init(unsigned int width, unsigned int height) {
+void Hogra::Bloom::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 	prefilterProgram.Init(
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
 		"",
@@ -43,15 +43,15 @@ void Hogra::Bloom::Init(unsigned int width, unsigned int height) {
 	vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //1
 	vbo.Init(vertices);
 	vao.LinkAttrib(vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
-	OnResize(width, height);
+	OnContextResize(_contextWidth, _contextHeight);
 }
 
-void Hogra::Bloom::OnResize(unsigned int width, unsigned int height) {
+void Hogra::Bloom::OnContextResize(unsigned int renderWidth, unsigned int renderHeight) {
 	hdrTexture.Delete();
 	for (auto& downScaledTexture : downScaledTextures) {
 		downScaledTexture.Delete();
 	}
-	glm::ivec2 dim = glm::ivec2(width, height);
+	glm::ivec2 dim = glm::ivec2(renderWidth, renderHeight);
 	hdrTexture.Init(GL_RGBA16F, dim, 1, GL_RGBA, GL_FLOAT);
 	int divider = 2;
 	for (int i = 0; i < BLOOM_MIP_LEVELS; i++) {

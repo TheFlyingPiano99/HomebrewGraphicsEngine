@@ -52,7 +52,7 @@ namespace Hogra {
 		Allocator::Delete(instance);
 	}
 
-	Scene* SceneFactory::CreateDemoScene(int contextWidth, int contextHeight) {
+	Scene* SceneFactory::CreateDemoScene(unsigned int contextWidth, unsigned int contextHeight) {
 		auto* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
 		auto* forwardLayer = Allocator::New<RenderLayer>();
@@ -171,7 +171,7 @@ namespace Hogra {
 			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
 			fullScreen->SetAction(
 				[]() {
-					Callbacks::toggleFullScreen();
+					Callbacks::ToggleFullScreen();
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
@@ -252,7 +252,7 @@ namespace Hogra {
 		return scene;
 	}
 
-	Scene* SceneFactory::CreateEasyScene(int contextWidth, int contextHeight)
+	Scene* SceneFactory::CreateEasyScene(unsigned int contextWidth, unsigned int contextHeight)
 	{
 		auto* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
@@ -281,9 +281,8 @@ namespace Hogra {
 	}
 	
 	static bool isCrop = false;
-	Scene* SceneFactory::CreateVoxelDemoScene(int contextWidth, int contextHeight)
+	Scene* SceneFactory::CreateVoxelDemoScene(unsigned int contextWidth, unsigned int contextHeight)
 	{
-
 		//Test mem allocator:
 		Texture2D* textureInstance = Allocator::New<Hogra::Texture2D>();
 
@@ -360,7 +359,7 @@ namespace Hogra {
 			glm::vec3(0.01, 0.01, 0.01),
 			glm::angleAxis(1.57079633f, glm::vec3(1, 0, 0)),
 			volumeLight,
-			glm::ivec2(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight));
+			glm::ivec2(contextWidth, contextHeight));
 		scene->AddLight(volumeLight);
 
 		auto* volumeSceneObj = Allocator::New<SceneObject>();
@@ -572,10 +571,10 @@ namespace Hogra {
 		return scene;
 	}
 
-	Scene* SceneFactory::CreatePixelPhysicsDemoScene(int contextWidth, int contextHeight) {
+	Scene* SceneFactory::CreatePixelPhysicsDemoScene(unsigned int _contextW, unsigned int _contextH) {
 
 		auto scene = Allocator::New<Scene>();
-		scene->Init(contextWidth, contextHeight);
+		scene->Init(_contextW, _contextH);
 
 		auto* forwardLayer = Allocator::New<RenderLayer>();
 		forwardLayer->SetName("ForwardLayer");
@@ -639,13 +638,13 @@ namespace Hogra {
 		chunkObj->AddComponent(chunk);
 
 		auto* bloom = Allocator::New<Bloom>();
-			bloom->Init(contextWidth, contextHeight);
+			bloom->Init(_contextW, _contextH);
 		scene->AddPostProcessStage(bloom, "ForwardLayer");
 
 		auto* hdr = Allocator::New<PostProcessStage>();
 		hdr->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
-			contextWidth, contextHeight);
+			_contextW, _contextH);
 		scene->AddPostProcessStage(hdr, "ForwardLayer");
 
 		auto fbo = Allocator::New<FBO>();
@@ -661,7 +660,7 @@ namespace Hogra {
 			fullScreen->Init(GLFW_KEY_TAB, ButtonKeyAction::TriggerType::triggerOnPress);
 			fullScreen->SetAction(
 				[]() {
-					Callbacks::toggleFullScreen();
+					Callbacks::ToggleFullScreen();
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(fullScreen);
@@ -937,7 +936,7 @@ namespace Hogra {
 
 		Caption* caption1 = Allocator::New<Caption>();
 		caption1->Init("Homebrew Graphics Engine Demo", font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.95), 1.5f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.95), 1.5f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
 		Allocator::Delete(font);
 	}
@@ -947,22 +946,22 @@ namespace Hogra {
 		font->Init("arial.ttf");
 		auto* caption1 = Allocator::New<Caption>();
 		caption1->Init("Volume rendering", font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.96), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.96), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
 
 		auto* caption2 = Allocator::New<Caption>();
 		caption2->Init(std::string("Dataset: ").append(dataSetName), font,
-			glm::vec2(GlobalVariables::renderResolutionWidth / 2, GlobalVariables::renderResolutionHeight * 0.93), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.93), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::string("Toggle transfer function [H]"), font,
-			glm::vec2(GlobalVariables::renderResolutionWidth * 0.9f, GlobalVariables::renderResolutionHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::windowWidth * 0.9f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::string("Toggle options [O]"), font,
-			glm::vec2(GlobalVariables::renderResolutionWidth * 0.1f, GlobalVariables::renderResolutionHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::windowWidth * 0.1f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 
 		Allocator::Delete(font);
@@ -1242,7 +1241,7 @@ namespace Hogra {
 			scene->debugMode = jsonData["debugMode"];
 			scene->preferedUp = parseVec3(jsonData["preferedUp"]);
 			scene->backgroundColor = parseVec4(jsonData["backgroundColor"]);
-			scene->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
+			scene->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 
 			//Camera:
 			Camera camera;

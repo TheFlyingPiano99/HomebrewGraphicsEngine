@@ -45,12 +45,12 @@ namespace Hogra {
 
 		void ApproachCenter(float delta, const glm::vec3& center = glm::vec3(0.0f));
 
-		void setAspectRatio(float ratio) {
+		void SetAspectRatio(float ratio) {
 			aspectRatio = ratio;
 		}
 
-		void setMoved(bool val) {
-			moved = val;
+		void SetChanged(bool val) {
+			changed = val;
 		}
 
 		const glm::mat4& GetProjectionMatrix() const {
@@ -114,11 +114,11 @@ namespace Hogra {
 		}
 
 		bool IsMoved() const {
-			return moved;
+			return changed;
 		}
 
 		void SetIsMoved(bool b) {
-			moved = b;
+			changed = b;
 		}
 
 	private:
@@ -143,7 +143,7 @@ namespace Hogra {
 		// Prevents the camera from jumping around when first clicking left click
 		bool firstClick = true;
 
-		bool moved = false;
+		bool changed = false;
 		PositionConnector* positionConnector = nullptr;
 		OrientationConnector* orientationConnector = nullptr;
 

@@ -12,29 +12,27 @@ namespace Hogra {
 	bool firstClick = true;
 
 
-	void Callbacks::setCallbacks(GLFWwindow* window) {
-		glfwSetWindowRefreshCallback(window, Callbacks::onWindowRefresh);
-		glfwSetWindowCloseCallback(window, Callbacks::onWindowClose);
-		glfwSetKeyCallback(window, Callbacks::onKey);
-		glfwSetCursorPosCallback(window, Callbacks::onMouseMove);
-		glfwSetScrollCallback(window, Callbacks::onMouseScroll);
-		glfwSetMouseButtonCallback(window, Callbacks::onMouseClick);
-		glfwSetWindowSizeCallback(window, Callbacks::onWindowSize);
+	void Callbacks::SetCallbacks(GLFWwindow* window) {
+		glfwSetWindowRefreshCallback(window, Callbacks::OnWindowRefresh);
+		glfwSetWindowCloseCallback(window, Callbacks::OnWindowClose);
+		glfwSetWindowSizeCallback(window, Callbacks::OnWindowSize);
+		glfwSetKeyCallback(window, Callbacks::OnKey);
+		glfwSetCursorPosCallback(window, Callbacks::OnMouseMove);
+		glfwSetScrollCallback(window, Callbacks::OnMouseScroll);
+		glfwSetMouseButtonCallback(window, Callbacks::OnMouseClick);
 	}
 	
-	void Callbacks::onWindowInit(GLFWwindow* window)
+	void Callbacks::OnWindowInit(GLFWwindow* window)
 	{
-		int width, height;
-		glfwGetWindowSize(window, &width, &height);
-		glViewport(0, 0, width, height);
+		glfwGetWindowSize(window, &GlobalVariables::windowWidth, &GlobalVariables::windowHeight);
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
-		SceneManager::getInstance()->Init(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
+		SceneManager::getInstance()->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 		GUI::getInstance()->InitGUI(window);
 	}
 
 
-	void Callbacks::onWindowRefresh(GLFWwindow* window)
+	void Callbacks::OnWindowRefresh(GLFWwindow* window)
 	{
 		GUI::getInstance()->preDrawInit();
 
@@ -46,7 +44,7 @@ namespace Hogra {
 	}
 
 
-	void Callbacks::onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
+	void Callbacks::OnKey(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
 			ControlActionManager::getInstance()->OnPress(key, scancode, mods);
@@ -56,7 +54,7 @@ namespace Hogra {
 		}
 	}
 
-	void Callbacks::onMouseMove(GLFWwindow* window, double xpos, double ypos)
+	void Callbacks::OnMouseMove(GLFWwindow* window, double xpos, double ypos)
 	{
 		static bool prevCentered = false;
 		bool isFirst = false;
@@ -81,12 +79,12 @@ namespace Hogra {
 		ControlActionManager::getInstance()->OnMouseMove(glm::vec2(pixMouseX, pixMouseY), isFirst);
 	}
 
-	void Callbacks::onMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
+	void Callbacks::OnMouseScroll(GLFWwindow* window, double xoffset, double yoffset)
 	{
 		ControlActionManager::getInstance()->OnMouseScroll((float)yoffset);
 	}
 
-	void Callbacks::onMouseClick(GLFWwindow* window, int button, int action, int mods)
+	void Callbacks::OnMouseClick(GLFWwindow* window, int button, int action, int mods)
 	{
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
@@ -111,14 +109,15 @@ namespace Hogra {
 		}
 	}
 
-	void Callbacks::onWindowSize(GLFWwindow* window, int width, int height)
+	void Callbacks::OnWindowSize(GLFWwindow* window, int width, int height)
 	{
 		GlobalVariables::windowWidth = width;
 		GlobalVariables::windowHeight = height;
-		glViewport(0, 0, width, height);
+		SceneManager::getInstance()->OnWindowResize(width, height);
+		std::cout << "W: " << width << " H: " << height << std::endl;
 	}
 
-	void Callbacks::toggleFullScreen()
+	void Callbacks::ToggleFullScreen()
 	{
 		GlobalVariables::fullScreenMode = !GlobalVariables::fullScreenMode;
 		if (GlobalVariables::fullScreenMode) {
@@ -134,9 +133,7 @@ namespace Hogra {
 		std::cout << "Screen size: " << GlobalVariables::windowWidth << ", " << GlobalVariables::windowHeight << std::endl;
 	}
 
-
-
-	void Callbacks::onWindowClose(GLFWwindow* window)
+	void Callbacks::OnWindowClose(GLFWwindow* window)
 	{
 		// Delete all the objects we've created
 

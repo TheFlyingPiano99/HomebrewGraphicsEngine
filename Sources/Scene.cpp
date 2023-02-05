@@ -61,15 +61,16 @@ namespace Hogra {
 		return collisionManager.IntersectRay(ray, w_intersectionPoint, w_intersectionNormal);
 	}
 
-	void Scene::Init(int contextWidth, int contextHeight)
+	void Scene::Init(unsigned int _contextWidth, unsigned int _contextHeight)
 	{
 		audioManager.Init();
 		initShadowMap();
-		camera.Init((float)contextWidth / (float)contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		lightManager.initDefferedSystem(contextWidth, contextHeight);
+		camera.Init((float)_contextWidth / (float)_contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+		lightManager.initDefferedSystem(_contextWidth, _contextHeight);
 		lightManager.initDebug();
 		collisionManager.InitDebug();
 		timeSpent.Init("time", 0.0f);
+		OnContextResize(_contextWidth, _contextHeight);
 	}
 
 	void Scene::BeforePhysicsLoopUpdate() {
@@ -185,6 +186,7 @@ namespace Hogra {
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glStencilMask(GL_FALSE);
+
 
 		for (int i = 0; i < renderLayers.size(); i++) {
 			outFBO = findNextFBO(i);
@@ -326,14 +328,17 @@ namespace Hogra {
 		return camera;
 	}
 
-	void Scene::Resize(int _contextWidth, int _contextHeight)
+	void Scene::OnContextResize(int _contextWidth, int _contextHeight)
 	{
-		camera.setAspectRatio((float)_contextWidth / (float)_contextHeight);
+		camera.SetAspectRatio((float)_contextWidth / (float)_contextHeight);
 		for (auto& stage : postProcessStages) {
-			stage->OnResize(_contextWidth, _contextHeight);
+			stage->OnContextResize(_contextWidth, _contextHeight);
 		}
-		camera.setMoved(true);
-		lightManager.OnResize(_contextWidth, _contextHeight);
+		camera.SetChanged(true);
+		return;
+		//TODO Find bug in lightManager when resized
+
+		lightManager.OnContextResize(_contextWidth, _contextHeight);
 	}
 
 	void Scene::Serialize()

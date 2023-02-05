@@ -38,9 +38,9 @@ namespace Hogra {
 
 		void AfterPhysicsLoopUpdate();
 
-		void HandleControlActions();
-
 		void UnloadScene();
+
+		void OnWindowResize(unsigned int w, unsigned int h);
 
 	private:
 		SceneManager() = default;

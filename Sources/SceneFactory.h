@@ -15,13 +15,13 @@ namespace Hogra {
 
 		static void DestroyInstance();
 
-		Scene* CreateDemoScene(int contextWidth, int contextHeight);
+		Scene* CreateDemoScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		Scene* CreateEasyScene(int contextWidth, int contextHeight);
+		Scene* CreateEasyScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		Scene* CreateVoxelDemoScene(int contextWidth, int contextHeight);
+		Scene* CreateVoxelDemoScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		Scene* CreatePixelPhysicsDemoScene(int contextWidth, int contextHeight);
+		Scene* CreatePixelPhysicsDemoScene(unsigned int _contextW, unsigned int _contextH);
 
 		ForceField* InitGravitation(Scene* scene);
 

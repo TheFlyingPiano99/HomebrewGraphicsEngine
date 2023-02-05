@@ -31,8 +31,8 @@ namespace Hogra {
 			return;
 		}
 		//LoadScene(0);
-		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
-		//currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
+		//currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
+		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
 		//currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
 	}
 
@@ -43,7 +43,7 @@ namespace Hogra {
 		}
 		Allocator::Delete(currentScene);
 		ControlActionManager::getInstance()->UnregisterControls();
-		currentScene = SceneFactory::getInstance()->CreateDemoScene(GlobalVariables::renderResolutionWidth, GlobalVariables::renderResolutionHeight);
+		currentScene = SceneFactory::getInstance()->CreateDemoScene(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 	}
 
 	void SceneManager::LoadScene(int sceneId)
@@ -132,6 +132,14 @@ namespace Hogra {
 			currentScene->Serialize();
 			Allocator::Delete(currentScene);
 		}
+	}
+
+	void SceneManager::OnWindowResize(unsigned int w, unsigned int h)
+	{
+		if (nullptr == currentScene) {
+			return;
+		}
+		currentScene->OnContextResize(w, h);
 	}
 
 }

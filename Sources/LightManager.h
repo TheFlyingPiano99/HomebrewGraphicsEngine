@@ -18,12 +18,12 @@ namespace Hogra {
 			lights.push_back(_light);
 		}
 
-		void initDefferedSystem(int contextWidth, int contextHeight) {
-			deferredLightingSystem.Init(contextWidth, contextHeight);
+		void initDefferedSystem(unsigned int _contextWidth, unsigned int _contextHeight) {
+			deferredLightingSystem.Init(_contextWidth, _contextHeight);
 		}
 
-		void OnResize(int contextWidth, int contextHeight) {
-			deferredLightingSystem.Resize(contextWidth, contextHeight);
+		void OnContextResize(unsigned int contextWidth, unsigned int contextHeight) {
+			deferredLightingSystem.OnContextResize(contextWidth, contextHeight);
 		}
 
 		void RenderDeferredLighting();
