@@ -583,7 +583,7 @@ namespace Hogra {
 
 		auto* program = Allocator::New<ShaderProgram>();
 		program->Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bypass.frag")
 		);
@@ -591,9 +591,9 @@ namespace Hogra {
 		auto* material = Allocator::New<Material>();
 		material->Init(program);
 		material->SetAlphaBlend(true);
-		auto* fullScreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
+		auto* quad = GeometryFactory::GetInstance()->GetQuad();
 		auto* mesh = Allocator::New<Mesh>();
-		mesh->Init(material, fullScreenQuad);
+		mesh->Init(material, quad);
 		mesh->SetDepthTest(false);
 		auto chunk = Allocator::New<FallingSand::Chunk>();
 		chunk->Init(mesh);
@@ -854,7 +854,7 @@ namespace Hogra {
 	
 	void SceneFactory::InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
-		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
+		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
 		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
 		Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
 		auto* cubeMesh = Allocator::New<Mesh>();
@@ -1004,7 +1004,7 @@ namespace Hogra {
 	{
 		ShaderProgram* skyboxShader = Allocator::New<ShaderProgram>();
 		skyboxShader->Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quadWithRayDir.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("forwardSkybox.frag")
 		);
@@ -1020,7 +1020,7 @@ namespace Hogra {
 		auto* skyBoxMaterial = Allocator::New<Material>();
 		skyBoxMaterial->Init(skyboxShader);
 		skyBoxMaterial->AddTexture(cubeMap);
-		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
+		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->GetQuad();
 		auto* skyBoxMesh = Allocator::New<Mesh>();
 		skyBoxMesh->Init(skyBoxMaterial, fullscreenQuad);
 		skyBoxMesh->SetDepthTest(false);
@@ -1036,7 +1036,7 @@ namespace Hogra {
 		collider->Init();
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
-		ShaderProgram* shader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
+		ShaderProgram* shader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
 		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("planks");
 		Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->SetFaceCulling(false);

@@ -15,7 +15,9 @@ namespace Hogra {
 		static GeometryFactory* GetInstance();
 		static void DestroyInstance();
 
-		Geometry* getFullScreenQuad();
+		Geometry* GetQuad();
+
+		Geometry* GetSimpleQuad();
 
 		Geometry* getCube();
 
@@ -40,7 +42,8 @@ namespace Hogra {
 		GeometryFactory() = default;
 		static GeometryFactory* instance;
 
-		Geometry* fullScreenQuad = nullptr;
+		Geometry* quad = nullptr;
+		Geometry* simpleQuad = nullptr;
 		Geometry* cube = nullptr;
 		Geometry* wireframeCube = nullptr;
 		Geometry* sphere = nullptr;

@@ -21,7 +21,7 @@ namespace Hogra {
 		// Process meshes:
 		for (int m = 0; m < scene->mNumMeshes; m++) {	// Obsolate loop (only one mesh)
 			auto* mesh = scene->mMeshes[m];
-			std::vector<Vertex> vertices;
+			std::vector<Vertex_pos_norm_tang_bitang_uv> vertices;
 			std::vector<GLuint> indices;
 			for (int v = 0; v < mesh->mNumVertices; v++) {
 				auto aiVertex = mesh->mVertices[v];
@@ -30,12 +30,12 @@ namespace Hogra {
 				auto aiBitangent = mesh->mBitangents[v];
 				auto aiUV = mesh->mTextureCoords[0][v];
 				
-				Vertex vertex;
+				Vertex_pos_norm_tang_bitang_uv vertex;
 				vertex.position = glm::vec3(aiVertex.x, aiVertex.y, aiVertex.z);
 				vertex.normal = glm::vec3(aiNormal.x, aiNormal.y, aiNormal.z);
 				vertex.tangent = glm::vec3(aiTangent.x, aiTangent.y, aiTangent.z);
 				vertex.bitangent = glm::vec3(aiBitangent.x, aiBitangent.y, aiBitangent.z);
-				vertex.texUV = glm::vec2(aiUV.x, aiUV.y);
+				vertex.uv = glm::vec2(aiUV.x, aiUV.y);
 				vertices.push_back(vertex);
 			}
 			if (mesh->HasFaces()) {

@@ -53,15 +53,16 @@ namespace Hogra {
 		vao.Init();
 		vao.Bind();
 		vao.Bind();
-		std::vector<glm::vec4> vertices;
-		vertices.push_back(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));	//6
-		vertices.push_back(glm::vec4(1.0f, -1.0f, 1.0f, 0.0f));	//5
-		vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //4
-		vertices.push_back(glm::vec4(1.0f, -1.0f, 1.0f, 0.0f));	//3
-		vertices.push_back(glm::vec4(-1.0f, -1.0f, 0.0f, 0.0f));//2
-		vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //1
+		std::vector<Vertex_2d_pos_uv> vertices;
+		vertices.push_back({ glm::vec2(1.0f, 1.0f) , glm::vec2(1.0f, 1.0f) });	//6
+		vertices.push_back({ glm::vec2(1.0f, -1.0f) , glm::vec2(1.0f, 0.0f) });	//5
+		vertices.push_back({ glm::vec2(-1.0f, 1.0f) , glm::vec2(0.0f, 1.0f) });	//4
+		vertices.push_back({ glm::vec2(1.0f, -1.0f) , glm::vec2(1.0f, 0.0f) });	//3
+		vertices.push_back({ glm::vec2(-1.0f, -1.0f) , glm::vec2(0.0f, 0.0f) });//2
+		vertices.push_back({ glm::vec2(-1.0f, 1.0f) , glm::vec2(0.0f, 1.0f) });//1
 		vbo.Init(vertices);
-		vao.LinkAttrib(vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
+		vao.LinkAttrib(vbo, 0, 2, GL_FLOAT, 4 * sizeof(float), 0);
+		vao.LinkAttrib(vbo, 1, 2, GL_FLOAT, 4 * sizeof(float),  (void*)(2 * sizeof(float)));
 
 		FBO fbo;
 		fbo.Init();
@@ -69,7 +70,7 @@ namespace Hogra {
 		fbo.Bind();
 		ShaderProgram combinationProgram;
 		combinationProgram.Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("roughnessMetallicAOCombination.frag")
 			);
@@ -89,7 +90,7 @@ namespace Hogra {
 		metallicMap.Unbind();
 		aoMap.Unbind();
 
-		auto* shader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
+		auto* shader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
 		auto* material = Allocator::New<Material>();
 		material->Init(shader);
 		material->AddTexture(albedoMap);

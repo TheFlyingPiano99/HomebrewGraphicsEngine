@@ -6,7 +6,7 @@ namespace Hogra {
 		fbo.Init();
 		fbo.Bind();
 		program.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quadWithRayDir.vert"),
 			"",
 			fragmentShaderPath
 		);
@@ -15,7 +15,7 @@ namespace Hogra {
 		material->Init(&program);
 		material->AddTexture(&colorTexture);
 		mesh = Allocator::New<Mesh>();
-		mesh->Init(material, GeometryFactory::GetInstance()->getFullScreenQuad());
+		mesh->Init(material, GeometryFactory::GetInstance()->GetSimpleQuad());
 		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);

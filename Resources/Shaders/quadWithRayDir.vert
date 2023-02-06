@@ -1,10 +1,12 @@
 #version 420 core
 
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec3 aTangent;
-layout (location = 3) in vec3 aBitangent;
-layout (location = 4) in vec2 aTex;
+/*
+Vertex shader for fulscreen quads with additional rayDir output.
+*/
+
+
+layout (location = 0) in vec2 inPos;
+layout (location = 1) in vec2 inTex;
 
 out VS_OUT {
 vec2 texCoords;
@@ -25,7 +27,7 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 
 void main()
 {
-    vs_out.texCoords = aTex;
-    vs_out.rayDir = rayDirMatrix * vec4(aPos, 1.0);
-    gl_Position = vec4(aPos, 1.0);
+    vs_out.texCoords = inTex;
+    vs_out.rayDir = rayDirMatrix * vec4(inPos, 0.0, 1.0);
+    gl_Position = vec4(inPos, 0.0, 1.0);
 }

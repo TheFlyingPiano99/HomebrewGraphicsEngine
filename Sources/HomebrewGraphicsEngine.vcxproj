@@ -383,6 +383,8 @@
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
     <None Include="..\Resources\Shaders\pixelPhysics.frag" />
     <None Include="..\Resources\Shaders\pixelPhysics2.frag" />
+    <None Include="..\Resources\Shaders\quad.vert" />
+    <None Include="..\Resources\Shaders\quadWithRayDir.vert" />
     <None Include="..\Resources\Shaders\screenQuadrant.vert" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert" />
@@ -393,7 +395,7 @@
     <None Include="..\Resources\Shaders\defaultDeferred.frag" />
     <None Include="..\Resources\Shaders\defaultDeferred.vert" />
     <None Include="..\Resources\Shaders\defaultForward.vert" />
-    <None Include="..\Resources\Shaders\deferredPBRshading.frag" />
+    <None Include="..\Resources\Shaders\deferredPBRshadingDirectionalLight.frag" />
     <None Include="..\Resources\Shaders\deferredPBRshadingLightVolume.frag" />
     <None Include="..\Resources\Shaders\depthEffects.frag" />
     <None Include="..\Resources\Shaders\displayNormals.geom" />
@@ -413,13 +415,9 @@
     <None Include="..\Resources\Shaders\postprocess.frag" />
     <None Include="..\Resources\Shaders\proxyGeometryLightCamera.vert" />
     <None Include="..\Resources\Shaders\proxyGeometryViewCamera.vert" />
-    <None Include="..\Resources\Shaders\quad-depth.frag" />
-    <None Include="..\Resources\Shaders\quad.frag" />
-    <None Include="..\Resources\Shaders\quad.vert" />
     <None Include="..\Resources\Shaders\shadowCast.frag" />
     <None Include="..\Resources\Shaders\shadowCast.vert" />
     <None Include="..\Resources\Shaders\forwardSkybox.frag" />
-    <None Include="..\Resources\Shaders\fullscreenQuad.vert" />
     <None Include="..\Resources\Shaders\sprite.frag" />
     <None Include="..\Resources\Shaders\spriteDeferred.frag" />
     <None Include="..\Resources\Shaders\tapeEffect.frag" />

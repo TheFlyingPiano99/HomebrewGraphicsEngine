@@ -91,11 +91,11 @@ namespace Hogra::Volumetric {
 
 		// Full screen quad mesh for combine scene with volume:
 		combineProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bypass.frag")
 		);
-		fullScreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
+		quad = GeometryFactory::GetInstance()->GetQuad();
 		
 		transferFunction.Init();
 		LoadFeatures();
@@ -118,7 +118,7 @@ namespace Hogra::Volumetric {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 		prevCompleteImage.Bind();
-		fullScreenQuad->Draw();
+		quad->Draw();
 
 		//boundingGeometry.DrawOnScreen(outFBO, camera, modelMatrix, invModelMatrix, 0.1f);
 		
@@ -671,10 +671,10 @@ namespace Hogra::Volumetric {
 			}
 			Allocator::Delete(pM);
 		}
-		std::vector<Vertex> vertices;
+		std::vector<Vertex_pos_norm_tang_bitang_uv> vertices;
 		std::vector<GLuint> indices;
 		for (int i = 0; i < 8; i++) {
-			Vertex v;
+			Vertex_pos_norm_tang_bitang_uv v;
 			v.position = boundingBox.corners[i];
 			vertices.push_back(v);
 		}
@@ -831,8 +831,8 @@ namespace Hogra::Volumetric {
 
 			ExportRayCastData(isCheapRender? rayCastCheapProgram : rayCastProgram, quadModelMatrix, lightViewProjMatrix, camera, w_delta);
 
-			fullScreenQuad->BindVAO();
-			fullScreenQuad->Draw();
+			quad->BindVAO();
+			quad->Draw();
 			rayCastOutFBO.Unbind();
 
 			if (!isCheapRender) {
@@ -854,13 +854,13 @@ namespace Hogra::Volumetric {
 
 		// Update last finisned image:
 		combineProgram.Activate();
-		fullScreenQuad->BindVAO();
+		quad->BindVAO();
 		if (isFinishedVolume) {
 			prevCompleteImageFBO.Bind();
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_BLEND);
 			rayCastOutTexture.Bind();
-			fullScreenQuad->Draw();
+			quad->Draw();
 		}
 	}
 
@@ -994,13 +994,13 @@ namespace Hogra::Volumetric {
 
 		// Update last finisned image:
 		combineProgram.Activate();
-		fullScreenQuad->BindVAO();
+		quad->BindVAO();
 		if (isFinishedVolume) {
 			prevCompleteImageFBO.Bind();
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_BLEND);
 			colorTextures[0].Bind();
-			fullScreenQuad->Draw();
+			quad->Draw();
 		}
 	}
 }

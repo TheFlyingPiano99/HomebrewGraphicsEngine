@@ -770,19 +770,7 @@
     <None Include="..\Resources\Shaders\proxyGeometryViewCamera.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\quad.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\quad.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\quad-depth.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="..\Resources\Shaders\forwardSkybox.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\fullscreenQuad.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\transfer.frag">
@@ -810,7 +798,7 @@
     <None Include="..\Resources\Shaders\displayNormals.geom">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredPBRshading.frag">
+    <None Include="..\Resources\Shaders\deferredPBRshadingDirectionalLight.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\debug.frag">
@@ -898,6 +886,12 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\pixelPhysics2.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\quad.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\quadWithRayDir.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

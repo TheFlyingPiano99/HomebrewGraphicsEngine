@@ -12,7 +12,7 @@ namespace Hogra {
 
 		static void DestroyInstance();
 
-		ShaderProgram* GetDefaultPBRProgramWithMapping();
+		ShaderProgram* GetDeferredPBRProgramWithMapping();
 
 		ShaderProgram* GetGlyphProgram();
 

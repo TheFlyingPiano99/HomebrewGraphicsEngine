@@ -49,6 +49,14 @@ namespace Hogra {
 			aspectRatio = ratio;
 		}
 
+		float GetAspectRatio() const {
+			return aspectRatio;
+		}
+
+		float GetFOV() const {
+			return FOVdeg;
+		}
+
 		void SetChanged(bool val) {
 			changed = val;
 		}

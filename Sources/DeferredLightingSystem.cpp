@@ -6,13 +6,13 @@ namespace Hogra {
 	void DeferredLightingSystem::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 		gBuffer.Init();
 		fullScreenProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullscreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshading.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingDirectionalLight.frag"));
 		materialFullScreen = Allocator::New<Material>();
 		materialFullScreen->Init(&fullScreenProgram);
 		meshFullScreen = Allocator::New<Mesh>();
-		meshFullScreen->Init(materialFullScreen, GeometryFactory::GetInstance()->getFullScreenQuad());
+		meshFullScreen->Init(materialFullScreen, GeometryFactory::GetInstance()->GetSimpleQuad());
 		meshFullScreen->SetDepthTest(false);
 		meshFullScreen->setStencilTest(false);
 

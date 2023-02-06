@@ -11,6 +11,7 @@
 layout (binding = 0) uniform sampler2D srcTexture;
 
 in vec2 texCoords;
+
 layout (location = 0) out vec3 downsample;
 
 void main()

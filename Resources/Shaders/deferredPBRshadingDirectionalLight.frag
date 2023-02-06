@@ -2,10 +2,7 @@
 
 layout (location = 0) out vec4 FragColor;
 
-in VS_OUT {
-    vec2 texCoords;
-    vec4 rayDir;
-} fs_in;
+in vec2 texCoords;
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 	vec3 cameraPosition;			// 16				0
@@ -95,19 +92,19 @@ float calculateShadow(vec3 wp) {
 
 void main()
 {
-	vec4 wp4 = texture(gPosition, fs_in.texCoords);
+	vec4 wp4 = texture(gPosition, texCoords);
 	if (wp4.w < 0.0001) {
 		discard;
 	}
 	vec3 wp = wp4.xyz;
-	vec3 n =  texture(gNormal, fs_in.texCoords).xyz;
-	vec4 albedo4 = texture(gAlbedo, fs_in.texCoords);
+	vec3 n =  texture(gNormal, texCoords).xyz;
+	vec4 albedo4 = texture(gAlbedo, texCoords);
 	if (albedo4.w < 0.0001) {
 		FragColor = vec4(albedo4.rgb, 1.0);
 		return;
 	}
 	vec3 albedo = albedo4.rgb;
-	vec3 roughnessMetallicAO = texture(gRoughnessMetallicAO, fs_in.texCoords).rgb;
+	vec3 roughnessMetallicAO = texture(gRoughnessMetallicAO, texCoords).rgb;
 	float roughness = roughnessMetallicAO.r;
 	float metallic = roughnessMetallicAO.g;
 	float ao = roughnessMetallicAO.b;

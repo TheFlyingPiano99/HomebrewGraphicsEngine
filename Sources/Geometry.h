@@ -11,9 +11,11 @@ namespace Hogra {
 		friend class Allocator;
 	public:
 
-		void Init(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
+		template<typename VertexType>
+		void Init(std::vector <VertexType>& vertices, std::vector <GLuint>& indices);
 
-		void Update(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
+		template<typename VertexType>
+		void Update(std::vector <VertexType>& vertices, std::vector <GLuint>& indices);
 
 		~Geometry() {
 			if (0 != instancedBuffer) {
@@ -54,11 +56,10 @@ namespace Hogra {
 	private:
 		int primitiveType = GL_TRIANGLES;
 		int faceCullingOrietation = GL_CCW;
-		void initInstancedBuffer();
-		void initLightInstancedBuffer();
+		void InitInstancedBuffer();
+		void InitLightInstancedBuffer();
 
 		unsigned int instancedBuffer = 0;
-		std::vector <Vertex> vertices;
 		std::vector <GLuint> indices;
 		VAO vao;
 		VBO vbo;

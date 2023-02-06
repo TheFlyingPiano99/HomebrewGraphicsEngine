@@ -444,7 +444,7 @@ namespace Hogra::Volumetric {
 		FBO prevCompleteImageFBO;	// Stores the last finished render of the volume
 		Texture2D prevCompleteImage;
 		ShaderProgram combineProgram;
-		Geometry* fullScreenQuad = nullptr;
+		Geometry* quad = nullptr;
 
 		//---------------------------------------------
 		// For Half-angle slicing:

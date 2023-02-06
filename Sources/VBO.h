@@ -7,21 +7,26 @@
 namespace Hogra {
 
 	// Structure to standardize the vertices used in the meshes
-	struct Vertex
+	struct Vertex_pos_norm_tang_bitang_uv
 	{
 		glm::vec3 position;		// layout 0
 		glm::vec3 normal;		// layout 1
 		glm::vec3 tangent;		// layout 2
 		glm::vec3 bitangent;	// layout 3
-		glm::vec2 texUV;		// layout 4
+		glm::vec2 uv;		// layout 4
 	};
 
-	struct SimpleVertex
+	struct Vertex_pos_norm
 	{
 		glm::vec3 position;
 		glm::vec3 normal;
 	};
 
+	struct Vertex_2d_pos_uv
+	{
+		glm::vec2 position;
+		glm::vec2 uv;
+	};
 
 
 	class VBO
@@ -30,7 +35,11 @@ namespace Hogra {
 		// Reference ID of the Vertex Buffer Object
 		GLuint ID;
 
-		void Init(std::vector<Vertex>& vertices);
+		void Init(std::vector<Vertex_pos_norm_tang_bitang_uv>& vertices);
+
+		void Init(std::vector<Vertex_pos_norm>& vertices);
+
+		void Init(std::vector<Vertex_2d_pos_uv>& vertices);
 
 		void Init(std::vector<glm::vec3>& vertices);
 

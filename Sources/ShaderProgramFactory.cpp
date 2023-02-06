@@ -15,7 +15,7 @@ namespace Hogra {
 		Allocator::Delete(instance);
 	}
 	
-	ShaderProgram* ShaderProgramFactory::GetDefaultPBRProgramWithMapping() {
+	ShaderProgram* ShaderProgramFactory::GetDeferredPBRProgramWithMapping() {
 		if (nullptr == defaultBPRProgramWithMapping) {
 			defaultBPRProgramWithMapping = Allocator::New<ShaderProgram>();
 			defaultBPRProgramWithMapping->Init(
