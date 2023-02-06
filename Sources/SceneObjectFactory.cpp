@@ -13,10 +13,10 @@ namespace Hogra {
 		auto* program = ShaderProgramFactory::GetInstance()->GetForwardSpriteProgram();
 		auto* material = Allocator::New<Material>();
 		material->Init(program);
-		material->setAlphaBlend(true);
+		material->SetAlphaBlend(true);
 		auto* texture = Allocator::New<Texture2D>();
 		texture->Init(texturePath, 0, GL_RGBA, GL_UNSIGNED_BYTE);
-		material->addTexture(texture);
+		material->AddTexture(texture);
 		auto* mesh = Allocator::New<Mesh>();
 		mesh->Init(material, geometry);
 		auto* obj = Allocator::New<SceneObject>();

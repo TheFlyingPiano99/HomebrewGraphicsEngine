@@ -92,9 +92,9 @@ namespace Hogra {
 		auto* shader = ShaderProgramFactory::GetInstance()->GetDefaultPBRProgramWithMapping();
 		auto* material = Allocator::New<Material>();
 		material->Init(shader);
-		material->addTexture(albedoMap);
-		material->addTexture(normalMap);
-		material->addTexture(roughnessMetallicAO);
+		material->AddTexture(albedoMap);
+		material->AddTexture(normalMap);
+		material->AddTexture(roughnessMetallicAO);
 		loadedPBRMaterials.emplace(materialName, material);
 		return material;
 	}
@@ -105,7 +105,7 @@ namespace Hogra {
 		auto* material = Allocator::New<Material>();
 		material->Init(program);
 		material->setAlbedo(color * intensity);
-		material->setAlphaBlend(false);
+		material->SetAlphaBlend(false);
 		return material;
 	}
 

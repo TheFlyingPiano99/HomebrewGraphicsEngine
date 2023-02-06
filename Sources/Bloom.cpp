@@ -46,12 +46,14 @@ void Hogra::Bloom::Init(unsigned int _contextWidth, unsigned int _contextHeight)
 	OnContextResize(_contextWidth, _contextHeight);
 }
 
-void Hogra::Bloom::OnContextResize(unsigned int renderWidth, unsigned int renderHeight) {
+void Hogra::Bloom::OnContextResize(unsigned int contextW, unsigned int contextH) {
+	std::cout << "Bloom resize." << std::endl;
+
 	hdrTexture.Delete();
 	for (auto& downScaledTexture : downScaledTextures) {
 		downScaledTexture.Delete();
 	}
-	glm::ivec2 dim = glm::ivec2(renderWidth, renderHeight);
+	glm::ivec2 dim = glm::ivec2(contextW, contextH);
 	hdrTexture.Init(GL_RGBA16F, dim, 1, GL_RGBA, GL_FLOAT);
 	int divider = 2;
 	for (int i = 0; i < BLOOM_MIP_LEVELS; i++) {

@@ -13,7 +13,7 @@ namespace Hogra {
 		colorTexture.Init(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
 		material = Allocator::New<Material>();
 		material->Init(&program);
-		material->addTexture(&colorTexture);
+		material->AddTexture(&colorTexture);
 		mesh = Allocator::New<Mesh>();
 		mesh->Init(material, GeometryFactory::GetInstance()->getFullScreenQuad());
 		mesh->SetDepthTest(false);
@@ -50,11 +50,12 @@ namespace Hogra {
 
 	void PostProcessStage::OnContextResize(unsigned int contextWidth, unsigned int contextHeight)
 	{
-		material->clearTextures();
+		std::cout << "PPS resize." << std::endl;
+		material->ClearTextures();
 		colorTexture.Delete();
 		
 		colorTexture.Init(GL_RGBA16F, glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA, GL_FLOAT);
-		material->addTexture(&colorTexture);
+		material->AddTexture(&colorTexture);
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);
 		fbo.Unbind();
 	}

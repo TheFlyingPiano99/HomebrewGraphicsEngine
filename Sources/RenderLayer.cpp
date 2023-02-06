@@ -43,13 +43,10 @@ namespace Hogra {
 			
 			break;
 		case Hogra::RenderLayer::RenderMode::deferredInstancedRenderMode:
-			for (auto& group : instanceGroups) {
-				group->GatherInstanceData();
-			}
-
 			// Geometry pass:
 			lightManager.BindGBuffer();
 			for (auto& group : instanceGroups) {
+				group->GatherInstanceData();
 				group->Draw();
 			}
 
@@ -63,8 +60,8 @@ namespace Hogra {
 
 		// Post process effects of the layer:
 		for (int i = 0; i < postProcessStages.size(); i++) {
-			postProcessStages[i]->Draw((i < postProcessStages.size() - 1) ? postProcessStages[i + 1]->GetFBO() : outFbo, depthTexture, camera);
+			fbo = (i < postProcessStages.size() - 1) ? &postProcessStages[i + 1]->GetFBO() : &outFbo;
+			postProcessStages[i]->Draw(*fbo, depthTexture, camera);
 		}
 	}
-
 }

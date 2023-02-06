@@ -590,7 +590,7 @@ namespace Hogra {
 
 		auto* material = Allocator::New<Material>();
 		material->Init(program);
-		material->setAlphaBlend(true);
+		material->SetAlphaBlend(true);
 		auto* fullScreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
 		auto* mesh = Allocator::New<Mesh>();
 		mesh->Init(material, fullScreenQuad);
@@ -1019,7 +1019,7 @@ namespace Hogra {
 		cubeMap->Init(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = Allocator::New<Material>();
 		skyBoxMaterial->Init(skyboxShader);
-		skyBoxMaterial->addTexture(cubeMap);
+		skyBoxMaterial->AddTexture(cubeMap);
 		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->getFullScreenQuad();
 		auto* skyBoxMesh = Allocator::New<Mesh>();
 		skyBoxMesh->Init(skyBoxMaterial, fullscreenQuad);

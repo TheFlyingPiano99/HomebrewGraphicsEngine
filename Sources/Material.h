@@ -18,12 +18,13 @@ namespace Hogra {
 
 		void Bind() const;
 
-		void addTexture(Texture* texture);
-		void clearTextures();
+		void AddTexture(Texture* texture);
+		
+		void ClearTextures();
 
 		ShaderProgram* GetShaderProgram() const;
 
-		std::span<Texture*> getTextures();
+		std::span<Texture*> GetTextures();
 
 		glm::vec3 getAlbedo() const {
 			return albedo;
@@ -58,9 +59,9 @@ namespace Hogra {
 		}
 
 
-		void setAlphaBlend(bool blend);
+		void SetAlphaBlend(bool blend);
 
-		void setBlendFunc(int src, int dest);
+		void SetBlendFunc(int src, int dest);
 
 	private:
 		ShaderProgram* program;

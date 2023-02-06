@@ -84,7 +84,7 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture2D::Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType)
+	void Texture2D::Init(GLint internalformat, glm::ivec2 _dimensions, GLuint unit, GLenum format, GLenum pixelType)
 	{
 		this->format = format;
 		this->pixelType = pixelType;
@@ -95,7 +95,7 @@ namespace Hogra {
 		glActiveTexture(GL_TEXTURE0 + unit);
 		this->unit = unit;
 		glBindTexture(GL_TEXTURE_2D, ID);
-		this->dimensions = dimensions;
+		this->dimensions = _dimensions;
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -108,6 +108,7 @@ namespace Hogra {
 		// Assigns the image to the OpenGL Texture object
 		glTexImage2D(GL_TEXTURE_2D, 0, internalformat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
 		/*
+		// Mipmap:
 		glTexImage2D(GL_TEXTURE_2D, 1, internalformat, dimensions.x / 2, dimensions.y / 2, 0, format, pixelType, nullptr);
 		glTexImage2D(GL_TEXTURE_2D, 2, internalformat, dimensions.x / 4, dimensions.y / 4, 0, format, pixelType, nullptr);
 		glTexImage2D(GL_TEXTURE_2D, 3, internalformat, dimensions.x / 8, dimensions.y / 8, 0, format, pixelType, nullptr);

@@ -22,12 +22,17 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingLightVolume.frag"));
 		material = Allocator::New<Material>();
 		material->Init(&lightVolumeProgram);
-		material->setAlphaBlend(true);
-		material->setBlendFunc(GL_ONE, GL_ONE);
+		material->SetAlphaBlend(true);
+		material->SetBlendFunc(GL_ONE, GL_ONE);
 		mesh = Allocator::New<Mesh>();
 		mesh->Init(material, GeometryFactory::GetInstance()->getLightVolumeSphere());
 		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
+
+		gBuffer.Bind();
+		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+		glDrawBuffers(4, attachments);
+
 		OnContextResize(_contextWidth, _contextHeight);
 	}
 
@@ -44,25 +49,26 @@ namespace Hogra {
 		gAlbedo.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), 2, GL_RGBA, GL_FLOAT);
 		gRoughnessMetallicAO.Init(GL_RGBA8, glm::ivec2(_contextWidth, _contextHeight), 3, GL_RGBA, GL_UNSIGNED_BYTE);
 		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(_contextWidth, _contextHeight), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
+
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0, gPosition, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT1, gNormal, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT2, gAlbedo, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT3, gRoughnessMetallicAO, 0);
 		gBuffer.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
-		
-		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
-		glDrawBuffers(4, attachments);
-		material->clearTextures();
-		material->addTexture(&gPosition);
-		material->addTexture(&gNormal);
-		material->addTexture(&gAlbedo);
-		material->addTexture(&gRoughnessMetallicAO);
-		materialFullScreen->clearTextures();
-		materialFullScreen->addTexture(&gPosition);
-		materialFullScreen->addTexture(&gNormal);
-		materialFullScreen->addTexture(&gAlbedo);
-		materialFullScreen->addTexture(&gRoughnessMetallicAO);
+
 		gBuffer.Unbind();
+
+		material->ClearTextures();
+		material->AddTexture(&gPosition);
+		material->AddTexture(&gNormal);
+		material->AddTexture(&gAlbedo);
+		material->AddTexture(&gRoughnessMetallicAO);
+
+		materialFullScreen->ClearTextures();
+		materialFullScreen->AddTexture(&gPosition);
+		materialFullScreen->AddTexture(&gNormal);
+		materialFullScreen->AddTexture(&gAlbedo);
+		materialFullScreen->AddTexture(&gRoughnessMetallicAO);
 	}
 
 	void DeferredLightingSystem::BindGBuffer() {
@@ -77,19 +83,18 @@ namespace Hogra {
 	void DeferredLightingSystem::Draw(const std::vector<Light*>& pointLights, const Light& directionalLight) {
 		meshFullScreen->Bind();
 		glDisable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LESS);
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
 		glm::vec4 pos = directionalLight.GetPosition4D();
 		glm::vec3 pow = directionalLight.getPowerDensity();
 		if (directionalLight.IsCastShadow()) {
-			glUniform4f(glGetUniformLocation(fullScreenProgram.ID, "light.position"), pos.x, pos.y, pos.z, pos.w);
-			glUniform3f(glGetUniformLocation(fullScreenProgram.ID, "light.powerDensity"), pow.x, pow.y, pow.z);
+			fullScreenProgram.SetUniform("light.position", pos);
+			fullScreenProgram.SetUniform("light.powerDensity", pow);
 		}
 		else {
-			glUniform4f(glGetUniformLocation(fullScreenProgram.ID, "light.position"), 0, 0, 0, 0);
-			glUniform3f(glGetUniformLocation(fullScreenProgram.ID, "light.powerDensity"), 0, 0, 0);
+			fullScreenProgram.SetUniform("light.position", glm::vec4(0.0f));
+			fullScreenProgram.SetUniform("light.powerDensity", glm::vec3(0.0f));
 		}
 		meshFullScreen->Draw();
 

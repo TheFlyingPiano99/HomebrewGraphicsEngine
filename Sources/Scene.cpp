@@ -285,6 +285,7 @@ namespace Hogra {
 		}
 		stage->AddUniformVariable(&timeSpent);
 		layer->second->AddPostProcessStage(stage);
+		postProcessStages.push_back(stage);		// Main PPS container in Scene
 	}
 
 	void Scene::AddLight(Light* light)
@@ -330,15 +331,16 @@ namespace Hogra {
 
 	void Scene::OnContextResize(int _contextWidth, int _contextHeight)
 	{
+		std::cout << "Context resize <-------------------------------------------------------" << std::endl;
 		camera.SetAspectRatio((float)_contextWidth / (float)_contextHeight);
 		for (auto& stage : postProcessStages) {
 			stage->OnContextResize(_contextWidth, _contextHeight);
 		}
 		camera.SetChanged(true);
-		return;
-		//TODO Find bug in lightManager when resized
 
 		lightManager.OnContextResize(_contextWidth, _contextHeight);
+		return;
+		//TODO Find bug in lightManager when resized}
 	}
 
 	void Scene::Serialize()

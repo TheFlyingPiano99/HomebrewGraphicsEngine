@@ -32,9 +32,9 @@ namespace Hogra {
 		}
 	}
 
-	void Material::addTexture(Texture* texture) { textures.push_back(texture); }
+	void Material::AddTexture(Texture* texture) { textures.push_back(texture); }
 
-	void Material::clearTextures()
+	void Material::ClearTextures()
 	{
 		textures.clear();
 	}
@@ -44,16 +44,16 @@ namespace Hogra {
 		return program;
 	}
 
-	std::span<Texture*> Material::getTextures()
+	std::span<Texture*> Material::GetTextures()
 	{
 		return textures;
 	}
 
-	void Material::setAlphaBlend(bool blend) {
+	void Material::SetAlphaBlend(bool blend) {
 		alphaBlend = blend;
 	}
 	
-	void Material::setBlendFunc(int src, int dest) {
+	void Material::SetBlendFunc(int src, int dest) {
 		srcBlendFunc = src;
 		destBlendFunc = dest;
 	}

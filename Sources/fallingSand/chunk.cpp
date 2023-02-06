@@ -9,7 +9,7 @@ namespace Hogra::FallingSand {
 	{
 		mesh = _mesh;
 		texture.Init(std::vector<glm::vec4>(grid.GetSize()), grid.GetDimensions(), 0, GL_RGBA, GL_FLOAT);
-		mesh->getMaterial()->addTexture(&texture);
+		mesh->getMaterial()->AddTexture(&texture);
 	}
 
 	void Chunk::LatePhysicsUpdate(float dt)
