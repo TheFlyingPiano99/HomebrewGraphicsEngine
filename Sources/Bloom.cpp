@@ -47,8 +47,6 @@ void Hogra::Bloom::Init(unsigned int _contextWidth, unsigned int _contextHeight)
 }
 
 void Hogra::Bloom::OnContextResize(unsigned int contextW, unsigned int contextH) {
-	std::cout << "Bloom resize." << std::endl;
-
 	hdrTexture.Delete();
 	for (auto& downScaledTexture : downScaledTextures) {
 		downScaledTexture.Delete();

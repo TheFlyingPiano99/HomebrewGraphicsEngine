@@ -18,6 +18,7 @@
 #include "ShaderProgramFactory.h"
 #include "GUI.h"
 #include "HograTime.h"
+#include "DebugUtils.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -331,7 +332,8 @@ namespace Hogra {
 
 	void Scene::OnContextResize(int _contextWidth, int _contextHeight)
 	{
-		std::cout << "Context resize <-------------------------------------------------------" << std::endl;
+		DebugUtils::PrintMsg("Scene", "Context resize");
+
 		camera.SetAspectRatio((float)_contextWidth / (float)_contextHeight);
 		for (auto& stage : postProcessStages) {
 			stage->OnContextResize(_contextWidth, _contextHeight);
@@ -339,8 +341,6 @@ namespace Hogra {
 		camera.SetChanged(true);
 
 		lightManager.OnContextResize(_contextWidth, _contextHeight);
-		return;
-		//TODO Find bug in lightManager when resized}
 	}
 
 	void Scene::Serialize()

@@ -50,7 +50,6 @@ namespace Hogra {
 
 	void PostProcessStage::OnContextResize(unsigned int contextWidth, unsigned int contextHeight)
 	{
-		std::cout << "PPS resize." << std::endl;
 		material->ClearTextures();
 		colorTexture.Delete();
 		

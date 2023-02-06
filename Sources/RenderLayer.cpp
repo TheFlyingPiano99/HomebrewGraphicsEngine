@@ -1,4 +1,5 @@
 #include "RenderLayer.h"
+#include "DebugUtils.h"
 
 namespace Hogra {
 	
