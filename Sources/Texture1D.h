@@ -26,7 +26,8 @@ namespace Hogra {
 		}
 
 		// Inherited via Texture
-		virtual void Bind() const override;
-		virtual void Unbind() const override;
+		void Bind() const override;
+		void Unbind() const override;
+		void SetFiltering(GLenum filtering) const override;
 	};
 }

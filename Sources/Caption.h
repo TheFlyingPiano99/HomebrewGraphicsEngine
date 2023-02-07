@@ -6,9 +6,9 @@
 #include "ShaderProgramFactory.h"
 #include "FBO.h"
 #include "Component.h"
-#include "glm/gtx/transform.hpp"
 #include "VAO.h"
 #include "VBO.h"
+#include "Geometry.h"
 
 namespace Hogra {
 
@@ -35,15 +35,14 @@ namespace Hogra {
 
 		void SetIsVisible(bool b);
 
-		enum CaptionPlacing {
+		enum CaptionAlignment {
 			centeredText,
 			leftAligned,
 			rightAligned
 		};
 
 	private:
-		VAO vao;
-		VBO vbo;
+		Geometry* quad;
 		std::string text;
 		glm::vec2 screenPosition;
 		float scale;
@@ -52,7 +51,7 @@ namespace Hogra {
 		ShaderProgram* program = nullptr;
 		Texture2D* texture = nullptr;
 		bool isVisible = true;
-		CaptionPlacing placing = CaptionPlacing::centeredText;
+		CaptionAlignment alignment = CaptionAlignment::centeredText;
 
 	};
 

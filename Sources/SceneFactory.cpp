@@ -936,7 +936,7 @@ namespace Hogra {
 
 		Caption* caption1 = Allocator::New<Caption>();
 		caption1->Init("Homebrew Graphics Engine Demo", font,
-			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.95), 1.5f, glm::vec4(1, 1, 1, 1));
+			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.95), 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
 		scene->AddCaption(caption1);
 		Allocator::Delete(font);
 	}

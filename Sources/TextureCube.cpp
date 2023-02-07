@@ -66,4 +66,12 @@ namespace Hogra {
 	{
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
+
+	void TextureCube::SetFiltering(GLenum filtering) const
+	{
+		Bind();
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, filtering);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, filtering);
+		Unbind();
+	}
 }

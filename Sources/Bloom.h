@@ -39,8 +39,7 @@ namespace Hogra {
 		ShaderProgram recombineProgram;
 		Texture2D hdrTexture;
 		Texture2D downScaledTextures[BLOOM_MIP_LEVELS];
-		VAO vao;
-		VBO vbo;
+		Geometry* quad;
 		float treshold;
 		float falloff;
 		float mixBloom;

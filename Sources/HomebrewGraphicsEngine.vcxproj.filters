@@ -837,9 +837,6 @@
     <None Include="..\Resources\Shaders\bloomRecombine.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\simple2D-no-projection.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="..\Resources\Shaders\lightVolume.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>

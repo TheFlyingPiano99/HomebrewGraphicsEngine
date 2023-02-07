@@ -7,9 +7,9 @@
 #include "ShaderProgram.h"
 #include "GlobalInclude.h"
 #include <glm/gtc/type_ptr.hpp>
-#include "Texture2D.h"
 #include "ShaderProgramFactory.h"
 #include "AssetFolderPathManager.h"
+#include "Texture2D.h"
 
 namespace Hogra {
 #define DEFAULT_FONT_HEIGHT 24
@@ -22,14 +22,14 @@ namespace Hogra {
         };
 
         struct Character {
-            unsigned int textureID;  // ID handle of the glyph texture
+            Texture2D* texture;      // image of the character 
             glm::ivec2   size;       // Size of glyph
             glm::ivec2   bearing;    // Offset from baseline to left/top of glyph
             unsigned int advance;    // Offset to advance to next glyph
         };
 
         void Init(const char* fileName) {
-            shaderProgram = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
+            glyphProgram = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
             Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append(fileName));
         }
 
@@ -46,7 +46,7 @@ namespace Hogra {
         glm::ivec2 GetTextDimension(const std::string& text, int& maxBaseline);
 
     private:
-        ShaderProgram* shaderProgram = nullptr;
+        ShaderProgram* glyphProgram = nullptr;
         std::map<char, Character> characters;
         unsigned int vao = 0;
         unsigned int vbo = 0;

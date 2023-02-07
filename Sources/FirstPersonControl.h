@@ -101,7 +101,7 @@ namespace Hogra {
 		bool isGrounded = false;
 		float jumpCoolDown = 0.0f;
 		Collider* jumpCollider = nullptr;
-		float jumpImpulse = 1000.0f;
+		float jumpImpulse = 250.0f;
 		bool isWalking = false;
 		glm::vec3 walkForce;
 

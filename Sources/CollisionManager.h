@@ -33,7 +33,7 @@ namespace Hogra {
 		std::vector<Collider*> colliders;
 		bool useSpatialTree = true;
 		InstanceGroup instanceGroup;
-		ShaderProgram shaderProgram;
+		ShaderProgram glyphProgram;
 		SceneObject debugObj;
 		Mesh debugMesh;
 		Geometry* debugGeometry;

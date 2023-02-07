@@ -18,7 +18,7 @@ namespace Hogra {
 
 		void Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType);
 
-		void Init(const std::vector<int>& data, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
+		void Init(const char* _buffer, glm::ivec2 _dimensions, GLuint _unit, GLenum _internalFormat, GLenum _format, GLenum _pixelType);
 
 		void Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
 
@@ -50,6 +50,8 @@ namespace Hogra {
 		}
 
 		void SetData(const std::vector<glm::vec4>& _data);
+
+		void SetFiltering(GLenum filtering) const override;
 
 	private:
 		glm::ivec2 dimensions;

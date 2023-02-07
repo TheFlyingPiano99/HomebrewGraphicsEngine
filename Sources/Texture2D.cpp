@@ -51,17 +51,18 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture2D::Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType)
+	void Texture2D::Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint _unit, GLenum _format, GLenum _pixelType)
 	{
+		this->bytes = _bytes;
+		this->dimensions = _dimensions;
+		this->unit = _unit;
 		this->format = _format;
 		this->pixelType = _pixelType;
-		this->dimensions = _dimensions;
-		this->bytes = _bytes;
-			// Generates an OpenGL texture object
+
+		// Generates an OpenGL texture object
 		glGenTextures(1, &ID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + unit);
-		this->unit = unit;
 		glBindTexture(GL_TEXTURE_2D, ID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
@@ -81,6 +82,38 @@ namespace Hogra {
 		*/
 
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	void Texture2D::Init(const char* _buffer, glm::ivec2 _dimensions, GLuint _unit, GLenum _internalFormat, GLenum _format, GLenum _pixelType)
+	{
+		this->dimensions = _dimensions;
+		this->unit = _unit;
+		this->format = _format;
+		this->pixelType = _pixelType;
+
+		// Generates an OpenGL texture object
+		glGenTextures(1, &ID);
+		// Assigns the texture to a Texture Unit
+		glActiveTexture(GL_TEXTURE0 + unit);
+		glBindTexture(GL_TEXTURE_2D, ID);
+
+		// Configures the type of algorithm that is used to make the image smaller or bigger
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		// Configures the way the texture repeats (if it does at all)
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+		// Assigns the image to the OpenGL Texture object
+		glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, dimensions.x, dimensions.y, 0, format, pixelType, _buffer);
+
+		/*
+		// Generates MipMaps
+			glGenerateMipmap(GL_TEXTURE_2D);
+		*/
+
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
@@ -151,6 +184,14 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, ID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	void Texture2D::SetFiltering(GLenum filtering) const
+	{
+		Bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering);
+		Unbind();
 	}
 
 }

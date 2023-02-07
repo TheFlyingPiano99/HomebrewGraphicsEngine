@@ -17,7 +17,10 @@ namespace Hogra {
 
 		virtual void Unbind() const = 0;
 		
+		virtual void SetFiltering(GLenum filtering) const = 0;
+
 		void Delete() const;
+
 
 	protected:
 		//inline void* operator new(std::size_t size) { return ::operator new(size); }

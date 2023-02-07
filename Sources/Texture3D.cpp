@@ -255,4 +255,13 @@ namespace Hogra {
 		}
 		return true;
 	}
+
+	void Texture3D::SetFiltering(GLenum filtering) const
+	{
+		Bind();
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, filtering);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, filtering);
+		Unbind();
+	}
+
 }

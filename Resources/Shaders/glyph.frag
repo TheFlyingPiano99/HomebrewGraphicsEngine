@@ -1,10 +1,14 @@
 #version 420 core
+/*
+For creating caption textures
+*/
+
 in vec2 texCoords;
-out vec4 color;
+out float FragColor;
 
 layout (binding = 0) uniform sampler2D glyph;
 
 void main()
 {    
-    color = vec4(texture(glyph, texCoords).r, 0.0, 0.0, 1.0);
+    FragColor = texture(glyph, texCoords).r;
 }

@@ -1,4 +1,7 @@
 #include "Caption.h"
+#include "GeometryFactory.h"
+#include "DebugUtils.h"
+#include "glm/gtx/transform.hpp"
 
 void Hogra::Caption::Init(const std::string& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color) {
 	this->text = text;
@@ -8,18 +11,7 @@ void Hogra::Caption::Init(const std::string& text, Font* font, glm::vec2 sPos, f
 	this->screenPosition = sPos;
 	this->program = ShaderProgramFactory::GetInstance()->GetForwardCaptionProgram();
 	this->texture = font->RenderTextInTexture(text);
-	vao.Init();
-	vao.Bind();
-	std::vector<glm::vec4> vertices;
-	glm::ivec2 dim = texture->getDimensions();
-	vertices.push_back(glm::vec4(dim.x, dim.y, 1.0f, 1.0f));//6
-	vertices.push_back(glm::vec4(dim.x, 0.0f, 1.0f, 0.0f));	//5
-	vertices.push_back(glm::vec4(0.0f, dim.y, 0.0f, 1.0f)); //4
-	vertices.push_back(glm::vec4(dim.x, 0.0f, 1.0f, 0.0f));	//3
-	vertices.push_back(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));	//2
-	vertices.push_back(glm::vec4(0.0f, dim.y, 0.0f, 1.0f)); //1
-	vbo.Init(vertices);
-	vao.LinkAttrib(vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
+	this->quad = GeometryFactory::GetInstance()->GetSimpleQuad();
 }
 
 void Hogra::Caption::Draw() {
@@ -29,24 +21,23 @@ void Hogra::Caption::Draw() {
 	program->Activate();
 	texture->Bind();
 	glm::vec2 pos = screenPosition;
-	if (placing == CaptionPlacing::centeredText) {
-		pos.x -= scale * (float)texture->getDimensions().x / 2.0f;
+	if (alignment == CaptionAlignment::rightAligned) {
+		pos.x -= scale * (float)texture->getDimensions().x * 0.5f;
 	}
-	else if (placing == CaptionPlacing::rightAligned) {
-		pos.x -= scale * (float)texture->getDimensions().x;
+	else if (alignment == CaptionAlignment::leftAligned) {
+		pos.x += scale * (float)texture->getDimensions().x * 0.5f;
 	}
-	glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight)
-		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(glm::vec3(scale));
-	glUniformMatrix4fv(glGetUniformLocation(program->ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-	glUniform4f(glGetUniformLocation(program->ID, "textColor"), color.r, color.g, color.b, color.a);
+	
+	glm::mat4 transform = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight)
+		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(scale * glm::vec3(texture->getDimensions(), 1.0f) * 0.5f);
+	program->SetUniform("transform", transform);
+	program->SetUniform("textColor", color);
 	glEnable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
-	vao.Bind();
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	vao.Unbind();
-	texture->Unbind();
+	
+	quad->Draw();
 }
 
 const std::string& Hogra::Caption::GetText() {

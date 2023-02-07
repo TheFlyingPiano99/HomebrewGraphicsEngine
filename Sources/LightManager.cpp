@@ -49,11 +49,11 @@ namespace Hogra {
 		if (nullptr != debugLightVolumeMesh) {
 			return;
 		}
-		shaderProgram.Init(
+		glyphProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
-		debugMaterial.Init(&shaderProgram);
+		debugMaterial.Init(&glyphProgram);
 		debugGeometry = GeometryFactory::GetInstance()->getWireFrameSphere();
 		debugLightVolumeMesh = Allocator::New<Mesh>();
 		debugLightVolumeMesh->Init(&debugMaterial, debugGeometry);

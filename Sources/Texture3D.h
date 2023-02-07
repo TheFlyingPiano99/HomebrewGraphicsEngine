@@ -42,6 +42,8 @@ namespace Hogra {
 
 		float operator()(glm::ivec3 position) const;
 
+		void SetFiltering(GLenum filtering) const override;
+
 	private:
 		bool ReadDimensions(const char* path, std::string& name, Dimensions& dimensions);
 		Dimensions dimensions;

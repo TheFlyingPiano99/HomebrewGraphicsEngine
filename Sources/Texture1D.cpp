@@ -45,4 +45,13 @@ namespace Hogra {
 	{
 		glBindTexture(GL_TEXTURE_1D, 0);
 	}
+
+	void Texture1D::SetFiltering(GLenum filtering) const
+	{
+		Bind();
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, filtering);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, filtering);
+		Unbind();
+	}
+
 }

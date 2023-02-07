@@ -407,7 +407,6 @@
     <None Include="..\Resources\Shaders\glyph.frag" />
     <None Include="..\Resources\Shaders\lightVolume.vert" />
     <None Include="..\Resources\Shaders\roughnessMetallicAOCombination.frag" />
-    <None Include="..\Resources\Shaders\simple2D-no-projection.vert" />
     <None Include="..\Resources\Shaders\simple2D.vert" />
     <None Include="..\Resources\Shaders\hdr.frag" />
     <None Include="..\Resources\Shaders\light.frag" />

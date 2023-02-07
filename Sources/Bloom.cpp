@@ -2,7 +2,7 @@
 #include "AssetFolderPathManager.h"
 #include<glm/glm.hpp>
 #include<glm/gtc/type_ptr.hpp>
-
+#include "VBO.h"
 
 Hogra::Bloom::Bloom() {
 	treshold = 1.0f;
@@ -12,37 +12,27 @@ Hogra::Bloom::Bloom() {
 
 void Hogra::Bloom::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 	prefilterProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomPrefilter.frag")
 	);
 	downSampleProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomDownSampling.frag")
 	);
 	upSampleProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomUpSampling.frag")
 	);
 	recombineProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("simple2D-no-projection.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
 		"",
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomRecombine.frag")
 	);
 	fbo.Init();
-	vao.Init();
-	vao.Bind();
-	std::vector<glm::vec4> vertices;
-	vertices.push_back(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));	//6
-	vertices.push_back(glm::vec4(1.0f, -1.0f, 1.0f, 0.0f));	//5
-	vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //4
-	vertices.push_back(glm::vec4(1.0f, -1.0f, 1.0f, 0.0f));	//3
-	vertices.push_back(glm::vec4(-1.0f, -1.0f, 0.0f, 0.0f));//2
-	vertices.push_back(glm::vec4(-1.0f, 1.0f, 0.0f, 1.0f)); //1
-	vbo.Init(vertices);
-	vao.LinkAttrib(vbo, 0, 4, GL_FLOAT, 4 * sizeof(float), 0);
+	quad = GeometryFactory::GetInstance()->GetSimpleQuad();
 	OnContextResize(_contextWidth, _contextHeight);
 }
 
@@ -72,8 +62,7 @@ void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const 
 	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, downScaledTextures[0], 0);			// Output of the shader
 	glUniform1f(glGetUniformLocation(prefilterProgram.ID, "treshold"), treshold);
 
-	vao.Bind();
-	glDrawArrays(GL_TRIANGLES, 0, 6);	// Prefilter draw call
+	quad->Draw();	// Prefilter draw call
 	
 	downSampleProgram.Activate();
 	downScaledTextures[0].Bind();											// Input of the shader
@@ -81,7 +70,7 @@ void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const 
 	{
 		downScaledTextures[i - 1].Bind();											// Input of the shader
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, downScaledTextures[i], 0);	// Output of the shader
-		glDrawArrays(GL_TRIANGLES, 0, 6);	// Down sample draw call
+		quad->Draw();	// Down sample draw call
 	}
 
 	upSampleProgram.Activate();
@@ -92,7 +81,7 @@ void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const 
 	{
 		downScaledTextures[i].Bind();											// Input of the shader
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, downScaledTextures[i - 1], 0);	// Output of the shader
-		glDrawArrays(GL_TRIANGLES, 0, 6);	// Up sample draw call
+		quad->Draw();	// Up sample draw call
 	}
 	// Rebind hdr texture:
 	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, hdrTexture, 0);
@@ -103,8 +92,7 @@ void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const 
 	glUniform1f(glGetUniformLocation(recombineProgram.ID, "mixBloom"), mixBloom);
 	downScaledTextures[0].Bind();
 	hdrTexture.Bind();
-	glDrawArrays(GL_TRIANGLES, 0, 6);	// Recombine draw call
-	vao.Unbind();
+	quad->Draw();	// Recombine draw call
 }
 
 void Hogra::Bloom::Bind()

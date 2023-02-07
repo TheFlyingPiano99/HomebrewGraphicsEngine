@@ -51,7 +51,7 @@ namespace Hogra {
 		UniformBufferObject ubo;
 		DeferredLightingSystem deferredLightingSystem;
 		Mesh* debugLightVolumeMesh = nullptr;
-		ShaderProgram shaderProgram;
+		ShaderProgram glyphProgram;
 		Material debugMaterial;
 		Geometry* debugGeometry = nullptr;
 	};
