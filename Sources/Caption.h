@@ -16,13 +16,15 @@ namespace Hogra {
 	{
 	public:
 
-		void Init(const std::string& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color);
+		void Init(const std::wstring& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color);
 		
 		~Caption() override = default;
 
+		void UpdateText(const std::wstring& str);
+
 		void Draw();
 
-		const std::string& GetText();
+		const std::wstring& GetText();
 
 		// Inherited via Component
 		void EarlyPhysicsUpdate(float dt) override;
@@ -35,15 +37,29 @@ namespace Hogra {
 
 		void SetIsVisible(bool b);
 
-		enum CaptionAlignment {
+		enum class CaptionAlignment {
 			centeredText,
 			leftAligned,
 			rightAligned
 		};
 
+		enum class PlacingStyle {
+			relative,
+			absolute,
+		};
+
+		void SetHorizontalPlacingStyle(PlacingStyle style) {
+			horizontalPlacing = style;
+		}
+		void SetVerticalPlacingStyle(PlacingStyle style) {
+			verticalPlacing = style;
+		}
+
 	private:
 		Geometry* quad;
-		std::string text;
+		std::wstring text;
+		PlacingStyle horizontalPlacing = PlacingStyle::absolute;
+		PlacingStyle verticalPlacing = PlacingStyle::absolute;
 		glm::vec2 screenPosition;
 		float scale;
 		Font* font = nullptr;

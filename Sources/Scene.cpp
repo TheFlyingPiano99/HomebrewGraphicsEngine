@@ -341,6 +341,9 @@ namespace Hogra {
 		camera.SetChanged(true);
 
 		lightManager.OnContextResize(_contextWidth, _contextHeight);
+		for (auto& cap : captions) {
+			cap->UpdateText(L"Context resize. #%!?'!%Ű_:?'§");
+		}
 	}
 
 	void Scene::Serialize()

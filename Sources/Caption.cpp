@@ -3,15 +3,23 @@
 #include "DebugUtils.h"
 #include "glm/gtx/transform.hpp"
 
-void Hogra::Caption::Init(const std::string& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color) {
-	this->text = text;
-	this->scale = scale;
-	this->font = font;
-	this->color = color;
-	this->screenPosition = sPos;
+void Hogra::Caption::Init(const std::wstring& _text, Font* _font, glm::vec2 _screenPos, float _scale, const glm::vec4& _color)
+{
+	this->text = _text;
+	this->scale = _scale;
+	this->font = _font;
+	this->color = _color;
+	this->screenPosition = _screenPos;
 	this->program = ShaderProgramFactory::GetInstance()->GetForwardCaptionProgram();
-	this->texture = font->RenderTextInTexture(text);
+	this->texture = font->RenderTextIntoTexture(text);
 	this->quad = GeometryFactory::GetInstance()->GetSimpleQuad();
+}
+
+void Hogra::Caption::UpdateText(const std::wstring& _text)
+{
+	text = _text;
+	Allocator::Delete(texture);
+	texture = font->RenderTextIntoTexture(text);
 }
 
 void Hogra::Caption::Draw() {
@@ -20,7 +28,21 @@ void Hogra::Caption::Draw() {
 	}
 	program->Activate();
 	texture->Bind();
-	glm::vec2 pos = screenPosition;
+	glm::vec2 pos;
+	if (PlacingStyle::absolute == horizontalPlacing) {
+		pos.x = screenPosition.x;
+	}
+	else {
+		pos.x = GlobalVariables::windowWidth * screenPosition.x;
+	}
+	if (PlacingStyle::absolute == verticalPlacing) {
+		pos.y = screenPosition.y;
+	}
+	else {
+		pos.y = GlobalVariables::windowHeight * screenPosition.y;
+	}
+	pos.y = (float)GlobalVariables::windowHeight - pos.y;	// Top is zero.
+
 	if (alignment == CaptionAlignment::rightAligned) {
 		pos.x -= scale * (float)texture->getDimensions().x * 0.5f;
 	}
@@ -40,7 +62,7 @@ void Hogra::Caption::Draw() {
 	quad->Draw();
 }
 
-const std::string& Hogra::Caption::GetText() {
+const std::wstring& Hogra::Caption::GetText() {
 	return text;
 }
 

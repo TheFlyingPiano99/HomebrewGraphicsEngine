@@ -5,7 +5,7 @@
 #include "DebugUtils.h"
 
 namespace Hogra {
-    
+
     std::vector<Font*> Font::heapAllocatedInstances = std::vector<Font*>();
 
     Font::~Font() {
@@ -13,8 +13,8 @@ namespace Hogra {
         glDeleteVertexArrays(1, &vao);
         // Deleting ShaderProgram is not the responsibility of this class
     }
-    
-    bool Font::Load(const std::string& path) {
+
+    bool Font::LoadChar(const std::string& path, wchar_t c) {
         FT_Library ft;
         if (FT_Init_FreeType(&ft))
         {
@@ -31,29 +31,25 @@ namespace Hogra {
 
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
-        for (unsigned int c = 31; c <= 50111; c++)
+        // load character glyph 
+        if (FT_Load_Char(face, c, FT_LOAD_RENDER))
         {
-            // load character glyph 
-            if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-            {
-                auto str = std::string("Failed to load Glyph ");
-                str.append((const char*)c);
-                DebugUtils::PrintError("Freetype font loading", str.c_str());
-                continue;
-            }
-            Texture2D* charTexture = Allocator::New<Texture2D>();
-            charTexture->Init((const char*)face->glyph->bitmap.buffer, glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows), (GLuint)0, (GLenum)GL_RED, (GLenum)GL_RED, (GLenum)GL_UNSIGNED_BYTE);
-            charTexture->SetFiltering(GL_NEAREST);
-
-            // now store character for later use
-            Character character = {
-                charTexture,
-                glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                face->glyph->advance.x
-            };
-            characters.emplace(std::pair<char, Character>(c, character));
+            auto str = std::string("Failed to load Glyph ");
+            str.append((const char*)c);
+            DebugUtils::PrintError("Freetype font loading", str.c_str());
         }
+        Texture2D* charTexture = Allocator::New<Texture2D>();
+        charTexture->Init((const char*)face->glyph->bitmap.buffer, glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows), (GLuint)0, (GLenum)GL_RED, (GLenum)GL_RED, (GLenum)GL_UNSIGNED_BYTE);
+        charTexture->SetFiltering(GL_NEAREST);
+
+        // now store character for later use
+        Character character = {
+            charTexture,
+            glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+            glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+            face->glyph->advance.x
+        };
+        characters.emplace(std::pair<wchar_t, Character>(c, character));
 
         FT_Done_Face(face);
         FT_Done_FreeType(ft);
@@ -69,15 +65,15 @@ namespace Hogra {
         glBindVertexArray(0);
         return true;
     }
-    
-    void Font::RenderText(const std::string& text, float x, float y, float scale, const glm::vec3& color)
+
+    void Font::RenderText(const std::wstring& text, float x, float y, float scale, const glm::vec3& color)
     {
         if (nullptr == glyphProgram) {
             return;
         }
         glyphProgram->Activate();
         glUniform3f(glGetUniformLocation(glyphProgram->ID, "textColor"), color.x, color.y, color.z);
-        glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight);
+        glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, (float)GlobalVariables::windowHeight, 0.0f);
         glUniformMatrix4fv(glGetUniformLocation(glyphProgram->ID, "transform"), 1, GL_FALSE, glm::value_ptr(projection));
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(vao);
@@ -86,10 +82,10 @@ namespace Hogra {
         glDisable(GL_DEPTH_TEST);
 
         // iterate through all characters
-        std::string::const_iterator c;
+        std::wstring::const_iterator c;
         for (c = text.begin(); c != text.end(); c++)
         {
-            auto& ch = characters[*c];
+            auto& ch = GetCharacter(*c);
 
             float xpos = x + ch.bearing.x * scale;
             float ypos = y - (ch.size.y - ch.bearing.y) * scale;
@@ -120,16 +116,15 @@ namespace Hogra {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    Texture2D* Font::RenderTextInTexture(const std::string& text) {
+    Texture2D* Font::RenderTextIntoTexture(const std::wstring& text) {
         if (nullptr == glyphProgram) {
             throw UnloadedFontException();
         }
         int baseline;
         glm::ivec2 dim = GetTextDimension(text, baseline);
-        
+
         Texture2D* textureToReturn = Allocator::New<Texture2D>();
         textureToReturn->Init(GL_RED, dim, 0, GL_RED, GL_UNSIGNED_BYTE);
-        textureToReturn->SetFiltering(GL_NEAREST);
 
         FBO fbo;
         fbo.Init();
@@ -141,13 +136,13 @@ namespace Hogra {
         glm::mat4 projection = glm::ortho(0.0f, (float)dim.x, 0.0f, (float)dim.y);
 
         // iterate through all characters
-        std::string::const_iterator c;
+        std::wstring::const_iterator c;
         int x = 0;
         int y = baseline;
         for (c = text.begin(); c != text.end(); c++)
         {
-            auto const& ch = characters[*c];
-            float xpos = x + ch.bearing.x + ch.size.x *0.5f;
+            const auto& ch = GetCharacter(*c);
+            float xpos = x + ch.bearing.x + ch.size.x * 0.5f;
             float ypos = y - (ch.size.y - ch.bearing.y) + ch.size.y * 0.5f;
             auto transform = projection * glm::translate(glm::vec3(xpos, ypos, 0.0f)) * glm::scale(glm::vec3(ch.size.x, -ch.size.y, 2.0f) * 0.5f);
             glyphProgram->SetUniform("transform", transform);
@@ -159,21 +154,30 @@ namespace Hogra {
         fbo.Delete();
         return textureToReturn;
     }
+
+    Font::Character& Font::GetCharacter(wchar_t c)
+    {
+        if (characters.contains(c)) {
+            return characters.find(c)->second;
+        }
+        LoadChar(path, c);
+        return characters.find(c)->second;
+    }
     
     ShaderProgram* Font::GetShaderProgram() const {
         return glyphProgram;
     }
     
-    glm::ivec2 Font::GetTextDimension(const std::string& text, int& maxBaseline) {
+    glm::ivec2 Font::GetTextDimension(const std::wstring& text, int& maxBaseline) {
         glm::ivec2 min;
         glm::ivec2 max;
         maxBaseline = 0.0f;
         bool first = true;
-        std::string::const_iterator c;
+        std::wstring::const_iterator c;
         float x = 0.0f;
         for (c = text.begin(); c != text.end(); c++)
         {
-            auto& ch = characters[*c];
+            const auto& ch = GetCharacter(*c);
 
             int xpos = x + ch.bearing.x;
             int ypos = ch.bearing.y - ch.size.y;

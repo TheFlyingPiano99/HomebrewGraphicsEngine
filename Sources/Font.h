@@ -12,7 +12,7 @@
 #include "Texture2D.h"
 
 namespace Hogra {
-#define DEFAULT_FONT_HEIGHT 24
+#define DEFAULT_FONT_HEIGHT 32
 
     class Font
     {
@@ -30,24 +30,31 @@ namespace Hogra {
 
         void Init(const char* fileName) {
             glyphProgram = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
-            Load(AssetFolderPathManager::getInstance()->getFontsFolderPath().append(fileName));
+            path = AssetFolderPathManager::getInstance()->getFontsFolderPath().append(fileName);
+            for (wchar_t c = 31; c < 90; c++) {
+                LoadChar(path, c);
+            }
         }
 
         ~Font();
 
-        bool Load(const std::string& path);
+        void RenderText(const std::wstring& text, float x, float y, float scale, const glm::vec3& color);
 
-        void RenderText(const std::string& text, float x, float y, float scale, const glm::vec3& color);
-
-        Texture2D* RenderTextInTexture(const std::string& text);
+        Texture2D* RenderTextIntoTexture(const std::wstring& text);
             
         ShaderProgram* GetShaderProgram() const;
 
-        glm::ivec2 GetTextDimension(const std::string& text, int& maxBaseline);
 
     private:
+        bool LoadChar(const std::string& path, wchar_t c);
+
+        glm::ivec2 GetTextDimension(const std::wstring& text, int& maxBaseline);
+
+        Character& GetCharacter(wchar_t c);
+
+        std::string path;
         ShaderProgram* glyphProgram = nullptr;
-        std::map<char, Character> characters;
+        std::map<wchar_t, Character> characters;
         unsigned int vao = 0;
         unsigned int vbo = 0;
 

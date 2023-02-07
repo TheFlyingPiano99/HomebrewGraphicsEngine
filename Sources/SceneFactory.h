@@ -33,7 +33,7 @@ namespace Hogra {
 
 		void InitCaptions(Scene* scene);
 
-		void InitVoxelCaption(Scene* scene, const char* dataSetName);
+		void InitVoxelCaption(Scene* scene, const wchar_t* dataSetName);
 
 		void InitGround(Scene* scene);
 

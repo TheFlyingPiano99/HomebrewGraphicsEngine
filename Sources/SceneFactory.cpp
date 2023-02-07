@@ -314,12 +314,12 @@ namespace Hogra {
 		scene->AddLight(light);	// Directional light
 
 		// Volume:
-		const char* dataSetName = "cthead-8bit";
+		const wchar_t* dataSetName = L"cthead-8bit";
 		//const char* dataSetName = "cthead-8bit";
 		auto* voxelTexture = Allocator::New<Texture3D>();
 		
 		voxelTexture->Init(
-	AssetFolderPathManager::getInstance()->getTextureFolderPath().append(dataSetName),
+	AssetFolderPathManager::getInstance()->getTextureFolderPath().append("cthead-8bit"),
 		3,
 			GL_RED
 		);
@@ -935,36 +935,35 @@ namespace Hogra {
 		font->Init("arial.ttf");
 
 		Caption* caption1 = Allocator::New<Caption>();
-		caption1->Init("Homebrew Graphics Engine Demo", font,
-			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.95), 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
+		caption1->Init(L"Homebrew Graphics Engine Demo", font,
+			glm::vec2(0.5f, 0.05f), 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
+		caption1->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
+		caption1->SetVerticalPlacingStyle(Caption::PlacingStyle::relative);
 		scene->AddCaption(caption1);
-		Allocator::Delete(font);
 	}
 
-	void SceneFactory::InitVoxelCaption(Scene* scene, const char* dataSetName) {
+	void SceneFactory::InitVoxelCaption(Scene* scene, const wchar_t* dataSetName) {
 		auto* font = Allocator::New<Font>();
 		font->Init("arial.ttf");
 		auto* caption1 = Allocator::New<Caption>();
-		caption1->Init("Volume rendering", font,
+		caption1->Init(L"Volume rendering", font,
 			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.96), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption1);
 
 		auto* caption2 = Allocator::New<Caption>();
-		caption2->Init(std::string("Dataset: ").append(dataSetName), font,
+		caption2->Init(std::wstring(L"Dataset: ").append(dataSetName), font,
 			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.93), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 
 		caption2 = Allocator::New<Caption>();
-		caption2->Init(std::string("Toggle transfer function [H]"), font,
+		caption2->Init(std::wstring(L"Toggle transfer function [H]"), font,
 			glm::vec2(GlobalVariables::windowWidth * 0.9f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
 
 		caption2 = Allocator::New<Caption>();
-		caption2->Init(std::string("Toggle options [O]"), font,
+		caption2->Init(std::wstring(L"Toggle options [O]"), font,
 			glm::vec2(GlobalVariables::windowWidth * 0.1f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddCaption(caption2);
-
-		Allocator::Delete(font);
 	}
 	
 	void SceneFactory::InitGround(Scene* scene)
