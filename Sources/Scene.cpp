@@ -106,6 +106,22 @@ namespace Hogra {
 			Allocator::Delete(renderLayer);
 		}
 
+		for (auto shader : shaders) {
+			Allocator::Delete(shader);
+		}
+
+		for (auto material : materials) {
+			Allocator::Delete(material);
+		}
+
+		for (auto geometry : geometries) {
+			Allocator::Delete(geometry);
+		}
+
+		for (auto mesh : meshes) {
+			Allocator::Delete(mesh);
+		}
+
 		if (nullptr != userControl) {
 			Allocator::Delete(userControl);
 		}
@@ -135,6 +151,13 @@ namespace Hogra {
 		for (auto& obj : sceneObjects) {
 			obj->AfterPhysicsLoopUpdate();
 		}
+
+		// Delete objects:
+		for (auto obj : toDelete) {
+			DeleteSceneObject(obj);
+		}
+		toDelete.clear();
+
 		if (shadowCaster != nullptr) {
 			shadowCaster->Update();
 		}
@@ -220,6 +243,30 @@ namespace Hogra {
 
 		sceneObjects.push_back(object);		// Add to main collection in Scene
 
+		//TODO don't add resource to collection if already there
+
+		{	// Add mesh to collection
+			auto mesh = object->GetMesh();
+			if (nullptr != mesh) {
+				meshes.push_back(mesh);
+				auto geom = mesh->getGeometry();
+				if (nullptr != geom) {
+					geometries.push_back(geom);
+				}
+				auto mat = mesh->getMaterial();
+				if (nullptr != mat) {
+					materials.push_back(mat);
+					auto shader = mat->GetShaderProgram();
+					if (nullptr != shader) {
+						shaders.push_back(shader);
+					}
+					auto ts = mat->GetTextures();
+					for (auto texture : ts) {
+						textures.push_back(texture);
+					}
+				}
+			}
+		}
 
 		// Add to instance group:
 		static int defaultName = 0;
@@ -232,11 +279,11 @@ namespace Hogra {
 			if (instanceGroupName.length() > 0) {
 				const auto& iter = instanceGroups.find(instanceGroupName);
 				if (iter != instanceGroups.end()) {
-					iter->second->addObject(object);
+					iter->second->AddObject(object);
 				}
 				else {
 					auto* group = Allocator::New<InstanceGroup>();
-					group->addObject(object);
+					group->AddObject(object);
 					instanceGroups.emplace(instanceGroupName, group);
 					if (layer->IsInstanced()) {	// Add to layer
 						layer->AddInstanceGroup(group);
@@ -245,7 +292,7 @@ namespace Hogra {
 			}
 			else {
 				auto* group = Allocator::New<InstanceGroup>();
-				group->addObject(object);
+				group->AddObject(object);
 				instanceGroups.emplace(std::to_string(defaultName++), group);
 				if (layer->IsInstanced()) {	// Add to layer
 					layer->AddInstanceGroup(group);
@@ -258,15 +305,20 @@ namespace Hogra {
 		}
 	}
 
-	void Scene::RemoveSceneObject(SceneObject* object)
+	void Scene::RegisterObjectToDelete(SceneObject* object) {
+		toDelete.push_back(object);
+	}
+
+	void Scene::DeleteSceneObject(SceneObject* object)
 	{
-		auto iter = std::ranges::find(sceneObjects.begin(), sceneObjects.end(), object);
-		if (sceneObjects.end() != iter) {
-			sceneObjects.erase(iter);
+		auto objIter = std::ranges::find(sceneObjects.begin(), sceneObjects.end(), object);
+		if (sceneObjects.end() != objIter) {
+			sceneObjects.erase(objIter);
+			for (auto layer : renderLayers) {
+				layer->RemoveSceneObject(object);
+			}
+			Allocator::Delete(object);
 		}
-		//TODO
-		//Remove from instance group
-		//Remove Collider
 	}
 
 	void Scene::AddCollider(Collider* collider, const std::string& colliderGroupName)
@@ -275,10 +327,13 @@ namespace Hogra {
 	}
 
 	void Scene::AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName) {
-		if (renderLayerName.empty()) {
+		if (renderLayerName.empty()) {	// No layer specified
 			stage->AddUniformVariable(&timeSpent);
 			(*renderLayers.cend())->AddPostProcessStage(stage);
+			postProcessStages.push_back(stage);		// Main PPS container in Scene
+			return;
 		}
+
 		auto layer = renderLayersMap.find(renderLayerName);
 		if (layer == renderLayersMap.end()) {
 			std::cerr << "Trying to add post process effect to unknown render layer!" << std::endl;
@@ -341,9 +396,6 @@ namespace Hogra {
 		camera.SetChanged(true);
 
 		lightManager.OnContextResize(_contextWidth, _contextHeight);
-		for (auto& cap : captions) {
-			cap->UpdateText(L"Context resize. #%!?'!%Ű_:?'§");
-		}
 	}
 
 	void Scene::Serialize()

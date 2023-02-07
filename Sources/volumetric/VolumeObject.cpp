@@ -601,17 +601,17 @@ namespace Hogra::Volumetric {
 	void VolumeObject::ExportHalfAngleData(const ShaderProgram& program, const glm::mat4& lightViewProjMatrix, bool isBackToFront, const Camera&  camera, const glm::vec3& w_sliceDelta)
 	{
 		program.Activate();
-		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glUniformMatrix4fv(glGetUniformLocation(program.ID, "sceneObject.invModelMatrix"), 1, GL_FALSE, glm::value_ptr(invModelMatrix));
-		glUniformMatrix4fv(glGetUniformLocation(program.ID, "light.viewProjMatrix"), 1, GL_FALSE, glm::value_ptr(lightViewProjMatrix));
-		glUniform3f(glGetUniformLocation(program.ID, "resolution"), resolution.x, resolution.y, resolution.z);
-		glUniform3f(glGetUniformLocation(program.ID, "scale"), scale.x, scale.y, scale.z);
-		glUniform3f(glGetUniformLocation(program.ID, "w_sliceDelta"), w_sliceDelta.x, w_sliceDelta.y, w_sliceDelta.z);
-		glUniform3f(glGetUniformLocation(program.ID, "light.position"), light->GetPosition().x, light->GetPosition().y, light->GetPosition().z);
-		glUniform3f(glGetUniformLocation(program.ID, "light.powerDensity"), light->getPowerDensity().x, light->getPowerDensity().y, light->getPowerDensity().z);
-		glUniform1i(glGetUniformLocation(program.ID, "isBackToFront"), (isBackToFront)? 1 : 0);
-		glUniform1f(glGetUniformLocation(program.ID, "opacityScale"), density);
-		glUniform1i(glGetUniformLocation(program.ID, "showNormals"), showNormals);
+		program.SetUniform("sceneObject.modelMatrix", modelMatrix);
+		program.SetUniform("sceneObject.invModelMatrix", invModelMatrix);
+		program.SetUniform("light.viewProjMatrix", lightViewProjMatrix);
+		program.SetUniform("resolution", resolution);
+		program.SetUniform("scale", scale);
+		program.SetUniform("w_sliceDelta", w_sliceDelta);
+		program.SetUniform("light.position", light->GetPosition());
+		program.SetUniform("light.powerDensity", light->getPowerDensity());
+		program.SetUniform("isBackToFront", (isBackToFront) ? 1 : 0);
+		program.SetUniform("opacityScale", density);
+		program.SetUniform("showNormals", showNormals);
 		program.SetUniform("usePBR", usePBR);
 		program.SetUniform("localShadows", localShadows);
 		program.SetUniform("gradientBasedLocalIllumination", gradientBasedLocalIllumination);

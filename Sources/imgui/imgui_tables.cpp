@@ -352,7 +352,7 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
     flags = TableFixFlags(flags, outer_window);
 
     // Initialize
-    table->ID = id;
+    table->glID = id;
     table->Flags = flags;
     table->InstanceCurrent = (ImS16)instance_no;
     table->LastFrameActive = g.FrameCount;
@@ -1103,7 +1103,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
     // [Part 11] Context menu
     if (table->IsContextPopupOpen && table->InstanceCurrent == table->InstanceInteracted)
     {
-        const ImGuiID context_menu_id = ImHashStr("##ContextMenu", 0, table->ID);
+        const ImGuiID context_menu_id = ImHashStr("##ContextMenu", 0, table->glID);
         if (BeginPopupEx(context_menu_id, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoSavedSettings))
         {
             TableDrawContextMenu(table);
@@ -1317,7 +1317,7 @@ void    ImGui::EndTable()
     }
 
     // Pop from id stack
-    IM_ASSERT_USER_ERROR(inner_window->IDStack.back() == table->ID + table->InstanceCurrent, "Mismatching PushID/PopID!");
+    IM_ASSERT_USER_ERROR(inner_window->IDStack.back() == table->glID + table->InstanceCurrent, "Mismatching PushID/PopID!");
     IM_ASSERT_USER_ERROR(outer_window->DC.ItemWidthStack.Size >= temp_data->HostBackupItemWidthStackSize, "Too many PopItemWidth!");
     PopID();
 
@@ -1588,7 +1588,7 @@ ImRect ImGui::TableGetCellBgRect(const ImGuiTable* table, int column_n)
 ImGuiID ImGui::TableGetColumnResizeID(const ImGuiTable* table, int column_n, int instance_no)
 {
     IM_ASSERT(column_n >= 0 && column_n < table->ColumnsCount);
-    ImGuiID id = table->ID + 1 + (instance_no * table->ColumnsCount) + column_n;
+    ImGuiID id = table->glID + 1 + (instance_no * table->ColumnsCount) + column_n;
     return id;
 }
 
@@ -1957,7 +1957,7 @@ void ImGui::TableBeginCell(ImGuiTable* table, int column_n)
     if (column->IsSkipItems)
     {
         ImGuiContext& g = *GImGui;
-        g.LastItemData.ID = 0;
+        g.LastItemData.glID = 0;
         g.LastItemData.StatusFlags = 0;
     }
 
@@ -3012,7 +3012,7 @@ void ImGui::TableOpenContextMenu(int column_n)
         table->IsContextPopupOpen = true;
         table->ContextPopupColumn = (ImGuiTableColumnIdx)column_n;
         table->InstanceInteracted = table->InstanceCurrent;
-        const ImGuiID context_menu_id = ImHashStr("##ContextMenu", 0, table->ID);
+        const ImGuiID context_menu_id = ImHashStr("##ContextMenu", 0, table->glID);
         OpenPopupEx(context_menu_id, ImGuiPopupFlags_None);
     }
 }
@@ -3141,7 +3141,7 @@ static void TableSettingsInit(ImGuiTableSettings* settings, ImGuiID id, int colu
     ImGuiTableColumnSettings* settings_column = settings->GetColumnSettings();
     for (int n = 0; n < columns_count_max; n++, settings_column++)
         IM_PLACEMENT_NEW(settings_column) ImGuiTableColumnSettings();
-    settings->ID = id;
+    settings->glID = id;
     settings->ColumnsCount = (ImGuiTableColumnIdx)columns_count;
     settings->ColumnsCountMax = (ImGuiTableColumnIdx)columns_count_max;
     settings->WantApply = true;
@@ -3166,7 +3166,7 @@ ImGuiTableSettings* ImGui::TableSettingsFindByID(ImGuiID id)
     // FIXME-OPT: Might want to store a lookup map for this?
     ImGuiContext& g = *GImGui;
     for (ImGuiTableSettings* settings = g.SettingsTables.begin(); settings != NULL; settings = g.SettingsTables.next_chunk(settings))
-        if (settings->ID == id)
+        if (settings->glID == id)
             return settings;
     return NULL;
 }
@@ -3178,10 +3178,10 @@ ImGuiTableSettings* ImGui::TableGetBoundSettings(ImGuiTable* table)
     {
         ImGuiContext& g = *GImGui;
         ImGuiTableSettings* settings = g.SettingsTables.ptr_from_offset(table->SettingsOffset);
-        IM_ASSERT(settings->ID == table->ID);
+        IM_ASSERT(settings->glID == table->glID);
         if (settings->ColumnsCountMax >= table->ColumnsCount)
             return settings; // OK
-        settings->ID = 0; // Invalidate storage, we won't fit because of a count change
+        settings->glID = 0; // Invalidate storage, we won't fit because of a count change
     }
     return NULL;
 }
@@ -3206,13 +3206,13 @@ void ImGui::TableSaveSettings(ImGuiTable* table)
     ImGuiTableSettings* settings = TableGetBoundSettings(table);
     if (settings == NULL)
     {
-        settings = TableSettingsCreate(table->ID, table->ColumnsCount);
+        settings = TableSettingsCreate(table->glID, table->ColumnsCount);
         table->SettingsOffset = g.SettingsTables.offset_from_ptr(settings);
     }
     settings->ColumnsCount = (ImGuiTableColumnIdx)table->ColumnsCount;
 
     // Serialize ImGuiTable/ImGuiTableColumn into ImGuiTableSettings/ImGuiTableColumnSettings
-    IM_ASSERT(settings->ID == table->ID);
+    IM_ASSERT(settings->glID == table->glID);
     IM_ASSERT(settings->ColumnsCount == table->ColumnsCount && settings->ColumnsCountMax >= settings->ColumnsCount);
     ImGuiTableColumn* column = table->Columns.Data;
     ImGuiTableColumnSettings* column_settings = settings->GetColumnSettings();
@@ -3261,7 +3261,7 @@ void ImGui::TableLoadSettings(ImGuiTable* table)
     ImGuiTableSettings* settings;
     if (table->SettingsOffset == -1)
     {
-        settings = TableSettingsFindByID(table->ID);
+        settings = TableSettingsFindByID(table->glID);
         if (settings == NULL)
             return;
         if (settings->ColumnsCount != table->ColumnsCount) // Allow settings if columns count changed. We could otherwise decide to return...
@@ -3350,7 +3350,7 @@ static void* TableSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*,
             TableSettingsInit(settings, id, columns_count, settings->ColumnsCountMax); // Recycle
             return settings;
         }
-        settings->ID = 0; // Invalidate storage, we won't fit because of a count change
+        settings->glID = 0; // Invalidate storage, we won't fit because of a count change
     }
     return ImGui::TableSettingsCreate(id, columns_count);
 }
@@ -3386,7 +3386,7 @@ static void TableSettingsHandler_WriteAll(ImGuiContext* ctx, ImGuiSettingsHandle
     ImGuiContext& g = *ctx;
     for (ImGuiTableSettings* settings = g.SettingsTables.begin(); settings != NULL; settings = g.SettingsTables.next_chunk(settings))
     {
-        if (settings->ID == 0) // Skip ditched settings
+        if (settings->glID == 0) // Skip ditched settings
             continue;
 
         // TableSaveSettings() may clear some of those flags when we establish that the data can be stripped
@@ -3399,7 +3399,7 @@ static void TableSettingsHandler_WriteAll(ImGuiContext* ctx, ImGuiSettingsHandle
             continue;
 
         buf->reserve(buf->size() + 30 + settings->ColumnsCount * 50); // ballpark reserve
-        buf->appendf("[%s][0x%08X,%d]\n", handler->TypeName, settings->ID, settings->ColumnsCount);
+        buf->appendf("[%s][0x%08X,%d]\n", handler->TypeName, settings->glID, settings->ColumnsCount);
         if (settings->RefScale != 0.0f)
             buf->appendf("RefScale=%g\n", settings->RefScale);
         ImGuiTableColumnSettings* column = settings->GetColumnSettings();
@@ -3452,7 +3452,7 @@ void ImGui::TableRemove(ImGuiTable* table)
     int table_idx = g.Tables.GetIndex(table);
     //memset(table->RawData.Data, 0, table->RawData.size_in_bytes());
     //memset(table, 0, sizeof(ImGuiTable));
-    g.Tables.Remove(table->ID, table);
+    g.Tables.Remove(table->glID, table);
     g.TablesLastTimeActive[table_idx] = -1.0f;
 }
 
@@ -3484,14 +3484,14 @@ void ImGui::TableGcCompactSettings()
     ImGuiContext& g = *GImGui;
     int required_memory = 0;
     for (ImGuiTableSettings* settings = g.SettingsTables.begin(); settings != NULL; settings = g.SettingsTables.next_chunk(settings))
-        if (settings->ID != 0)
+        if (settings->glID != 0)
             required_memory += (int)TableSettingsCalcChunkSize(settings->ColumnsCount);
     if (required_memory == g.SettingsTables.Buf.Size)
         return;
     ImChunkStream<ImGuiTableSettings> new_chunk_stream;
     new_chunk_stream.Buf.reserve(required_memory);
     for (ImGuiTableSettings* settings = g.SettingsTables.begin(); settings != NULL; settings = g.SettingsTables.next_chunk(settings))
-        if (settings->ID != 0)
+        if (settings->glID != 0)
             memcpy(new_chunk_stream.alloc_chunk(TableSettingsCalcChunkSize(settings->ColumnsCount)), settings, TableSettingsCalcChunkSize(settings->ColumnsCount));
     g.SettingsTables.swap(new_chunk_stream);
 }
@@ -3521,7 +3521,7 @@ void ImGui::DebugNodeTable(ImGuiTable* table)
     char* p = buf;
     const char* buf_end = buf + IM_ARRAYSIZE(buf);
     const bool is_active = (table->LastFrameActive >= ImGui::GetFrameCount() - 2); // Note that fully clipped early out scrolling tables will appear as inactive here.
-    ImFormatString(p, buf_end - p, "Table 0x%08X (%d columns, in '%s')%s", table->ID, table->ColumnsCount, table->OuterWindow->Name, is_active ? "" : " *Inactive*");
+    ImFormatString(p, buf_end - p, "Table 0x%08X (%d columns, in '%s')%s", table->glID, table->ColumnsCount, table->OuterWindow->Name, is_active ? "" : " *Inactive*");
     if (!is_active) { PushStyleColor(ImGuiCol_Text, GetStyleColorVec4(ImGuiCol_TextDisabled)); }
     bool open = TreeNode(table, "%s", buf);
     if (!is_active) { PopStyleColor(); }
@@ -3579,7 +3579,7 @@ void ImGui::DebugNodeTable(ImGuiTable* table)
 
 void ImGui::DebugNodeTableSettings(ImGuiTableSettings* settings)
 {
-    if (!TreeNode((void*)(intptr_t)settings->ID, "Settings 0x%08X (%d columns)", settings->ID, settings->ColumnsCount))
+    if (!TreeNode((void*)(intptr_t)settings->glID, "Settings 0x%08X (%d columns)", settings->glID, settings->ColumnsCount))
         return;
     BulletText("SaveFlags: 0x%08X", settings->SaveFlags);
     BulletText("ColumnsCount: %d (max %d)", settings->ColumnsCount, settings->ColumnsCountMax);
@@ -3670,7 +3670,7 @@ static float GetDraggedColumnOffset(ImGuiOldColumns* columns, int column_index)
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
     IM_ASSERT(column_index > 0); // We are not supposed to drag column 0.
-    IM_ASSERT(g.ActiveId == columns->ID + ImGuiID(column_index));
+    IM_ASSERT(g.ActiveId == columns->glID + ImGuiID(column_index));
 
     float x = g.IO.MousePos.x - g.ActiveIdClickOffset.x + COLUMNS_HIT_RECT_HALF_WIDTH - window->Pos.x;
     x = ImMax(x, ImGui::GetColumnOffset(column_index - 1) + g.Style.ColumnsMinSpacing);
@@ -3796,12 +3796,12 @@ ImGuiOldColumns* ImGui::FindOrCreateColumns(ImGuiWindow* window, ImGuiID id)
 {
     // We have few columns per window so for now we don't need bother much with turning this into a faster lookup.
     for (int n = 0; n < window->ColumnsStorage.Size; n++)
-        if (window->ColumnsStorage[n].ID == id)
+        if (window->ColumnsStorage[n].glID == id)
             return &window->ColumnsStorage[n];
 
     window->ColumnsStorage.push_back(ImGuiOldColumns());
     ImGuiOldColumns* columns = &window->ColumnsStorage.back();
-    columns->ID = id;
+    columns->glID = id;
     return columns;
 }
 
@@ -3829,7 +3829,7 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
     // Acquire storage for the columns set
     ImGuiID id = GetColumnsID(str_id, columns_count);
     ImGuiOldColumns* columns = FindOrCreateColumns(window, id);
-    IM_ASSERT(columns->ID == id);
+    IM_ASSERT(columns->glID == id);
     columns->Current = 0;
     columns->Count = columns_count;
     columns->Flags = flags;
@@ -3983,7 +3983,7 @@ void ImGui::EndColumns()
         {
             ImGuiOldColumnData* column = &columns->Columns[n];
             float x = window->Pos.x + GetColumnOffset(n);
-            const ImGuiID column_id = columns->ID + ImGuiID(n);
+            const ImGuiID column_id = columns->glID + ImGuiID(n);
             const float column_hit_hw = COLUMNS_HIT_RECT_HALF_WIDTH;
             const ImRect column_hit_rect(ImVec2(x - column_hit_hw, y1), ImVec2(x + column_hit_hw, y2));
             KeepAliveID(column_id);

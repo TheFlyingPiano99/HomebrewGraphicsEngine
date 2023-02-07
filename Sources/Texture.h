@@ -2,13 +2,14 @@
 #include "glad/glad.h"
 #include <memory>
 #include <vector>
+#include "Identifiable.h"
 
 namespace Hogra {
 
-	class Texture
+	class Texture : public Identifiable
 	{
 	public:
-		GLuint ID;
+		GLuint glID;
 		GLuint unit;
 
 		virtual ~Texture() = default;

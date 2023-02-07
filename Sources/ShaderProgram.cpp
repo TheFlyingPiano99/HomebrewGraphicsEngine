@@ -5,6 +5,8 @@
 #include<iostream>
 #include<cerrno>
 
+#include "DebugUtils.h"
+
 
 namespace Hogra {
 	
@@ -23,6 +25,7 @@ namespace Hogra {
 			in.close();
 			return(contents);
 		}
+		DebugUtils::PrintError("ShaderProgram", "Source file can not be opened.");
 		throw(errno);
 	}
 
@@ -59,10 +62,10 @@ namespace Hogra {
 		compileErrors(fragmentShader, "FRAGMENT");
 
 		// Create Shader Program Object and get its reference
-		ID = glCreateProgram();
+		glID = glCreateProgram();
 		// Attach the Vertex and Fragment Shaders to the Shader Program
-		glAttachShader(ID, vertexShader);
-		glAttachShader(ID, fragmentShader);
+		glAttachShader(glID, vertexShader);
+		glAttachShader(glID, fragmentShader);
 
 		GLuint geometryShader = 0;
 		if (0 < geometryFile.length()) {	// Geometry shader
@@ -72,13 +75,13 @@ namespace Hogra {
 			glShaderSource(geometryShader, 1, &geometrySource, nullptr);
 			glCompileShader(geometryShader);
 			compileErrors(geometryShader, "GEOMETRY");
-			glAttachShader(ID, geometryShader);
+			glAttachShader(glID, geometryShader);
 		}
 
 		// Wrap-up/Link all the shaders together into the Shader Program
-		glLinkProgram(ID);
+		glLinkProgram(glID);
 		// Checks if Shaders linked succesfully
-		compileErrors(ID, "PROGRAM");
+		compileErrors(glID, "PROGRAM");
 
 		// Delete the now useless Vertex and Fragment Shader objects
 		glDeleteShader(vertexShader);
@@ -101,16 +104,16 @@ namespace Hogra {
 	// Activates the Shader Program
 	void ShaderProgram::Activate() const
 	{
-		glUseProgram(ID);
+		glUseProgram(glID);
 		for (auto& uniform : uniforms) {
-			uniform->Bind(ID);
+			uniform->Bind(glID);
 		}
 	}
 
 	// Deletes the Shader Program
 	void ShaderProgram::Delete() const
 	{
-		glDeleteProgram(ID);
+		glDeleteProgram(glID);
 	}
 
 	// Checks if the different Shaders have compiled properly

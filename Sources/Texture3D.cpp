@@ -65,11 +65,11 @@ namespace Hogra {
 		}
 
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + slot);
 		unit = slot;
-		glBindTexture(GL_TEXTURE_3D, ID);
+		glBindTexture(GL_TEXTURE_3D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -116,11 +116,11 @@ namespace Hogra {
 			}
 		}
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + slot);
 		unit = slot;
-		glBindTexture(GL_TEXTURE_3D, ID);
+		glBindTexture(GL_TEXTURE_3D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -149,7 +149,7 @@ namespace Hogra {
 	void Texture3D::Bind() const
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_3D, ID);
+		glBindTexture(GL_TEXTURE_3D, glID);
 	}
 
 	void Texture3D::Unbind() const

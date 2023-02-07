@@ -7,7 +7,7 @@ namespace Hogra {
 	class FBO
 	{
 	public:
-		GLuint ID = 0;
+		GLuint glID = 0;
 		glm::ivec4 viewport;
 
 		void Init();

@@ -22,16 +22,6 @@ namespace Hogra {
 		glfwSetMouseButtonCallback(window, Callbacks::OnMouseClick);
 	}
 	
-	void Callbacks::OnWindowInit(GLFWwindow* window)
-	{
-		glfwGetWindowSize(window, &GlobalVariables::windowWidth, &GlobalVariables::windowHeight);
-		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
-
-		SceneManager::getInstance()->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
-		GUI::getInstance()->InitGUI(window);
-	}
-
-
 	void Callbacks::OnWindowRefresh(GLFWwindow* window)
 	{
 		GUI::getInstance()->preDrawInit();

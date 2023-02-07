@@ -36,9 +36,6 @@ namespace Hogra {
 		glDisable(GL_BLEND);
 		glDisable(GL_DEPTH_TEST);
 		depthTexture.Bind();
-		for (auto& var : uniformVariables) {
-			var->Bind(mesh->getMaterial()->GetShaderProgram()->ID);
-		}
 		mesh->Draw();
 		outFBO.Unbind();
 	}
@@ -70,6 +67,9 @@ namespace Hogra {
 	void PostProcessStage::AddUniformVariable(AbstractUniformVariable* variable)
 	{
 		uniformVariables.push_back(variable);
+		if (nullptr != mesh) {
+			mesh->getMaterial()->GetShaderProgram()->BindUniformVariable(variable);
+		}
 	}
 
 }

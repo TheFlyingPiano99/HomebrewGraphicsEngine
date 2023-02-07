@@ -6,10 +6,11 @@
 #include <span>
 #include "ShadowCaster.h"
 #include "MemoryManager.h"
+#include "Identifiable.h"
 
 namespace Hogra {
 
-	class Material
+	class Material : public Identifiable
 	{
 		friend class Allocator;
 	public:

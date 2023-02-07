@@ -22,10 +22,10 @@ namespace Hogra {
 		this->unit = unit;
 
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_2D, ID);
+		glBindTexture(GL_TEXTURE_2D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -60,10 +60,10 @@ namespace Hogra {
 		this->pixelType = _pixelType;
 
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_2D, ID);
+		glBindTexture(GL_TEXTURE_2D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -93,10 +93,10 @@ namespace Hogra {
 		this->pixelType = _pixelType;
 
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_2D, ID);
+		glBindTexture(GL_TEXTURE_2D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -123,11 +123,11 @@ namespace Hogra {
 		this->pixelType = pixelType;
 
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + unit);
 		this->unit = unit;
-		glBindTexture(GL_TEXTURE_2D, ID);
+		glBindTexture(GL_TEXTURE_2D, glID);
 		this->dimensions = _dimensions;
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
@@ -166,7 +166,7 @@ namespace Hogra {
 	void Texture2D::Bind() const
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_2D, ID);
+		glBindTexture(GL_TEXTURE_2D, glID);
 	}
 
 	void Texture2D::Unbind() const
@@ -181,7 +181,7 @@ namespace Hogra {
 	void Texture2D::SetData(const std::vector<glm::vec4>& _data) {
 		this->bytes = _data;
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_2D, ID);
+		glBindTexture(GL_TEXTURE_2D, glID);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}

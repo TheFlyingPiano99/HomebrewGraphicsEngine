@@ -4,7 +4,7 @@ namespace Hogra {
 
 	void FBO::Init()
 	{
-		glGenFramebuffers(1, &ID);
+		glGenFramebuffers(1, &glID);
 	}
 
 	FBO::~FBO()
@@ -14,7 +14,7 @@ namespace Hogra {
 
 	FBO::FBO(const FBO& fbo)
 	{
-		this->ID = fbo.ID;
+		this->glID = fbo.glID;
 		this->viewport = fbo.viewport;
 	}
 
@@ -23,14 +23,14 @@ namespace Hogra {
 		if (&fbo == this) {
 			return *this;
 		}
-		this->ID = fbo.ID;
+		this->glID = fbo.glID;
 		this->viewport = fbo.viewport;
 		return *this;
 	}
 
 	void FBO::Bind() const
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, ID);
+		glBindFramebuffer(GL_FRAMEBUFFER, glID);
 		glViewport(viewport.x, viewport.y, viewport.z, viewport.w);
 	}
 
@@ -41,25 +41,25 @@ namespace Hogra {
 
 	void FBO::Delete()
 	{
-		glDeleteFramebuffers(1, &ID);
+		glDeleteFramebuffers(1, &glID);
 	}
 
 	void FBO::LinkTexture(GLenum attachment, const Texture2D& texture, GLint level)
 	{
-		if (0 == ID) {
+		if (0 == glID) {
 			return;
 		}
 		glm::ivec2 dim = texture.getDimensions() / (level + 1);
 		viewport = glm::vec4(0, 0, dim.x, dim.y);
 		Bind();
-		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, texture.ID, level);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, texture.glID, level);
 	}
 
 
 	void FBO::LinkRBO(GLenum attachment, RBO& rbo)
 	{
 		Bind();
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.ID);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.glID);
 	}
 
 	void FBO::SelectDrawBuffers(std::vector<GLenum> bufs)
@@ -78,7 +78,7 @@ namespace Hogra {
 	FBO&& FBO::GetDefault()
 	{
 		FBO fbo;
-		fbo.ID = 0;
+		fbo.glID = 0;
 		fbo.viewport = glm::vec4(0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 		return std::move(fbo);
 	}

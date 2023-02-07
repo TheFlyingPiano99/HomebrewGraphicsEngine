@@ -3447,7 +3447,7 @@ enum MyItemColumnID
 
 struct MyItem
 {
-    int         ID;
+    int         glID;
     const char* Name;
     int         Quantity;
 
@@ -3473,7 +3473,7 @@ struct MyItem
             int delta = 0;
             switch (sort_spec->ColumnUserID)
             {
-            case MyItemColumnID_ID:             delta = (a->ID - b->ID);                break;
+            case MyItemColumnID_ID:             delta = (a->glID - b->glID);                break;
             case MyItemColumnID_Name:           delta = (strcmp(a->Name, b->Name));     break;
             case MyItemColumnID_Quantity:       delta = (a->Quantity - b->Quantity);    break;
             case MyItemColumnID_Description:    delta = (strcmp(a->Name, b->Name));     break;
@@ -3487,7 +3487,7 @@ struct MyItem
 
         // qsort() is instable so always return a way to differenciate items.
         // Your own compare function may want to avoid fallback on implicit sort specs e.g. a Name compare if it wasn't already part of the sort specs.
-        return (a->ID - b->ID);
+        return (a->glID - b->glID);
     }
 };
 const ImGuiTableSortSpecs* MyItem::s_current_sort_specs = NULL;
@@ -4893,7 +4893,7 @@ static void ShowDemoWindowTables()
             {
                 const int template_n = n % IM_ARRAYSIZE(template_items_names);
                 MyItem& item = items[n];
-                item.ID = n;
+                item.glID = n;
                 item.Name = template_items_names[template_n];
                 item.Quantity = (n * n - n) % 20; // Assign default quantities
             }
@@ -4946,10 +4946,10 @@ static void ShowDemoWindowTables()
                 {
                     // Display a data item
                     MyItem* item = &items[row_n];
-                    ImGui::PushID(item->ID);
+                    ImGui::PushID(item->glID);
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
-                    ImGui::Text("%04d", item->ID);
+                    ImGui::Text("%04d", item->glID);
                     ImGui::TableNextColumn();
                     ImGui::TextUnformatted(item->Name);
                     ImGui::TableNextColumn();
@@ -5115,7 +5115,7 @@ static void ShowDemoWindowTables()
             {
                 const int template_n = n % IM_ARRAYSIZE(template_items_names);
                 MyItem& item = items[n];
-                item.ID = n;
+                item.glID = n;
                 item.Name = template_items_names[template_n];
                 item.Quantity = (template_n == 3) ? 10 : (template_n == 4) ? 20 : 0; // Assign default quantities
             }
@@ -5182,14 +5182,14 @@ static void ShowDemoWindowTables()
                     //if (!filter.PassFilter(item->Name))
                     //    continue;
 
-                    const bool item_is_selected = selection.contains(item->ID);
-                    ImGui::PushID(item->ID);
+                    const bool item_is_selected = selection.contains(item->glID);
+                    ImGui::PushID(item->glID);
                     ImGui::TableNextRow(ImGuiTableRowFlags_None, row_min_height);
 
                     // For the demo purpose we can select among different type of items submitted in the first column
                     ImGui::TableSetColumnIndex(0);
                     char label[32];
-                    sprintf(label, "%04d", item->ID);
+                    sprintf(label, "%04d", item->glID);
                     if (contents_type == CT_Text)
                         ImGui::TextUnformatted(label);
                     else if (contents_type == CT_Button)
@@ -5206,14 +5206,14 @@ static void ShowDemoWindowTables()
                             if (ImGui::GetIO().KeyCtrl)
                             {
                                 if (item_is_selected)
-                                    selection.find_erase_unsorted(item->ID);
+                                    selection.find_erase_unsorted(item->glID);
                                 else
-                                    selection.push_back(item->ID);
+                                    selection.push_back(item->glID);
                             }
                             else
                             {
                                 selection.clear();
-                                selection.push_back(item->ID);
+                                selection.push_back(item->glID);
                             }
                         }
                     }

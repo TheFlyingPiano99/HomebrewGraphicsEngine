@@ -6,10 +6,10 @@ namespace Hogra {
 	{
 		this->binding = _binding;
 		CalculateAlignment(subDataSizes);
-		glGenBuffers(1, &ID);
-		glBindBuffer(GL_UNIFORM_BUFFER, ID);
+		glGenBuffers(1, &glID);
+		glBindBuffer(GL_UNIFORM_BUFFER, glID);
 		glBufferData(GL_UNIFORM_BUFFER, memorySize, nullptr, GL_STATIC_DRAW);	// Allocate GPU memory
-		glBindBufferBase(GL_UNIFORM_BUFFER, binding, ID);						// Specify binding
+		glBindBufferBase(GL_UNIFORM_BUFFER, binding, glID);						// Specify binding
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	}
 
@@ -20,7 +20,7 @@ namespace Hogra {
 
 	void UniformBufferObject::Bind() const
 	{
-		glBindBuffer(GL_UNIFORM_BUFFER, ID);
+		glBindBuffer(GL_UNIFORM_BUFFER, glID);
 	}
 
 	void UniformBufferObject::Unbind()
@@ -30,7 +30,7 @@ namespace Hogra {
 
 	void UniformBufferObject::Delete()
 	{
-		glDeleteBuffers(1, &ID);
+		glDeleteBuffers(1, &glID);
 	}
 
 	void UniformBufferObject::UploadSubData(const void* subDataPtr, int index)

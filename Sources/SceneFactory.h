@@ -51,7 +51,7 @@ namespace Hogra {
 
 		SceneAudioSource* buildAudioSource(const std::string& fileName);
 
-		Scene* LoadSceneFromFile(const std::string& fileName);
+		Scene* LoadSceneFromFile(const std::string& path);
 
 	private:
 		SceneFactory() = default;

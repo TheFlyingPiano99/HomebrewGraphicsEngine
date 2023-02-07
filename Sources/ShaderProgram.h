@@ -6,15 +6,13 @@
 #include<glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "UniformVariable.h"
+#include "Identifiable.h"
 
 namespace Hogra {
 
-	class ShaderProgram
+	class ShaderProgram : public Identifiable
 	{
 	public:
-
-		// Reference ID of the Shader Program
-		GLuint ID;
 
 		void Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile);
 
@@ -28,51 +26,51 @@ namespace Hogra {
 		// Deletes the Shader Program
 		void Delete() const;
 
-		void SetUniform(const char* name, const glm::mat4& value) const {
-			glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(value));
+		inline void SetUniform(const char* name, const glm::mat4& value) const {
+			glUniformMatrix4fv(glGetUniformLocation(glID, name), 1, GL_FALSE, glm::value_ptr(value));
 		}
 
-		void SetUniform(const char* name, const float value) const {
-			glUniform1f(glGetUniformLocation(ID, name), value);
+		inline void SetUniform(const char* name, const float value) const {
+			glUniform1f(glGetUniformLocation(glID, name), value);
 		}
 
-		void SetUniform(const char* name, const int value) const {
-			glUniform1i(glGetUniformLocation(ID, name), value);
+		inline void SetUniform(const char* name, const int value) const {
+			glUniform1i(glGetUniformLocation(glID, name), value);
 		}
 
-		void SetUniform(const char* name, const glm::vec2& value) const {
-			glUniform2f(glGetUniformLocation(ID, name), value.x, value.y);
+		inline void SetUniform(const char* name, const glm::vec2& value) const {
+			glUniform2f(glGetUniformLocation(glID, name), value.x, value.y);
 		}
 
-		void SetUniform(const char* name, const glm::vec3& value) const {
-			glUniform3f(glGetUniformLocation(ID, name), value.x, value.y, value.z);
+		inline void SetUniform(const char* name, const glm::vec3& value) const {
+			glUniform3f(glGetUniformLocation(glID, name), value.x, value.y, value.z);
 		}
 
-		void SetUniform(const char* name, const glm::vec4& value) const {
-			glUniform4f(glGetUniformLocation(ID, name), value.x, value.y, value.z, value.w);
+		inline void SetUniform(const char* name, const glm::vec4& value) const {
+			glUniform4f(glGetUniformLocation(glID, name), value.x, value.y, value.z, value.w);
 		}
 
-		void SetUniform(const char* name, const glm::ivec2& value) const {
-			glUniform2i(glGetUniformLocation(ID, name), value.x, value.y);
+		inline void SetUniform(const char* name, const glm::ivec2& value) const {
+			glUniform2i(glGetUniformLocation(glID, name), value.x, value.y);
 		}
 
-		void SetUniform(const char* name, const glm::ivec3& value) const {
-			glUniform3i(glGetUniformLocation(ID, name), value.x, value.y, value.z);
+		inline void SetUniform(const char* name, const glm::ivec3& value) const {
+			glUniform3i(glGetUniformLocation(glID, name), value.x, value.y, value.z);
 		}
 
-		void SetUniform(const char* name, const glm::ivec4& value) const {
-			glUniform4i(glGetUniformLocation(ID, name), value.x, value.y, value.z, value.w);
+		inline void SetUniform(const char* name, const glm::ivec4& value) const {
+			glUniform4i(glGetUniformLocation(glID, name), value.x, value.y, value.z, value.w);
 		}
 
-		void SetUniform(const char* name, const glm::mat<2, 2, float, glm::packed_highp>& value) const {
-			glUniformMatrix2fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(value));
+		inline void SetUniform(const char* name, const glm::mat<2, 2, float, glm::packed_highp>& value) const {
+			glUniformMatrix2fv(glGetUniformLocation(glID, name), 1, GL_FALSE, glm::value_ptr(value));
 		}
 
-		void SetUniform(const char* name, const glm::mat<3, 3, float, glm::packed_highp>& value) const {
-			glUniformMatrix3fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(value));
+		inline void SetUniform(const char* name, const glm::mat<3, 3, float, glm::packed_highp>& value) const {
+			glUniformMatrix3fv(glGetUniformLocation(glID, name), 1, GL_FALSE, glm::value_ptr(value));
 		}
 
-		static void ReloadAll() {
+		inline static void ReloadAll() {
 			for (auto instance : instances) {
 				instance->Delete();
 				if (!instance->GetVertexPath().empty() && !instance->GetFragmentPath().empty()) {
@@ -85,27 +83,28 @@ namespace Hogra {
 			}
 		}
 
-		const std::string& GetVertexPath() {
+		inline const std::string& GetVertexPath() {
 			return vertexShaderPath;
 		}
 
-		const std::string& GetGeometryPath() {
+		inline const std::string& GetGeometryPath() {
 			return geometryShaderPath;
 		}
 
-		const std::string& GetFragmentPath() {
+		inline const std::string& GetFragmentPath() {
 			return fragmentShaderPath;
 		}
 
-		void BindUniformVariable(AbstractUniformVariable* uniform) {
+		inline void BindUniformVariable(AbstractUniformVariable* uniform) {
 			uniforms.push_back(uniform);
 		}
 
-		void ClearUniformBindings() {
+		inline void ClearUniformBindings() {
 			uniforms.clear();
 		}
 
 	private:
+		GLuint glID;
 
 		std::string vertexShaderPath;
 		std::string geometryShaderPath;

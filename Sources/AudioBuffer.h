@@ -36,7 +36,7 @@ namespace Hogra {
 		}
 
 	private:
-		ALuint ID;
+		ALuint glID;
 		std::set<ALuint> sourcesUsingThisBuffer;
 		/*
 		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"

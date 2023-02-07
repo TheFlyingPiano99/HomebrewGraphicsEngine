@@ -72,9 +72,9 @@ namespace Hogra {
             return;
         }
         glyphProgram->Activate();
-        glUniform3f(glGetUniformLocation(glyphProgram->ID, "textColor"), color.x, color.y, color.z);
+        glyphProgram->SetUniform("textColor", color);
         glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, (float)GlobalVariables::windowHeight, 0.0f);
-        glUniformMatrix4fv(glGetUniformLocation(glyphProgram->ID, "transform"), 1, GL_FALSE, glm::value_ptr(projection));
+        glyphProgram->SetUniform("transform", projection);
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(vao);
         glEnable(GL_BLEND);

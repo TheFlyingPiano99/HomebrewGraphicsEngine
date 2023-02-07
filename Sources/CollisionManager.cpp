@@ -88,12 +88,12 @@ void Hogra::CollisionManager::InitDebug()
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"), 
 		"", 
 		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
-	debugGeometry = GeometryFactory::GetInstance()->getWireframeCube();
+	debugGeometry = GeometryFactory::GetInstance()->GetWireframeCube();
 	debugMaterial.Init(&glyphProgram);
 	debugMesh.Init(&debugMaterial, debugGeometry);
 	debugMesh.SetDepthTest(false);
 	debugObj.Init(&debugMesh);
-	instanceGroup.addObject(&debugObj);
+	instanceGroup.AddObject(&debugObj);
 }
 
 void Hogra::CollisionManager::DrawDebug()

@@ -5,6 +5,6 @@ namespace Hogra {
 
 	void Texture::Delete() const
 	{
-		glDeleteTextures(1, &ID);
+		glDeleteTextures(1, &glID);
 	}
 }

@@ -25,7 +25,7 @@ namespace Hogra {
 		};
 
 	private:
-		GLuint ID;
+		GLuint glID;
 		int binding;
 		int memorySize;
 		std::vector<MemoryAlignment> memoryAlignments;

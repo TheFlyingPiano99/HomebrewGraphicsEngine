@@ -63,10 +63,7 @@ namespace Hogra {
 
 		void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "", const std::string& renderLayerName = "layer0");
 
-		/*
-		* Not complete!
-		*/
-		void RemoveSceneObject(SceneObject* object);
+		void RegisterObjectToDelete(SceneObject* object);
 
 		void AddCollider(Collider* collider, const std::string& colliderGroupName = "");
 
@@ -156,6 +153,8 @@ namespace Hogra {
 
 	private:
 
+		void DeleteSceneObject(SceneObject* object);
+
 		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
 
 		Camera camera;
@@ -165,6 +164,10 @@ namespace Hogra {
 		//To deallocate:
 		std::vector<Light*> lights;
 		std::vector<ShaderProgram*> shaders;
+		std::vector<Texture*> textures;
+		std::vector<Material*> materials;
+		std::vector<Geometry*> geometries;
+		std::vector<Mesh*> meshes;
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Caption*> captions;
@@ -173,6 +176,8 @@ namespace Hogra {
 		std::map<std::string, RenderLayer*> renderLayersMap;
 		std::vector<RenderLayer*> renderLayers;
 		std::vector<PostProcessStage*> postProcessStages;
+
+		std::vector<SceneObject*> toDelete;
 
 		CollisionManager collisionManager;
 		UniformVariable<float> timeSpent;

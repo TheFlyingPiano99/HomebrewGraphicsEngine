@@ -22,13 +22,15 @@ namespace Hogra{
 
 		void Optimalize(const Camera& camera);
 
-		void addObject(SceneObject* object) {
+		void AddObject(SceneObject* object) {
 			objects.push_back(object);
 		}
 
-		void removeObject(SceneObject* object) {
-			const auto& iter = std::find(objects.begin(), objects.end(), object);
-			objects.erase(iter);
+		void RemoveObject(SceneObject* object) {
+			auto iter = std::find(objects.begin(), objects.end(), object);
+			if (objects.end() != iter) {
+				objects.erase(iter);
+			}
 		}
 
 	private:

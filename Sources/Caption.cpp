@@ -3,6 +3,7 @@
 #include "DebugUtils.h"
 #include "glm/gtx/transform.hpp"
 
+
 void Hogra::Caption::Init(const std::wstring& _text, Font* _font, glm::vec2 _screenPos, float _scale, const glm::vec4& _color)
 {
 	this->text = _text;

@@ -19,15 +19,15 @@ namespace Hogra {
 
 		Geometry* GetSimpleQuad();
 
-		Geometry* getCube();
+		Geometry* GetCube();
 
-		Geometry* getWireframeCube();
+		Geometry* GetWireframeCube();
 
-		Geometry* getSphere();
+		Geometry* GetSphere();
 
-		Geometry* getWireFrameSphere();
+		Geometry* GetWireFrameSphere();
 
-		Geometry* getCilinder();
+		Geometry* GetCilinder();
 
 		/*
 		* The Front face is the opposite (uses counter-clockwise as front facing)
@@ -37,7 +37,7 @@ namespace Hogra {
 		void ForgetPointers();
 
 	private:
-		Geometry* generateSphere();
+		Geometry* GenerateSphere();
 		void generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLuint>* indices);
 		GeometryFactory() = default;
 		static GeometryFactory* instance;

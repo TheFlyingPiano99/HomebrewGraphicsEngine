@@ -3,10 +3,11 @@
 #include"VAO.h"
 #include"EBO.h"
 #include "MemoryManager.h"
+#include "Identifiable.h"
 
 namespace Hogra {
 
-	class Geometry
+	class Geometry : public Identifiable
 	{
 		friend class Allocator;
 	public:

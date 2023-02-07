@@ -6,6 +6,7 @@
 #include "DeferredLightingSystem.h"
 #include "LightManager.h"
 #include "Identifiable.h"
+#include "DebugUtils.h"
 
 namespace Hogra {
 	
@@ -34,6 +35,16 @@ namespace Hogra {
 
 		void AddInstanceGroup(InstanceGroup* group) {
 			instanceGroups.push_back(group);
+		}
+
+		void RemoveSceneObject(SceneObject* obj) {
+			for (auto group : instanceGroups) {
+				group->RemoveObject(obj);
+			}
+			auto objIter = std::ranges::find(objects.begin(), objects.end(), obj);
+			if (objects.end() != objIter) {
+				objects.erase(objIter);
+			}
 		}
 
 		void AddPostProcessStage(PostProcessStage* stage) {

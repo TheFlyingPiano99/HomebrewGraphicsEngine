@@ -307,9 +307,9 @@ namespace Hogra::Volumetric {
 		quadVAO.Bind();
 		texture->Bind();
 
-		glUniform1f(glGetUniformLocation(shader.ID, "exposure"), displayExposure);
-		glUniform1f(glGetUniformLocation(shader.ID, "gamma"), displayGamma);
-		glUniformMatrix4fv(glGetUniformLocation(shader.ID, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		shader.SetUniform("exposure", displayExposure);
+		shader.SetUniform("gamma", displayGamma);
+		shader.SetUniform("modelMatrix", modelMatrix);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		fbo.Unbind();
 	}

@@ -6,18 +6,18 @@ namespace Hogra {
 
 	GeometryFactory* GeometryFactory::instance = nullptr;
 
-	Geometry* GeometryFactory::getSphere()
+	Geometry* GeometryFactory::GetSphere()
 	{
-		if (nullptr == sphere) {
-			sphere = generateSphere();
+		if (!Allocator::IsValid(sphere)) {
+			sphere = GenerateSphere();
 			sphere->SetFaceCulling(true);
 		}
 		return sphere;
 	}
 
-	Geometry* GeometryFactory::getWireFrameSphere()
+	Geometry* GeometryFactory::GetWireFrameSphere()
 	{
-		if (nullptr == wireFrameSphere) {
+		if (!Allocator::IsValid(wireFrameSphere)) {
 			std::vector<Vertex_pos_norm_tang_bitang_uv> vertices;
 			std::vector<GLuint> indices;
 			int zRes = 100;
@@ -72,9 +72,9 @@ namespace Hogra {
 		return wireFrameSphere;
 	}
 
-	Geometry* GeometryFactory::getCilinder()
+	Geometry* GeometryFactory::GetCilinder()
 	{
-		if (nullptr == cilinder) {
+		if (!Allocator::IsValid(cilinder)) {
 			int resolution = 20;
 			std::vector<Vertex_pos_norm_tang_bitang_uv> vertices;
 			std::vector<GLuint> indices;
@@ -121,8 +121,8 @@ namespace Hogra {
 
 	Geometry* GeometryFactory::getLightVolumeSphere()
 	{
-		if (nullptr == lightVolumeSphere) {
-			lightVolumeSphere = generateSphere();
+		if (!Allocator::IsValid(lightVolumeSphere)) {
+			lightVolumeSphere = GenerateSphere();
 			lightVolumeSphere->SetFaceCulling(true);
 			lightVolumeSphere->SetFaceCullingOrientation(GL_CW);
 		}
@@ -140,7 +140,7 @@ namespace Hogra {
 		cilinder = nullptr;
 	}
 
-	Geometry* GeometryFactory::generateSphere()
+	Geometry* GeometryFactory::GenerateSphere()
 	{
 		// ------------------- ICOSAHEDRON SPHERE -------------------
 		float r = 1.0f;
@@ -302,15 +302,12 @@ GeometryFactory* GeometryFactory::GetInstance()
 
 void GeometryFactory::DestroyInstance()
 {
-	if (nullptr != instance) {
-		Allocator::Delete(instance);
-	}
-	instance = nullptr;
+	Allocator::Delete(instance);
 }
 
 Geometry* GeometryFactory::GetQuad()
 {
-	if (nullptr != quad) {
+	if (Allocator::IsValid(quad)) {
 		return quad;
 	}
 	std::vector<Vertex_pos_norm_tang_bitang_uv> vertices;
@@ -391,7 +388,7 @@ Geometry* GeometryFactory::GetQuad()
 
 Geometry* GeometryFactory::GetSimpleQuad()
 {
-	if (nullptr != simpleQuad) {
+	if (Allocator::IsValid(simpleQuad)) {
 		return simpleQuad;
 	}
 	std::vector<Vertex_2d_pos_uv> vertices;
@@ -439,9 +436,9 @@ Geometry* GeometryFactory::GetSimpleQuad()
 	return simpleQuad;
 }
 
-Geometry* GeometryFactory::getCube()
+Geometry* GeometryFactory::GetCube()
 {
-	if (nullptr != cube) {
+	if (Allocator::IsValid(cube)) {
 		return cube;
 	}
 	std::vector<Vertex_pos_norm_tang_bitang_uv> vertices;
@@ -735,9 +732,9 @@ Geometry* GeometryFactory::getCube()
 	return cube;
 }
 
-Geometry* GeometryFactory::getWireframeCube()
+Geometry* GeometryFactory::GetWireframeCube()
 {
-	if (nullptr != wireframeCube) {
+	if (Allocator::IsValid(wireframeCube)) {
 		return wireframeCube;
 	}
 	std::vector<Vertex_pos_norm_tang_bitang_uv> vertices;

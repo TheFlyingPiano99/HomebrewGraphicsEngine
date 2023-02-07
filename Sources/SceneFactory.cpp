@@ -36,6 +36,7 @@
 
 #include "nlohmann/json.hpp"
 #include "jsonParseUtils.h"
+#include <Windows.h>
 
 
 namespace Hogra {
@@ -856,7 +857,7 @@ namespace Hogra {
 	{
 		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
 		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
-		Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
+		Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 		auto* cubeMesh = Allocator::New<Mesh>();
 		cubeMesh->Init(material, cubeGeometry);
 		auto* obj = Allocator::New<SceneObject>();
@@ -900,7 +901,7 @@ namespace Hogra {
 		else {
 			material = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
 		}
-		Geometry* geometry = GeometryFactory::GetInstance()->getSphere();
+		Geometry* geometry = GeometryFactory::GetInstance()->GetSphere();
 		auto* mesh = Allocator::New<Mesh>();
 		mesh->Init(material, geometry);
 		auto* obj = Allocator::New<SceneObject>();
@@ -935,7 +936,7 @@ namespace Hogra {
 		font->Init("arial.ttf");
 
 		Caption* caption1 = Allocator::New<Caption>();
-		caption1->Init(L"Homebrew Graphics Engine Demo", font,
+		caption1->Init(L"Homebrew Graphics Engine Demo - Vannak ékezetes betűk is!", font,
 			glm::vec2(0.5f, 0.05f), 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
 		caption1->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
 		caption1->SetVerticalPlacingStyle(Caption::PlacingStyle::relative);
@@ -971,7 +972,7 @@ namespace Hogra {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
-				Geometry* cubeGeometry = GeometryFactory::GetInstance()->getCube();
+				Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 				auto* cubeMesh = Allocator::New<Mesh>();
 				cubeMesh->Init(material, cubeGeometry);
 				cubeMesh->SetDepthTest(true);
@@ -1008,18 +1009,18 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("forwardSkybox.frag")
 		);
 		std::vector<std::string> imagePaths;
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("right.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("left.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("top.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("bottom.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("front.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("back.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/right.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/left.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/top.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/bottom.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/front.jpg").c_str());
+		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/back.jpg").c_str());
 		auto* cubeMap = Allocator::New<TextureCube>();
 		cubeMap->Init(imagePaths, SKYBOX_UNIT);
 		auto* skyBoxMaterial = Allocator::New<Material>();
 		skyBoxMaterial->Init(skyboxShader);
 		skyBoxMaterial->AddTexture(cubeMap);
-		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->GetQuad();
+		Geometry* fullscreenQuad = GeometryFactory::GetInstance()->GetSimpleQuad();
 		auto* skyBoxMesh = Allocator::New<Mesh>();
 		skyBoxMesh->Init(skyBoxMaterial, fullscreenQuad);
 		skyBoxMesh->SetDepthTest(false);
@@ -1142,7 +1143,7 @@ namespace Hogra {
 	void SceneFactory::InitLaserBeam(Hogra::Scene* scene, Hogra::FirstPersonControl* control)
 	{
 		auto obj = Allocator::New<SceneObject>();
-		auto geom = GeometryFactory::GetInstance()->getCilinder();
+		auto geom = GeometryFactory::GetInstance()->GetCilinder();
 		auto material = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 100.0f);
 		auto mesh = Allocator::New<Mesh>();
 		mesh->SetDepthTest(false);
@@ -1213,7 +1214,7 @@ namespace Hogra {
 		ambientSceneSource->SetLoop(true);
 		ambientSceneSource->Play();
 	}
-	
+
 	SceneAudioSource* SceneFactory::buildAudioSource(const std::string& fileName) {
 		auto buffer = Allocator::New<AudioBuffer>();
 		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append(fileName));
@@ -1223,48 +1224,290 @@ namespace Hogra {
 		sceneSource->Init(source);
 		return sceneSource;
 	}
+	
+
 
 	Scene* SceneFactory::LoadSceneFromFile(const std::string& path)
 	{
 		auto inputFile = std::ifstream(path);
 		if (inputFile.is_open()) {
-			auto jsonData = nlohmann::json::parse(inputFile);
-			inputFile.close();
+			try {
+				auto jsonData = nlohmann::json::parse(inputFile);
+				inputFile.close();
 
-			auto* scene = Allocator::New<Scene>();
+				auto* scene = Allocator::New<Scene>();
 
-			//Basic scene:
-			scene->id = jsonData["id"];
-			scene->name = jsonData["name"];
-			scene->pause = jsonData["pause"];
-			scene->debugMode = jsonData["debugMode"];
-			scene->preferedUp = parseVec3(jsonData["preferedUp"]);
-			scene->backgroundColor = parseVec4(jsonData["backgroundColor"]);
-			scene->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
+				//Basic scene:
+				scene->id = jsonData["id"];
+				scene->name = jsonData["name"];
+				scene->pause = jsonData["pause"];
+				scene->debugMode = jsonData["debugMode"];
+				scene->preferedUp = parseVec3(jsonData["preferedUp"]);
+				scene->backgroundColor = parseVec4(jsonData["backgroundColor"]);
+				scene->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 
-			//Camera:
-			Camera camera;
-			auto camData = jsonData["camera"];
-			camera.prefUp = parseVec3(camData["prefUp"]);
-			camera.FOVdeg = camData["FOVdeg"];
-			camera.nearPlane = camData["nearPlane"];
-			camera.farPlane = camData["farPlane"];
-			camera.Init((float)GlobalVariables::windowWidth / (float)GlobalVariables::windowHeight, parseVec3(camData["eye"]), parseVec3(camData["lookAt"]));
-			scene->camera = camera;
+				// Camera:
+				auto camData = jsonData["camera"];
+				scene->camera.prefUp = parseVec3(camData["prefUp"]);
+				scene->camera.FOVdeg = camData["FOVdeg"];
+				scene->camera.nearPlane = camData["nearPlane"];
+				scene->camera.farPlane = camData["farPlane"];
+				scene->camera.Init((float)GlobalVariables::windowWidth / (float)GlobalVariables::windowHeight, parseVec3(camData["eye"]), parseVec3(camData["lookAt"]));
 
-			//Lights:
-			for (auto& lightData : jsonData["lights"]) {
-				auto* l = Allocator::New<Light>();
-				l->SetId(lightData["id"]);
-				l->SetName(lightData["name"]);
-				l->Init(parseVec4(lightData["position"]), parseVec3(lightData["powerDensity"]));
-				l->SetIsActive(lightData["isActive"]);
-				l->SetCastShadow(lightData["castShadow"]);
-				scene->AddLight(l);
+				// Lights:
+				std::map<int, Light*> lights;
+				for (auto& lightData : jsonData["lights"]) {
+					auto* l = Allocator::New<Light>();
+					l->SetId(lightData["id"]);
+					l->SetName(lightData["name"]);
+					l->Init(parseVec4(lightData["position"]), parseVec3(lightData["powerDensity"]));
+					l->SetIsActive(lightData["isActive"]);
+					l->SetCastShadow(lightData["castShadow"]);
+					scene->AddLight(l);
+					lights.emplace(l->GetId(), l);
+				}
+
+				// Textures:
+				std::map<int, Texture*> textures;
+				for (auto& textureData : jsonData["textures"]) {
+					std::string type = textureData["type"];
+					if ("1D" == type) {
+
+					}
+					else if ("2D" == type) {
+						auto texture = Allocator::New<Texture2D>();
+						
+						GLenum pixelType;
+						std::string pixelTypeStr = textureData["pixelType"];
+						if ("unsignedByte" == pixelTypeStr) {
+							pixelType = GL_UNSIGNED_BYTE;
+						}
+						else if ("float" == pixelTypeStr) {
+							pixelType = GL_FLOAT;
+						}
+
+						GLenum format;
+						std::string formatStr = textureData["format"];
+						if ("RGB" == formatStr) {
+							format = GL_RGB;
+						}
+						else if ("RGBA" == formatStr) {
+							format = GL_RGBA;
+						}
+						texture->Init(
+							AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]),
+							(GLuint)textureData["unit"],
+							format,
+							pixelType);
+						textures.emplace(textureData["id"], texture);
+					}
+					else if ("3D" == type) {
+						;
+					}
+					else if ("CubeMap" == type) {
+						auto texture = Allocator::New<TextureCube>();
+
+						std::vector<std::string> imagePaths;
+						texture->SetId(textureData["id"]);
+						texture->SetName(textureData["name"]);
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/right.jpg").c_str());
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/left.jpg").c_str());
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/top.jpg").c_str());
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/bottom.jpg").c_str());
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/front.jpg").c_str());
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/back.jpg").c_str());
+						texture->Init(imagePaths, textureData["unit"]);
+						textures.emplace(textureData["id"], texture);
+					}
+				}
+
+				// Shaders:
+				std::map<int, ShaderProgram*> shaders;
+				for (auto& shaderData : jsonData["shaders"]) {
+					auto* shader = Allocator::New<ShaderProgram>();
+					shader->SetId(shaderData["id"]);
+					shader->SetName(shaderData["name"]);
+					shader->Init(
+						AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["vertexSourceFileName"]),
+						(!std::string(shaderData["geometrySourceFileName"]).empty()) ? AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["geometrySourceFileName"]) : "",
+						AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["fragmentSourceFileName"])
+					);
+
+					//TODO load uniforms
+					/*
+					for (auto& uniformData : shaderData["uniforms"]) {
+						auto uniVar = Allocator::New<UniformVariable<float>>();
+						shader->BindUniformVariable(uniVar);
+					}
+					*/
+					shaders.emplace(shader->GetId(), shader);
+				}
+
+				// Materials:
+				std::map<int, Material*> materials;
+				for (auto& materialData : jsonData["materials"]) {
+					std::string materialTypeStr = materialData["type"];
+					if ("custom" == materialTypeStr) {
+						auto* material = Allocator::New<Material>();
+						material->SetId(materialData["id"]);
+						material->SetName(materialData["name"]);
+						material->Init(shaders.find(materialData["shaderId"])->second);
+						for (auto& textureId : materialData["textureIds"]) {
+							material->AddTexture(textures.find(textureId)->second);
+						}
+						materials.emplace(material->GetId(), material);
+					}
+					else if ("pbrMapped" == materialTypeStr) {
+						auto* material = MaterialFactory::GetInstance()->getPBRMaterial(std::string(materialData["sourceFolder"]).c_str());
+						material->SetId(materialData["id"]);
+						material->SetName(materialData["name"]);
+						materials.emplace(material->GetId(), material);
+					}
+				}
+
+				// Geometries:
+				std::map<int, Geometry*> geometries;
+				for (auto& geometryData : jsonData["geometries"]) {
+					std::string srcFileName = geometryData["sourceFileName"];
+					Geometry* geometry = nullptr;
+					if ("__simpleQuad__" == srcFileName)
+					{
+						geometry = GeometryFactory::GetInstance()->GetSimpleQuad();
+					}
+					else if ("__quad__" == srcFileName)
+					{
+					geometry = GeometryFactory::GetInstance()->GetQuad();
+					}
+					else if ("__sphere__" == srcFileName)
+					{
+					geometry = GeometryFactory::GetInstance()->GetSphere();
+					}
+					else
+					{
+					geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append(srcFileName));
+					}
+					geometry->SetId(geometryData["id"]);
+					geometry->SetName(geometryData["name"]);
+					geometries.emplace(geometry->GetId(), geometry);
+				}
+
+				// Meshes:
+				std::map<int, Mesh*> meshes;
+				for (auto& meshData : jsonData["meshes"]) {
+					auto* mesh = Allocator::New<Mesh>();
+					mesh->Init(
+						materials.find(meshData["materialId"])->second,
+						geometries.find(meshData["geometryId"])->second
+					);
+					mesh->SetId(meshData["id"]);
+					mesh->SetName(meshData["name"]);
+					mesh->SetDepthTest(meshData["depthTest"]);
+					std::string depthFuncStr = meshData["depthFunc"];
+					if ("less" == depthFuncStr) {
+						mesh->setDepthFunc(Mesh::DepthTestFunc::less_func);
+					}
+					else if ("greater" == depthFuncStr) {
+						mesh->setDepthFunc(Mesh::DepthTestFunc::greater_func);
+					}
+
+					meshes.emplace(mesh->GetId(), mesh);
+				}
+
+				// Render layers:
+				std::map<int, RenderLayer*> layers;
+				for (auto& layerData : jsonData["renderLayers"]) {
+					auto* layer = Allocator::New<RenderLayer>();
+					std::string renderModeStr = layerData["renderMode"];
+					if ("forwardRenderMode" == renderModeStr) {
+						layer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+					}
+					else if ("forwardInstancedRenderMode" == renderModeStr) {
+						layer->SetRenderMode(RenderLayer::RenderMode::forwardInstancedRenderMode);
+					}
+					else if ("deferredRenderMode" == renderModeStr) {
+						layer->SetRenderMode(RenderLayer::RenderMode::deferredRenderMode);
+					}
+					else if ("deferredInstancedRenderMode" == renderModeStr) {
+						layer->SetRenderMode(RenderLayer::RenderMode::deferredInstancedRenderMode);
+					}
+					layer->SetName(layerData["name"]);
+					auto* stage = Allocator::New<PostProcessStage>();
+					scene->AddRenderLayer(layer, layerData["place"]);
+					layers.emplace(layer->GetId(), layer);
+				}
+
+				// Post-process stages:
+				for (auto& stageData : jsonData["postProcessStages"]) {
+					PostProcessStage* stage = nullptr;
+					std::string typeStr = stageData["type"];
+					if ("custom" == typeStr) {
+						stage = Allocator::New<PostProcessStage>();
+						stage->Init(
+							AssetFolderPathManager::getInstance()->getShaderFolderPath().append(stageData["fragmentSourceFileName"]),
+							GlobalVariables::windowWidth, GlobalVariables::windowHeight);
+					}
+					else if ("bloom" == typeStr) {
+						stage = Allocator::New<Bloom>();
+						((Bloom*)stage)->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
+					}
+					scene->AddPostProcessStage(stage, stageData["renderLayerName"]);
+				}
+
+				// Captions:
+				std::map<std::string, Font*> fonts;
+				for (auto& captionData : jsonData["captions"]) {
+					auto* caption = Allocator::New<Caption>();
+					auto fontPair = fonts.find(captionData["fontSourceFileName"]);
+					Font* font = nullptr;
+					if (fonts.end() == fontPair) {
+						font = Allocator::New<Font>();
+						font->Init(std::string(captionData["fontSourceFileName"]).c_str());
+						fonts.emplace(captionData["fontSourceFileName"], font);
+					}
+					else {
+						font = fontPair->second;
+					}
+					auto multiByteStr = std::string(captionData["text"]);
+					int wchars_num = MultiByteToWideChar(CP_UTF8, 0, multiByteStr.c_str(), -1, NULL, 0);
+					wchar_t* wstr = new wchar_t[wchars_num];
+					MultiByteToWideChar(CP_UTF8, 0, multiByteStr.c_str(), -1, wstr, wchars_num);
+					std::wstring text(wstr);
+					delete[] wstr;
+					caption->Init(text, font, parseVec2(captionData["screenPosition"]), captionData["scale"], parseVec4(captionData["color"]));
+
+					std::string vPlacingStr = captionData["verticalPlacing"];
+					if ("absolute" == vPlacingStr) {
+						caption->SetVerticalPlacingStyle(Caption::PlacingStyle::absolute);
+					}
+					else if ("relative" == vPlacingStr) {
+						caption->SetVerticalPlacingStyle(Caption::PlacingStyle::relative);
+					}
+					std::string hPlacingStr = captionData["horizontalPlacing"];
+					if ("absolute" == hPlacingStr) {
+						caption->SetHorizontalPlacingStyle(Caption::PlacingStyle::absolute);
+					}
+					else if ("relative" == hPlacingStr) {
+						caption->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
+					}
+					scene->AddCaption(caption);
+				}
+
+				// Scene objects:
+				std::map<int, SceneObject*> sceneObjects;
+				for (auto& objData : jsonData["sceneObjects"]) {
+					auto sceneObj = Allocator::New<SceneObject>();
+					sceneObj->Init(meshes.find(objData["meshId"])->second);
+					sceneObj->SetId(objData["id"]);
+					sceneObj->SetName(objData["name"]);
+					scene->AddSceneObject(sceneObj, objData["instanceGroupName"], objData["renderLayerName"]);
+					sceneObjects.emplace(sceneObj->GetId(), sceneObj);
+				}
+
+				return scene;
 			}
-
-
-			return scene;
+			catch (std::exception e) {
+				DebugUtils::PrintError("SceneFactory", "Failed to parse Scene data");
+			}
 		}
 		return nullptr;
 	}

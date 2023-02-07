@@ -8,7 +8,7 @@ namespace Hogra {
 	{
 	public:
 		// ID reference for the Vertex Array Object
-		GLuint ID;
+		GLuint glID;
 
 		void Init();
 

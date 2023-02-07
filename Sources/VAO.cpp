@@ -5,7 +5,7 @@ namespace Hogra {
 
 	void VAO::Init()
 	{
-		glGenVertexArrays(1, &ID);
+		glGenVertexArrays(1, &glID);
 	}
 
 	VAO::~VAO()
@@ -28,7 +28,7 @@ namespace Hogra {
 	// Binds the VAO
 	void VAO::Bind()
 	{
-		glBindVertexArray(ID);
+		glBindVertexArray(glID);
 	}
 
 	// Unbinds the VAO
@@ -40,6 +40,6 @@ namespace Hogra {
 	// Deletes the VAO
 	void VAO::Delete()
 	{
-		glDeleteVertexArrays(1, &ID);
+		glDeleteVertexArrays(1, &glID);
 	}
 }

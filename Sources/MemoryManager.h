@@ -41,12 +41,20 @@ namespace Hogra {
 			if (
 				auto iterator = allocations.find(toFind);
 				allocations.end() != iterator && nullptr != iterator->pointer
-				) {
+			) {
 				iterator->pointer = nullptr;
 				iterator->deleteFunc();
 				allocations.erase(iterator);
 			}
 			p = nullptr;
+		}
+
+		template<typename T>
+		static bool IsValid(T* p) {
+			AllocationData toFind;
+			toFind.pointer = p;
+			auto iterator = allocations.find(toFind);
+			return allocations.end() != iterator && nullptr != iterator->pointer;
 		}
 
 

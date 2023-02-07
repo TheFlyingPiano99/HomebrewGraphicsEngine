@@ -67,7 +67,7 @@ namespace Hogra {
 			metallicMap.Bind();
 			aoMap.Bind();
 			glm::mat4 projection(1.0f);
-			glUniformMatrix4fv(glGetUniformLocation(combinationProgram.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+			combinationProgram.SetUniform("projection", projection);
 			glDisable(GL_BLEND);
 			glDisable(GL_DEPTH_TEST);
 			quad->Draw();

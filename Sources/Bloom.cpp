@@ -60,7 +60,7 @@ void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const 
 	prefilterProgram.Activate();
 	hdrTexture.Bind();															// Input of the shader
 	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, downScaledTextures[0], 0);			// Output of the shader
-	glUniform1f(glGetUniformLocation(prefilterProgram.ID, "treshold"), treshold);
+	prefilterProgram.SetUniform("treshold", treshold);
 
 	quad->Draw();	// Prefilter draw call
 	
@@ -74,7 +74,7 @@ void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const 
 	}
 
 	upSampleProgram.Activate();
-	glUniform1f(glGetUniformLocation(upSampleProgram.ID, "falloff"), falloff);
+	upSampleProgram.SetUniform("falloff", falloff);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	for (int i = BLOOM_MIP_LEVELS - 1; i > 0; i--)
@@ -89,7 +89,7 @@ void Hogra::Bloom::Draw(const FBO& outFBO, const Texture2D& depthTexture, const 
 	glDisable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	recombineProgram.Activate();
-	glUniform1f(glGetUniformLocation(recombineProgram.ID, "mixBloom"), mixBloom);
+	recombineProgram.SetUniform("mixBloom", mixBloom);
 	downScaledTextures[0].Bind();
 	hdrTexture.Bind();
 	quad->Draw();	// Recombine draw call

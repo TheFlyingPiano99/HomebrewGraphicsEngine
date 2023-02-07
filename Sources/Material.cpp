@@ -18,10 +18,11 @@ namespace Hogra {
 		{
 			texture->Bind();
 		}
-		glUniform3f(glGetUniformLocation(program->ID, "material.albedo"), albedo.r, albedo.g, albedo.b);
-		glUniform1f(glGetUniformLocation(program->ID, "material.roughness"), roughness);
-		glUniform1f(glGetUniformLocation(program->ID, "material.metallic"), metallic);
-		glUniform1f(glGetUniformLocation(program->ID, "material.ao"), ao);
+
+		program->SetUniform("material.albedo", albedo);
+		program->SetUniform("material.roughness", roughness);
+		program->SetUniform("material.metallic", metallic);
+		program->SetUniform("material.ao", ao);
 
 		if (alphaBlend) {
 			glEnable(GL_BLEND);

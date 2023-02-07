@@ -9,7 +9,7 @@ namespace Hogra {
 	public:
 		HoGraEngineApplication() = default;
 
-		int Init(const char* windowName);
+		int Init(const char* windowName, int argc = 0, char* argv[] = {});
 
 		void Loop();
 
@@ -17,7 +17,7 @@ namespace Hogra {
 
 	private:
 
-		void setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode);
+		void SetFullScreenMode(GLFWwindow*& window, bool isFullScreenMode);
 
 		void SetIcon();
 

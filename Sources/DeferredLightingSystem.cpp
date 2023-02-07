@@ -88,7 +88,7 @@ namespace Hogra {
 		glFrontFace(GL_CCW);
 		glm::vec4 pos = directionalLight.GetPosition4D();
 		glm::vec3 pow = directionalLight.getPowerDensity();
-		if (directionalLight.IsCastShadow()) {
+		if (directionalLight.IsActive()) {
 			fullScreenProgram.SetUniform("light.position", pos);
 			fullScreenProgram.SetUniform("light.powerDensity", pow);
 		}
@@ -102,7 +102,7 @@ namespace Hogra {
 			mesh->Bind();
 			instanceData.clear();
 			for (int i = 1; i < pointLights.size(); i++) {
-				if (pointLights[i]->IsActive() && pointLights[i]->IsCastShadow()) {
+				if (pointLights[i]->IsActive()) {
 					Geometry::LightInstancedData d = { pointLights[i]->getVolumeModelMatrix(), pointLights[i]->GetPosition4D(), glm::vec4(pointLights[i]->getPowerDensity(), 0.0) };
 					instanceData.push_back(d);
 				}

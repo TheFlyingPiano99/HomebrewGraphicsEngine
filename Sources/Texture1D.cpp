@@ -8,11 +8,11 @@ namespace Hogra {
 		this->width = width;
 
 		// Generates an OpenGL texture object
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + slot);
 		unit = slot;
-		glBindTexture(GL_TEXTURE_1D, ID);
+		glBindTexture(GL_TEXTURE_1D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -38,7 +38,7 @@ namespace Hogra {
 	void Texture1D::Bind() const
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_1D, ID);
+		glBindTexture(GL_TEXTURE_1D, glID);
 	}
 
 	void Texture1D::Unbind() const

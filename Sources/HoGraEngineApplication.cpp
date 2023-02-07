@@ -11,10 +11,11 @@
 #include <stb/stb_image.h>
 #include "AssetFolderPathManager.h"
 #include "HograTime.h"
+#include "DebugUtils.h"
 
 
 namespace Hogra {
-	void HoGraEngineApplication::setFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {
+	void HoGraEngineApplication::SetFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {
 		if (isFullScreenMode) {
 			GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 			const GLFWvidmode* mode = glfwGetVideoMode(monitor);
@@ -61,7 +62,7 @@ namespace Hogra {
 		std::cout << std::endl;
 	}
 
-	int HoGraEngineApplication::Init(const char* _windowName) {
+	int HoGraEngineApplication::Init(const char* _windowName, int argc, char* argv[]) {
 
 		auto consoleHandle = GetConsoleWindow();
 		if (GlobalVariables::hideConsoleWindow) {
@@ -89,7 +90,7 @@ namespace Hogra {
 		// Error check if the window fails to create
 		if (nullptr == window)
 		{
-			std::cout << "Failed to create GLFW window!" << std::endl;
+			DebugUtils::PrintError("HoGraEngineApplication", "Failed to create GLFW window!");
 			glfwTerminate();
 			return -1;
 		}
@@ -105,14 +106,18 @@ namespace Hogra {
 		// Introduce the window into the current context
 		glfwMakeContextCurrent(window);
 
-		setFullScreenMode(window, GlobalVariables::fullScreenMode);
+		SetFullScreenMode(window, GlobalVariables::fullScreenMode);
 
 		Callbacks::SetCallbacks(window);
 
 		//Load GLAD so it configures OpenGL
 		gladLoadGL();
 
-		Callbacks::OnWindowInit(window);
+		glfwGetWindowSize(window, &GlobalVariables::windowWidth, &GlobalVariables::windowHeight);
+		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
+
+		SceneManager::getInstance()->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
+		GUI::getInstance()->InitGUI(window);
 
 		return 0;
 	}
@@ -126,7 +131,7 @@ namespace Hogra {
 		// Keeps track of the amount of frames in timeDiff
 		unsigned int frameCounter = 0;
 
-		const double dtLimit = 0.004;
+		constexpr double dtLimit = 0.004;
 
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
@@ -175,6 +180,7 @@ namespace Hogra {
 					break;
 				}
 			}
+
 			// Special controll events triggering per frame
 			SceneManager::getInstance()->AfterPhysicsLoopUpdate();
 
@@ -192,7 +198,7 @@ namespace Hogra {
 	
 	void HoGraEngineApplication::Destroy() {
 		GUI::getInstance()->DestroyGUI();
-		SceneManager::getInstance()->UnloadScene();
+		SceneManager::getInstance()->UnloadCurrentScene();
 
 		// Delete window before ending the program
 		glfwDestroyWindow(window);

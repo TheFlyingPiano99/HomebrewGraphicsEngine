@@ -35,8 +35,8 @@ namespace Hogra {
             return;
         }
 
-        alGenBuffers(1, &ID);
-        alBufferData(ID, format, &soundData[0], (ALsizei)soundData.size(), sampleRate);
+        alGenBuffers(1, &glID);
+        alBufferData(glID, format, &soundData[0], (ALsizei)soundData.size(), sampleRate);
     }
 
     AudioBuffer::~AudioBuffer()
@@ -44,11 +44,11 @@ namespace Hogra {
         for (auto& src : sourcesUsingThisBuffer) {  // Unbind buffer from sources referencing it
             alSourcei(src, AL_BUFFER, 0);
         }
-        alDeleteBuffers(1, &ID);
+        alDeleteBuffers(1, &glID);
     }
     ALuint AudioBuffer::Get() const
     {
-        return ID;
+        return glID;
     }
     
     std::int32_t AudioBuffer::ConvertToInt(char const* buffer, std::size_t len)

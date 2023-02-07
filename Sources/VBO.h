@@ -33,7 +33,7 @@ namespace Hogra {
 	{
 	public:
 		// Reference ID of the Vertex Buffer Object
-		GLuint ID;
+		GLuint glID;
 
 		void Init(std::vector<Vertex_pos_norm_tang_bitang_uv>& vertices);
 

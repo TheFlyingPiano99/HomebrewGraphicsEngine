@@ -8,7 +8,7 @@ namespace Hogra {
 	{
 	public:
 		// ID reference of Elements Buffer Object
-		GLuint ID;
+		GLuint glID;
 
 		void Init(const std::vector<GLuint>& indices);
 

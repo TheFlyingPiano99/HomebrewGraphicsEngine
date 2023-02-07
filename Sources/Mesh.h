@@ -7,10 +7,11 @@
 #include "Light.h"
 #include "ShadowCaster.h"
 #include "MemoryManager.h"
+#include "Identifiable.h"
 
 namespace Hogra {
 
-	class Mesh
+	class Mesh : public Identifiable
 	{
 		friend class Allocator;
 	public:

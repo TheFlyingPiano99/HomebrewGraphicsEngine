@@ -71,7 +71,7 @@ namespace Hogra {
 		if (nullptr == mesh) {
 			return;
 		}
-		glUniformMatrix4fv(glGetUniformLocation(shadowCaster.getProgram().ID, "sceneObject.modelMatrix"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		shadowCaster.getProgram().SetUniform("sceneObject.modelMatrix", modelMatrix);
 		mesh->Draw();
 	}
 

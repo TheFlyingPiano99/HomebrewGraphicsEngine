@@ -5,10 +5,10 @@ namespace Hogra {
 	
 	void TextureCube::Init(std::vector<std::string>& images, GLuint unit)
 	{
-		glGenTextures(1, &ID);
+		glGenTextures(1, &glID);
 		glActiveTexture(GL_TEXTURE0 + unit);
 		this->unit = unit;
-		glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, glID);
 
 		// Stores the width, height, and the number of color channels of the image
 		int widthImg, heightImg, numColCh;
@@ -43,7 +43,7 @@ namespace Hogra {
 	void TextureCube::Bind()
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, glID);
 	}
 
 	void TextureCube::Unbind()
@@ -53,13 +53,13 @@ namespace Hogra {
 
 	void TextureCube::Delete()
 	{
-		glDeleteTextures(1, &ID);
+		glDeleteTextures(1, &glID);
 	}
 
 	void TextureCube::Bind() const
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, ID);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, glID);
 	}
 
 	void TextureCube::Unbind() const

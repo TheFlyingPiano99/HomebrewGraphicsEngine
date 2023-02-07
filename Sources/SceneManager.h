@@ -38,15 +38,13 @@ namespace Hogra {
 
 		void AfterPhysicsLoopUpdate();
 
-		void UnloadScene();
-
 		void OnWindowResize(unsigned int w, unsigned int h);
 
 	private:
 		SceneManager() = default;
 
 		~SceneManager() {
-			UnloadScene();
+			UnloadCurrentScene();
 		}
 
 		static SceneManager* instance;

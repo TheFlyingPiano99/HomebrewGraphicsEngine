@@ -3020,8 +3020,8 @@ ImGuiWindow::ImGuiWindow(ImGuiContext* context, const char* name) : DrawListInst
     memset(this, 0, sizeof(*this));
     Name = ImStrdup(name);
     NameBufLen = (int)strlen(name) + 1;
-    ID = ImHashStr(name);
-    IDStack.push_back(ID);
+    glID = ImHashStr(name);
+    IDStack.push_back(glID);
     MoveId = GetID("#MOVE");
     ScrollTarget = ImVec2(FLT_MAX, FLT_MAX);
     ScrollTargetCenterRatio = ImVec2(0.5f, 0.5f);
@@ -3289,7 +3289,7 @@ bool ImGui::IsItemHovered(ImGuiHoveredFlags flags)
 
     // Test if another item is active (e.g. being dragged)
     if ((flags & ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) == 0)
-        if (g.ActiveId != 0 && g.ActiveId != g.LastItemData.ID && !g.ActiveIdAllowOverlap && g.ActiveId != window->MoveId)
+        if (g.ActiveId != 0 && g.ActiveId != g.LastItemData.glID && !g.ActiveIdAllowOverlap && g.ActiveId != window->MoveId)
             return false;
 
     // Test if interactions on this window are blocked by an active popup or modal.
@@ -3303,7 +3303,7 @@ bool ImGui::IsItemHovered(ImGuiHoveredFlags flags)
 
     // Special handling for calling after Begin() which represent the title bar or tab.
     // When the window is collapsed (SkipItems==true) that last item will never be overwritten so we need to detect the case.
-    if (g.LastItemData.ID == window->MoveId && window->WriteAccessed)
+    if (g.LastItemData.glID == window->MoveId && window->WriteAccessed)
         return false;
     return true;
 }
@@ -3336,7 +3336,7 @@ bool ImGui::ItemHoverable(const ImRect& bb, ImGuiID id)
         SetHoveredID(id);
 
     // When disabled we'll return false but still set HoveredId
-    ImGuiItemFlags item_flags = (g.LastItemData.ID == id ? g.LastItemData.InFlags : g.CurrentItemFlags);
+    ImGuiItemFlags item_flags = (g.LastItemData.glID == id ? g.LastItemData.InFlags : g.CurrentItemFlags);
     if (item_flags & ImGuiItemFlags_Disabled)
     {
         // Release active id if turning disabled
@@ -4882,7 +4882,7 @@ bool ImGui::IsItemActive()
 {
     ImGuiContext& g = *GImGui;
     if (g.ActiveId)
-        return g.ActiveId == g.LastItemData.ID;
+        return g.ActiveId == g.LastItemData.glID;
     return false;
 }
 
@@ -4890,7 +4890,7 @@ bool ImGui::IsItemActivated()
 {
     ImGuiContext& g = *GImGui;
     if (g.ActiveId)
-        if (g.ActiveId == g.LastItemData.ID && g.ActiveIdPreviousFrame != g.LastItemData.ID)
+        if (g.ActiveId == g.LastItemData.glID && g.ActiveIdPreviousFrame != g.LastItemData.glID)
             return true;
     return false;
 }
@@ -4900,7 +4900,7 @@ bool ImGui::IsItemDeactivated()
     ImGuiContext& g = *GImGui;
     if (g.LastItemData.StatusFlags & ImGuiItemStatusFlags_HasDeactivated)
         return (g.LastItemData.StatusFlags & ImGuiItemStatusFlags_Deactivated) != 0;
-    return (g.ActiveIdPreviousFrame == g.LastItemData.ID && g.ActiveIdPreviousFrame != 0 && g.ActiveId != g.LastItemData.ID);
+    return (g.ActiveIdPreviousFrame == g.LastItemData.glID && g.ActiveIdPreviousFrame != 0 && g.ActiveId != g.LastItemData.glID);
 }
 
 bool ImGui::IsItemDeactivatedAfterEdit()
@@ -4913,7 +4913,7 @@ bool ImGui::IsItemDeactivatedAfterEdit()
 bool ImGui::IsItemFocused()
 {
     ImGuiContext& g = *GImGui;
-    if (g.NavId != g.LastItemData.ID || g.NavId == 0)
+    if (g.NavId != g.LastItemData.glID || g.NavId == 0)
         return false;
     return true;
 }
@@ -4972,7 +4972,7 @@ bool ImGui::IsItemEdited()
 void ImGui::SetItemAllowOverlap()
 {
     ImGuiContext& g = *GImGui;
-    ImGuiID id = g.LastItemData.ID;
+    ImGuiID id = g.LastItemData.glID;
     if (g.HoveredId == id)
         g.HoveredIdAllowOverlap = true;
     if (g.ActiveId == id)
@@ -4982,7 +4982,7 @@ void ImGui::SetItemAllowOverlap()
 void ImGui::SetItemUsingMouseWheel()
 {
     ImGuiContext& g = *GImGui;
-    ImGuiID id = g.LastItemData.ID;
+    ImGuiID id = g.LastItemData.glID;
     if (g.HoveredId == id)
         g.HoveredIdUsingMouseWheel = true;
     if (g.ActiveId == id)
@@ -5180,7 +5180,7 @@ static ImGuiWindow* CreateNewWindow(const char* name, ImGuiWindowFlags flags)
     // Create window the first time
     ImGuiWindow* window = IM_NEW(ImGuiWindow)(&g, name);
     window->Flags = flags;
-    g.WindowsById.SetVoidPtr(window->ID, window);
+    g.WindowsById.SetVoidPtr(window->glID, window);
 
     // Default/arbitrary window position. Use SetNextWindowPos() with the appropriate condition flag to change the initial position of a window.
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -5188,7 +5188,7 @@ static ImGuiWindow* CreateNewWindow(const char* name, ImGuiWindowFlags flags)
 
     // User can disable loading and saving of settings. Tooltip and child windows also don't store settings.
     if (!(flags & ImGuiWindowFlags_NoSavedSettings))
-        if (ImGuiWindowSettings* settings = ImGui::FindWindowSettings(window->ID))
+        if (ImGuiWindowSettings* settings = ImGui::FindWindowSettings(window->glID))
         {
             // Retrieve settings from .ini file
             window->SettingsOffset = g.SettingsWindows.offset_from_ptr(settings);
@@ -5397,7 +5397,7 @@ static ImRect GetResizeBorderRect(ImGuiWindow* window, int border_n, float perp_
 ImGuiID ImGui::GetWindowResizeCornerID(ImGuiWindow* window, int n)
 {
     IM_ASSERT(n >= 0 && n < 4);
-    ImGuiID id = window->ID;
+    ImGuiID id = window->glID;
     id = ImHashStr("#RESIZE", 0, id);
     id = ImHashData(&n, sizeof(int), id);
     return id;
@@ -5408,7 +5408,7 @@ ImGuiID ImGui::GetWindowResizeBorderID(ImGuiWindow* window, ImGuiDir dir)
 {
     IM_ASSERT(dir >= 0 && dir < 4);
     int n = (int)dir + 4;
-    ImGuiID id = window->ID;
+    ImGuiID id = window->glID;
     id = ImHashStr("#RESIZE", 0, id);
     id = ImHashData(&n, sizeof(int), id);
     return id;
@@ -5835,7 +5835,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
 
     // We allow window memory to be compacted so recreate the base stack when needed.
     if (window->IDStack.Size == 0)
-        window->IDStack.push_back(window->ID);
+        window->IDStack.push_back(window->glID);
 
     // Add to stack
     // We intentionally set g.CurrentWindow to NULL to prevent usage until when the viewport is set, then will call SetCurrentWindow()
@@ -6359,7 +6359,7 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
 
         // We fill last item data based on Title Bar/Tab, in order for IsItemHovered() and IsItemActive() to be usable after Begin().
         // This is useful to allow creating context menus on title bar only, etc.
-        g.LastItemData.ID = window->MoveId;
+        g.LastItemData.glID = window->MoveId;
         g.LastItemData.InFlags = g.CurrentItemFlags;
         g.LastItemData.StatusFlags = IsMouseHoveringRect(title_bar_rect.Min, title_bar_rect.Max, false) ? ImGuiItemStatusFlags_HoveredRect : 0;
         g.LastItemData.Rect = title_bar_rect;
@@ -7129,7 +7129,7 @@ void ImGui::SetItemDefaultFocus()
         return;
 
     g.NavInitRequest = false;
-    g.NavInitResultId = g.LastItemData.ID;
+    g.NavInitResultId = g.LastItemData.glID;
     g.NavInitResultRectRel = WindowRectAbsToRel(window, g.LastItemData.Rect);
     NavUpdateAnyRequestFlag();
 
@@ -7552,7 +7552,7 @@ bool ImGui::ItemAdd(const ImRect& bb, ImGuiID id, const ImRect* nav_bb_arg, ImGu
 
     // Set item data
     // (DisplayRect is left untouched, made valid when ImGuiItemStatusFlags_HasDisplayRect is set)
-    g.LastItemData.ID = id;
+    g.LastItemData.glID = id;
     g.LastItemData.Rect = bb;
     g.LastItemData.NavRect = nav_bb_arg ? *nav_bb_arg : bb;
     g.LastItemData.InFlags = g.CurrentItemFlags | extra_flags;
@@ -7870,7 +7870,7 @@ void ImGui::BeginGroup()
 
     g.GroupStack.resize(g.GroupStack.Size + 1);
     ImGuiGroupData& group_data = g.GroupStack.back();
-    group_data.WindowID = window->ID;
+    group_data.WindowID = window->glID;
     group_data.BackupCursorPos = window->DC.CursorPos;
     group_data.BackupCursorMaxPos = window->DC.CursorMaxPos;
     group_data.BackupIndent = window->DC.Indent;
@@ -7897,7 +7897,7 @@ void ImGui::EndGroup()
     IM_ASSERT(g.GroupStack.Size > 0); // Mismatched BeginGroup()/EndGroup() calls
 
     ImGuiGroupData& group_data = g.GroupStack.back();
-    IM_ASSERT(group_data.WindowID == window->ID); // EndGroup() in wrong window?
+    IM_ASSERT(group_data.WindowID == window->glID); // EndGroup() in wrong window?
 
     ImRect group_bb(group_data.BackupCursorPos, ImMax(window->DC.CursorMaxPos, group_data.BackupCursorPos));
 
@@ -7927,9 +7927,9 @@ void ImGui::EndGroup()
     const bool group_contains_curr_active_id = (group_data.BackupActiveIdIsAlive != g.ActiveId) && (g.ActiveIdIsAlive == g.ActiveId) && g.ActiveId;
     const bool group_contains_prev_active_id = (group_data.BackupActiveIdPreviousFrameIsAlive == false) && (g.ActiveIdPreviousFrameIsAlive == true);
     if (group_contains_curr_active_id)
-        g.LastItemData.ID = g.ActiveId;
+        g.LastItemData.glID = g.ActiveId;
     else if (group_contains_prev_active_id)
-        g.LastItemData.ID = g.ActiveIdPreviousFrame;
+        g.LastItemData.glID = g.ActiveIdPreviousFrame;
     g.LastItemData.Rect = group_bb;
 
     // Forward Hovered flag
@@ -8597,7 +8597,7 @@ void ImGui::OpenPopupOnItemClick(const char* str_id, ImGuiPopupFlags popup_flags
     int mouse_button = (popup_flags & ImGuiPopupFlags_MouseButtonMask_);
     if (IsMouseReleased(mouse_button) && IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup))
     {
-        ImGuiID id = str_id ? window->GetID(str_id) : g.LastItemData.ID;    // If user hasn't passed an ID, we can use the LastItemID. Using LastItemID as a Popup ID won't conflict!
+        ImGuiID id = str_id ? window->GetID(str_id) : g.LastItemData.glID;    // If user hasn't passed an ID, we can use the LastItemID. Using LastItemID as a Popup ID won't conflict!
         IM_ASSERT(id != 0);                                             // You cannot pass a NULL str_id if the last item has no identifier (e.g. a Text() item)
         OpenPopupEx(id, popup_flags);
     }
@@ -8625,7 +8625,7 @@ bool ImGui::BeginPopupContextItem(const char* str_id, ImGuiPopupFlags popup_flag
     ImGuiWindow* window = g.CurrentWindow;
     if (window->SkipItems)
         return false;
-    ImGuiID id = str_id ? window->GetID(str_id) : g.LastItemData.ID;    // If user hasn't passed an ID, we can use the LastItemID. Using LastItemID as a Popup ID won't conflict!
+    ImGuiID id = str_id ? window->GetID(str_id) : g.LastItemData.glID;    // If user hasn't passed an ID, we can use the LastItemID. Using LastItemID as a Popup ID won't conflict!
     IM_ASSERT(id != 0);                                             // You cannot pass a NULL str_id if the last item has no identifier (e.g. a Text() item)
     int mouse_button = (popup_flags & ImGuiPopupFlags_MouseButtonMask_);
     if (IsMouseReleased(mouse_button) && IsItemHovered(ImGuiHoveredFlags_AllowWhenBlockedByPopup))
@@ -8824,7 +8824,7 @@ void ImGui::SetFocusID(ImGuiID id, ImGuiWindow* window)
     g.NavLayer = nav_layer;
     g.NavFocusScopeId = window->DC.NavFocusScopeIdCurrent;
     window->NavLastIds[nav_layer] = id;
-    if (g.LastItemData.ID == id)
+    if (g.LastItemData.glID == id)
         window->NavRectRel[nav_layer] = WindowRectAbsToRel(window, g.LastItemData.NavRect);
 
     if (g.ActiveIdSource == ImGuiInputSource_Nav)
@@ -8924,7 +8924,7 @@ static bool ImGui::NavScoreItem(ImGuiNavItemData* result)
     else
     {
         // Degenerate case: two overlapping buttons with same center, break ties arbitrarily (note that LastItemId here is really the _previous_ item order, but it doesn't matter)
-        quadrant = (g.LastItemData.ID < g.NavId) ? ImGuiDir_Left : ImGuiDir_Right;
+        quadrant = (g.LastItemData.glID < g.NavId) ? ImGuiDir_Left : ImGuiDir_Right;
     }
 
 #if IMGUI_DEBUG_NAV_SCORING
@@ -9002,7 +9002,7 @@ static void ImGui::NavApplyItemToResult(ImGuiNavItemData* result)
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
     result->Window = window;
-    result->ID = g.LastItemData.ID;
+    result->glID = g.LastItemData.glID;
     result->FocusScopeId = window->DC.NavFocusScopeIdCurrent;
     result->InFlags = g.LastItemData.InFlags;
     result->RectRel = WindowRectAbsToRel(window, g.LastItemData.NavRect);
@@ -9014,7 +9014,7 @@ static void ImGui::NavProcessItem()
 {
     ImGuiContext& g = *GImGui;
     ImGuiWindow* window = g.CurrentWindow;
-    const ImGuiID id = g.LastItemData.ID;
+    const ImGuiID id = g.LastItemData.glID;
     const ImRect nav_bb = g.LastItemData.NavRect;
     const ImGuiItemFlags item_flags = g.LastItemData.InFlags;
 
@@ -9090,7 +9090,7 @@ void ImGui::NavProcessItemForTabbingRequest(ImGuiWindow* window, ImGuiID id)
     if (g.NavTabbingDir == +1)
     {
         // Tab Forward or SetKeyboardFocusHere() with >= 0
-        if (g.NavTabbingResultFirst.ID == 0)
+        if (g.NavTabbingResultFirst.glID == 0)
             NavApplyItemToResult(&g.NavTabbingResultFirst);
         if (--g.NavTabbingCounter == 0)
             NavMoveRequestResolveWithLastItem(result);
@@ -9102,7 +9102,7 @@ void ImGui::NavProcessItemForTabbingRequest(ImGuiWindow* window, ImGuiID id)
         // Tab Backward
         if (g.NavId == id)
         {
-            if (result->ID)
+            if (result->glID)
             {
                 g.NavMoveScoringItems = false;
                 NavUpdateAnyRequestFlag();
@@ -9116,7 +9116,7 @@ void ImGui::NavProcessItemForTabbingRequest(ImGuiWindow* window, ImGuiID id)
     else if (g.NavTabbingDir == 0)
     {
         // Tab Init
-        if (g.NavTabbingResultFirst.ID == 0)
+        if (g.NavTabbingResultFirst.glID == 0)
             NavMoveRequestResolveWithLastItem(&g.NavTabbingResultFirst);
     }
 }
@@ -9124,7 +9124,7 @@ void ImGui::NavProcessItemForTabbingRequest(ImGuiWindow* window, ImGuiID id)
 bool ImGui::NavMoveRequestButNoResultYet()
 {
     ImGuiContext& g = *GImGui;
-    return g.NavMoveScoringItems && g.NavMoveResultLocal.ID == 0 && g.NavMoveResultOther.ID == 0;
+    return g.NavMoveScoringItems && g.NavMoveResultLocal.glID == 0 && g.NavMoveResultOther.glID == 0;
 }
 
 // FIXME: ScoringRect is not set
@@ -9670,13 +9670,13 @@ void ImGui::NavMoveRequestApplyResult()
 #endif
 
     // Select which result to use
-    ImGuiNavItemData* result = (g.NavMoveResultLocal.ID != 0) ? &g.NavMoveResultLocal : (g.NavMoveResultOther.ID != 0) ? &g.NavMoveResultOther : NULL;
+    ImGuiNavItemData* result = (g.NavMoveResultLocal.glID != 0) ? &g.NavMoveResultLocal : (g.NavMoveResultOther.glID != 0) ? &g.NavMoveResultOther : NULL;
 
     // Tabbing forward wrap
     if (g.NavMoveFlags & ImGuiNavMoveFlags_Tabbing)
         if (g.NavTabbingCounter == 1 || g.NavTabbingDir == 0)
         {
-            IM_ASSERT(g.NavTabbingResultFirst.ID != 0);
+            IM_ASSERT(g.NavTabbingResultFirst.glID != 0);
             result = &g.NavTabbingResultFirst;
         }
 
@@ -9692,11 +9692,11 @@ void ImGui::NavMoveRequestApplyResult()
 
     // PageUp/PageDown behavior first jumps to the bottom/top mostly visible item, _otherwise_ use the result from the previous/next page.
     if (g.NavMoveFlags & ImGuiNavMoveFlags_AlsoScoreVisibleSet)
-        if (g.NavMoveResultLocalVisible.ID != 0 && g.NavMoveResultLocalVisible.ID != g.NavId)
+        if (g.NavMoveResultLocalVisible.glID != 0 && g.NavMoveResultLocalVisible.glID != g.NavId)
             result = &g.NavMoveResultLocalVisible;
 
     // Maybe entering a flattened child from the outside? In this case solve the tie using the regular scoring rules.
-    if (result != &g.NavMoveResultOther && g.NavMoveResultOther.ID != 0 && g.NavMoveResultOther.Window->ParentWindow == g.NavWindow)
+    if (result != &g.NavMoveResultOther && g.NavMoveResultOther.glID != 0 && g.NavMoveResultOther.Window->ParentWindow == g.NavWindow)
         if ((g.NavMoveResultOther.DistBox < result->DistBox) || (g.NavMoveResultOther.DistBox == result->DistBox && g.NavMoveResultOther.DistCenter < result->DistCenter))
             result = &g.NavMoveResultOther;
     IM_ASSERT(g.NavWindow && result->Window);
@@ -9718,24 +9718,24 @@ void ImGui::NavMoveRequestApplyResult()
     }
 
     g.NavWindow = result->Window;
-    if (g.ActiveId != result->ID)
+    if (g.ActiveId != result->glID)
         ClearActiveID();
-    if (g.NavId != result->ID)
+    if (g.NavId != result->glID)
     {
         // Don't set NavJustMovedToId if just landed on the same spot (which may happen with ImGuiNavMoveFlags_AllowCurrentNavId)
-        g.NavJustMovedToId = result->ID;
+        g.NavJustMovedToId = result->glID;
         g.NavJustMovedToFocusScopeId = result->FocusScopeId;
         g.NavJustMovedToKeyMods = g.NavMoveKeyMods;
     }
 
     // Focus
-    IMGUI_DEBUG_LOG_NAV("[nav] NavMoveRequest: result NavID 0x%08X in Layer %d Window \"%s\"\n", result->ID, g.NavLayer, g.NavWindow->Name);
-    SetNavID(result->ID, g.NavLayer, result->FocusScopeId, result->RectRel);
+    IMGUI_DEBUG_LOG_NAV("[nav] NavMoveRequest: result NavID 0x%08X in Layer %d Window \"%s\"\n", result->glID, g.NavLayer, g.NavWindow->Name);
+    SetNavID(result->glID, g.NavLayer, result->FocusScopeId, result->RectRel);
 
     // Tabbing: Activates Inputable or Focus non-Inputable
     if ((g.NavMoveFlags & ImGuiNavMoveFlags_Tabbing) && (result->InFlags & ImGuiItemFlags_Inputable))
     {
-        g.NavNextActivateId = result->ID;
+        g.NavNextActivateId = result->glID;
         g.NavNextActivateFlags = ImGuiActivateFlags_PreferInput | ImGuiActivateFlags_TryToPreserveState;
         g.NavMoveFlags |= ImGuiNavMoveFlags_DontSetNavHighlight;
     }
@@ -9743,7 +9743,7 @@ void ImGui::NavMoveRequestApplyResult()
     // Activate
     if (g.NavMoveFlags & ImGuiNavMoveFlags_Activate)
     {
-        g.NavNextActivateId = result->ID;
+        g.NavNextActivateId = result->glID;
         g.NavNextActivateFlags = ImGuiActivateFlags_None;
     }
 
@@ -10243,7 +10243,7 @@ bool ImGui::BeginDragDropSource(ImGuiDragDropFlags flags)
     ImGuiID source_parent_id = 0;
     if (!(flags & ImGuiDragDropFlags_SourceExtern))
     {
-        source_id = g.LastItemData.ID;
+        source_id = g.LastItemData.glID;
         if (source_id != 0)
         {
             // Common path: items with ID
@@ -10276,7 +10276,7 @@ bool ImGui::BeginDragDropSource(ImGuiDragDropFlags flags)
             // THE IDENTIFIER WON'T SURVIVE ANY REPOSITIONING OF THE WIDGET, so if your widget moves your dragging operation will be canceled.
             // We don't need to maintain/call ClearActiveID() as releasing the button will early out this function and trigger !ActiveIdIsAlive.
             // Rely on keeping other window->LastItemXXX fields intact.
-            source_id = g.LastItemData.ID = window->GetIDFromRectangle(g.LastItemData.Rect);
+            source_id = g.LastItemData.glID = window->GetIDFromRectangle(g.LastItemData.Rect);
             bool is_hovered = ItemHoverable(g.LastItemData.Rect, source_id);
             if (is_hovered && g.IO.MouseClicked[mouse_button])
             {
@@ -10440,7 +10440,7 @@ bool ImGui::BeginDragDropTarget()
         return false;
 
     const ImRect& display_rect = (g.LastItemData.StatusFlags & ImGuiItemStatusFlags_HasDisplayRect) ? g.LastItemData.DisplayRect : g.LastItemData.Rect;
-    ImGuiID id = g.LastItemData.ID;
+    ImGuiID id = g.LastItemData.glID;
     if (id == 0)
         id = window->GetIDFromRectangle(display_rect);
     if (g.DragDropPayload.SourceId == id)
@@ -10834,7 +10834,7 @@ ImGuiWindowSettings* ImGui::CreateNewWindowSettings(const char* name)
     const size_t chunk_size = sizeof(ImGuiWindowSettings) + name_len + 1;
     ImGuiWindowSettings* settings = g.SettingsWindows.alloc_chunk(chunk_size);
     IM_PLACEMENT_NEW(settings) ImGuiWindowSettings();
-    settings->ID = ImHashStr(name, name_len);
+    settings->glID = ImHashStr(name, name_len);
     memcpy(settings->GetName(), name, name_len + 1);   // Store with zero terminator
 
     return settings;
@@ -10844,7 +10844,7 @@ ImGuiWindowSettings* ImGui::FindWindowSettings(ImGuiID id)
 {
     ImGuiContext& g = *GImGui;
     for (ImGuiWindowSettings* settings = g.SettingsWindows.begin(); settings != NULL; settings = g.SettingsWindows.next_chunk(settings))
-        if (settings->ID == id)
+        if (settings->glID == id)
             return settings;
     return NULL;
 }
@@ -11000,9 +11000,9 @@ static void WindowSettingsHandler_ClearAll(ImGuiContext* ctx, ImGuiSettingsHandl
 static void* WindowSettingsHandler_ReadOpen(ImGuiContext*, ImGuiSettingsHandler*, const char* name)
 {
     ImGuiWindowSettings* settings = ImGui::FindOrCreateWindowSettings(name);
-    ImGuiID id = settings->ID;
+    ImGuiID id = settings->glID;
     *settings = ImGuiWindowSettings(); // Clear existing if recycling previous entry
-    settings->ID = id;
+    settings->glID = id;
     settings->WantApply = true;
     return (void*)settings;
 }
@@ -11024,7 +11024,7 @@ static void WindowSettingsHandler_ApplyAll(ImGuiContext* ctx, ImGuiSettingsHandl
     for (ImGuiWindowSettings* settings = g.SettingsWindows.begin(); settings != NULL; settings = g.SettingsWindows.next_chunk(settings))
         if (settings->WantApply)
         {
-            if (ImGuiWindow* window = ImGui::FindWindowByID(settings->ID))
+            if (ImGuiWindow* window = ImGui::FindWindowByID(settings->glID))
                 ApplyWindowSettings(window, settings);
             settings->WantApply = false;
         }
@@ -11041,13 +11041,13 @@ static void WindowSettingsHandler_WriteAll(ImGuiContext* ctx, ImGuiSettingsHandl
         if (window->Flags & ImGuiWindowFlags_NoSavedSettings)
             continue;
 
-        ImGuiWindowSettings* settings = (window->SettingsOffset != -1) ? g.SettingsWindows.ptr_from_offset(window->SettingsOffset) : ImGui::FindWindowSettings(window->ID);
+        ImGuiWindowSettings* settings = (window->SettingsOffset != -1) ? g.SettingsWindows.ptr_from_offset(window->SettingsOffset) : ImGui::FindWindowSettings(window->glID);
         if (!settings)
         {
             settings = ImGui::CreateNewWindowSettings(window->Name);
             window->SettingsOffset = g.SettingsWindows.offset_from_ptr(settings);
         }
-        IM_ASSERT(settings->ID == window->ID);
+        IM_ASSERT(settings->glID == window->glID);
         settings->Pos = ImVec2ih(window->Pos);
         settings->Size = ImVec2ih(window->SizeFull);
 
@@ -11469,7 +11469,7 @@ void ImGui::ShowMetricsWindow(bool* p_open)
                 if (table == NULL || table->LastFrameActive < g.FrameCount - 1 || (table->OuterWindow != g.NavWindow && table->InnerWindow != g.NavWindow))
                     continue;
 
-                BulletText("Table 0x%08X (%d columns, in '%s')", table->ID, table->ColumnsCount, table->OuterWindow->Name);
+                BulletText("Table 0x%08X (%d columns, in '%s')", table->glID, table->ColumnsCount, table->OuterWindow->Name);
                 if (IsItemHovered())
                     GetForegroundDrawList()->AddRect(table->OuterRect.Min - ImVec2(1, 1), table->OuterRect.Max + ImVec2(1, 1), IM_COL32(255, 255, 0, 255), 0.0f, 0, 2.0f);
                 Indent();
@@ -11765,7 +11765,7 @@ void ImGui::ShowFontAtlas(ImFontAtlas* atlas)
 // [DEBUG] Display contents of Columns
 void ImGui::DebugNodeColumns(ImGuiOldColumns* columns)
 {
-    if (!TreeNode((void*)(uintptr_t)columns->ID, "Columns Id: 0x%08X, Count: %d, Flags: 0x%04X", columns->ID, columns->Count, columns->Flags))
+    if (!TreeNode((void*)(uintptr_t)columns->glID, "Columns Id: 0x%08X, Count: %d, Flags: 0x%04X", columns->glID, columns->Count, columns->Flags))
         return;
     BulletText("Width: %.1f (MinX: %.1f, MaxX: %.1f)", columns->OffMaxX - columns->OffMinX, columns->OffMinX, columns->OffMaxX);
     for (int column_n = 0; column_n < columns->Columns.Size; column_n++)
@@ -12014,7 +12014,7 @@ void ImGui::DebugNodeTabBar(ImGuiTabBar* tab_bar, const char* label)
     char* p = buf;
     const char* buf_end = buf + IM_ARRAYSIZE(buf);
     const bool is_active = (tab_bar->PrevFrameVisible >= GetFrameCount() - 2);
-    p += ImFormatString(p, buf_end - p, "%s 0x%08X (%d tabs)%s", label, tab_bar->ID, tab_bar->Tabs.Size, is_active ? "" : " *Inactive*");
+    p += ImFormatString(p, buf_end - p, "%s 0x%08X (%d tabs)%s", label, tab_bar->glID, tab_bar->Tabs.Size, is_active ? "" : " *Inactive*");
     p += ImFormatString(p, buf_end - p, "  { ");
     for (int tab_n = 0; tab_n < ImMin(tab_bar->Tabs.Size, 3); tab_n++)
     {
@@ -12042,7 +12042,7 @@ void ImGui::DebugNodeTabBar(ImGuiTabBar* tab_bar, const char* label)
             if (SmallButton("<")) { TabBarQueueReorder(tab_bar, tab, -1); } SameLine(0, 2);
             if (SmallButton(">")) { TabBarQueueReorder(tab_bar, tab, +1); } SameLine();
             Text("%02d%c Tab 0x%08X '%s' Offset: %.1f, Width: %.1f/%.1f",
-                tab_n, (tab->ID == tab_bar->SelectedTabId) ? '*' : ' ', tab->ID, (tab->NameOffset != -1) ? tab_bar->GetTabName(tab) : "???", tab->Offset, tab->Width, tab->ContentWidth);
+                tab_n, (tab->glID == tab_bar->SelectedTabId) ? '*' : ' ', tab->glID, (tab->NameOffset != -1) ? tab_bar->GetTabName(tab) : "???", tab->Offset, tab->Width, tab->ContentWidth);
             PopID();
         }
         TreePop();
@@ -12130,7 +12130,7 @@ void ImGui::DebugNodeWindow(ImGuiWindow* window, const char* label)
 void ImGui::DebugNodeWindowSettings(ImGuiWindowSettings* settings)
 {
     Text("0x%08X \"%s\" Pos (%d,%d) Size (%d,%d) Collapsed=%d",
-        settings->ID, settings->GetName(), settings->Pos.x, settings->Pos.y, settings->Size.x, settings->Size.y, settings->Collapsed);
+        settings->glID, settings->GetName(), settings->Pos.x, settings->Pos.y, settings->Size.x, settings->Size.y, settings->Collapsed);
 }
 
 void ImGui::DebugNodeWindowsList(ImVector<ImGuiWindow*>* windows, const char* label)
@@ -12211,7 +12211,7 @@ void ImGui::UpdateDebugToolStackQueries()
         g.DebugHookIdInfo = query_id;
     if (stack_level >= 0 && stack_level < tool->Results.Size)
     {
-        g.DebugHookIdInfo = tool->Results[stack_level].ID;
+        g.DebugHookIdInfo = tool->Results[stack_level].glID;
         tool->Results[stack_level].QueryFrameCount++;
     }
 }
@@ -12230,7 +12230,7 @@ void ImGui::DebugHookIdInfo(ImGuiID id, ImGuiDataType data_type, const void* dat
         tool->StackLevel++;
         tool->Results.resize(window->IDStack.Size + 1, ImGuiStackLevelInfo());
         for (int n = 0; n < window->IDStack.Size + 1; n++)
-            tool->Results[n].ID = (n < window->IDStack.Size) ? window->IDStack[n] : id;
+            tool->Results[n].glID = (n < window->IDStack.Size) ? window->IDStack[n] : id;
         return;
     }
 
@@ -12239,7 +12239,7 @@ void ImGui::DebugHookIdInfo(ImGuiID id, ImGuiDataType data_type, const void* dat
     if (tool->StackLevel != window->IDStack.Size)
         return;
     ImGuiStackLevelInfo* info = &tool->Results[tool->StackLevel];
-    IM_ASSERT(info->ID == id && info->QueryFrameCount > 0);
+    IM_ASSERT(info->glID == id && info->QueryFrameCount > 0);
 
     int data_len;
     switch (data_type)
@@ -12299,10 +12299,10 @@ void ImGui::ShowStackToolWindow(bool* p_open)
         {
             ImGuiStackLevelInfo* info = &tool->Results[n];
             TableNextColumn();
-            Text("0x%08X", (n > 0) ? tool->Results[n - 1].ID : 0);
+            Text("0x%08X", (n > 0) ? tool->Results[n - 1].glID : 0);
 
             TableNextColumn();
-            ImGuiWindow* window = (info->Desc[0] == 0 && n == 0) ? FindWindowByID(info->ID) : NULL;
+            ImGuiWindow* window = (info->Desc[0] == 0 && n == 0) ? FindWindowByID(info->glID) : NULL;
             if (window)                                         // Source: window name (because the root ID don't call GetID() and so doesn't get hooked)
                 Text("\"%s\" [window]", window->Name);
             else if (info->QuerySuccess)                        // Source: GetID() hooks (prioritize over ItemInfo() because we frequently use patterns like: PushID(str), Button("") where they both have same id)
@@ -12318,7 +12318,7 @@ void ImGui::ShowStackToolWindow(bool* p_open)
             }
 
             TableNextColumn();
-            Text("0x%08X", info->ID);
+            Text("0x%08X", info->glID);
             if (n == tool->Results.Size - 1)
                 TableSetBgColor(ImGuiTableBgTarget_CellBg, GetColorU32(ImGuiCol_Header));
         }

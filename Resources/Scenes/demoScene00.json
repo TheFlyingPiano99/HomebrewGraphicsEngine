@@ -6,7 +6,7 @@
   "preferedUp": [ 0.0, 1.0, 0.0 ],
   "backgroundColor": [ 0.07, 0.13, 0.17, 1.0 ],
   "camera": {
-    "eye": [ -10.0, 5.0, -10.0 ],
+    "eye": [ -6.0, 0.25, -6.0 ],
     "lookAt": [ 0.0, 0.0, 0.0 ],
     "prefUp": [ 0.0, 1.0, 0.0 ],
     "FOVdeg": 45.0,
@@ -17,12 +17,141 @@
     {
       "id": 1,
       "name": "",
-      "position": [ 1, 0, 0, 0 ],
+      "position": [ -1, 0, 0, 0 ],
       "powerDensity": [ 1, 1, 1 ],
       "isActive": true,
       "castShadow": true
+    },
+    {
+      "id": 12,
+      "name": "",
+      "position": [ -5, 5, -5, 1 ],
+      "powerDensity": [ 100, 50, 1 ],
+      "isActive": true,
+      "castShadow": false
+    }
+
+  ],
+  "textures": [
+    {
+      "id": 2,
+      "name": "skybox",
+      "type": "CubeMap",
+      "sourceFileName": "seaSkybox",
+      "unit": 5,
+      "format": "",
+      "pixelType": ""
+    }
+  ],
+  "shaders": [
+    {
+      "id": 3,
+      "name": "skybox",
+      "vertexSourceFileName": "quadWithRayDir.vert",
+      "geometrySourceFileName": "",
+      "fragmentSourceFileName": "forwardSkybox.frag",
+      "uniforms": []
+    }
+  ],
+  "materials": [
+    {
+      "id": 4,
+      "name": "skybox",
+      "type": "custom",
+      "shaderId": 3,
+      "textureIds": [
+        2
+      ]
+    },
+    {
+      "id": 8,
+      "name": "planks",
+      "type": "pbrMapped",
+      "textureIds": null,
+      "sourceFolder": "planks"
+    }
+  ],
+  "geometries": [
+    {
+      "id": 5,
+      "name": "quad",
+      "sourceFileName": "__simpleQuad__"
+    },
+    {
+      "id": 9,
+      "name": "sphere",
+      "sourceFileName": "__sphere__"
+    }
+  ],
+  "meshes": [
+    {
+      "id": 6,
+      "name": "skybox",
+      "geometryId": 5,
+      "materialId": 4,
+      "depthTest": false,
+      "depthFunc": "less"
+    },
+    {
+      "id": 10,
+      "name": "sphere",
+      "geometryId": 9,
+      "materialId": 8,
+      "depthTest": true,
+      "depthFunc": "less"
+    }
+  ],
+  "renderLayers": [
+    {
+      "name": "ForwardLayer",
+      "renderMode": "forwardRenderMode",
+      "place": -1
+    },
+    {
+      "name": "DeferredLayer",
+      "renderMode": "deferredInstancedRenderMode",
+      "place": -1
+    }
+  ],
+  "postProcessStages": [
+    {
+      "type": "bloom",
+      "fragmentSourceFileName": "",
+      "renderLayerName": "DeferredLayer"
+    },
+    {
+      "type": "custom",
+      "fragmentSourceFileName": "hdr.frag",
+      "renderLayerName": "DeferredLayer"
+    }
+  ],
+  "sceneObjects": [
+    {
+      "id": 7,
+      "name": "skybox",
+      "meshId": 6,
+      "instanceGroupName": "",
+      "renderLayerName": "ForwardLayer"
+    },
+    {
+      "id": 11,
+      "name": "sphere",
+      "meshId": 10,
+      "instanceGroupName": "sphereGroup",
+      "renderLayerName": "DeferredLayer"
+    }
+  ],
+  "captions": [
+    {
+      "id": 13,
+      "text": "Gömb a képen",
+      "fontSourceFileName": "arial.ttf",
+      "alignment": "centered",
+      "verticalPlacing": "relative",
+      "horizontalPlacing": "relative",
+      "screenPosition": [ 0.5, 0.1 ],
+      "scale": 1.0,
+      "color": [ 1, 1, 1, 1 ]
     }
   ]
-
-
 }

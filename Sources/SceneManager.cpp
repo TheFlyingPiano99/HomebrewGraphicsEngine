@@ -14,7 +14,7 @@ public:
 
 	std::map<int, std::string> scenes;
 };
-
+#define INIT_MODE 0
 
 namespace Hogra {
 	SceneManager* SceneManager::instance = nullptr;
@@ -25,15 +25,22 @@ namespace Hogra {
 		}
 		return instance;
 	}
+
 	void SceneManager::Init(int contextWidth, int contextHeight)
 	{
 		if (nullptr != currentScene) {
 			return;
 		}
-		//LoadScene(0);
-		//currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);		
-		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);		
-		//currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
+#if 0 == INIT_MODE
+		LoadScene(0);
+#elif 1 == INIT_MODE
+		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);
+#elif 2 == INIT_MODE
+		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);
+#elif 3 == INIT_MODE
+		currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
+#endif
+
 	}
 
 	void SceneManager::RestartScene()
@@ -86,7 +93,9 @@ namespace Hogra {
 
 	void SceneManager::Draw()
 	{
-		currentScene->Draw();
+		if (nullptr != currentScene) {
+			currentScene->Draw();
+		}
 	}
 
 	void SceneManager::BeforePhysicsLoopUpdate()
@@ -98,6 +107,9 @@ namespace Hogra {
 
 	int SceneManager::PhysicsUpdate(float dt)
 	{
+		if (nullptr == currentScene) {
+			return 0;
+		}
 		currentScene->PhysicsUpdate(dt);
 		SceneChange change = currentScene->GetSceneChange();
 		switch (change.changeType)
@@ -124,13 +136,6 @@ namespace Hogra {
 	{
 		if (nullptr != currentScene) {
 			currentScene->AfterPhysicsLoopUpdate();
-		}
-	}
-
-	void SceneManager::UnloadScene() {
-		if (nullptr != currentScene) {
-			currentScene->Serialize();
-			Allocator::Delete(currentScene);
 		}
 	}
 
