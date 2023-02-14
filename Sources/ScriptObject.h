@@ -8,19 +8,19 @@ namespace Hogra {
 	public:
 
 		void BeforePhysicsLoopUpdate() override { beforePhysicsLoopUpdateFunc(); }
-		void EarlyPhysicsUpdate(float dt) override { earlyPhysicsUpdateFunc(); };
-		void LatePhysicsUpdate(float dt) override { latePhysicsUpdateFunc(); };
+		void EarlyPhysicsUpdate(float dt) override { earlyPhysicsUpdateFunc(dt); };
+		void LatePhysicsUpdate(float dt) override { latePhysicsUpdateFunc(dt); };
 		void AfterPhysicsLoopUpdate() override { afterPhysicsLoopUpdateFunc(); }
 
 		void SetBeforePhysicsLoopUpdateFunc(std::function<void()> func) { beforePhysicsLoopUpdateFunc = func; }
-		void SetEarlyPhysicsUpdateFunc(std::function<void()> func) { earlyPhysicsUpdateFunc = func; }
-		void SetLatePhysicsUpdateFunc(std::function<void()> func) { latePhysicsUpdateFunc = func; }
+		void SetEarlyPhysicsUpdateFunc(std::function<void(float)> func) { earlyPhysicsUpdateFunc = func; }
+		void SetLatePhysicsUpdateFunc(std::function<void(float)> func) { latePhysicsUpdateFunc = func; }
 		void SetAfterPhysicsLoopUpdateFunc(std::function<void()> func) { afterPhysicsLoopUpdateFunc = func; }
 
 	private:
 		std::function<void()> beforePhysicsLoopUpdateFunc = []() {};
-		std::function<void()> earlyPhysicsUpdateFunc = []() {};
-		std::function<void()> latePhysicsUpdateFunc = []() {};
+		std::function<void(float)> earlyPhysicsUpdateFunc = []() {};
+		std::function<void(float)> latePhysicsUpdateFunc = []() {};
 		std::function<void()> afterPhysicsLoopUpdateFunc = []() {};
 	};
 }

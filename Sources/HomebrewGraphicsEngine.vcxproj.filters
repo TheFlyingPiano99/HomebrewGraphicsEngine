@@ -396,6 +396,9 @@
     <ClCompile Include="DebugUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -735,6 +738,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DebugUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -243,6 +243,7 @@
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="SceneObjectFactory.cpp" />
     <ClCompile Include="ScriptObject.cpp" />
+    <ClCompile Include="ScriptProvider.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgramFactory.cpp" />
     <ClCompile Include="ShadowCaster.cpp" />
@@ -358,6 +359,7 @@
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="SceneObjectFactory.h" />
     <ClInclude Include="ScriptObject.h" />
+    <ClInclude Include="ScriptProvider.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShaderProgramFactory.h" />
     <ClInclude Include="ShadowCaster.h" />

@@ -1499,6 +1499,12 @@ namespace Hogra {
 					sceneObj->Init(meshes.find(objData["meshId"])->second);
 					sceneObj->SetId(objData["id"]);
 					sceneObj->SetName(objData["name"]);
+					sceneObj->SetPosition(parseVec3(objData["position"]));
+					sceneObj->SetScale(parseVec3(objData["scale"]));
+					sceneObj->setUseEulerAngles(objData["useEulerAngles"]);
+					sceneObj->setEulerAngles(parseVec3(objData["eulerAnglesRad"]));
+					sceneObj->SetIsVisible(objData["isVisible"]);
+					sceneObj->SetIsCastingShadow(objData["isCastingShadow"]);
 					scene->AddSceneObject(sceneObj, objData["instanceGroupName"], objData["renderLayerName"]);
 					sceneObjects.emplace(sceneObj->GetId(), sceneObj);
 				}

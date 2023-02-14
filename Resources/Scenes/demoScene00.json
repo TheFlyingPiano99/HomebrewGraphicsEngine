@@ -131,14 +131,26 @@
       "name": "skybox",
       "meshId": 6,
       "instanceGroupName": "",
-      "renderLayerName": "ForwardLayer"
+      "renderLayerName": "ForwardLayer",
+      "position": [ 0, 0, 0 ],
+      "scale": [ 1, 1, 1 ],
+      "useEulerAngles": false,
+      "eulerAnglesRad": [ 0, 0, 0 ],
+      "isVisible": true,
+      "isCastingShadow": false
     },
     {
       "id": 11,
       "name": "sphere",
       "meshId": 10,
       "instanceGroupName": "sphereGroup",
-      "renderLayerName": "DeferredLayer"
+      "renderLayerName": "DeferredLayer",
+      "position": [ 0, 0, 0 ],
+      "scale": [ 1, 1, 1 ],
+      "useEulerAngles": false,
+      "eulerAnglesRad": [ 0, 0, 0 ],
+      "isVisible": true,
+      "isCastingShadow": true
     }
   ],
   "captions": [
