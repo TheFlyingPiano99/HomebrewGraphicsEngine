@@ -8,7 +8,7 @@ namespace Hogra {
 		fullScreenProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredMappedPBRDirectionalLight.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRDirectionalLightingPass.frag"));
 		materialFullScreen = Allocator::New<Material>();
 		materialFullScreen->Init(&fullScreenProgram);
 		meshFullScreen = Allocator::New<Mesh>();
@@ -19,7 +19,7 @@ namespace Hogra {
 		lightVolumeProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredMappedPBRLightVolume.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRLightVolumePass.frag"));
 		material = Allocator::New<Material>();
 		material->Init(&lightVolumeProgram);
 		material->SetAlphaBlend(true);

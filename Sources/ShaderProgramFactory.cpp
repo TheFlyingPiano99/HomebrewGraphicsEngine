@@ -61,7 +61,7 @@ namespace Hogra {
 			emissiveMaterial->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("instanced3DWithTBN.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredEmissive.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredEmissiveGeometryPass.frag")
 			);
 		}
 		return emissiveMaterial;

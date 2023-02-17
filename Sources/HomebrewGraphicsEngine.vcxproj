@@ -401,13 +401,13 @@
     <None Include="..\Resources\Shaders\deferredMappedGeometryPass.frag" />
     <None Include="..\Resources\Shaders\instanced3DWithTBN.vert" />
     <None Include="..\Resources\Shaders\single3DWithTBN.vert" />
-    <None Include="..\Resources\Shaders\deferredMappedPBRDirectionalLight.frag" />
-    <None Include="..\Resources\Shaders\deferredMappedPBRLightVolume.frag" />
+    <None Include="..\Resources\Shaders\deferredPBRDirectionalLightingPass.frag" />
+    <None Include="..\Resources\Shaders\deferredPBRLightVolumePass.frag" />
     <None Include="..\Resources\Shaders\depthEffects.frag" />
     <None Include="..\Resources\Shaders\displayNormals.geom" />
     <None Include="..\Resources\Shaders\bloomDownSampling.frag" />
     <None Include="..\Resources\Shaders\edgeDetect.frag" />
-    <None Include="..\Resources\Shaders\deferredEmissive.frag" />
+    <None Include="..\Resources\Shaders\deferredEmissiveGeometryPass.frag" />
     <None Include="..\Resources\Shaders\boundingGeometryFlatColor.frag" />
     <None Include="..\Resources\Shaders\gausianBlur.frag" />
     <None Include="..\Resources\Shaders\glyph.frag" />

@@ -804,7 +804,7 @@
     <None Include="..\Resources\Shaders\displayNormals.geom">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredMappedPBRDirectionalLight.frag">
+    <None Include="..\Resources\Shaders\deferredPBRDirectionalLightingPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\debug.frag">
@@ -828,7 +828,7 @@
     <None Include="..\Resources\Shaders\gausianBlur.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredEmissive.frag">
+    <None Include="..\Resources\Shaders\deferredEmissiveGeometryPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\bloomDownSampling.frag">
@@ -846,7 +846,7 @@
     <None Include="..\Resources\Shaders\lightVolume.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredMappedPBRLightVolume.frag">
+    <None Include="..\Resources\Shaders\deferredPBRLightVolumePass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\depthEffects.frag">
