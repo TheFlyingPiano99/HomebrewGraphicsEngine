@@ -19,8 +19,8 @@ namespace Hogra {
 
 	private:
 		std::function<void()> beforePhysicsLoopUpdateFunc = []() {};
-		std::function<void(float)> earlyPhysicsUpdateFunc = []() {};
-		std::function<void(float)> latePhysicsUpdateFunc = []() {};
+		std::function<void(float)> earlyPhysicsUpdateFunc = [](float _) {};
+		std::function<void(float)> latePhysicsUpdateFunc = [](float _) {};
 		std::function<void()> afterPhysicsLoopUpdateFunc = []() {};
 	};
 }

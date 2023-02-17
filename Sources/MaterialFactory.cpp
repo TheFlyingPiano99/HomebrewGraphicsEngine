@@ -58,7 +58,7 @@ namespace Hogra {
 			fbo.Bind();
 			ShaderProgram combinationProgram;
 			combinationProgram.Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("roughnessMetallicAOCombination.frag")
 			);

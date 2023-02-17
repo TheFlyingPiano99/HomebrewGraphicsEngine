@@ -17,7 +17,7 @@ layout (binding = 0) uniform sampler2D albedoMap;
 void main()
 {
 	vec4 color = texture(albedoMap, fs_in.texCoords);
-	if (color.a < 0.01) {
+	if (color.a < 0.001) {
 		discard;
 	}
 

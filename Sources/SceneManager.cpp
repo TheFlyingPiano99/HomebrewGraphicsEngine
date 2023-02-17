@@ -14,7 +14,7 @@ public:
 
 	std::map<int, std::string> scenes;
 };
-#define INIT_MODE 0
+#define INIT_MODE 2
 
 namespace Hogra {
 	SceneManager* SceneManager::instance = nullptr;

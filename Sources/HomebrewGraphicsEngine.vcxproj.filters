@@ -752,10 +752,10 @@
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\defaultDeferred.frag">
+    <None Include="..\Resources\Shaders\deferredGeometryPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\defaultDeferred.vert">
+    <None Include="..\Resources\Shaders\instanced3DWithTBN.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\boundingGeometryFlatColor.frag">
@@ -804,7 +804,7 @@
     <None Include="..\Resources\Shaders\displayNormals.geom">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredPBRshadingDirectionalLight.frag">
+    <None Include="..\Resources\Shaders\deferredMappedPBRDirectionalLight.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\debug.frag">
@@ -816,7 +816,7 @@
     <None Include="..\Resources\Shaders\glyph.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\simple2D.vert">
+    <None Include="..\Resources\Shaders\single2D.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\caption.frag">
@@ -828,7 +828,7 @@
     <None Include="..\Resources\Shaders\gausianBlur.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\emissive.frag">
+    <None Include="..\Resources\Shaders\deferredEmissive.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\bloomDownSampling.frag">
@@ -846,7 +846,7 @@
     <None Include="..\Resources\Shaders\lightVolume.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredPBRshadingLightVolume.frag">
+    <None Include="..\Resources\Shaders\deferredMappedPBRLightVolume.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\depthEffects.frag">
@@ -861,7 +861,7 @@
     <None Include="..\Resources\Shaders\voxelAttenuation.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\spriteDeferred.frag">
+    <None Include="..\Resources\Shaders\deferredSprite.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag">
@@ -870,10 +870,10 @@
     <None Include="..\Resources\Shaders\voxelColorCheap.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\sprite.frag">
+    <None Include="..\Resources\Shaders\forwardSprite.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\defaultForward.vert">
+    <None Include="..\Resources\Shaders\single3DWithTBN.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\voxelRayCast.frag">
@@ -891,10 +891,13 @@
     <None Include="..\Resources\Shaders\pixelPhysics2.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\quad.vert">
+    <None Include="..\Resources\Shaders\fullScreenQuad.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\quadWithRayDir.vert">
+    <None Include="..\Resources\Shaders\fullScreenQuadWithRayDir.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\instanced2D.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

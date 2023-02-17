@@ -6,9 +6,9 @@ namespace Hogra {
 	void DeferredLightingSystem::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 		gBuffer.Init();
 		fullScreenProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingDirectionalLight.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredMappedPBRDirectionalLight.frag"));
 		materialFullScreen = Allocator::New<Material>();
 		materialFullScreen->Init(&fullScreenProgram);
 		meshFullScreen = Allocator::New<Mesh>();
@@ -19,7 +19,7 @@ namespace Hogra {
 		lightVolumeProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRshadingLightVolume.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredMappedPBRLightVolume.frag"));
 		material = Allocator::New<Material>();
 		material->Init(&lightVolumeProgram);
 		material->SetAlphaBlend(true);

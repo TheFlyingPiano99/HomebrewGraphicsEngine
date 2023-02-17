@@ -6,7 +6,7 @@ namespace Hogra {
 		fbo.Init();
 		fbo.Bind();
 		program.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quadWithRayDir.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuadWithRayDir.vert"),
 			"",
 			fragmentShaderPath
 		);

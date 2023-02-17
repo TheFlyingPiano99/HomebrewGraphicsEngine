@@ -47,7 +47,7 @@
     {
       "id": 3,
       "name": "skybox",
-      "vertexSourceFileName": "quadWithRayDir.vert",
+      "vertexSourceFileName": "fullScreenQuadWithRayDir.vert",
       "geometrySourceFileName": "",
       "fragmentSourceFileName": "forwardSkybox.frag",
       "uniforms": []

@@ -91,7 +91,7 @@ namespace Hogra::Volumetric {
 
 		// Full screen quad mesh for combine scene with volume:
 		combineProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bypass.frag")
 		);

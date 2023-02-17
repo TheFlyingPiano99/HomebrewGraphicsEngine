@@ -584,7 +584,7 @@ namespace Hogra {
 
 		auto* program = Allocator::New<ShaderProgram>();
 		program->Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bypass.frag")
 		);
@@ -1004,7 +1004,7 @@ namespace Hogra {
 	{
 		ShaderProgram* skyboxShader = Allocator::New<ShaderProgram>();
 		skyboxShader->Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("quadWithRayDir.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuadWithRayDir.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("forwardSkybox.frag")
 		);
