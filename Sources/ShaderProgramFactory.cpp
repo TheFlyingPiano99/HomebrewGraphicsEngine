@@ -21,7 +21,7 @@ namespace Hogra {
 			defaultBPRProgramWithMapping->Init(
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("instanced3DWithTBN.vert"),
 					"",
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredGeometryPass.frag")
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredMappedGeometryPass.frag")
 				);
 		}
 		return defaultBPRProgramWithMapping;

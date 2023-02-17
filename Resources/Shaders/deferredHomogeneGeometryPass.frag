@@ -11,24 +11,19 @@ in VS_OUT {
 	mat3 TBN;		// Tangent-Bitangent-Normal matrix
 } fs_in;
 
-layout (binding = 0) uniform sampler2D albedoMap;
-layout (binding = 1) uniform sampler2D normalMap;
-layout (binding = 2) uniform sampler2D roughnessMetallicAOMap;
-
-/*
 struct Material {
 	vec3 albedo;
 	float roughness;
 	float metallic;
 	float ao;
 };
+
 uniform Material material;	// not used now!
-*/
 
 void main()
 {
 	gPosition				= fs_in.worldPos / fs_in.worldPos.w;
-	gNormal					= vec4(normalize(fs_in.TBN * (texture(normalMap, fs_in.texCoords).xyz * 2.0 - 1.0)), 0.0);
-	gAlbedo					= vec4(texture(albedoMap, fs_in.texCoords).rgb, 1.0);
-	gRoughnessMetallicAO	= vec4(texture(roughnessMetallicAOMap, fs_in.texCoords).rgb, 0.0);
+	gNormal					= vec4(normalize(fs_in.TBN * vec3(0.0, 0.0, 1.0)), 0.0);
+	gAlbedo					= vec4(material.albedo, 1.0);		// w = 1 tells that the material shoud be shaded
+	gRoughnessMetallicAO	= vec4(material.roughness, material.metallic, material.ao, 0.0);
 }

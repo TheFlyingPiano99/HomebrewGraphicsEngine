@@ -383,19 +383,22 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
+    <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
     <None Include="..\Resources\Shaders\instanced2D.vert" />
+    <None Include="..\Resources\Shaders\instanced3D.vert" />
     <None Include="..\Resources\Shaders\pixelPhysics.frag" />
     <None Include="..\Resources\Shaders\pixelPhysics2.frag" />
     <None Include="..\Resources\Shaders\fullScreenQuad.vert" />
     <None Include="..\Resources\Shaders\fullScreenQuadWithRayDir.vert" />
     <None Include="..\Resources\Shaders\screenQuadrant.vert" />
+    <None Include="..\Resources\Shaders\single3D.vert" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert" />
     <None Include="..\Resources\Shaders\bypass.frag" />
     <None Include="..\Resources\Shaders\caption.frag" />
     <None Include="..\Resources\Shaders\debug.frag" />
     <None Include="..\Resources\Shaders\debug.vert" />
-    <None Include="..\Resources\Shaders\deferredGeometryPass.frag" />
+    <None Include="..\Resources\Shaders\deferredMappedGeometryPass.frag" />
     <None Include="..\Resources\Shaders\instanced3DWithTBN.vert" />
     <None Include="..\Resources\Shaders\single3DWithTBN.vert" />
     <None Include="..\Resources\Shaders\deferredMappedPBRDirectionalLight.frag" />

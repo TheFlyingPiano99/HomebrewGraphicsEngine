@@ -752,7 +752,7 @@
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredGeometryPass.frag">
+    <None Include="..\Resources\Shaders\deferredMappedGeometryPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\instanced3DWithTBN.vert">
@@ -898,6 +898,15 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\instanced2D.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\instanced3D.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\single3D.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
