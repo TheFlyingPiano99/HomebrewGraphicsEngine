@@ -5,6 +5,8 @@
 #include "Mesh.h"
 #include "GeometryFactory.h"
 #include "glm/gtx/transform.hpp"
+#include "PointLight.h"
+#include "DirectionalLight.h"
 
 namespace Hogra {
 	class DeferredLightingSystem
@@ -20,7 +22,7 @@ namespace Hogra {
 
 		void BindGBuffer();
 
-		void Draw(const std::vector<Light*>& pointLights, const Light& directionalLight);
+		void Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights);
 
 		const Texture2D& GetDepthTexture();
 
@@ -31,6 +33,7 @@ namespace Hogra {
 	private:
 		FBO gBuffer;
 		ShaderProgram fullScreenProgram;
+		ShaderProgram fullScreenClearingProgram;
 		ShaderProgram lightVolumeProgram;
 		Texture2D gPosition;
 		Texture2D gNormal;
@@ -39,7 +42,7 @@ namespace Hogra {
 		Texture2D depthTexture;
 		Material* materialFullScreen = nullptr;
 		Mesh* meshFullScreen = nullptr;
-		Material* material = nullptr;
+		Material* volumeMaterial = nullptr;
 		Mesh* mesh = nullptr;
 		std::vector<Geometry::LightInstancedData> instanceData;
 	};

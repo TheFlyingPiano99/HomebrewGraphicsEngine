@@ -29,7 +29,7 @@ namespace Hogra::Volumetric {
 	}
 
 
-	void VolumeObject::Init(Texture3D* _voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize)
+	void VolumeObject::Init(Texture3D* _voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, PointLight* _light, const glm::ivec2& contextSize)
 	{
 		voxels = _voxels;
 		w_position = _pos;
@@ -157,12 +157,12 @@ namespace Hogra::Volumetric {
 		isChanged = true;
 	}
 
-	Light* VolumeObject::GetLight() const
+	PointLight* VolumeObject::GetLight() const
 	{
 		return light;
 	}
 
-	void VolumeObject::SetLight(Light* _light)
+	void VolumeObject::SetLight(PointLight* _light)
 	{
 		light = _light;
 		isChanged = true;
@@ -717,9 +717,9 @@ namespace Hogra::Volumetric {
 		program->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("boundingBox.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("boundingBox.frag"));
-		auto material = Allocator::New<Material>();
-		material->Init(program);
-		boundingBoxMesh.Init(material, geometry);
+		auto volumeMaterial = Allocator::New<Material>();
+		volumeMaterial->Init(program);
+		boundingBoxMesh.Init(volumeMaterial, geometry);
 		boundingBoxMesh.SetDepthTest(false);
 	}
 

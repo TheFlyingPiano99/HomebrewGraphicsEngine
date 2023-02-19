@@ -5,15 +5,16 @@
 #include "UniformBuffer.h"
 #include "Component.h"
 #include "PositionProvider.h"
+#include "OmniDirectionalShadowCaster.h"
 
 namespace Hogra {
 
-	class Light : public Component, public PositionProvider {
+	class PointLight : public Component, public PositionProvider {
 	public:
 
-		void Init(const glm::vec4& _position, const glm::vec3& _powerDensity);
+		void Init(const glm::vec3& _position, const glm::vec3& _powerDensity);
 
-		~Light() override = default;
+		~PointLight() override = default;
 
 		void ExportData(UniformBufferObject& ubo, unsigned int& idx);
 
@@ -55,7 +56,7 @@ namespace Hogra {
 
 		float getEffectiveRadius() const;
 
-		const glm::mat4& getVolumeModelMatrix() const {
+		const glm::mat4& GetVolumeModelMatrix() const {
 			return volumeModelMatrix;
 		}
 
@@ -67,12 +68,16 @@ namespace Hogra {
 			isActive = b;
 		}
 
-		void SetCastShadow(bool b) {
-			castShadow = b;
+		bool IsCastingShadow() const {
+			return nullptr != shadowCaster;
 		}
 
-		bool IsCastShadow() const {
-			return castShadow;
+		void SetShadowCaster(OmniDirectionalShadowCaster* _shadowCaster) {
+			shadowCaster = _shadowCaster;
+		}
+
+		OmniDirectionalShadowCaster* GetShadowCaster() const {
+			return shadowCaster;
 		}
 
 	private:
@@ -83,6 +88,6 @@ namespace Hogra {
 		PositionConnector* positionConnector = nullptr;
 		float effectiveRadius;
 		bool isActive = true;
-		bool castShadow = true;
+		OmniDirectionalShadowCaster* shadowCaster = nullptr;
 	};
 }

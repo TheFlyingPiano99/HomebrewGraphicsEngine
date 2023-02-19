@@ -27,6 +27,8 @@
 #include "ScriptObject.h"
 #include "UniformVariableImpl.h"
 #include "HograTime.h"
+#include "DirectionalShadowCaster.h"
+
 #include "fallingSand/chunk.h"
 #include "fallingSand/water.h"
 #include "fallingSand/sand.h"
@@ -65,22 +67,39 @@ namespace Hogra {
 		defLayer->SetName("DeferredLayer");
 		scene->AddRenderLayer(defLayer);
 
-		auto* light = Allocator::New<Light>();
-		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
-		scene->AddLight(light);	// Directional light
+		auto* dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
+		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(-1.0f, 1.0f, -1.0f)));
+		auto* light1 = Allocator::New<DirectionalLight>();
+		light1->Init(glm::normalize(glm::vec3(-1.0f, 1.0f, -1.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
+		light1->SetShadowCaster(dirShadowCaster);
+		scene->AddLight(light1);	// Directional light
 		
-		light = Allocator::New<Light>();
-		light->Init(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
-		scene->AddLight(light);
-		light = Allocator::New<Light>();
-		light->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(50.0f, 250.0f, 50.0f));
-		scene->AddLight(light);
-		light = Allocator::New<Light>();
-		light->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(50.0f, 50.0f, 250.0f));
-		scene->AddLight(light);
+		dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
+		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));
+		light1 = Allocator::New<DirectionalLight>();
+		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)), glm::vec3(0.5f, 1.0f, 0.9f));
+		light1->SetShadowCaster(dirShadowCaster);
+		scene->AddLight(light1);	// Directional light
+
+		dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
+		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)));
+		light1 = Allocator::New<DirectionalLight>();
+		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), glm::vec3(0.5f, 1.0f, 0.4f));
+		light1->SetShadowCaster(dirShadowCaster);
+		scene->AddLight(light1);	// Directional light
+
+		auto* light2 = Allocator::New<PointLight>();
+		light2->Init(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
+		scene->AddLight(light2);
+		light2 = Allocator::New<PointLight>();
+		light2->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(50.0f, 250.0f, 50.0f));
+		scene->AddLight(light2);
+		light2 = Allocator::New<PointLight>();
+		light2->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(50.0f, 50.0f, 250.0f));
+		scene->AddLight(light2);
 		std::srand(0);
 		for (int i = 0; i < 10; i++) {
-			auto* lightInst = Allocator::New<Light>();
+			auto* lightInst = Allocator::New<PointLight>();
 			lightInst->Init(glm::vec4(std::rand() % 1000 - 500, 2.0f, std::rand() % 1000 - 500, 1.0f), glm::vec3(5.0f, 5.0f, 5.0f));
 			scene->AddLight(lightInst);
 		}
@@ -115,7 +134,7 @@ namespace Hogra {
 		}
 		for (int i = 10; i < 15; i++) {
 			auto* obj = InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "glowing");
-			auto* light = Allocator::New<Light>();
+			auto* light = Allocator::New<PointLight>();
 			light->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.0f, 10.0f));
 			obj->AddComponent(light);
 			auto* provider = Allocator::New<PositionConnector>();
@@ -267,10 +286,10 @@ namespace Hogra {
 		InitSphere(scene, glm::vec3(0, 2, 0), nullptr, "planks");
 		InitSphere(scene, glm::vec3(1, 2, 1), nullptr, "planks");
 
-		auto* light = Allocator::New<Light>();
+		auto* light = Allocator::New<PointLight>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
-		light = Allocator::New<Light>();
+		light = Allocator::New<PointLight>();
 		light->Init(glm::normalize(glm::vec4(-3.0f, 5.0f, 10.0f, 1.0f)), glm::vec3(6.0f, 5.5f, 5.0f));
 		scene->AddLight(light);	// Point light
 
@@ -310,7 +329,7 @@ namespace Hogra {
 
 		//InitSkyBox(scene);
 
-		auto* light = Allocator::New<Light>();
+		auto* light = Allocator::New<PointLight>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		scene->AddLight(light);	// Directional light
 
@@ -325,25 +344,11 @@ namespace Hogra {
 			GL_RED
 		);
 
-		//TODO
-		/*
-		voxelTexture->Init(
-			glm::ivec3(50, 50, 50),
-			std::function([](float x, float y, float z) {
-				float l = sqrtf((x - 0.5) * (x - 0.5) + (y - 0.5) * (y - 0.5) + (z - 0.5) * (z - 0.5));
-				return (x > 0.5f)? 1.0f : 0.0f;
-				}),
-			(GLuint)3,
-			(GLenum)GL_RED
-		);
-		*/
-
-		auto* volumeLight = Allocator::New<Light>();
+		auto* volumeLight = Allocator::New<PointLight>();
 		volumeLight->Init(
 			glm::vec4(10, 10, 10, 1.0),
 			glm::vec3(1000.0f, 1000.0f, 1000.0f)
 		);
-		volumeLight->SetCastShadow(false);
 
 		auto* bulbSprite = SceneObjectFactory::GetInstance()->Create2DSpriteObject(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/lightbulb.png"), &scene->GetCamera());
 		auto* posConnector = Allocator::New<PositionConnector>();
@@ -589,12 +594,12 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bypass.frag")
 		);
 
-		auto* material = Allocator::New<Material>();
-		material->Init(program);
-		material->SetAlphaBlend(true);
+		auto* volumeMaterial = Allocator::New<Material>();
+		volumeMaterial->Init(program);
+		volumeMaterial->SetAlphaBlend(true);
 		auto* quad = GeometryFactory::GetInstance()->GetQuad();
 		auto* mesh = Allocator::New<Mesh>();
-		mesh->Init(material, quad);
+		mesh->Init(volumeMaterial, quad);
 		mesh->SetDepthTest(false);
 		auto chunk = Allocator::New<FallingSand::Chunk>();
 		chunk->Init(mesh);
@@ -856,10 +861,10 @@ namespace Hogra {
 	void SceneFactory::InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
 		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
-		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
+		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
 		Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 		auto* cubeMesh = Allocator::New<Mesh>();
-		cubeMesh->Init(material, cubeGeometry);
+		cubeMesh->Init(volumeMaterial, cubeGeometry);
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(cubeMesh);
 		obj->SetPosition(pos);
@@ -894,16 +899,16 @@ namespace Hogra {
 		collider->Init();
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
-		Material* material;
+		Material* volumeMaterial;
 		if (std::string(materialName) == std::string("glowing")) {
-			material = MaterialFactory::GetInstance()->getEmissiveMaterial("glowing", glm::vec3(0, 0, 1), 100.0f);
+			volumeMaterial = MaterialFactory::GetInstance()->getEmissiveMaterial("glowing", glm::vec3(0, 0, 1), 100.0f);
 		}
 		else {
-			material = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
+			volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
 		}
 		Geometry* geometry = GeometryFactory::GetInstance()->GetSphere();
 		auto* mesh = Allocator::New<Mesh>();
-		mesh->Init(material, geometry);
+		mesh->Init(volumeMaterial, geometry);
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(mesh);
 		obj->SetPosition(pos);
@@ -971,10 +976,10 @@ namespace Hogra {
 	{
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
+				auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
 				Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 				auto* cubeMesh = Allocator::New<Mesh>();
-				cubeMesh->Init(material, cubeGeometry);
+				cubeMesh->Init(volumeMaterial, cubeGeometry);
 				cubeMesh->SetDepthTest(true);
 				auto* obj = Allocator::New<SceneObject>();
 				obj->Init(cubeMesh);
@@ -1037,11 +1042,11 @@ namespace Hogra {
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
-		auto* material = MaterialFactory::GetInstance()->getPBRMaterial("planks");
+		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("planks");
 		Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->SetFaceCulling(false);
 		auto* mesh = Allocator::New<Mesh>();
-		mesh->Init(material, geometry);
+		mesh->Init(volumeMaterial, geometry);
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(mesh);
 		obj->SetPosition(pos);
@@ -1115,8 +1120,6 @@ namespace Hogra {
 		avatar->AddComponent(control);
 		avatar->AddComponent(physics);
 		avatar->AddComponent(collider);
-		scene->getShadowCaster()->SetPositionProvider(avatar);
-		scene->getShadowCaster()->setPositionOffsetToProvider(glm::vec3(-20, 20, -20));
 		scene->AddSceneObject(avatar, "DeferredLayer");
 		InitLaserBeam(scene, control);
 	}
@@ -1144,17 +1147,17 @@ namespace Hogra {
 	{
 		auto obj = Allocator::New<SceneObject>();
 		auto geom = GeometryFactory::GetInstance()->GetCilinder();
-		auto material = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 100.0f);
+		auto volumeMaterial = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 100.0f);
 		auto mesh = Allocator::New<Mesh>();
 		mesh->SetDepthTest(false);
-		mesh->Init(material, geom);
+		mesh->Init(volumeMaterial, geom);
 		obj->Init(mesh);
 		obj->SetPosition(glm::vec3(0,5,0));
 		obj->SetIsVisible(true);
 		obj->SetIsCastingShadow(false);
 		scene->AddSceneObject(obj, "DeferredLayer");
 		control->SetLaserObject(obj);
-		Light* laserInpactLight = Allocator::New<Light>();
+		PointLight* laserInpactLight = Allocator::New<PointLight>();
 		laserInpactLight->Init(glm::vec4(0.0f, 10.0f, 0.0f, 1.0f), glm::vec3(25.0f, 20.0f, 10.0f));
 		scene->AddLight(laserInpactLight);
 		control->SetLaserInpactLight(laserInpactLight);
@@ -1255,16 +1258,16 @@ namespace Hogra {
 				scene->camera.Init((float)GlobalVariables::windowWidth / (float)GlobalVariables::windowHeight, parseVec3(camData["eye"]), parseVec3(camData["lookAt"]));
 
 				// Lights:
-				std::map<int, Light*> lights;
+				std::map<int, PointLight*> pointLights;
 				for (auto& lightData : jsonData["lights"]) {
-					auto* l = Allocator::New<Light>();
+					auto* l = Allocator::New<PointLight>();
 					l->SetId(lightData["id"]);
 					l->SetName(lightData["name"]);
 					l->Init(parseVec4(lightData["position"]), parseVec3(lightData["powerDensity"]));
 					l->SetIsActive(lightData["isActive"]);
-					l->SetCastShadow(lightData["castShadow"]);
+					//l->SetCastShadow(lightData["castShadow"]);
 					scene->AddLight(l);
-					lights.emplace(l->GetId(), l);
+					pointLights.emplace(l->GetId(), l);
 				}
 
 				// Textures:
@@ -1348,20 +1351,20 @@ namespace Hogra {
 				for (auto& materialData : jsonData["materials"]) {
 					std::string materialTypeStr = materialData["type"];
 					if ("custom" == materialTypeStr) {
-						auto* material = Allocator::New<Material>();
-						material->SetId(materialData["id"]);
-						material->SetName(materialData["name"]);
-						material->Init(shaders.find(materialData["shaderId"])->second);
+						auto* volumeMaterial = Allocator::New<Material>();
+						volumeMaterial->SetId(materialData["id"]);
+						volumeMaterial->SetName(materialData["name"]);
+						volumeMaterial->Init(shaders.find(materialData["shaderId"])->second);
 						for (auto& textureId : materialData["textureIds"]) {
-							material->AddTexture(textures.find(textureId)->second);
+							volumeMaterial->AddTexture(textures.find(textureId)->second);
 						}
-						materials.emplace(material->GetId(), material);
+						materials.emplace(volumeMaterial->GetId(), volumeMaterial);
 					}
 					else if ("pbrMapped" == materialTypeStr) {
-						auto* material = MaterialFactory::GetInstance()->getPBRMaterial(std::string(materialData["sourceFolder"]).c_str());
-						material->SetId(materialData["id"]);
-						material->SetName(materialData["name"]);
-						materials.emplace(material->GetId(), material);
+						auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial(std::string(materialData["sourceFolder"]).c_str());
+						volumeMaterial->SetId(materialData["id"]);
+						volumeMaterial->SetName(materialData["name"]);
+						materials.emplace(volumeMaterial->GetId(), volumeMaterial);
 					}
 				}
 

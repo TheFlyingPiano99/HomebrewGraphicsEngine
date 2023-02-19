@@ -495,7 +495,7 @@ struct aiMemoryInfo
         , nodes      (0)
         , animations (0)
         , cameras    (0)
-        , lights     (0)
+        , pointLights     (0)
         , total      (0)
     {}
 
@@ -520,7 +520,7 @@ struct aiMemoryInfo
     unsigned int cameras;
 
     /** Storage allocated for light data */
-    unsigned int lights;
+    unsigned int pointLights;
 
     /** Total storage allocated for the full import. */
     unsigned int total;

@@ -4,7 +4,6 @@
 #include <map>
 #include<glm/glm.hpp>
 #include "SceneObject.h"
-#include "Light.h"
 #include "Camera.h"
 #include "PostProcessStage.h"
 #include "Physics.h"
@@ -17,7 +16,8 @@
 #include "LightManager.h"
 #include "InstanceGroup.h"
 #include "CollisionManager.h"
-#include "Light.h"
+#include "PointLight.h"
+#include "DirectionalLight.h"
 #include "Font.h"
 #include "Caption.h"
 #include "Bloom.h"
@@ -69,7 +69,9 @@ namespace Hogra {
 
 		void AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName = "");
 
-		void AddLight(Light* light);
+		void AddLight(PointLight* light);
+
+		void AddLight(DirectionalLight* light);
 
 		void AddCaption(Caption* caption);
 
@@ -105,10 +107,6 @@ namespace Hogra {
 
 		void setDrawDebug(bool b) {
 			debugMode = b;
-		}
-
-		ShadowCaster* getShadowCaster() const {
-			return shadowCaster;
 		}
 
 		const SceneChange& GetSceneChange();
@@ -162,7 +160,8 @@ namespace Hogra {
 		AudioManager audioManager;
 		
 		//To deallocate:
-		std::vector<Light*> lights;
+		std::vector<PointLight*> pointLights;
+		std::vector<DirectionalLight*> dirLights;
 		std::vector<ShaderProgram*> shaders;
 		std::vector<Texture*> textures;
 		std::vector<Material*> materials;
@@ -172,7 +171,8 @@ namespace Hogra {
 		std::map<std::string, InstanceGroup*> instanceGroups;
 		std::vector<Caption*> captions;
 		UserControl* userControl = nullptr;
-		ShadowCaster* shadowCaster = nullptr;
+		std::vector<DirectionalShadowCaster*> dirShadowCasters;
+		std::vector<OmniDirectionalShadowCaster*> omniDirShadowCasters;
 		std::map<std::string, RenderLayer*> renderLayersMap;
 		std::vector<RenderLayer*> renderLayers;
 		std::vector<PostProcessStage*> postProcessStages;
@@ -189,8 +189,6 @@ namespace Hogra {
 		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 		void Destroy();
-
-		void initShadowMap();
 
 		/*
 		* Returns the next FBO from the renderLayer pipeline from a layer after the currentLayer.

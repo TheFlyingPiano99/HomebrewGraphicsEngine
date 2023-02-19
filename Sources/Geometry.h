@@ -34,8 +34,9 @@ namespace Hogra {
 
 		struct LightInstancedData {
 			glm::mat4 modelMatrix;
-			glm::vec4 lightPosition;
-			glm::vec4 lightPowerDensity;
+			glm::vec4 position;
+			glm::vec4 powerDensity;
+			GLfloat shadowCasterIdx;
 		};
 
 		void DrawInstanced(const std::vector<InstanceData>& instanceData, int visibleCount);

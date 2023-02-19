@@ -5,7 +5,7 @@
 #include "../Camera.h"
 #include "../Texture3D.h"
 #include "../Texture2D.h"
-#include "../Light.h"
+#include "../PointLight.h"
 #include "../EBO.h"
 #include "../FBO.h"
 #include "../ShaderProgram.h"

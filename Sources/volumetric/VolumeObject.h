@@ -6,7 +6,7 @@
 #include "BoundingGeometry.h"
 #include "../Component.h"
 #include "../Texture2D.h"
-#include "../Light.h"
+#include "../PointLight.h"
 #include "../Texture3D.h"
 #include "../FBO.h"
 #include "../Camera.h"
@@ -33,7 +33,7 @@ namespace Hogra::Volumetric {
 
 		~VolumeObject();
 
-		void Init(Texture3D* voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, Light* _light, const glm::ivec2& contextSize);
+		void Init(Texture3D* voxels, const glm::vec3& _pos, const glm::vec3& _scale, const glm::quat& _orientation, PointLight* _light, const glm::ivec2& contextSize);
 
 		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera);
 
@@ -49,9 +49,9 @@ namespace Hogra::Volumetric {
 
 		void SetOrientation(const glm::quat& _orientation);
 
-		Light* GetLight() const;
+		PointLight* GetLight() const;
 
-		void SetLight(Light* _light);
+		void SetLight(PointLight* _light);
 
 		Texture3D* GetTexture() const {
 			return voxels;
@@ -416,7 +416,7 @@ namespace Hogra::Volumetric {
 		float STFEmission;
 		int STFMinContributions = 500;
 
-		Light* light;
+		PointLight* light;
 		Texture3D* voxels = nullptr;
 
 		glm::vec3 resolution = glm::vec3(1.0f);

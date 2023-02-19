@@ -4,7 +4,6 @@
 #include "Material.h"
 #include "Geometry.h"
 #include "Camera.h"
-#include "Light.h"
 #include "ShadowCaster.h"
 #include "MemoryManager.h"
 #include "Identifiable.h"
@@ -20,7 +19,7 @@ namespace Hogra {
 			greater_func
 		};
 
-		void Init(Material* material, Geometry* geometry);
+		void Init(Material* volumeMaterial, Geometry* geometry);
 
 		// Draws the mesh
 		void Bind() const;
@@ -40,7 +39,7 @@ namespace Hogra {
 		void setDepthFunc(const DepthTestFunc func);
 
 	private:
-		Material* material;
+		Material* volumeMaterial;
 		Geometry* geometry;
 		bool depthTest = true;
 		bool stencilTest = false;

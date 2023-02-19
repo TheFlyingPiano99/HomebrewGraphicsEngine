@@ -56,7 +56,7 @@ namespace Hogra {
 			laser = object;
 		}
 
-		void SetLaserInpactLight(Light* light) {
+		void SetLaserInpactLight(PointLight* light) {
 			laserInpactLight = light;
 		}
 
@@ -88,7 +88,7 @@ namespace Hogra {
 
 		// Laser gun:
 		SceneObject* laser = nullptr;
-		Light* laserInpactLight = nullptr;
+		PointLight* laserInpactLight = nullptr;
 		SceneAudioSource* laserAudioSource = nullptr;
 		SceneAudioSource* laserCoolDownAudioSource = nullptr;
 		SceneAudioSource* laserChargeupAudioSource = nullptr;

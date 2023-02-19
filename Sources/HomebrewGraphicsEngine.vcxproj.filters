@@ -70,6 +70,9 @@
     <Filter Include="Header Files\fallingSand">
       <UniqueIdentifier>{f658a671-17ea-4da2-97c0-3c1a51a5c3bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Scenes">
+      <UniqueIdentifier>{e19ec4f1-d8af-47fc-bf97-c6ccc6e6887e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -183,7 +186,7 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
+    <ClCompile Include="PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PostProcessStage.cpp">
@@ -237,7 +240,7 @@
     <ClCompile Include="HoGraEngineApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShadowCaster.cpp">
+    <ClCompile Include="DirectionalShadowCaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PositionProvider.cpp">
@@ -397,6 +400,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScriptProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowCaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OmniDirectionalShadowCaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -596,7 +608,7 @@
     <ClInclude Include="FirstPersonControl.h">
       <Filter>Header Files\Model\UserControls</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
+    <ClInclude Include="PointLight.h">
       <Filter>Header Files\Model\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="LightManager.h">
@@ -605,7 +617,7 @@
     <ClInclude Include="DeferredLightingSystem.h">
       <Filter>Header Files\Model\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowCaster.h">
+    <ClInclude Include="DirectionalShadowCaster.h">
       <Filter>Header Files\Model\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
@@ -742,6 +754,15 @@
     </ClInclude>
     <ClInclude Include="ScriptProvider.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowCaster.h">
+      <Filter>Header Files\Model\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="OmniDirectionalShadowCaster.h">
+      <Filter>Header Files\Model\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Header Files\Model\Lighting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -907,6 +928,18 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Scenes\demoScene00.json">
+      <Filter>Resource Files\Scenes</Filter>
+    </None>
+    <None Include="..\Resources\Scenes\demoScene01.json">
+      <Filter>Resource Files\Scenes</Filter>
+    </None>
+    <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json">
+      <Filter>Resource Files\Scenes</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\deferredDarkPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

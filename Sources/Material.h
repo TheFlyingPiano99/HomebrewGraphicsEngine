@@ -2,7 +2,6 @@
 #include <vector>
 #include "Texture2D.h"
 #include "Camera.h"
-#include "Light.h"
 #include <span>
 #include "ShadowCaster.h"
 #include "MemoryManager.h"

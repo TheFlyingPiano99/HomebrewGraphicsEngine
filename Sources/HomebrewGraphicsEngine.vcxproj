@@ -179,6 +179,7 @@
     <ClCompile Include="CuboidCollider.cpp" />
     <ClCompile Include="DebugUtils.cpp" />
     <ClCompile Include="DeferredLightingSystem.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="fallingSand\chunk.cpp" />
@@ -215,13 +216,14 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="InstanceGroup.cpp" />
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="AudioListener.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ObserveObjectControl.cpp" />
+    <ClCompile Include="OmniDirectionalShadowCaster.cpp" />
     <ClCompile Include="OrientationProvider.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -246,8 +248,9 @@
     <ClCompile Include="ScriptProvider.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
     <ClCompile Include="ShaderProgramFactory.cpp" />
-    <ClCompile Include="ShadowCaster.cpp" />
+    <ClCompile Include="DirectionalShadowCaster.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="ShadowCaster.cpp" />
     <ClCompile Include="SphericalCollider.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -290,6 +293,7 @@
     <ClInclude Include="CuboidCollider.h" />
     <ClInclude Include="DebugUtils.h" />
     <ClInclude Include="DeferredLightingSystem.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
     <ClInclude Include="fallingSand\chunk.h" />
@@ -327,7 +331,7 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="InstanceGroup.h" />
     <ClInclude Include="jsonParseUtils.h" />
-    <ClInclude Include="Light.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="AudioListener.h" />
     <ClInclude Include="Material.h" />
@@ -335,6 +339,7 @@
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ObserveObjectControl.h" />
+    <ClInclude Include="OmniDirectionalShadowCaster.h" />
     <ClInclude Include="OrientationConnector.h" />
     <ClInclude Include="OrientationProvider.h" />
     <ClInclude Include="Physics.h" />
@@ -362,8 +367,9 @@
     <ClInclude Include="ScriptProvider.h" />
     <ClInclude Include="ShaderProgram.h" />
     <ClInclude Include="ShaderProgramFactory.h" />
-    <ClInclude Include="ShadowCaster.h" />
+    <ClInclude Include="DirectionalShadowCaster.h" />
     <ClInclude Include="MemoryManager.h" />
+    <ClInclude Include="ShadowCaster.h" />
     <ClInclude Include="SphericalCollider.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Texture1D.h" />
@@ -381,8 +387,12 @@
     <ClInclude Include="volumetric\VolumeObject.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resources\Scenes\demoScene00.json" />
+    <None Include="..\Resources\Scenes\demoScene01.json" />
+    <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json" />
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
+    <None Include="..\Resources\Shaders\deferredDarkPass.frag" />
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
     <None Include="..\Resources\Shaders\instanced2D.vert" />
     <None Include="..\Resources\Shaders\instanced3D.vert" />

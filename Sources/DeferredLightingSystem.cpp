@@ -1,5 +1,6 @@
 #include "DeferredLightingSystem.h"
 #include "MemoryManager.h"
+#include "DirectionalShadowCaster.h"
 
 namespace Hogra {
 	
@@ -9,8 +10,16 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRDirectionalLightingPass.frag"));
+		
+		fullScreenClearingProgram.Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredDarkPass.frag"));
+
 		materialFullScreen = Allocator::New<Material>();
 		materialFullScreen->Init(&fullScreenProgram);
+		materialFullScreen->SetAlphaBlend(true);
+		materialFullScreen->SetBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);	// Allow blending intensity of multiple directional light sources
 		meshFullScreen = Allocator::New<Mesh>();
 		meshFullScreen->Init(materialFullScreen, GeometryFactory::GetInstance()->GetSimpleQuad());
 		meshFullScreen->SetDepthTest(false);
@@ -20,12 +29,12 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRLightVolumePass.frag"));
-		material = Allocator::New<Material>();
-		material->Init(&lightVolumeProgram);
-		material->SetAlphaBlend(true);
-		material->SetBlendFunc(GL_ONE, GL_ONE);
+		volumeMaterial = Allocator::New<Material>();
+		volumeMaterial->Init(&lightVolumeProgram);
+		volumeMaterial->SetAlphaBlend(true);
+		volumeMaterial->SetBlendFunc(GL_ONE, GL_ONE);
 		mesh = Allocator::New<Mesh>();
-		mesh->Init(material, GeometryFactory::GetInstance()->getLightVolumeSphere());
+		mesh->Init(volumeMaterial, GeometryFactory::GetInstance()->getLightVolumeSphere());
 		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
 
@@ -58,11 +67,11 @@ namespace Hogra {
 
 		gBuffer.Unbind();
 
-		material->ClearTextures();
-		material->AddTexture(&gPosition);
-		material->AddTexture(&gNormal);
-		material->AddTexture(&gAlbedo);
-		material->AddTexture(&gRoughnessMetallicAO);
+		volumeMaterial->ClearTextures();
+		volumeMaterial->AddTexture(&gPosition);
+		volumeMaterial->AddTexture(&gNormal);
+		volumeMaterial->AddTexture(&gAlbedo);
+		volumeMaterial->AddTexture(&gRoughnessMetallicAO);
 
 		materialFullScreen->ClearTextures();
 		materialFullScreen->AddTexture(&gPosition);
@@ -80,36 +89,45 @@ namespace Hogra {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	
-	void DeferredLightingSystem::Draw(const std::vector<Light*>& pointLights, const Light& directionalLight) {
+	void DeferredLightingSystem::Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights) {
 		meshFullScreen->Bind();
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_BLEND);
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
-		glm::vec4 pos = directionalLight.GetPosition4D();
-		glm::vec3 pow = directionalLight.getPowerDensity();
-		if (directionalLight.IsActive()) {
-			fullScreenProgram.SetUniform("light.position", pos);
-			fullScreenProgram.SetUniform("light.powerDensity", pow);
-		}
-		else {
-			fullScreenProgram.SetUniform("light.position", glm::vec4(0.0f));
-			fullScreenProgram.SetUniform("light.powerDensity", glm::vec3(0.0f));
-		}
-		meshFullScreen->Draw();
+		fullScreenClearingProgram.Activate();
+		meshFullScreen->Draw();					// Clear behind objects with black
+		fullScreenProgram.Activate();
 
-		if (1 < pointLights.size()) {
-			mesh->Bind();
-			instanceData.clear();
-			for (int i = 1; i < pointLights.size(); i++) {
-				if (pointLights[i]->IsActive()) {
-					Geometry::LightInstancedData d = { pointLights[i]->getVolumeModelMatrix(), pointLights[i]->GetPosition4D(), glm::vec4(pointLights[i]->getPowerDensity(), 0.0) };
-					instanceData.push_back(d);
+		// Directional lights:
+		for (auto dirLight : dirLights) {
+			if (dirLight->IsActive()) {
+				if (dirLight->IsCastingShadow()) {
+					dirLight->GetShadowCaster()->BindMap();
+					fullScreenProgram.SetUniform("light.lightSpaceMatrix", dirLight->GetShadowCaster()->GetLightSpaceMatrix());
 				}
+				fullScreenProgram.SetUniform("light.direction", dirLight->GetDirection4D());
+				fullScreenProgram.SetUniform("light.powerDensity", dirLight->getPowerDensity());
 			}
-			if (!instanceData.empty()) {
-				mesh->DrawInstanced(instanceData);
+			else {
+				fullScreenProgram.SetUniform("light.direction", glm::vec4(0.0f));
+				fullScreenProgram.SetUniform("light.powerDensity", glm::vec3(0.0f));
 			}
+			meshFullScreen->Draw();
+		}
+
+		// Point lights:
+		mesh->Bind();
+		instanceData.clear();
+		for (int i = 0; i < pointLights.size(); i++) {
+			if (pointLights[i]->IsActive()) {
+				Geometry::LightInstancedData d = { 
+					pointLights[i]->GetVolumeModelMatrix(),
+					pointLights[i]->GetPosition4D(), 
+					glm::vec4(pointLights[i]->getPowerDensity(), 0.0f),
+					(nullptr != pointLights[i]->GetShadowCaster())? pointLights[i]->GetShadowCaster()->GetIdx() : -1
+				};
+				instanceData.push_back(d);
+			}
+		}
+		if (!instanceData.empty()) {
+			mesh->DrawInstanced(instanceData);
 		}
 	}
 

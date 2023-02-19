@@ -146,7 +146,7 @@
       "instanceGroupName": "sphereGroup",
       "renderLayerName": "DeferredLayer",
       "position": [ 0, 0, 0 ],
-      "scale": [ 1, 1, 1 ],
+      "scale": [ 0.1, 1, 1 ],
       "useEulerAngles": false,
       "eulerAnglesRad": [ 0, 0, 0 ],
       "isVisible": true,

@@ -66,12 +66,12 @@ namespace Hogra {
 		mesh->Draw();
 	}
 
-	void SceneObject::drawShadow(const ShadowCaster& shadowCaster)
+	void SceneObject::drawShadow(const DirectionalShadowCaster& directionalShadowCaster)
 	{
 		if (nullptr == mesh) {
 			return;
 		}
-		shadowCaster.getProgram().SetUniform("sceneObject.modelMatrix", modelMatrix);
+		directionalShadowCaster.GetProgram().SetUniform("sceneObject.modelMatrix", modelMatrix);
 		mesh->Draw();
 	}
 

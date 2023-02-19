@@ -7,13 +7,15 @@ layout (location = 3) in vec3 aBitangent;
 layout (location = 4) in vec2 aTex;
 layout (location = 5) in mat4 modelMatrix;			// Instanced array
 // location 6, 7, 8 included in the matrix
-layout (location = 9) in vec4 lightPosition;		// Instanced array
+layout (location = 9)  in vec4 lightPosition;		// Instanced array
 layout (location = 10) in vec4 lightPowerDensity;	// Instanced array
+layout (location = 11) in float  shadowMapIdx;		// Instanced array	(-1 if no shadow mapping)
 
 out VS_OUT {
 vec4 ndc;
 vec4 lightPosition;
 vec3 lightPowerDensity;
+float shadowMapIdx;
 } vs_out;
 
 layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
@@ -34,4 +36,5 @@ void main()
     gl_Position = vs_out.ndc;
 	vs_out.lightPosition = lightPosition;
 	vs_out.lightPowerDensity = lightPowerDensity.rgb;
+	vs_out.shadowMapIdx = shadowMapIdx;
 }

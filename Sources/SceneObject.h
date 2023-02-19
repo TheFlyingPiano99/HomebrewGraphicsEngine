@@ -3,14 +3,13 @@
 #include "Mesh.h"
 #include "ShaderProgram.h"
 #include "Camera.h"
-#include "Light.h"
 #include "Animation.h"
 #include "FBO.h"
 #include "Component.h"
 #include "glm/gtx/quaternion.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include <span>
-#include "ShadowCaster.h"
+#include "DirectionalShadowCaster.h"
 #include "PositionProvider.h"
 #include "OrientationProvider.h"
 #include "ScaleProvider.h"
@@ -45,7 +44,7 @@ namespace Hogra {
 
 		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera);
 
-		void drawShadow(const ShadowCaster& shadowCaster);
+		void drawShadow(const DirectionalShadowCaster& directionalShadowCaster);
 
 		void Serialize();
 

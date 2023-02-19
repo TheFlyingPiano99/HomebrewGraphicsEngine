@@ -149,6 +149,13 @@ namespace Hogra {
 		glEnableVertexAttribArray(INSTANCED_LIGHT_POWER_DENSITY_LOCATION);
 		glVertexAttribPointer(INSTANCED_LIGHT_POWER_DENSITY_LOCATION, 4, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)(5 * vec4Size));
 		glVertexAttribDivisor(INSTANCED_LIGHT_POWER_DENSITY_LOCATION, 1);
+
+		
+		// ShadowMapIdx:
+		glEnableVertexAttribArray(INSTANCED_LIGHT_SHADOW_MAP_IDX_LOCATION);
+		glVertexAttribPointer(INSTANCED_LIGHT_SHADOW_MAP_IDX_LOCATION, 1, GL_FLOAT, GL_FALSE, instanceDataSize, (void*)(6 * vec4Size));
+		glVertexAttribDivisor(INSTANCED_LIGHT_SHADOW_MAP_IDX_LOCATION, 1);
+		
 	}
 
 	void Geometry::Draw()

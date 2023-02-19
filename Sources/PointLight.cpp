@@ -1,28 +1,32 @@
-#include "Light.h"
+#include "PointLight.h"
 #include<glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
 
 
 namespace Hogra {
 
-	void Light::Init(const glm::vec4& _position, const glm::vec3& _powerDensity)
+	constexpr int noShadowMap = -1;
+
+	void PointLight::Init(const glm::vec3& _position, const glm::vec3& _powerDensity)
 	{
-		this->position = _position;
+		this->position = glm::vec4(_position, 1.0f);
 		this->position3D = _position;
 		this->powerDensity = _powerDensity;
 		effectiveRadius = getEffectiveRadius();
 		volumeModelMatrix = glm::translate(position3D) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}
-	void Light::ExportData(UniformBufferObject& ubo, unsigned int& idx) {
+
+	void PointLight::ExportData(UniformBufferObject& ubo, unsigned int& idx) {
 		ubo.UploadSubData(glm::value_ptr(position), idx++);
 		ubo.UploadSubData(glm::value_ptr(powerDensity), idx++);
+		ubo.UploadSubData((void*)((nullptr != shadowCaster)? &(shadowCaster->GetIdx()) : &noShadowMap), idx++);
 	}
 
-	void Light::EarlyPhysicsUpdate(float dt)
+	void PointLight::EarlyPhysicsUpdate(float dt)
 	{
 	}
 
-	void Light::LatePhysicsUpdate(float dt)
+	void PointLight::LatePhysicsUpdate(float dt)
 	{
 		if (positionConnector != nullptr) {
 			position3D = glm::vec4(positionConnector->GetPosition(), 1.0f);
@@ -33,9 +37,9 @@ namespace Hogra {
 		volumeModelMatrix = glm::translate(position3D) * glm::scale(glm::vec3(effectiveRadius, effectiveRadius, effectiveRadius));
 	}
 	
-	constexpr float effectiveDownscale = 0.95f;
+	constexpr float effectiveDownscale = 0.4f;
 
-	float Light::getEffectiveRadius() const {
+	float PointLight::getEffectiveRadius() const {
 		float lightMax = std::fmaxf(std::fmaxf(powerDensity.r, powerDensity.g), powerDensity.b);
 		return std::sqrtf(4.0f * lightMax * 256.0f / 5.0f) / 2.0f * effectiveDownscale;
 	}

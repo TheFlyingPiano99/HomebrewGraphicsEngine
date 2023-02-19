@@ -37,7 +37,7 @@ namespace Hogra {
 		Mesh* mesh = nullptr;
 		Texture2D colorTexture;
 		ShaderProgram program;
-		Material* material;
+		Material* volumeMaterial;
 		bool active = true;
 		std::vector<AbstractUniformVariable*> uniformVariables;
 	};

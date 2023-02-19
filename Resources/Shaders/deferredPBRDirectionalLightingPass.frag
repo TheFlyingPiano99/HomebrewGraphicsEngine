@@ -16,15 +16,11 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 									// 16				208				(column 3)
 };
 
-struct Light {			// aligned size: 32 bytes
-	vec4 position;		
+uniform struct Light {			// aligned size: 32 bytes
+	vec4 direction;		
 	vec3 powerDensity;
-};
-uniform Light light;
-
-layout (std140, binding = 2) uniform ShadowCaster {
 	mat4 lightSpaceMatrix;
-};
+} light;
 
 layout (binding = 0) uniform sampler2D gPosition;
 layout (binding = 1) uniform sampler2D gNormal;
@@ -73,7 +69,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 } 
 
 float calculateShadow(vec3 wp) {
-	vec4 lightPos = lightSpaceMatrix * vec4(wp, 1.0);
+	vec4 lightPos = light.lightSpaceMatrix * vec4(wp, 1.0);
 	vec3 projCoords = lightPos.xyz / lightPos.w;
 	projCoords = projCoords * 0.5 + 0.5;
 	float currentDepth = projCoords.z - 0.0008;
@@ -87,7 +83,7 @@ float calculateShadow(vec3 wp) {
 			shadow += (currentDepth < 1.0 && currentDepth > pcfDepth) ? 1.0 : 0.0;        
 		}    
 	}
-	return shadow /= 25 * 1.5;
+	return shadow /= 25.0;
 }
 
 void main()
@@ -99,8 +95,8 @@ void main()
 	vec3 wp = wp4.xyz;
 	vec3 n =  texture(gNormal, texCoords).xyz;
 	vec4 albedo4 = texture(gAlbedo, texCoords);
-	if (albedo4.w < 0.0001) {
-		FragColor = vec4(albedo4.rgb, 1.0);
+	if (albedo4.w < 0.0001) {		// w = 0 means no shading
+		FragColor = vec4(albedo4.rgb, 1.0);	// w = 1 prevents adding same fragment color multiple times
 		return;
 	}
 	vec3 albedo = albedo4.rgb;
@@ -110,9 +106,7 @@ void main()
 	float ao = roughnessMetallicAO.b;
 	vec3 viewDir = normalize(cameraPosition - wp);
 	float shadow = calculateShadow(wp);
-	vec3 lightDiff = light.position.xyz - wp * light.position.w;
-	float lightDistance = length(lightDiff);
-	vec3 lightDir = lightDiff / lightDistance;
+	vec3 lightDir = light.direction.xyz;
 	vec3 halfway = normalize(viewDir + lightDir);
 	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), mix(vec3(0.04), albedo, metallic));
 
@@ -129,11 +123,11 @@ void main()
 																									// }
 																								//		Radiance {
 					* light.powerDensity 
-					* 1.0 / (lightDistance * lightDistance)										//			attenuation
+					//* 1.0 / (lightDistance * lightDistance)										//			attenuation
 					* (1.0 - shadow)								
 																								//		}
 					* max(dot(n, lightDir), 0.0),												// NdotL
 																								//	   }
-					1.0
+					0.0																			// w = 0 Allows blending intensity of multiple directional light sources
 					);
 }

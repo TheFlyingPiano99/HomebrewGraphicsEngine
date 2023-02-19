@@ -29,15 +29,6 @@
 
 namespace Hogra {
 
-	void Scene::initShadowMap()
-	{
-		if (shadowCaster != nullptr) {
-			throw std::exception("Shadowcaster already initialised! Only one allowed.");
-		}
-		shadowCaster = Allocator::New<ShadowCaster>();
-		shadowCaster->Init(glm::vec3(-20, 20, -20), glm::normalize(glm::vec3(1, -1, 1)));
-	}
-
 	FBO* Scene::findNextFBO(int currentLayer)
 	{
 		FBO* outFBO = nullptr;
@@ -65,10 +56,9 @@ namespace Hogra {
 	void Scene::Init(unsigned int _contextWidth, unsigned int _contextHeight)
 	{
 		audioManager.Init();
-		initShadowMap();
 		camera.Init((float)_contextWidth / (float)_contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		lightManager.initDefferedSystem(_contextWidth, _contextHeight);
-		lightManager.initDebug();
+		lightManager.InitDefferedSystem(_contextWidth, _contextHeight);
+		lightManager.InitDebug();
 		collisionManager.InitDebug();
 		timeSpent.Init("time", 0.0f);
 		OnContextResize(_contextWidth, _contextHeight);
@@ -86,14 +76,32 @@ namespace Hogra {
 
 		lightManager.Clear();
 
-		for (auto& instanceGroup : instanceGroups) {	//8
+		for (auto& light : dirLights) {
+			Allocator::Delete(light);
+		}
+		dirLights.clear();
+
+		for (auto& light : pointLights) {
+			Allocator::Delete(light);
+		}
+		pointLights.clear();
+
+		for (auto& instanceGroup : instanceGroups) {
 			Allocator::Delete(instanceGroup.second);
 		}
 		instanceGroups.clear();
 
-		Allocator::Delete(shadowCaster);
+		for (auto& dirCaster : dirShadowCasters) {
+			Allocator::Delete(dirCaster);
+		}
+		dirShadowCasters.clear();
 
-		for (auto& postProcStage : postProcessStages) {	//14
+		for (auto& omniCaster : omniDirShadowCasters) {
+			Allocator::Delete(omniCaster);
+		}
+		omniDirShadowCasters.clear();
+
+		for (auto& postProcStage : postProcessStages) {
 			Allocator::Delete(postProcStage);
 		}
 		postProcessStages.clear();
@@ -110,8 +118,8 @@ namespace Hogra {
 			Allocator::Delete(shader);
 		}
 
-		for (auto material : materials) {
-			Allocator::Delete(material);
+		for (auto volumeMaterial : materials) {
+			Allocator::Delete(volumeMaterial);
 		}
 
 		for (auto geometry : geometries) {
@@ -158,9 +166,13 @@ namespace Hogra {
 		}
 		toDelete.clear();
 
-		if (shadowCaster != nullptr) {
-			shadowCaster->Update();
+		for (auto& dirCaster : dirShadowCasters) {
+			dirCaster->Update();
 		}
+		for (auto& omniCaster : omniDirShadowCasters) {
+			omniCaster->Update();
+		}
+
 		for (auto& group : instanceGroups) {
 			group.second->Optimalize(camera);
 		}
@@ -180,10 +192,18 @@ namespace Hogra {
 		for (auto& group : instanceGroups) {
 			group.second->GatherInstanceDataForShadow();
 		}
-		if (nullptr != shadowCaster) {
-			shadowCaster->Bind();
+		for (auto& dirCaster : dirShadowCasters) {
+			dirCaster->Bind();
 			for (auto& group : instanceGroups) {
 				group.second->DrawShadow();
+			}
+		}
+		for (auto& omniCaster : omniDirShadowCasters) {
+			for (unsigned int i = 0; i < 6; i++) {
+				omniCaster->Bind(i);
+				for (auto& group : instanceGroups) {
+					group.second->DrawShadow();
+				}
 			}
 		}
 
@@ -227,7 +247,7 @@ namespace Hogra {
 
 		if (debugMode) {
 			collisionManager.DrawDebug();
-			lightManager.drawDebug();
+			lightManager.DrawDebug();
 		}
 
 		// Reset camera state:
@@ -344,10 +364,25 @@ namespace Hogra {
 		postProcessStages.push_back(stage);		// Main PPS container in Scene
 	}
 
-	void Scene::AddLight(Light* light)
+	void Scene::AddLight(PointLight* light)
+	{	
+		lightManager.AddLight(light);
+		if (light->IsCastingShadow()) {
+			omniDirShadowCasters.push_back(light->GetShadowCaster());
+		}
+		pointLights.push_back(light);
+	}
+
+	void Scene::AddLight(DirectionalLight* light)
 	{
 		lightManager.AddLight(light);
-		lights.push_back(light);
+		if (light->IsCastingShadow()) {
+			dirShadowCasters.push_back(light->GetShadowCaster());
+			light->GetShadowCaster()->SetPositionProvider(&camera);
+			light->GetShadowCaster()->SetPositionOffsetToProvider(20.0f * light->GetDirection());
+			light->GetShadowCaster()->SetDirection(-1.0f * light->GetDirection());
+		}
+		dirLights.push_back(light);
 	}
 
 	void Scene::AddCaption(Caption* caption)

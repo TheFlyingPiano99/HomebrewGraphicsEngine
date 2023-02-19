@@ -11,6 +11,7 @@ namespace Hogra {
 		for (int i = 0; i < MAX_LIGHT_COUNT; i++) {
 			subDataSizes.push_back(sizeof(glm::vec4));		// position
 			subDataSizes.push_back(sizeof(glm::vec3));		// powerDensity
+			subDataSizes.push_back(sizeof(int));		// shadowCasterIdx
 		}
 		ubo.Init(subDataSizes, LIGHTS_UBO_BINDING);
 	}
@@ -21,19 +22,19 @@ namespace Hogra {
 
 	void LightManager::ExportData()
 	{
-		int count = lights.size();
+		int count = pointLights.size();
 		ubo.Bind();
 		unsigned int idx = 0;
 		ubo.UploadSubData((void*)&count, idx++);
-		for (auto* light : lights) {
+		for (auto* light : pointLights) {
 			light->ExportData(ubo, idx);
 		}
 		ubo.Unbind();
 	}
 
 	void LightManager::RenderDeferredLighting() {
-		if (!lights.empty()) {
-			deferredLightingSystem.Draw(lights, *lights[0]);
+		if (!pointLights.empty()) {
+			deferredLightingSystem.Draw(pointLights, dirLights);
 		}
 		else {
 			static bool wasPrinted = false;
@@ -44,7 +45,7 @@ namespace Hogra {
 		}
 	}
 
-	void LightManager::initDebug()
+	void LightManager::InitDebug()
 	{
 		if (nullptr != debugLightVolumeMesh) {
 			return;
@@ -60,16 +61,16 @@ namespace Hogra {
 		debugLightVolumeMesh->SetDepthTest(false);
 	}
 
-	void LightManager::drawDebug()
+	void LightManager::DrawDebug()
 	{
 		if (nullptr == debugLightVolumeMesh) {
 			return;
 		}
 		debugLightVolumeMesh->Bind();
 		std::vector<Geometry::InstanceData> data;
-		for (int i = 1; i < lights.size(); i++) {
-			if (lights[i]->IsActive()) {
-				data.push_back({ lights[i]->getVolumeModelMatrix(), glm::mat4(1.0f) });
+		for (int i = 1; i < pointLights.size(); i++) {
+			if (pointLights[i]->IsActive()) {
+				data.push_back({ pointLights[i]->GetVolumeModelMatrix(), glm::mat4(1.0f) });
 			}
 		}
 		debugLightVolumeMesh->DrawInstanced(data, data.size());
@@ -77,12 +78,13 @@ namespace Hogra {
 	}
 	void LightManager::Clear()
 	{
-		lights.clear();
+		pointLights.clear();
+		dirLights.clear();
 
 	}
 	void LightManager::Update()
 	{
-		for (auto& light : lights) {
+		for (auto& light : pointLights) {
 			light->LatePhysicsUpdate(0.0f);
 		}
 	}
