@@ -1,4 +1,5 @@
-#version 330 core
+#version 420 core
+
 in vec4 FragPos;
 
 uniform vec3 casterPosition;

@@ -31,8 +31,7 @@ layout (binding = 3) uniform sampler2D gRoughnessMetallicAO;
 layout (binding = 5) uniform samplerCube skybox;
 layout (binding = 6) uniform sampler2D shadowMap;
 
-//uniform samplerCube shadowMaps[64];
-uniform samplerCube shadowMaps;
+uniform samplerCube shadowMaps[32];		// shadowMaps[0] is the default empty map. This way we avoid accessing unbound samplers
 uniform float farPlane;		// shadow-map projection far plane
 
 const float PI = 3.14159265359;
@@ -72,12 +71,6 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
 } 
 
-float linearize_depth(float d,float zNear,float zFar)
-{
-    float z_n = 2.0 * d - 1.0;
-    return 2.0 * zNear * zFar / (zFar + zNear - z_n * (zFar - zNear));
-}
-
 void main()
 {
 
@@ -106,7 +99,7 @@ void main()
 		// get vector between fragment position and light position
 		vec3 fragToLight = wp - fs_in.lightPosition.xyz;
 		// use the light to fragment vector to sample from the depth map    
-		float closestDepth = texture(shadowMaps/*[int(fs_in.shadowMapIdx)]*/, fragToLight).r * farPlane;
+		float closestDepth = texture(shadowMaps[0], fragToLight).r * farPlane;
 		shadow = (length(fragToLight) - 0.01 > closestDepth) ? 1.0 : 0.0;
 		FragColor = vec4(closestDepth, closestDepth, closestDepth, 1);
 		return;

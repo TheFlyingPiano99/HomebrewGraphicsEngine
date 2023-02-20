@@ -369,9 +369,17 @@ namespace Hogra {
 	{	
 		lightManager.AddLight(light);
 		if (light->IsCastingShadow()) {
-			light->GetShadowCaster()->SetIdx(omniDirShadowCasters.size());
-			omniDirShadowCasters.push_back(light->GetShadowCaster());
-			light->GetShadowCaster()->SetPositionProvider(light);
+			if (MAX_SHADOW_MAP_COUNT - 1 <= omniDirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
+				auto* p = light->GetShadowCaster();
+				Allocator::Delete(p);
+				light->SetShadowCaster(nullptr);
+				DebugUtils::PrintError("Scene", "Trying to add too many omniDir shadow casters to scene!");
+			}
+			else {
+				light->GetShadowCaster()->SetIdx(omniDirShadowCasters.size() + 1);	// +1 because first in shader is the empty map
+				omniDirShadowCasters.push_back(light->GetShadowCaster());
+				light->GetShadowCaster()->SetPositionProvider(light);
+			}
 		}
 		pointLights.push_back(light);
 	}
@@ -380,11 +388,19 @@ namespace Hogra {
 	{
 		lightManager.AddLight(light);
 		if (light->IsCastingShadow()) {
-			light->GetShadowCaster()->SetIdx(dirShadowCasters.size());
-			dirShadowCasters.push_back(light->GetShadowCaster());
-			light->GetShadowCaster()->SetPositionProvider(&camera);
-			light->GetShadowCaster()->SetPositionOffsetToProvider(20.0f * light->GetDirection());
-			light->GetShadowCaster()->SetDirection(-1.0f * light->GetDirection());
+			if (MAX_SHADOW_MAP_COUNT - 1 <= dirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
+				auto* p = light->GetShadowCaster();
+				Allocator::Delete(p);
+				light->SetShadowCaster(nullptr);
+				DebugUtils::PrintError("Scene", "Trying to add too many directional shadow casters to scene!");
+			}
+			else {
+				light->GetShadowCaster()->SetIdx(dirShadowCasters.size() + 1);	// +1 because first in shader is the empty map
+				dirShadowCasters.push_back(light->GetShadowCaster());
+				light->GetShadowCaster()->SetPositionProvider(&camera);
+				light->GetShadowCaster()->SetPositionOffsetToProvider(20.0f * light->GetDirection());
+				light->GetShadowCaster()->SetDirection(-1.0f * light->GetDirection());
+			}
 		}
 		dirLights.push_back(light);
 	}

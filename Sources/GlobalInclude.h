@@ -39,7 +39,7 @@
 # define M_PI 3.14159265358979323846
 
 #define MAX_LIGHT_COUNT 2048
-#define MAX_SHADOW_MAP_COUNT 64
+#define MAX_SHADOW_MAP_COUNT 32
 
 namespace Hogra {
 	struct GlobalVariables {

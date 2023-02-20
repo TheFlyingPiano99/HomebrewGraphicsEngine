@@ -14,7 +14,7 @@ namespace Hogra {
 	public:
 		DeferredLightingSystem() = default;
 			
-		~DeferredLightingSystem() = default;
+		~DeferredLightingSystem();
 
 		void Init(unsigned int _contextWidth, unsigned int _contextHeight);
 

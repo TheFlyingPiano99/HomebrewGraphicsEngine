@@ -5,6 +5,14 @@
 
 namespace Hogra {
 	
+	static TextureCube emptyCubeMap;	// Only to avoid shader runtime errors when accessing unbound samplers.
+
+
+	DeferredLightingSystem::~DeferredLightingSystem()
+	{
+		emptyCubeMap.Delete();
+	}
+
 	void DeferredLightingSystem::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 		gBuffer.Init();
 		fullScreenProgram.Init(
@@ -43,6 +51,8 @@ namespace Hogra {
 		gBuffer.Bind();
 		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 		glDrawBuffers(4, attachments);
+
+		emptyCubeMap.Init(12, 13, GL_DEPTH_COMPONENT, GL_FLOAT);
 
 		OnContextResize(_contextWidth, _contextHeight);
 	}
@@ -117,13 +127,14 @@ namespace Hogra {
 		// Point lights:
 		mesh->Bind();
 		instanceData.clear();
+		emptyCubeMap.Bind();
 		for (int i = 0; i < pointLights.size(); i++) {
 			if (pointLights[i]->IsActive()) {
 				Geometry::LightInstancedData d = { 
 					pointLights[i]->GetVolumeModelMatrix(),
 					pointLights[i]->GetPosition4D(), 
 					glm::vec4(pointLights[i]->getPowerDensity(), 0.0f),
-					(nullptr != pointLights[i]->GetShadowCaster())? (float)pointLights[i]->GetShadowCaster()->GetIdx() : -1.0
+					(nullptr != pointLights[i]->GetShadowCaster())? (float)pointLights[i]->GetShadowCaster()->GetIdx() : 0.0f
 				};
 				if (nullptr != pointLights[i]->GetShadowCaster()) {
 					pointLights[i]->GetShadowCaster()->GetShadowMap()->Bind();
@@ -144,10 +155,14 @@ namespace Hogra {
 	void DeferredLightingSystem::ExportShadowMaps(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters)
 	{
 		volumeMaterial->GetShaderProgram()->Activate();
-		for (unsigned int i = 0; i < omniDirShadowCasters.size(); i++) {
-			volumeMaterial->GetShaderProgram()->SetUniform(std::string("shadowMaps[").append(std::to_string(i)).append("]").c_str(), omniDirShadowCasters[i]->GetShadowMap());
+		unsigned int i = 0;
+		volumeMaterial->GetShaderProgram()->SetUniform("shadowMaps[0]", &emptyCubeMap);	// First in array is the default, empty map
+		for (; i < omniDirShadowCasters.size(); i++) {
+			volumeMaterial->GetShaderProgram()->SetUniform(std::string("shadowMaps[").append(std::to_string(i + 1)).append("]").c_str(), omniDirShadowCasters[i]->GetShadowMap());
 		}
-		volumeMaterial->GetShaderProgram()->SetUniform("shadowMaps", omniDirShadowCasters[0]->GetShadowMap());	// For testing only!
+		for (; i < MAX_SHADOW_MAP_COUNT; i++) {	// Fill the remaining samplers in the array with default, empty map
+			volumeMaterial->GetShaderProgram()->SetUniform(std::string("shadowMaps[").append(std::to_string(i + 1)).append("]").c_str(), &emptyCubeMap);
+		}
 		volumeMaterial->GetShaderProgram()->SetUniform("farPlane", OMNI_DIR_SHADOW_MAP_FAR_PLANE);
 	}
 }
