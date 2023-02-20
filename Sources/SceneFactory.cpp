@@ -89,10 +89,16 @@ namespace Hogra {
 		scene->AddLight(light1);	// Directional light
 
 		auto* light2 = Allocator::New<PointLight>();
-		light2->Init(glm::vec4(-80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
+		light2->Init(glm::vec4(-40.0f, 4.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
+		auto* omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
+		omniCaster->Init();
+		light2->SetShadowCaster(omniCaster);
 		scene->AddLight(light2);
 		light2 = Allocator::New<PointLight>();
 		light2->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(50.0f, 250.0f, 50.0f));
+		omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
+		omniCaster->Init();
+		light2->SetShadowCaster(omniCaster);
 		scene->AddLight(light2);
 		light2 = Allocator::New<PointLight>();
 		light2->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(50.0f, 50.0f, 250.0f));

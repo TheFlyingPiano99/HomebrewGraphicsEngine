@@ -67,7 +67,7 @@ namespace Hogra {
 		inline void PrintTextureInfo(const char* context, const Texture2D& texture)
 		{
 			const auto now = std::chrono::system_clock::now();
-			std::cout << "Info: { Context: " << context << ", Time: " << now << ", TextureInfo: { ID: " << texture.glID << ", Unit: " << texture.unit << ", W: " << texture.getDimensions().x << ", H: " << texture.getDimensions().y << " }" << std::endl;
+			std::cout << "Info: { Context: " << context << ", Time: " << now << ", TextureInfo: { ID: " << texture.glID << ", Unit: " << texture.unit << ", W: " << texture.GetDimensions().x << ", H: " << texture.GetDimensions().y << " }" << std::endl;
 			if (logToFile) {
 
 			}

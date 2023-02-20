@@ -41,7 +41,7 @@ namespace Hogra::Volumetric {
 		features.clear();
 		defaultTransferFunction();
 		setCamSpacePosition(glm::vec2(0.0f, -0.65f));
-		auto dim = getDimensions();
+		auto dim = GetDimensions();
 		fixedColor = std::vector<glm::vec4>(dim.x * dim.y);
 		for (int i = 0; i < fixedColor.size(); i++) {
 			fixedColor[i] = glm::vec4(0.0f);
@@ -50,7 +50,7 @@ namespace Hogra::Volumetric {
 
 	void TransferFunction::generalArea(glm::vec2 min, glm::vec2 max, const glm::vec4& color)
 	{
-		glm::ivec2 dim = getDimensions();
+		glm::ivec2 dim = GetDimensions();
 		glm::ivec2 iMin = glm::ivec2(dim.x * min.x, dim.y * min.y);
 		glm::ivec2 iMax = glm::ivec2(dim.x * max.x, dim.y * max.y);
 		glm::vec2 center = (min + max) / 2.0f;
@@ -82,7 +82,7 @@ namespace Hogra::Volumetric {
 	}
 
 	void TransferFunction::intensityBand(glm::vec2 min, glm::vec2 max, glm::vec4& color) {
-		glm::ivec2 dim = getDimensions();
+		glm::ivec2 dim = GetDimensions();
 		glm::ivec2 iMin = glm::ivec2(dim.x * min.x, dim.y * min.y);
 		glm::ivec2 iMax = glm::ivec2(dim.x * max.x, dim.y * max.y);
 		glm::vec2 center = (min + max) / 2.0f;
@@ -111,7 +111,7 @@ namespace Hogra::Volumetric {
 		if (texture == nullptr)
 			return;
 		std::cout << "Flood fill" << std::endl;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
 		for (int i = 0; i < dim.x * dim.y; i++) {
 			bytes[i] = glm::vec4(0.0f);
@@ -161,7 +161,7 @@ namespace Hogra::Volumetric {
 		if (texture == nullptr)
 			return;
 		std::cout << "Blur" << std::endl;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
 		for (int i = 0; i < dim.x * dim.y; i++) {
 			bytes[i] = glm::vec4(0.0f);
@@ -191,7 +191,7 @@ namespace Hogra::Volumetric {
 		if (texture == nullptr)
 			return;
 		std::cout << "Normalize" << std::endl;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		float max = 0.0f;
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
@@ -220,7 +220,7 @@ namespace Hogra::Volumetric {
 		if (texture == nullptr)
 			return;
 		std::cout << "Edge detect" << std::endl;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
@@ -241,7 +241,7 @@ namespace Hogra::Volumetric {
 		if (texture == nullptr)
 			return;
 		std::cout << "Single color" << std::endl;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
@@ -261,7 +261,7 @@ namespace Hogra::Volumetric {
 		if (texture == nullptr)
 			return;
 		std::cout << "Remove color" << std::endl;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
@@ -281,7 +281,7 @@ namespace Hogra::Volumetric {
 		if (texture == nullptr)
 			return;
 		std::cout << "Grayscale" << std::endl;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		std::vector<glm::vec4> bytes(dim.x * dim.y);
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
@@ -335,7 +335,7 @@ namespace Hogra::Volumetric {
 		}
 		if (texture == nullptr)
 			return;
-		glm::ivec2 dim = texture->getDimensions();
+		glm::ivec2 dim = texture->GetDimensions();
 		std::vector<glm::vec4> bytes = std::vector<glm::vec4>(dim.x * dim.y);
 		for (int y = 0; y < dim.y; y++) {
 			for (int x = 0; x < dim.x; x++) {
@@ -503,7 +503,7 @@ namespace Hogra::Volumetric {
 
 	void TransferFunction::colorFeature(Feature& feature, glm::vec3 color)
 	{
-		glm::ivec2 dimensions = getDimensions();
+		glm::ivec2 dimensions = GetDimensions();
 		if (dimensions.x * dimensions.y == 0) {
 			return;
 		}
@@ -550,7 +550,7 @@ namespace Hogra::Volumetric {
 
 	Feature* TransferFunction::getFeatureFromPosition(glm::vec2 pos)
 	{
-		glm::ivec2 dimensions = getDimensions();
+		glm::ivec2 dimensions = GetDimensions();
 		glm::ivec2 iPos = glm::ivec2(dimensions.x * pos.x, dimensions.y * pos.y);
 		for (Feature& feature : features) {
 			if (std::find(feature.elements.begin(), feature.elements.end(), iPos) != feature.elements.end()) {
@@ -564,7 +564,7 @@ namespace Hogra::Volumetric {
 	{
 		shader = transferFunction.shader;
 		features = transferFunction.features;
-		glm::ivec2 dim = transferFunction.getDimensions();
+		glm::ivec2 dim = transferFunction.GetDimensions();
 		if (dim.x == 0 || dim.y == 0) {	// Clear if empty.
 			Allocator::Delete(texture);
 			return;
@@ -650,7 +650,7 @@ namespace Hogra::Volumetric {
 			if (timer < 0.0f) {
 				timer = 0.0f;
 			}
-			float aspectRatio = getDimensions().x / (float)getDimensions().y;
+			float aspectRatio = GetDimensions().x / (float)GetDimensions().y;
 			modelMatrix = glm::translate(glm::vec3(cameraSpacePosition.x, cameraSpacePosition.y, 0.0f)) * glm::scale(glm::vec3(0.5f, 0.3f, 1.0f));
 			invModelMatrix = glm::inverse(modelMatrix);
 		}

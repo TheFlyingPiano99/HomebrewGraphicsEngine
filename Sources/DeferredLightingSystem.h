@@ -30,6 +30,8 @@ namespace Hogra {
 			return gBuffer;
 		}
 
+		void ExportShadowMaps(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters);
+
 	private:
 		FBO gBuffer;
 		ShaderProgram fullScreenProgram;

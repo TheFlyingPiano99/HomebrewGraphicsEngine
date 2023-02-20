@@ -13,7 +13,7 @@ namespace Hogra {
 
 		~LightManager();
 
-		void ExportData();
+		void ExportData(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters);
 		
 		void AddLight(PointLight* _light) {
 			pointLights.push_back(_light);

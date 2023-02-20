@@ -942,6 +942,15 @@
     <None Include="..\Resources\Shaders\deferredDarkPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\Resources\Shaders\omniDirShadowCast.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\omniDirShadowCast.geom">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\omniDirShadowCast.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HomebrewGraphicsEngine.rc">

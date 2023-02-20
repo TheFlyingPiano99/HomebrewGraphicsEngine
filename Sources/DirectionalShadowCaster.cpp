@@ -8,12 +8,14 @@ namespace Hogra {
 	void DirectionalShadowCaster::Init(glm::vec3 _position, glm::vec3 _direction) {
 		position = _position;
 		direction = glm::normalize(_direction);
+
 		fbo.Init();
 		fbo.Bind();
-		glDrawBuffer(GL_NONE);
-		glReadBuffer(GL_NONE);
+		fbo.DisableDrawBuffer();
+		fbo.DisableReadBuffer();
 		shadowMap.Init(GL_DEPTH_COMPONENT, glm::ivec2(SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT), SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
 		shadowMap.Bind();
+
 		// Configures the way the texture repeats (if it does at all)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
@@ -21,13 +23,15 @@ namespace Hogra {
 		float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 		shadowMap.Unbind();
+		fbo.LinkTexture(GL_DEPTH_ATTACHMENT, shadowMap);
+		FBO::BindDefault();
+
 		program.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.frag")
 		);
-		fbo.LinkTexture(GL_DEPTH_ATTACHMENT, shadowMap);
-		FBO::BindDefault();
+
 		Update();
 	}
 	

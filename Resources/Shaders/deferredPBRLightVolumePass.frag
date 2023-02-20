@@ -31,8 +31,9 @@ layout (binding = 3) uniform sampler2D gRoughnessMetallicAO;
 layout (binding = 5) uniform samplerCube skybox;
 layout (binding = 6) uniform sampler2D shadowMap;
 
-uniform samplerCube shadowMaps[64];
-
+//uniform samplerCube shadowMaps[64];
+uniform samplerCube shadowMaps;
+uniform float farPlane;		// shadow-map projection far plane
 
 const float PI = 3.14159265359;
 
@@ -77,18 +78,9 @@ float linearize_depth(float d,float zNear,float zFar)
     return 2.0 * zNear * zFar / (zFar + zNear - z_n * (zFar - zNear));
 }
 
-float calculateShadow(vec3 wp) {
-	vec3 lightDir = normalize(wp - fs_in.lightPosition.xyz);
-	float mappedDepth = linearize_depth(texture(shadowMaps[int(round(fs_in.shadowMapIdx))], lightDir).r, 0.01, 1000.0);
-	float realDepth = distance(wp, fs_in.lightPosition.xyz);
-	if (realDepth > 1000.0) {	// Out of mapped volume
-		return 0.0;
-	}
-	return (realDepth > mappedDepth - 0.01)? 1 : 0;
-}
-
 void main()
 {
+
 	vec2 texCoords = fs_in.ndc.xy / fs_in.ndc.w * 0.5 + vec2(0.5);
 	vec4 wp4 = texture(gPosition, texCoords);
 	if (wp4.w < 0.0001) {
@@ -108,8 +100,18 @@ void main()
 	float metallic = roughnessMetallicAO.g;
 	float ao = roughnessMetallicAO.b;
 	vec3 viewDir = normalize(cameraPosition - wp);
-	//float shadow = 0.0;
-
+	float shadow = 0.0;
+	
+	if (int(fs_in.shadowMapIdx) >= 0) {
+		// get vector between fragment position and light position
+		vec3 fragToLight = wp - fs_in.lightPosition.xyz;
+		// use the light to fragment vector to sample from the depth map    
+		float closestDepth = texture(shadowMaps/*[int(fs_in.shadowMapIdx)]*/, fragToLight).r * farPlane;
+		shadow = (length(fragToLight) - 0.01 > closestDepth) ? 1.0 : 0.0;
+		FragColor = vec4(closestDepth, closestDepth, closestDepth, 1);
+		return;
+	}
+	
 	vec3 lightDiff = fs_in.lightPosition.xyz - wp * fs_in.lightPosition.w;
 	float lightDistance = length(lightDiff);
 	vec3 lightDir = lightDiff / lightDistance;
@@ -124,7 +126,7 @@ void main()
 					* max(dot(n, lightDir), 0.0)  + 0.0001)) 
 					* fs_in.lightPowerDensity 
 					* 1.0 / (lightDistance * lightDistance) 
-					//* (1.0 - shadow) 
+					* (1.0 - shadow) 
 					* max(dot(n, lightDir), 0.0),
 					0.0
 					);

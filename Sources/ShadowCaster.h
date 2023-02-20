@@ -8,15 +8,15 @@ namespace Hogra {
 
 		virtual void Update() = 0;
 
-		void SetIdx(GLint i) {
+		void SetIdx(int i) {
 			idx = i;
 		}
 
-		GLint& GetIdx() {
+		const int& GetIdx() {
 			return idx;
 		}
 
 	protected:
-		GLint idx;
+		int idx;
 	};
 }

@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "UniformVariable.h"
 #include "Identifiable.h"
+#include "Texture.h"
 
 namespace Hogra {
 
@@ -68,6 +69,10 @@ namespace Hogra {
 
 		inline void SetUniform(const char* name, const glm::mat<3, 3, float, glm::packed_highp>& value) const {
 			glUniformMatrix3fv(glGetUniformLocation(glID, name), 1, GL_FALSE, glm::value_ptr(value));
+		}
+
+		inline void SetUniform(const char* name, const Texture* value) const {
+			glUniform1i(glGetUniformLocation(glID, name), value->glID);
 		}
 
 		inline static void ReloadAll() {

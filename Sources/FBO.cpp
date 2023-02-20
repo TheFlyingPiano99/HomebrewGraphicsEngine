@@ -49,10 +49,21 @@ namespace Hogra {
 		if (0 == glID) {
 			return;
 		}
-		glm::ivec2 dim = texture.getDimensions() / (level + 1);
+		glm::ivec2 dim = texture.GetDimensions() / (level + 1);
 		viewport = glm::vec4(0, 0, dim.x, dim.y);
 		Bind();
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, texture.glID, level);
+	}
+
+	void FBO::LinkTexture(GLenum attachment, const TextureCube& texture)
+	{
+		if (0 == glID) {
+			return;
+		}
+		const glm::ivec2& dim = texture.GetDimensions();
+		viewport = glm::vec4(0, 0, dim.x, dim.y);
+		Bind();
+		glFramebufferTexture(GL_FRAMEBUFFER, attachment, texture.glID, 0);
 	}
 
 
@@ -62,14 +73,23 @@ namespace Hogra {
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, rbo.glID);
 	}
 
+	void FBO::DisableDrawBuffer() const
+	{
+		glDrawBuffer(GL_NONE);
+	}
+
+	void FBO::DisableReadBuffer() const
+	{
+		glReadBuffer(GL_NONE);
+	}
+
 	void FBO::SelectDrawBuffers(std::vector<GLenum> bufs)
 	{
 		glDrawBuffers(bufs.size(), &bufs[0]);
 	}
 
 
-
-	void FBO::BindDefault()
+	inline void FBO::BindDefault()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight);

@@ -20,8 +20,10 @@ namespace Hogra {
 	{
 	}
 
-	void LightManager::ExportData()
+	void LightManager::ExportData(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters)
 	{
+		deferredLightingSystem.ExportShadowMaps(omniDirShadowCasters);
+
 		int count = pointLights.size();
 		ubo.Bind();
 		unsigned int idx = 0;

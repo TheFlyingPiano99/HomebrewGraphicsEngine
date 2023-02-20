@@ -26,7 +26,7 @@ namespace Hogra {
 			this->Delete();
 		}
 
-		const glm::ivec2 getDimensions() const;
+		const glm::ivec2 GetDimensions() const;
 
 		// Inherited via Texture
 		void Bind() const override;
@@ -59,7 +59,5 @@ namespace Hogra {
 		std::vector<glm::vec4> bytes;
 		GLenum format = GL_RGBA;
 		GLenum pixelType = GL_FLOAT;
-
-		friend class Allocator;
 	};
 }

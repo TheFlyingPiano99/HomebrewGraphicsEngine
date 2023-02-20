@@ -186,7 +186,7 @@ namespace Hogra {
 
 		// Init and export data:
 		camera.ExportData();
-		lightManager.ExportData();
+		lightManager.ExportData(omniDirShadowCasters);
 
 		// Shadow pass:
 		for (auto& group : instanceGroups) {
@@ -199,12 +199,13 @@ namespace Hogra {
 			}
 		}
 		for (auto& omniCaster : omniDirShadowCasters) {
-			for (unsigned int i = 0; i < 6; i++) {
-				omniCaster->Bind(i);
-				for (auto& group : instanceGroups) {
-					group.second->DrawShadow();
-				}
+			omniCaster->Bind();
+			// TODO
+			/*
+			for (auto& group : instanceGroups) {
+				group.second->DrawShadow();
 			}
+			*/
 		}
 
 		const Texture2D& depth = lightManager.GetDepthTexture();
@@ -368,7 +369,9 @@ namespace Hogra {
 	{	
 		lightManager.AddLight(light);
 		if (light->IsCastingShadow()) {
+			light->GetShadowCaster()->SetIdx(omniDirShadowCasters.size());
 			omniDirShadowCasters.push_back(light->GetShadowCaster());
+			light->GetShadowCaster()->SetPositionProvider(light);
 		}
 		pointLights.push_back(light);
 	}
@@ -377,6 +380,7 @@ namespace Hogra {
 	{
 		lightManager.AddLight(light);
 		if (light->IsCastingShadow()) {
+			light->GetShadowCaster()->SetIdx(dirShadowCasters.size());
 			dirShadowCasters.push_back(light->GetShadowCaster());
 			light->GetShadowCaster()->SetPositionProvider(&camera);
 			light->GetShadowCaster()->SetPositionOffsetToProvider(20.0f * light->GetDirection());

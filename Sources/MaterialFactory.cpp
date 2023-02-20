@@ -47,7 +47,7 @@ namespace Hogra {
 			.append(materialName).append("/ao.jpg"), 2, GL_RGB, GL_UNSIGNED_BYTE);
 
 		// Combining roughness, metallic and AO into a single texture:
-		auto& dim = albedoMap->getDimensions();
+		auto& dim = albedoMap->GetDimensions();
 		Texture2D* roughnessMetallicAO = Allocator::New<Texture2D>();
 		roughnessMetallicAO->Init(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 

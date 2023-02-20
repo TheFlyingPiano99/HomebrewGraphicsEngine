@@ -396,6 +396,9 @@
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
     <None Include="..\Resources\Shaders\instanced2D.vert" />
     <None Include="..\Resources\Shaders\instanced3D.vert" />
+    <None Include="..\Resources\Shaders\omniDirShadowCast.frag" />
+    <None Include="..\Resources\Shaders\omniDirShadowCast.geom" />
+    <None Include="..\Resources\Shaders\omniDirShadowCast.vert" />
     <None Include="..\Resources\Shaders\pixelPhysics.frag" />
     <None Include="..\Resources\Shaders\pixelPhysics2.frag" />
     <None Include="..\Resources\Shaders\fullScreenQuad.vert" />

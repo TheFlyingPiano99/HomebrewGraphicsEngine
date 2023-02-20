@@ -159,7 +159,7 @@ namespace Hogra {
 	}
 
 
-	const glm::ivec2 Texture2D::getDimensions() const {
+	const glm::ivec2 Texture2D::GetDimensions() const {
 		return dimensions;
 	}
 

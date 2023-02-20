@@ -193,10 +193,10 @@ namespace Hogra::Volumetric {
 		void clear();
 		void intensityBand(glm::vec2 min, glm::vec2 max, glm::vec4& color);
 
-		const glm::ivec2 getDimensions() {
+		const glm::ivec2 GetDimensions() {
 			if (texture == nullptr)
 				return glm::ivec2(0);
-			return texture->getDimensions();
+			return texture->GetDimensions();
 		}
 
 		const glm::mat4 getModelMatrix() {

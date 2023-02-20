@@ -45,14 +45,14 @@ void Hogra::Caption::Draw() {
 	pos.y = (float)GlobalVariables::windowHeight - pos.y;	// Top is zero.
 
 	if (alignment == CaptionAlignment::rightAligned) {
-		pos.x -= scale * (float)texture->getDimensions().x * 0.5f;
+		pos.x -= scale * (float)texture->GetDimensions().x * 0.5f;
 	}
 	else if (alignment == CaptionAlignment::leftAligned) {
-		pos.x += scale * (float)texture->getDimensions().x * 0.5f;
+		pos.x += scale * (float)texture->GetDimensions().x * 0.5f;
 	}
 	
 	glm::mat4 transform = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight)
-		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(scale * glm::vec3(texture->getDimensions(), 1.0f) * 0.5f);
+		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(scale * glm::vec3(texture->GetDimensions(), 1.0f) * 0.5f);
 	program->SetUniform("transform", transform);
 	program->SetUniform("textColor", color);
 	glEnable(GL_BLEND);

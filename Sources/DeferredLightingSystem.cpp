@@ -1,6 +1,7 @@
 #include "DeferredLightingSystem.h"
 #include "MemoryManager.h"
 #include "DirectionalShadowCaster.h"
+#include "DebugUtils.h"
 
 namespace Hogra {
 	
@@ -29,6 +30,7 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRLightVolumePass.frag"));
+		lightVolumeProgram.SetUniform("farPlane", OMNI_DIR_SHADOW_MAP_FAR_PLANE);
 		volumeMaterial = Allocator::New<Material>();
 		volumeMaterial->Init(&lightVolumeProgram);
 		volumeMaterial->SetAlphaBlend(true);
@@ -121,8 +123,11 @@ namespace Hogra {
 					pointLights[i]->GetVolumeModelMatrix(),
 					pointLights[i]->GetPosition4D(), 
 					glm::vec4(pointLights[i]->getPowerDensity(), 0.0f),
-					(nullptr != pointLights[i]->GetShadowCaster())? pointLights[i]->GetShadowCaster()->GetIdx() : -1
+					(nullptr != pointLights[i]->GetShadowCaster())? (float)pointLights[i]->GetShadowCaster()->GetIdx() : -1.0
 				};
+				if (nullptr != pointLights[i]->GetShadowCaster()) {
+					pointLights[i]->GetShadowCaster()->GetShadowMap()->Bind();
+				}
 				instanceData.push_back(d);
 			}
 		}
@@ -134,5 +139,15 @@ namespace Hogra {
 	const Texture2D& DeferredLightingSystem::GetDepthTexture()
 	{
 		return depthTexture;
+	}
+
+	void DeferredLightingSystem::ExportShadowMaps(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters)
+	{
+		volumeMaterial->GetShaderProgram()->Activate();
+		for (unsigned int i = 0; i < omniDirShadowCasters.size(); i++) {
+			volumeMaterial->GetShaderProgram()->SetUniform(std::string("shadowMaps[").append(std::to_string(i)).append("]").c_str(), omniDirShadowCasters[i]->GetShadowMap());
+		}
+		volumeMaterial->GetShaderProgram()->SetUniform("shadowMaps", omniDirShadowCasters[0]->GetShadowMap());	// For testing only!
+		volumeMaterial->GetShaderProgram()->SetUniform("farPlane", OMNI_DIR_SHADOW_MAP_FAR_PLANE);
 	}
 }

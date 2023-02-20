@@ -24,6 +24,8 @@ namespace Hogra {
 
 		void Init(std::vector<std::string>& images, GLuint unit);
 
+		void Init(unsigned int resolution, GLuint unit, GLenum _format, GLenum _pixelType);
+
 		~TextureCube() override {
 			this->Delete();
 		}
@@ -35,7 +37,7 @@ namespace Hogra {
 		// Deletes a texture
 		void Delete();
 
-		const glm::ivec2 getDimensions() {
+		const glm::ivec2& GetDimensions() const {
 			return dimensions;
 		}
 
