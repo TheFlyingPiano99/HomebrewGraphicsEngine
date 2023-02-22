@@ -1265,15 +1265,37 @@ namespace Hogra {
 
 				// Lights:
 				std::map<int, PointLight*> pointLights;
+				std::map<int, DirectionalLight*> directionalLights;
 				for (auto& lightData : jsonData["lights"]) {
-					auto* l = Allocator::New<PointLight>();
-					l->SetId(lightData["id"]);
-					l->SetName(lightData["name"]);
-					l->Init(parseVec4(lightData["position"]), parseVec3(lightData["powerDensity"]));
-					l->SetIsActive(lightData["isActive"]);
-					//l->SetCastShadow(lightData["castShadow"]);
-					scene->AddLight(l);
-					pointLights.emplace(l->GetId(), l);
+					std::string typeStr = lightData["type"];
+					if ("point" == typeStr) {
+						auto* l = Allocator::New<PointLight>();
+						l->SetId(lightData["id"]);
+						l->SetName(lightData["name"]);
+						l->Init(parseVec3(lightData["position"]), parseVec3(lightData["powerDensity"]));
+						l->SetIsActive(lightData["isActive"]);
+						if (lightData["castShadow"]) {
+							auto* caster = Allocator::New<OmniDirectionalShadowCaster>();
+							caster->Init();
+								l->SetShadowCaster(caster);
+						}
+						scene->AddLight(l);
+						pointLights.emplace(l->GetId(), l);
+					}
+					else if ("directional" == typeStr) {
+						auto* l = Allocator::New<DirectionalLight>();
+						l->SetId(lightData["id"]);
+						l->SetName(lightData["name"]);
+						l->Init(glm::normalize(parseVec3(lightData["direction"])), parseVec3(lightData["powerDensity"]));
+						l->SetIsActive(lightData["isActive"]);
+						if (lightData["castShadow"]) {
+							auto* caster = Allocator::New<DirectionalShadowCaster>();
+							caster->Init();
+							l->SetShadowCaster(caster);
+						}
+						scene->AddLight(l);
+						directionalLights.emplace(l->GetId(), l);
+					}
 				}
 
 				// Textures:
@@ -1341,14 +1363,46 @@ namespace Hogra {
 						(!std::string(shaderData["geometrySourceFileName"]).empty()) ? AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["geometrySourceFileName"]) : "",
 						AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["fragmentSourceFileName"])
 					);
-
-					//TODO load uniforms
-					/*
 					for (auto& uniformData : shaderData["uniforms"]) {
-						auto uniVar = Allocator::New<UniformVariable<float>>();
-						shader->BindUniformVariable(uniVar);
+						std::string typeStr = uniformData["type"];
+						if ("float" == typeStr) {
+							auto uniVar = Allocator::New<UniformVariable<float>>();
+							uniVar->Init(std::string(uniformData["key"]).c_str(), uniformData["value"]);
+							shader->BindUniformVariable(uniVar);
+						}
+						else if ("int" == typeStr) {
+							auto uniVar = Allocator::New<UniformVariable<int>>();
+							uniVar->Init(std::string(uniformData["key"]).c_str(), uniformData["value"]);
+							shader->BindUniformVariable(uniVar);
+						}
+						else if ("vec2" == typeStr) {
+							auto uniVar = Allocator::New<UniformVariable<glm::vec2>>();
+							uniVar->Init(std::string(uniformData["key"]).c_str(), parseVec2(uniformData["value"]));
+							shader->BindUniformVariable(uniVar);
+						}
+						else if ("vec3" == typeStr) {
+							auto uniVar = Allocator::New<UniformVariable<glm::vec3>>();
+							uniVar->Init(std::string(uniformData["key"]).c_str(), parseVec3(uniformData["value"]));
+							shader->BindUniformVariable(uniVar);
+						}
+						else if ("vec4" == typeStr) {
+							auto uniVar = Allocator::New<UniformVariable<glm::vec3>>();
+							uniVar->Init(std::string(uniformData["key"]).c_str(), parseVec4(uniformData["value"]));
+							shader->BindUniformVariable(uniVar);
+						}
+						/*
+						else if ("mat3" == typeStr) {
+							auto uniVar = Allocator::New<UniformVariable<glm::mat3>>();
+							uniVar->Init(std::string(uniformData["key"]).c_str(), parseMat3(uniformData["value"]));
+							shader->BindUniformVariable(uniVar);
+						}
+						else if ("mat4" == typeStr) {
+							auto uniVar = Allocator::New<UniformVariable<glm::mat4>>();
+							uniVar->Init(std::string(uniformData["key"]).c_str(), parseMat4(uniformData["value"]));
+							shader->BindUniformVariable(uniVar);
+						}
+						*/
 					}
-					*/
 					shaders.emplace(shader->GetId(), shader);
 				}
 
@@ -1357,20 +1411,20 @@ namespace Hogra {
 				for (auto& materialData : jsonData["materials"]) {
 					std::string materialTypeStr = materialData["type"];
 					if ("custom" == materialTypeStr) {
-						auto* volumeMaterial = Allocator::New<Material>();
-						volumeMaterial->SetId(materialData["id"]);
-						volumeMaterial->SetName(materialData["name"]);
-						volumeMaterial->Init(shaders.find(materialData["shaderId"])->second);
+						auto* material = Allocator::New<Material>();
+						material->SetId(materialData["id"]);
+						material->SetName(materialData["name"]);
+						material->Init(shaders.find(materialData["shaderId"])->second);
 						for (auto& textureId : materialData["textureIds"]) {
-							volumeMaterial->AddTexture(textures.find(textureId)->second);
+							material->AddTexture(textures.find(textureId)->second);
 						}
-						materials.emplace(volumeMaterial->GetId(), volumeMaterial);
+						materials.emplace(material->GetId(), material);
 					}
 					else if ("pbrMapped" == materialTypeStr) {
-						auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial(std::string(materialData["sourceFolder"]).c_str());
-						volumeMaterial->SetId(materialData["id"]);
-						volumeMaterial->SetName(materialData["name"]);
-						materials.emplace(volumeMaterial->GetId(), volumeMaterial);
+						auto* material = MaterialFactory::GetInstance()->getPBRMaterial(std::string(materialData["sourceFolder"]).c_str());
+						material->SetId(materialData["id"]);
+						material->SetName(materialData["name"]);
+						materials.emplace(material->GetId(), material);
 					}
 				}
 
@@ -1390,6 +1444,14 @@ namespace Hogra {
 					else if ("__sphere__" == srcFileName)
 					{
 					geometry = GeometryFactory::GetInstance()->GetSphere();
+					}
+					else if ("__cube__" == srcFileName)
+					{
+						geometry = GeometryFactory::GetInstance()->GetCube();
+					}
+					else if ("__cilinder__" == srcFileName)
+					{
+						geometry = GeometryFactory::GetInstance()->GetCilinder();
 					}
 					else
 					{
@@ -1510,14 +1572,15 @@ namespace Hogra {
 					sceneObj->SetName(objData["name"]);
 					sceneObj->SetPosition(parseVec3(objData["position"]));
 					sceneObj->SetScale(parseVec3(objData["scale"]));
-					sceneObj->setUseEulerAngles(objData["useEulerAngles"]);
-					sceneObj->setEulerAngles(parseVec3(objData["eulerAnglesRad"]));
+					sceneObj->SetUseEulerAngles(objData["useEulerAngles"]);
+					sceneObj->SetEulerAngles(parseVec3(objData["eulerAnglesDeg"]));
 					sceneObj->SetIsVisible(objData["isVisible"]);
 					sceneObj->SetIsCastingShadow(objData["isCastingShadow"]);
 					scene->AddSceneObject(sceneObj, objData["instanceGroupName"], objData["renderLayerName"]);
 					sceneObjects.emplace(sceneObj->GetId(), sceneObj);
 				}
 
+				DebugUtils::PrintMsg("SceneFactory", "Scene loaded.");
 				return scene;
 			}
 			catch (std::exception e) {

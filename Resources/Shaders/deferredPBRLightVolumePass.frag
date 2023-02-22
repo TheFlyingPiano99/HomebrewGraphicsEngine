@@ -97,12 +97,12 @@ void main()
 	
 	if (int(fs_in.shadowMapIdx) >= 0) {
 		// get vector between fragment position and light position
-		vec3 fragToLight = wp - fs_in.lightPosition.xyz;
+		//vec3 fragToLight = wp - fs_in.lightPosition.xyz;
 		// use the light to fragment vector to sample from the depth map    
-		float closestDepth = texture(shadowMaps[0], fragToLight).r * farPlane;
-		shadow = (length(fragToLight) - 0.01 > closestDepth) ? 1.0 : 0.0;
-		FragColor = vec4(closestDepth, closestDepth, closestDepth, 1);
-		return;
+		//float closestDepth = texture(shadowMaps[0], fragToLight).r * farPlane;
+		//shadow = (length(fragToLight) - 0.01 > closestDepth) ? 1.0 : 0.0;
+		//FragColor = vec4(closestDepth, closestDepth, closestDepth, 1);
+		//return;
 	}
 	
 	vec3 lightDiff = fs_in.lightPosition.xyz - wp * fs_in.lightPosition.w;

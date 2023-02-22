@@ -2,6 +2,7 @@
 #include "GlobalInclude.h"
 #include "MemoryManager.h"
 #include "HograTime.h"
+#include "DebugUtils.h"
 
 namespace Hogra {
 	LightManager::LightManager()
@@ -35,16 +36,7 @@ namespace Hogra {
 	}
 
 	void LightManager::RenderDeferredLighting() {
-		if (!pointLights.empty()) {
-			deferredLightingSystem.Draw(pointLights, dirLights);
-		}
-		else {
-			static bool wasPrinted = false;
-			if (!wasPrinted) {
-				std::cerr << "LightManager error: No lights for deferred lighting!" << std::endl;
-				wasPrinted = true;
-			}
-		}
+		deferredLightingSystem.Draw(pointLights, dirLights);
 	}
 
 	void LightManager::InitDebug()

@@ -66,7 +66,7 @@ namespace Hogra {
 		mesh->Draw();
 	}
 
-	void SceneObject::drawShadow(const DirectionalShadowCaster& directionalShadowCaster)
+	void SceneObject::DrawShadow(const DirectionalShadowCaster& directionalShadowCaster)
 	{
 		if (nullptr == mesh) {
 			return;

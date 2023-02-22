@@ -357,7 +357,7 @@ namespace Hogra::Volumetric {
 			return false;
 		}
 		glm::vec4 camPos = glm::vec4(x, y, 0, 1);
-		glm::vec4 modelPos = transferFunction.getInvModelMatrix() * camPos;
+		glm::vec4 modelPos = transferFunction.GetInvModelMatrix() * camPos;
 		modelPos /= modelPos.w;
 		glm::vec2 texCoords = glm::vec2(modelPos.x / 2.0f + 0.5f, 0.5f + modelPos.y / 2.0f);
 		bool inBound = false;

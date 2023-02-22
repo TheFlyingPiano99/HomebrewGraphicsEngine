@@ -138,7 +138,7 @@ namespace Hogra {
 		}
 
 		glm::mat3 getInvInertiaTensor() const {
-			glm::mat3 rotationMatrix = owner->getRotationMatrix();
+			glm::mat3 rotationMatrix = owner->GetRotationMatrix();
 			return rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix);
 		}
 
@@ -225,7 +225,7 @@ namespace Hogra {
 		}
 
 		glm::vec3 getAngularVelocity() {
-			glm::mat3 rotationMatrix = owner->getRotationMatrix();
+			glm::mat3 rotationMatrix = owner->GetRotationMatrix();
 			return rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix) * angularMomentum;
 		}
 

@@ -13,6 +13,7 @@
 #include "HograTime.h"
 #include "DebugUtils.h"
 
+#define HOGRA_ENGINE_LICENSE_YEAR 2023
 
 namespace Hogra {
 	void HoGraEngineApplication::SetFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {
@@ -57,7 +58,7 @@ namespace Hogra {
 		std::cout << " | |___| | | | (_| | | | | |  __/" << std::endl;
 		std::cout << " |_____|_| |_|\\__, |_|_| |_|\\___|" << std::endl;
 		std::cout << "              |___/              " << std::endl;
-		std::cout << "                                  Zoltan Simon (2022)" << std::endl;
+		std::cout << "                                  Zoltan Simon (" << HOGRA_ENGINE_LICENSE_YEAR << ")" << std::endl;
 		std::cout << "_____________________________________________________" << std::endl;
 		std::cout << std::endl;
 	}

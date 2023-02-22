@@ -44,7 +44,7 @@ namespace Hogra {
 
 		void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera);
 
-		void drawShadow(const DirectionalShadowCaster& directionalShadowCaster);
+		void DrawShadow(const DirectionalShadowCaster& directionalShadowCaster);
 
 		void Serialize();
 
@@ -58,7 +58,7 @@ namespace Hogra {
 			return mesh;
 		}
 
-		void setMesh(Mesh* _mesh) {
+		void SetMesh(Mesh* _mesh) {
 			mesh = _mesh;
 		}
 
@@ -81,15 +81,15 @@ namespace Hogra {
 		/*
 		* Returns angles in radian.
 		*/
-		glm::vec3 getEulerAngles() const {
+		glm::vec3 GetEulerAnglesRad() const {
 			return eulerAnglesRad;
 		}
 
-		void setEulerAngles(const glm::vec3 anglesRad) {
-			eulerAnglesRad = anglesRad;
+		void SetEulerAngles(const glm::vec3 anglesDeg) {
+			eulerAnglesRad = glm::vec3(glm::radians(anglesDeg.x), glm::radians(anglesDeg.y), glm::radians(anglesDeg.z));
 		}
 
-		void setUseEulerAngles(const bool b) {
+		void SetUseEulerAngles(const bool b) {
 			useEulerAngles = b;
 		}
 
@@ -101,7 +101,7 @@ namespace Hogra {
 			orientation = _orientation;
 		}
 
-		std::span<Component* const> getComponents() const {
+		std::span<Component* const> GetComponents() const {
 			return components;
 		}
 
@@ -109,30 +109,30 @@ namespace Hogra {
 			components.push_back(component);
 		}
 
-		void removeComponent(Component* component) {
+		void RemoveComponent(Component* component) {
 			auto iter = std::find(components.begin(), components.end(), component);
 			if (components.end() != iter) {
 				components.erase(iter);
 			}
 		}
 
-		glm::mat3 getScaleMatrix() const {
+		glm::mat3 GetScaleMatrix() const {
 			return scaleMatrix;
 		}
 
-		glm::mat3 getRotationMatrix() const {
+		glm::mat3 GetRotationMatrix() const {
 			return rotationMatrix;
 		}
 
-		const glm::mat4& getTranslationMatrix() const {
+		const glm::mat4& GetTranslationMatrix() const {
 			return translationMatrix;
 		}
 
-		const glm::mat4& getModelMatrix() const {
+		const glm::mat4& GetModelMatrix() const {
 			return modelMatrix;
 		}
 
-		const glm::mat4& getInvModelMatrix() const {
+		const glm::mat4& GetInvModelMatrix() const {
 			return invModelMatrix;
 		}
 

@@ -17,7 +17,7 @@ namespace Hogra {
 
 		DirectionalShadowCaster();
 
-		void Init(glm::vec3 _position, glm::vec3 _direction);
+		void Init(glm::vec3 _position = glm::vec3(), glm::vec3 _direction = glm::vec3());
 
 		~DirectionalShadowCaster() {
 		}

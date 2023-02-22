@@ -6,8 +6,8 @@
   "preferedUp": [ 0.0, 1.0, 0.0 ],
   "backgroundColor": [ 0.07, 0.13, 0.17, 1.0 ],
   "camera": {
-    "eye": [ -6.0, 0.25, -6.0 ],
-    "lookAt": [ 0.0, 0.0, 0.0 ],
+    "eye": [ -10.0, 3.0, 0.0 ],
+    "lookAt": [ 0.0, 1.0, 0.0 ],
     "prefUp": [ 0.0, 1.0, 0.0 ],
     "FOVdeg": 45.0,
     "nearPlane": 0.1,
@@ -16,21 +16,22 @@
   "lights": [
     {
       "id": 1,
-      "name": "",
-      "position": [ -1, 0, 0, 0 ],
+      "name": "Sun",
+      "type": "directional",
+      "direction": [ -0.5, 1, 1 ],
       "powerDensity": [ 1, 1, 1 ],
       "isActive": true,
       "castShadow": true
     },
     {
-      "id": 12,
-      "name": "",
-      "position": [ -5, 5, -5, 1 ],
-      "powerDensity": [ 100, 50, 1 ],
+      "id": 18,
+      "name": "Lamp",
+      "type": "point",
+      "position": [ 4, 1.5, -4 ],
+      "powerDensity": [ 10, 10, 100 ],
       "isActive": true,
       "castShadow": false
     }
-
   ],
   "textures": [
     {
@@ -50,7 +51,13 @@
       "vertexSourceFileName": "fullScreenQuadWithRayDir.vert",
       "geometrySourceFileName": "",
       "fragmentSourceFileName": "forwardSkybox.frag",
-      "uniforms": []
+      "uniforms": [
+        {
+          "type": "float",
+          "key": "unusedVar",
+          "value": 0.0
+        }
+      ]
     }
   ],
   "materials": [
@@ -81,6 +88,11 @@
       "id": 9,
       "name": "sphere",
       "sourceFileName": "__sphere__"
+    },
+    {
+      "id": 14,
+      "name": "cube",
+      "sourceFileName": "__cube__"
     }
   ],
   "meshes": [
@@ -96,6 +108,14 @@
       "id": 10,
       "name": "sphere",
       "geometryId": 9,
+      "materialId": 8,
+      "depthTest": true,
+      "depthFunc": "less"
+    },
+    {
+      "id": 15,
+      "name": "cube",
+      "geometryId": 14,
       "materialId": 8,
       "depthTest": true,
       "depthFunc": "less"
@@ -135,20 +155,46 @@
       "position": [ 0, 0, 0 ],
       "scale": [ 1, 1, 1 ],
       "useEulerAngles": false,
-      "eulerAnglesRad": [ 0, 0, 0 ],
+      "eulerAnglesDeg": [ 0, 0, 0 ],
       "isVisible": true,
       "isCastingShadow": false
     },
     {
       "id": 11,
-      "name": "sphere",
+      "name": "sphere1",
       "meshId": 10,
       "instanceGroupName": "sphereGroup",
       "renderLayerName": "DeferredLayer",
-      "position": [ 0, 0, 0 ],
-      "scale": [ 0.1, 1, 1 ],
+      "position": [ 0, 1, 0 ],
+      "scale": [ 1, 1, 1 ],
+      "useEulerAngles": true,
+      "eulerAnglesDeg": [ 45, 0, 0 ],
+      "isVisible": true,
+      "isCastingShadow": true
+    },
+    {
+      "id": 17,
+      "name": "sphere2",
+      "meshId": 10,
+      "instanceGroupName": "sphereGroup",
+      "renderLayerName": "DeferredLayer",
+      "position": [ 2, 1, 3 ],
+      "scale": [ 1, 1, 1 ],
+      "useEulerAngles": true,
+      "eulerAnglesDeg": [ 0, 45, 90 ],
+      "isVisible": true,
+      "isCastingShadow": true
+    },
+    {
+      "id": 16,
+      "name": "platform",
+      "meshId": 15,
+      "instanceGroupName": "platformGroup",
+      "renderLayerName": "DeferredLayer",
+      "position": [ 0, -1, 0 ],
+      "scale": [ 10, 1, 10 ],
       "useEulerAngles": false,
-      "eulerAnglesRad": [ 0, 0, 0 ],
+      "eulerAnglesDeg": [ 0, 0, 0 ],
       "isVisible": true,
       "isCastingShadow": true
     }
@@ -156,7 +202,7 @@
   "captions": [
     {
       "id": 13,
-      "text": "Gömb a képen",
+      "text": "Gömbök a képen",
       "fontSourceFileName": "arial.ttf",
       "alignment": "centered",
       "verticalPlacing": "relative",

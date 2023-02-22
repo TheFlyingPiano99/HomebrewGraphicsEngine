@@ -8,9 +8,9 @@ namespace Hogra {
 	public:
 		UniformVariable() = default;
 
-		void Init(const char* _key, const T& val) {
+		void Init(const char* _key, const T& _val) {
 			key = _key;
-			value = val;
+			value = _val;
 		}
 
 		void Bind(unsigned int id) override;

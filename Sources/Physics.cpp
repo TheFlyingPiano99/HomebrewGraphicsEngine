@@ -41,7 +41,7 @@ namespace Hogra {
 
 		//Rotation:
 		angularMomentum += (appliedTorque + appliedTransientTorque) * dt + impulseAsIntegratedTorque;
-		glm::mat3 rotationMatrix = owner->getRotationMatrix();
+		glm::mat3 rotationMatrix = owner->GetRotationMatrix();
 		glm::vec3 modelSpaceRotationDrag = glm::vec3(
 			std::expf(-rotationalDrag.x * dt * invModelSpaceInertiaTensor[0][0]),
 			std::expf(-rotationalDrag.y * dt * invModelSpaceInertiaTensor[1][1]),

@@ -11,8 +11,8 @@ void Hogra::InstanceGroup::GatherInstanceData()
 	visibleCount = 0;
 	for (int i = 0; i < count; i++) {
 		if (objects[i]->IsVisible()) {
-			instanceData[visibleCount].modelMatrix = objects[i]->getModelMatrix();
-			instanceData[visibleCount].invModelMatrix = objects[i]->getInvModelMatrix();
+			instanceData[visibleCount].modelMatrix = objects[i]->GetModelMatrix();
+			instanceData[visibleCount].invModelMatrix = objects[i]->GetInvModelMatrix();
 			visibleCount++;
 		}
 	}
@@ -28,8 +28,8 @@ void Hogra::InstanceGroup::GatherInstanceDataForShadow()
 	visibleCount = 0;
 	for (int i = 0; i < count; i++) {
 		if (objects[i]->IsVisible() && objects[i]->IsCastingShadow()) {
-			instanceData[visibleCount].modelMatrix = objects[i]->getModelMatrix();
-			instanceData[visibleCount].invModelMatrix = objects[i]->getInvModelMatrix();
+			instanceData[visibleCount].modelMatrix = objects[i]->GetModelMatrix();
+			instanceData[visibleCount].invModelMatrix = objects[i]->GetInvModelMatrix();
 			visibleCount++;
 		}
 	}

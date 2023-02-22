@@ -199,11 +199,11 @@ namespace Hogra::Volumetric {
 			return texture->GetDimensions();
 		}
 
-		const glm::mat4 getModelMatrix() {
+		const glm::mat4 GetModelMatrix() {
 			return modelMatrix;
 		}
 
-		const glm::mat4 getInvModelMatrix() {
+		const glm::mat4 GetInvModelMatrix() {
 			return invModelMatrix;
 		}
 
