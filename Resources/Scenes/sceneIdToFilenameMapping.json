@@ -7,6 +7,10 @@
     {
       "id": 1,
       "filename" : "demoScene01.json"
+    },
+    {
+      "id": 2,
+      "filename": "magicMirrorScene.json"
     }
   ]
 }

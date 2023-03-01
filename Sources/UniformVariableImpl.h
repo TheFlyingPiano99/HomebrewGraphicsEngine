@@ -1,5 +1,6 @@
 #pragma once
 #include "UniformVariable.h"
+#include <string>
 
 namespace Hogra {
 	template<typename T>
@@ -8,7 +9,7 @@ namespace Hogra {
 	public:
 		UniformVariable() = default;
 
-		void Init(const char* _key, const T& _val) {
+		void Init(std::string_view _key, const T& _val) {
 			key = _key;
 			value = _val;
 		}
@@ -20,7 +21,7 @@ namespace Hogra {
 		const T Get();
 
 	private:
-		const char* key;
+		std::string key;
 		T value;
 	};
 }

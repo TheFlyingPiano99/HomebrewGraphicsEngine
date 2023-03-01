@@ -389,6 +389,7 @@
   <ItemGroup>
     <None Include="..\Resources\Scenes\demoScene00.json" />
     <None Include="..\Resources\Scenes\demoScene01.json" />
+    <None Include="..\Resources\Scenes\magicMirrorScene.json" />
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json" />
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
@@ -396,6 +397,7 @@
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
     <None Include="..\Resources\Shaders\instanced2D.vert" />
     <None Include="..\Resources\Shaders\instanced3D.vert" />
+    <None Include="..\Resources\Shaders\magicMirror.frag" />
     <None Include="..\Resources\Shaders\omniDirShadowCast.frag" />
     <None Include="..\Resources\Shaders\omniDirShadowCast.geom" />
     <None Include="..\Resources\Shaders\omniDirShadowCast.vert" />

@@ -14,7 +14,7 @@ public:
 
 	std::map<int, std::string> scenes;
 };
-#define INIT_MODE 0
+#define INIT_MODE 4
 
 namespace Hogra {
 	SceneManager* SceneManager::instance = nullptr;
@@ -32,13 +32,14 @@ namespace Hogra {
 			return;
 		}
 #if 0 == INIT_MODE
-		LoadScene(0);
 #elif 1 == INIT_MODE
 		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);
 #elif 2 == INIT_MODE
 		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);
 #elif 3 == INIT_MODE
 		currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
+#elif 4 == INIT_MODE
+		LoadScene(2);		// Magic mirror
 #endif
 
 	}

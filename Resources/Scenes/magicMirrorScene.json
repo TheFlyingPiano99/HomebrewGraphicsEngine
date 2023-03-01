@@ -1,0 +1,140 @@
+{
+  "id": 2,
+  "name": "Magic mirror scene",
+  "pause": false,
+  "debugMode": false,
+  "preferedUp": [ 0.0, 1.0, 0.0 ],
+  "backgroundColor": [ 0.07, 0.13, 0.17, 1.0 ],
+  "camera": {
+    "eye": [ -10.0, 0.0, 0.0 ],
+    "lookAt": [ 0.0, 0.0, 0.0 ],
+    "prefUp": [ 0.0, 1.0, 0.0 ],
+    "FOVdeg": 45.0,
+    "nearPlane": 0.1,
+    "farPlane": 1000.0
+  },
+  "lights": [
+  ],
+  "textures": [
+  ],
+  "shaders": [
+    {
+      "id": 3,
+      "name": "magicMirrorShader",
+      "vertexSourceFileName": "fullScreenQuad.vert",
+      "geometrySourceFileName": "",
+      "fragmentSourceFileName": "magicMirror.frag",
+      "uniforms": [
+        {
+          "type": "int",
+          "uniName": "resolution",
+          "uniValue": 60
+        },
+        {
+          "type": "float",
+          "uniName": "traceAreaScale",
+          "uniValue": 0.6
+        },
+        {
+          "type": "float",
+          "uniName": "mirrorDistance",
+          "uniValue": 3.0
+        },
+        {
+          "type": "float",
+          "uniName": "mirrorShininess",
+          "uniValue": 100000.0
+        },
+        {
+          "type": "float",
+          "uniName": "mirrorDepth",
+          "uniValue": 0.001
+        },
+        {
+          "type": "float",
+          "uniName": "mirrorCurvatureRadius",
+          "uniValue": 100
+        },
+        {
+          "type": "vec3",
+          "uniName": "mirrorSize",
+          "uniValue": [ 0.5, 0.5, 1 ]
+        },
+        {
+          "type": "vec3",
+          "uniName": "lightDir",
+          "uniValue": [ 0, 0, 1 ]
+        },
+        {
+          "type": "float",
+          "uniName": "lightIntensity",
+          "uniValue": 10000.0
+        }
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "id": 4,
+      "name": "magicMirrorMaterial",
+      "type": "custom",
+      "shaderId": 3,
+      "textureIds": [
+      ]
+    }
+  ],
+  "geometries": [
+    {
+      "id": 5,
+      "name": "quad",
+      "sourceFileName": "__simpleQuad__"
+    }
+  ],
+  "meshes": [
+    {
+      "id": 6,
+      "name": "magicMirrorMesh",
+      "geometryId": 5,
+      "materialId": 4,
+      "depthTest": false,
+      "depthFunc": "less"
+    }
+  ],
+  "renderLayers": [
+    {
+      "name": "ForwardLayer",
+      "renderMode": "forwardRenderMode",
+      "place": -1
+    }
+  ],
+  "postProcessStages": [
+  ],
+  "sceneObjects": [
+    {
+      "id": 7,
+      "name": "magicMirror",
+      "meshId": 6,
+      "instanceGroupName": "",
+      "renderLayerName": "ForwardLayer",
+      "position": [ 0, 0, 0 ],
+      "scale": [ 1, 1, 1 ],
+      "useEulerAngles": false,
+      "eulerAnglesDeg": [ 0, 0, 0 ],
+      "isVisible": true,
+      "isCastingShadow": false
+    }
+  ],
+  "captions": [
+    {
+      "id": 13,
+      "text": "Magic mirror",
+      "fontSourceFileName": "arial.ttf",
+      "alignment": "centered",
+      "verticalPlacing": "relative",
+      "horizontalPlacing": "relative",
+      "screenPosition": [ 0.5, 0.1 ],
+      "scale": 0.5,
+      "color": [ 0, 1, 0.1, 1 ]
+    }
+  ]
+}

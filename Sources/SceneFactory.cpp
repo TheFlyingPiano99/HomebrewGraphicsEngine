@@ -1367,27 +1367,32 @@ namespace Hogra {
 						std::string typeStr = uniformData["type"];
 						if ("float" == typeStr) {
 							auto uniVar = Allocator::New<UniformVariable<float>>();
-							uniVar->Init(std::string(uniformData["key"]).c_str(), uniformData["value"]);
+							std::string name = uniformData["uniName"];
+							uniVar->Init(name, uniformData["uniValue"]);
 							shader->BindUniformVariable(uniVar);
 						}
 						else if ("int" == typeStr) {
 							auto uniVar = Allocator::New<UniformVariable<int>>();
-							uniVar->Init(std::string(uniformData["key"]).c_str(), uniformData["value"]);
+							std::string name = uniformData["uniName"];
+							uniVar->Init(name, uniformData["uniValue"]);
 							shader->BindUniformVariable(uniVar);
 						}
 						else if ("vec2" == typeStr) {
 							auto uniVar = Allocator::New<UniformVariable<glm::vec2>>();
-							uniVar->Init(std::string(uniformData["key"]).c_str(), parseVec2(uniformData["value"]));
+							std::string name = uniformData["uniName"];
+							uniVar->Init(name, parseVec2(uniformData["uniValue"]));
 							shader->BindUniformVariable(uniVar);
 						}
 						else if ("vec3" == typeStr) {
 							auto uniVar = Allocator::New<UniformVariable<glm::vec3>>();
-							uniVar->Init(std::string(uniformData["key"]).c_str(), parseVec3(uniformData["value"]));
+							std::string name = uniformData["uniName"];
+							uniVar->Init(name, parseVec3(uniformData["uniValue"]));
 							shader->BindUniformVariable(uniVar);
 						}
 						else if ("vec4" == typeStr) {
 							auto uniVar = Allocator::New<UniformVariable<glm::vec3>>();
-							uniVar->Init(std::string(uniformData["key"]).c_str(), parseVec4(uniformData["value"]));
+							std::string name = uniformData["uniName"];
+							uniVar->Init(name, parseVec4(uniformData["uniValue"]));
 							shader->BindUniformVariable(uniVar);
 						}
 						/*

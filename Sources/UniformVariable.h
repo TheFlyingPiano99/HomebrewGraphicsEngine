@@ -8,4 +8,5 @@ namespace Hogra {
 		virtual ~AbstractUniformVariable() = default;
 		virtual void Bind(unsigned int id) = 0;
 	};
-		}
+
+}
