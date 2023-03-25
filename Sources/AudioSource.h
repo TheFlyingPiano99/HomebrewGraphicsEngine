@@ -11,6 +11,7 @@ namespace Hogra {
 
 	class AudioSource
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		void Init(AudioBuffer* _buffer);

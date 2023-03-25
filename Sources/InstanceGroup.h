@@ -1,9 +1,11 @@
 #pragma once
 #include "SceneObject.h"
+#include "MemoryManager.h"
 
 namespace Hogra{
 	class InstanceGroup
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		InstanceGroup() = default;
 

@@ -3,12 +3,18 @@
 #include "Texture2D.h"
 #include "TextureCube.h"
 #include "RBO.h"
+#include "MemoryManager.h"
+
 
 
 namespace Hogra {
 
 	class FBO
 	{
+		ALLOCATOR_CONSTRUCTIBLE
+			
+		static std::vector<FBO*> fbos;
+
 	public:
 		GLuint glID = 0;
 		glm::ivec4 viewport;
@@ -17,7 +23,9 @@ namespace Hogra {
 
 		~FBO();
 
-		FBO() = default;
+		FBO() {
+			fbos.push_back(this);
+		};
 		
 		FBO(const FBO& fbo);
 
@@ -45,7 +53,17 @@ namespace Hogra {
 		void SelectDrawBuffers(std::vector<GLenum> bufs);
 
 		inline static void BindDefault();
+
 		static FBO&& GetDefault();
+
+		static void SaveToFileAll();
+
+		/*
+		* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
+		* Accessed: 2023-03-25
+		*/
+		void saveToPPM(std::string& savePath);
+
 	};
 
 }

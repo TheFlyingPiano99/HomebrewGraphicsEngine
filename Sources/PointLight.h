@@ -10,6 +10,7 @@
 namespace Hogra {
 
 	class PointLight : public Component, public PositionProvider {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		void Init(const glm::vec3& _position, const glm::vec3& _powerDensity);

@@ -3,11 +3,13 @@
 #include <memory>
 #include <vector>
 #include "Identifiable.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class Texture : public Identifiable
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		GLuint glID;
 		GLuint unit;

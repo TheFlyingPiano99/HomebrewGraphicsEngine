@@ -8,7 +8,7 @@
 namespace Hogra {
 	class SceneFactory
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		static SceneFactory* getInstance();
@@ -54,7 +54,6 @@ namespace Hogra {
 		Scene* LoadSceneFromFile(const std::string& path);
 
 	private:
-		SceneFactory() = default;
 		static SceneFactory* instance;
 	};
 }

@@ -6,7 +6,7 @@
 namespace Hogra {
 	class ShaderProgramFactory
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		static ShaderProgramFactory* GetInstance();
 
@@ -25,9 +25,6 @@ namespace Hogra {
 		void ForgetPointers();
 
 	private:
-		ShaderProgramFactory() = default;
-		~ShaderProgramFactory() = default;
-
 		static ShaderProgramFactory* instance;
 
 		ShaderProgram* defaultBPRProgramWithMapping = nullptr;

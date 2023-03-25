@@ -13,6 +13,7 @@ namespace Hogra {
 
 	class ShaderProgram : public Identifiable
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		void Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile);

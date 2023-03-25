@@ -10,7 +10,7 @@ namespace Hogra {
 
 	class Component : public Identifiable
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		virtual ~Component() = default;

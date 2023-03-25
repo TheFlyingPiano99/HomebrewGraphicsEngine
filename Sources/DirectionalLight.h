@@ -10,6 +10,7 @@
 namespace Hogra {
 
 	class DirectionalLight : public Component {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		void Init(const glm::vec3& _direction, const glm::vec3& _powerDensity);

@@ -3,6 +3,7 @@
 #include "SceneEventImplementation.h"
 #include "MemoryManager.h"
 #include <iostream>
+
 namespace Hogra {
 
     void Collider::Collide(Collider* collider)

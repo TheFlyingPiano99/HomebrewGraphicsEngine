@@ -12,7 +12,8 @@ namespace Hogra {
 
 	class Mesh : public Identifiable
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
+
 	public:
 		enum DepthTestFunc {
 			less_func,
@@ -45,6 +46,5 @@ namespace Hogra {
 		bool stencilTest = false;
 		DepthTestFunc depthTestFunc = DepthTestFunc::less_func;
 
-		inline void* operator new(std::size_t size) { return ::operator new(size); }
 	};
 }

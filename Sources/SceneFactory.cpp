@@ -256,6 +256,15 @@ namespace Hogra {
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(jump);
 
+			auto* saveFBOs = Allocator::New<ButtonKeyAction>();
+			saveFBOs->Init(GLFW_KEY_P, ButtonKeyAction::TriggerType::triggerOnPress);
+			saveFBOs->SetAction(
+				[]() {
+					FBO::SaveToFileAll();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(saveFBOs);
+
 			auto* moveCam = Allocator::New<AxisMoveAction>();
 			moveCam->SetAction(
 			[control](const glm::vec2& delta, const glm::vec2& pos) {
@@ -661,8 +670,7 @@ namespace Hogra {
 
 		auto fbo = Allocator::New<FBO>();
 		fbo->Init();
-		auto drawMode = Allocator::New<int>();
-		*drawMode = 0;
+		auto* drawMode = Allocator::New<UniformVariable<int>>();
 
 
 		scene->AddSceneObject(chunkObj, "", "ForwardLayer");
@@ -690,9 +698,21 @@ namespace Hogra {
 			switchDrawMode->Init(GLFW_KEY_T, ButtonKeyAction::TriggerType::triggerOnPress);
 			switchDrawMode->SetAction(
 				[drawMode]() {
-					(*drawMode)++;
-					if (*drawMode > 4) {
-						*drawMode = 0;
+					(**drawMode)++;
+					if (**drawMode > 4) {
+						**drawMode = 0;
+					}
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(switchDrawMode);
+
+			auto* makeScreenshot = Allocator::New<ButtonKeyAction>();
+			makeScreenshot->Init(GLFW_KEY_S, ButtonKeyAction::TriggerType::triggerOnPress);
+			makeScreenshot->SetAction(
+				[drawMode]() {
+					(**drawMode)++;
+					if (**drawMode > 4) {
+						**drawMode = 0;
 					}
 				}
 			);
@@ -709,7 +729,7 @@ namespace Hogra {
 					float v = 255.0f - y / (double)GlobalVariables::windowHeight * 255.0f;
 
 					FallingSand::Particle* particle[9] = { nullptr };
-					switch (*drawMode) {
+					switch (**drawMode) {
 					case 0:
 						for (int i = 0; i < 9; i++) {
 							particle[i] = Allocator::New<FallingSand::Water>();

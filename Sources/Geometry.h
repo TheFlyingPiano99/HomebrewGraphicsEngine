@@ -9,7 +9,7 @@ namespace Hogra {
 
 	class Geometry : public Identifiable
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		template<typename VertexType>
@@ -67,8 +67,6 @@ namespace Hogra {
 		VBO vbo;
 
 		bool faceCulling = true;
-
-		inline void* operator new(std::size_t size) { return ::operator new(size); }
 	};
 
 }

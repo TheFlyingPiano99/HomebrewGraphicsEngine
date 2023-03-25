@@ -8,7 +8,7 @@ namespace Hogra {
 
 	class SceneEventManager
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		~SceneEventManager() {
@@ -62,9 +62,6 @@ namespace Hogra {
 	private:
 		static SceneEventManager* instance;
 		std::queue<SceneEvent*> events;
-
-		SceneEventManager() = default;
-
 	};
 
 }

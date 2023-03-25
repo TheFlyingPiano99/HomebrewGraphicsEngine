@@ -1,9 +1,10 @@
 #pragma once
 #include "OrientationProvider.h"
-
+#include "MemoryManager.h"
 
 namespace Hogra {
 	class OrientationConnector {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		explicit OrientationConnector() = default;
 

@@ -16,6 +16,7 @@ namespace Hogra {
 
     class Font
     {
+        ALLOCATOR_CONSTRUCTIBLE
     public:
 
         class UnloadedFontException : public std::exception {

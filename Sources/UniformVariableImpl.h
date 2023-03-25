@@ -1,11 +1,13 @@
 #pragma once
 #include "UniformVariable.h"
+#include "MemoryManager.h"
 #include <string>
 
 namespace Hogra {
 	template<typename T>
 	class UniformVariable : public AbstractUniformVariable
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		UniformVariable() = default;
 
@@ -18,7 +20,15 @@ namespace Hogra {
 
 		void Set(const T val);
 
-		const T Get();
+		T Get();
+
+		T& operator*() {
+			return value;
+		}
+
+		const T& operator*() const {
+			return value;
+		}
 
 	private:
 		std::string key;

@@ -8,11 +8,13 @@
 #include <iostream>
 #include <fstream>
 #include <set>
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class AudioBuffer
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		void Init(std::string& path);

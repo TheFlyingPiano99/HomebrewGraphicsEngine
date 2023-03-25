@@ -8,6 +8,7 @@ namespace Hogra {
 
 	class SceneObjectFactory
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		static SceneObjectFactory* GetInstance();

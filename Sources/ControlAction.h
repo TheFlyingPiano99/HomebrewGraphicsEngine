@@ -7,6 +7,7 @@
 namespace Hogra {
 
 	class AbstractControlAction {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		virtual ~AbstractControlAction() = default;
 		virtual bool PopIsTriggering() = 0;
@@ -15,6 +16,7 @@ namespace Hogra {
 
 	class ButtonKeyAction : public AbstractControlAction
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		enum class TriggerType {
 			triggerOnPress,
@@ -54,6 +56,7 @@ namespace Hogra {
 	};
 
 	class AxisMoveAction : public AbstractControlAction {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		AxisMoveAction() = default;
 

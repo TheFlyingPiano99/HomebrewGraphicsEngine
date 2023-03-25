@@ -4,12 +4,13 @@
 #include "AssetFolderPathManager.h"
 #include "GeometryFactory.h"
 #include "UniformVariable.h"
-
+#include "MemoryManager.h"
 
 namespace Hogra {
 
 	class PostProcessStage
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		PostProcessStage() = default;

@@ -4,6 +4,7 @@
 namespace Hogra::FallingSand {
 
 	class Smoke : public Gas {
+	ALLOCATOR_CONSTRUCTIBLE
 	public:
 		Smoke();
 

@@ -2,9 +2,11 @@
 #include "Animation.h"
 #include "Camera.h"
 
+
 namespace Hogra {
 	class CameraAnimation : public Animation
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		Camera* GetCamera() const {
@@ -22,6 +24,7 @@ namespace Hogra {
 
 	class HeadBob : public CameraAnimation
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 

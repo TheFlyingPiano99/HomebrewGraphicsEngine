@@ -1,6 +1,9 @@
 #include "FBO.h"
 #include "GlobalInclude.h"
+#include "AssetFolderPathManager.h"
+
 namespace Hogra {
+	std::vector<FBO*> FBO::fbos = std::vector<FBO*>();
 
 	void FBO::Init()
 	{
@@ -9,13 +12,16 @@ namespace Hogra {
 
 	FBO::~FBO()
 	{
+		auto iter = std::find(fbos.begin(), fbos.end(), this);
+		if (iter != fbos.end()) {
+			fbos.erase(iter);
+		}
 		Delete();
 	}
 
-	FBO::FBO(const FBO& fbo)
+	FBO::FBO(const FBO& fbo) : glID(fbo.glID), viewport(fbo.viewport)
 	{
-		this->glID = fbo.glID;
-		this->viewport = fbo.viewport;
+		fbos.push_back(this);
 	}
 
 	FBO& FBO::operator=(const FBO& fbo)
@@ -101,5 +107,57 @@ namespace Hogra {
 		fbo.glID = 0;
 		fbo.viewport = glm::vec4(0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 		return std::move(fbo);
+	}
+
+	void FBO::SaveToFileAll()
+	{	
+		int i = 0;
+		for (auto item : fbos) {
+			item->saveToPPM(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("screenshot").append(std::to_string(i)).append(".ppm"));
+			i++;
+		}
+	}
+
+	/*
+	* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
+	* Accessed: 2023-03-25
+	*/
+	void FBO::saveToPPM(std::string& savePath)
+	{
+		FILE* output_image;
+		int output_width = viewport.z;
+		int output_height = viewport.w;
+
+		/// READ THE PIXELS VALUES from FBO AND SAVE TO A .PPM FILE
+		unsigned char* pixels = (unsigned char*)malloc(output_width * output_height * 3);
+
+		/// READ THE CONTENT FROM THE FBO
+		Bind();
+		glReadBuffer(GL_COLOR_ATTACHMENT0);
+		glReadPixels(viewport.x, viewport.y, viewport.z, viewport.w, GL_RGB, GL_UNSIGNED_BYTE, pixels);
+
+		auto errn = fopen_s(&output_image, savePath.c_str(), "wt");
+		fprintf(output_image, "P3\n");
+		fprintf(output_image, "# Created with Hogra engine\n");
+		fprintf(output_image, "%d %d\n", output_width, output_height);
+		fprintf(output_image, "255\n");
+
+		const int pixelSize = 3;
+		for (int x = 0; x < output_width; x++)
+		{
+			for (int y = 0; y < output_height; y++)
+			{
+				int baseIdx = x * output_height * pixelSize + y * pixelSize;
+				fprintf(output_image, 
+					"%u %u %u ", 
+					(unsigned int)pixels[baseIdx], 
+					(unsigned int)pixels[baseIdx + 1],
+					(unsigned int)pixels[baseIdx + 2]);
+			}
+			fprintf(output_image, "\n");
+		}
+		fclose(output_image);
+		free(pixels);
+		Unbind();
 	}
 }

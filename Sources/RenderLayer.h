@@ -7,10 +7,13 @@
 #include "LightManager.h"
 #include "Identifiable.h"
 #include "DebugUtils.h"
+#include "MemoryManager.h"
 
 namespace Hogra {
 	
 	class RenderLayer : public Identifiable {
+		ALLOCATOR_CONSTRUCTIBLE
+
 	public:
 		RenderLayer() {
 			defaultFBO = FBO::GetDefault();

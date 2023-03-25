@@ -98,6 +98,9 @@ namespace Hogra::Volumetric {
 	};
 
 	struct FeatureGroup {
+		ALLOCATOR_CONSTRUCTIBLE
+
+	public:
 		std::vector<Feature*> features;
 		std::string name;
 		bool serialize = true;
@@ -156,6 +159,7 @@ namespace Hogra::Volumetric {
 
 	class TransferFunction
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	private:
 		ShaderProgram shader;
 		glm::mat4 modelMatrix;

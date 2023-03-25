@@ -9,7 +9,8 @@ namespace Hogra {
 	* Singleton
 	*/
 	class AssetFolderPathManager {
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
+		
 		static AssetFolderPathManager* instance;
 
 		std::string shaderFolderPath;
@@ -28,10 +29,6 @@ namespace Hogra {
 
 			}
 		};
-
-		AssetFolderPathManager() = default;
-
-		~AssetFolderPathManager() = default;
 
 		std::string FindPathIntoFolder(std::string folderName);
 

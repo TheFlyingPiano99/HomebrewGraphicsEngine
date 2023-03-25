@@ -38,12 +38,7 @@ namespace Hogra {
 	}
 
 	template<typename T>
-	const T UniformVariable<T>::Get()
-	{
-		return value;
-	}
-
-	const float UniformVariable<float>::Get()
+	T UniformVariable<T>::Get()
 	{
 		return value;
 	}

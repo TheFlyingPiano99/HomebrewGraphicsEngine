@@ -34,6 +34,7 @@ namespace Hogra {
 
 	class Scene : public Identifiable
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 		friend class SceneFactory;
 	public:
 

@@ -4,6 +4,7 @@
 namespace Hogra::FallingSand {
 
 	class Liquid : public Particle {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		Liquid() {
 			type = Type::LiquidParticle;

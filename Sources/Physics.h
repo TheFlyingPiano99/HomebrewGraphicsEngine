@@ -6,6 +6,7 @@ namespace Hogra {
 
 	class Physics : public Component
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		void Init(SceneObject* _owner) {

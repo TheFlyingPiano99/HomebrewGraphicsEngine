@@ -7,6 +7,7 @@
 namespace Hogra {
 	class SceneAudioSource : public Component
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		void Init(AudioSource* _source);

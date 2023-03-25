@@ -6,8 +6,14 @@ namespace Hogra {
 
 	class SceneManager
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
+
 	public:
+		SceneManager() = default;
+
+		~SceneManager() {
+			UnloadCurrentScene();
+		}
 
 		static SceneManager* getInstance();
 
@@ -41,11 +47,6 @@ namespace Hogra {
 		void OnWindowResize(unsigned int w, unsigned int h);
 
 	private:
-		SceneManager() = default;
-
-		~SceneManager() {
-			UnloadCurrentScene();
-		}
 
 		static SceneManager* instance;
 

@@ -17,6 +17,7 @@ namespace Hogra::FallingSand {
 	class ParticleGrid;
 
 	class Particle {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		enum class Type

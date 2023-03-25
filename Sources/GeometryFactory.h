@@ -10,7 +10,7 @@ namespace Hogra {
 	*/
 	class GeometryFactory
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		static GeometryFactory* GetInstance();
 		static void DestroyInstance();
@@ -39,7 +39,6 @@ namespace Hogra {
 	private:
 		Geometry* GenerateSphere();
 		void generateIcosaFace(glm::vec3 a, glm::vec3 b, glm::vec3 c, int resolution, float r, std::vector<glm::vec3>* vertices, std::vector<GLuint>* indices);
-		GeometryFactory() = default;
 		static GeometryFactory* instance;
 
 		Geometry* quad = nullptr;

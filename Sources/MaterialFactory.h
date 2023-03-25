@@ -8,7 +8,7 @@
 namespace Hogra {
 	class MaterialFactory
 	{
-		friend class Allocator;
+	ALLOCATOR_CONSTRUCTIBLE	
 	public:
 		static MaterialFactory* GetInstance();
 		static void DestroyInstance();
@@ -20,8 +20,6 @@ namespace Hogra {
 		void ForgetPointers();
 
 	private:
-		MaterialFactory() = default;
-		~MaterialFactory();
 		static MaterialFactory* instance;
 
 		std::map<std::string, Material*> loadedPBRMaterials;

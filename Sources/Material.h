@@ -11,7 +11,8 @@ namespace Hogra {
 
 	class Material : public Identifiable
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
+
 	public:
 
 		void Init(ShaderProgram* program);
@@ -76,8 +77,6 @@ namespace Hogra {
 		int destBlendFunc = GL_ONE_MINUS_SRC_ALPHA;
 
 		class ShaderProgramIsNullptr : public std::exception {};
-
-		inline void* operator new(std::size_t size) { return ::operator new(size); };
 
 	};
 

@@ -104,8 +104,5 @@ namespace Hogra {
 		loadedPBRMaterials.clear();
 	}
 	
-	MaterialFactory::~MaterialFactory()
-	{
 
-	}
 }

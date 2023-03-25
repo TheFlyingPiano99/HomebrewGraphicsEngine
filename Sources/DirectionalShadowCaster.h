@@ -13,6 +13,7 @@
 namespace Hogra {
 	class DirectionalShadowCaster : public ShadowCaster
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		DirectionalShadowCaster();

@@ -9,16 +9,10 @@ namespace Hogra {
 	*/
 	class GUI
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
+
 		static GUI* instance;
 		ImGuiIO io;
-
-		GUI() {
-		}
-
-		~GUI() {
-
-		}
 
 		bool visible = false;
 

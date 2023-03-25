@@ -11,6 +11,7 @@ namespace Hogra {
 	*/
 	class Collider : public Component
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		/*

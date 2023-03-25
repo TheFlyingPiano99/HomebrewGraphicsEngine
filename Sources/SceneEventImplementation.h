@@ -6,6 +6,7 @@ namespace Hogra {
 
 	class CollisionEvent : public SceneEvent
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		CollisionEvent() = default;
 

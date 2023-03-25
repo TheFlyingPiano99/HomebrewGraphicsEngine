@@ -4,6 +4,7 @@
 namespace Hogra::FallingSand {
 
 	class Water : public Liquid {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		Water();
 

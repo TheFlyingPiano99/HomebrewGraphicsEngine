@@ -6,6 +6,8 @@
 namespace Hogra {
 	class UserControl : public Component
 	{
+	ALLOCATOR_CONSTRUCTIBLE
+
 	public:
 		virtual ~UserControl() = default;
 

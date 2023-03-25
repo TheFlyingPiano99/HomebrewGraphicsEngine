@@ -5,6 +5,7 @@
 
 namespace Hogra {
 	class PositionConnector {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		explicit PositionConnector() = default;
 

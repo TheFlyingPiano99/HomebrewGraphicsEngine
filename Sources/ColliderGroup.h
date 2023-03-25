@@ -14,6 +14,7 @@ namespace Hogra {
 	*/
 	class ColliderGroup
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		ColliderGroup() {
 		}

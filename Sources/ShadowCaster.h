@@ -1,9 +1,11 @@
 #pragma once
 #include<glad/glad.h>
+#include "MemoryManager.h"
 
 namespace Hogra {
 	class ShadowCaster
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
 		virtual void Update() = 0;

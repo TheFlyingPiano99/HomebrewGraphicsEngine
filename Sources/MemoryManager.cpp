@@ -16,13 +16,5 @@
 
 namespace Hogra {
 	std::set<Allocator::AllocationData> Allocator::allocations = std::set<Allocator::AllocationData>();
-
-	bool operator<(const Allocator::AllocationData& ad, const Allocator::AllocationData& ad2) {
-		return reinterpret_cast<uintptr_t>(ad.pointer) < reinterpret_cast<uintptr_t>(ad2.pointer);
-	}
-
-	bool operator>(const Allocator::AllocationData& ad, const Allocator::AllocationData& ad2) {
-		return reinterpret_cast<uintptr_t>(ad.pointer) > reinterpret_cast<uintptr_t>(ad2.pointer);
-	}
 }
 

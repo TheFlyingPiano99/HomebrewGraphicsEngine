@@ -9,8 +9,14 @@ namespace Hogra {
 
 	class ControlActionManager
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
+
+		ControlActionManager() = default;
+
+		~ControlActionManager() {
+			UnregisterControls();
+		}
 
 		static ControlActionManager* getInstance();
 
@@ -74,7 +80,6 @@ namespace Hogra {
 
 		void UnregisterControls();
 
-
 	private:
 		static ControlActionManager* instance;
 		std::multimap<const int, ButtonKeyAction*> registeredKeyActions;
@@ -83,12 +88,6 @@ namespace Hogra {
 		std::vector<AxisMoveAction*> mouseScrollAction;
 
 		std::queue<AbstractControlAction*> queuedActions;
-
-		ControlActionManager() = default;
-
-		~ControlActionManager() {
-			UnregisterControls();
-		}
 
 		/*
 		* Get next action for execution

@@ -13,6 +13,7 @@
 namespace Hogra {
 	class Bloom : public PostProcessStage
 	{
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		Bloom();
 
