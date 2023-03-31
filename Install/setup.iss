@@ -47,6 +47,7 @@ Source: "..\x64\Release\assimp-vc143-mt.dll"; DestDir: "{app}"; Flags: ignorever
 Source: "..\x64\Release\Irrlicht.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Resources\*"; DestDir: "{app}\Resources\"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
 Source: "..\Saves\*"; DestDir: "{app}\Saves\"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
+Source: "..\ReleaseData\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs skipifsourcedoesntexist
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
