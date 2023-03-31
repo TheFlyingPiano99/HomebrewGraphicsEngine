@@ -3,8 +3,8 @@
 
 <img src="Resources/Icons/HoGraEngineLogo.png" alt="HoGraEngine logo" width="30%" style="float: right;"/>
 
-Created with the Homebrew Graphics Engine.
-<a href="https://github.com/TheFlyingPiano99/HomebrewGraphicsEngine/tree/master" title="Hogra engine">Link to the repository</a>
+Created with Zoltán Simon's 
+<a href="https://github.com/TheFlyingPiano99/HomebrewGraphicsEngine/tree/master" title="Hogra engine">Homebrew Graphics Engine</a>.
 
 ## Third-party libraries
 
