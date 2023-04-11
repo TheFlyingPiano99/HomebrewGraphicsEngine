@@ -200,12 +200,9 @@ namespace Hogra {
 		}
 		for (auto& omniCaster : omniDirShadowCasters) {
 			omniCaster->Bind();
-			// TODO
-			/*
 			for (auto& group : instanceGroups) {
 				group.second->DrawShadow();
 			}
-			*/
 		}
 
 		const Texture2D& depth = lightManager.GetDepthTexture();

@@ -5,6 +5,13 @@ namespace Hogra {
 	{
 	public:
 
+		void EarlyPhysicsUpdate(float dt) {
+
+		}
+
+		void LatePhysicsUpdate(float dt) {
+
+		}
 
 	private:
 

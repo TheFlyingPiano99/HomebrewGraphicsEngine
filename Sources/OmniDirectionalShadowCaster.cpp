@@ -27,7 +27,6 @@ namespace Hogra {
 		if (nullptr != positionProvider) {
 			position = positionProvider->GetPosition();
 		}
-	
 		float aspect = (float)shadowMap.GetDimensions().x / (float)shadowMap.GetDimensions().y;
 		shadowProj = glm::perspective(glm::radians(90.0f), aspect, OMNI_DIR_SHADOW_MAP_NEAR_PLANE, OMNI_DIR_SHADOW_MAP_FAR_PLANE);
 

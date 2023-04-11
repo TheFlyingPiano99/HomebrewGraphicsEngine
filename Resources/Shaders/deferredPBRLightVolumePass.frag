@@ -95,22 +95,31 @@ void main()
 	vec3 viewDir = normalize(cameraPosition - wp);
 	float shadow = 0.0;
 	
-	if (int(fs_in.shadowMapIdx) >= 0) {
+	if (int(fs_in.shadowMapIdx) > 0) {	// Shadow calculation
 		// get vector between fragment position and light position
-		//vec3 fragToLight = wp - fs_in.lightPosition.xyz;
-		// use the light to fragment vector to sample from the depth map    
-		//float closestDepth = texture(shadowMaps[0], fragToLight).r * farPlane;
-		//shadow = (length(fragToLight) - 0.01 > closestDepth) ? 1.0 : 0.0;
-		//FragColor = vec4(closestDepth, closestDepth, closestDepth, 1);
-		//return;
+		for (int x = -1; x < 2; x++) {	// blur shadow
+			for (int y = -1; y < 2; y++) {
+				for (int z = -1; z < 2; z++) {
+					vec3 fragToLight = wp + vec3(x, y, z) * 0.02 - fs_in.lightPosition.xyz;
+					// use the light to fragment vector to sample from the depth map    
+					float closestDepth = texture(shadowMaps[int(fs_in.shadowMapIdx)], fragToLight).r * farPlane;
+					shadow += (length(fragToLight) - 0.2 * clamp(pow(1.0 - dot(n, normalize(fragToLight)), 1), 0, 1) > closestDepth) ? 1.0 : 0.0;
+				}
+			}
+		}
+		shadow /= 27;
 	}
-	
+		
 	vec3 lightDiff = fs_in.lightPosition.xyz - wp * fs_in.lightPosition.w;
 	float lightDistance = length(lightDiff);
 	vec3 lightDir = lightDiff / lightDistance;
 	vec3 halfway = normalize(viewDir + lightDir);
 	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), mix(vec3(0.04), albedo, metallic));
 
+	/*
+	FragColor = vec4((fs_in.shadowMapIdx).xxx / 5.0, 1);
+	return;
+	*/
     FragColor = vec4(
 					((vec3(1.0) - F) * (1.0 - metallic) * albedo / PI + DistributionGGX(n, halfway, roughness) 
 					* GeometrySmith(n, viewDir, lightDir, roughness) 

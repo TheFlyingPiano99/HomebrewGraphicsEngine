@@ -6,7 +6,8 @@
 #include<glm/glm.hpp>
 #include <vector>
 #include "MemoryManager.h"
-#include"ShaderProgram.h"
+#include "ShaderProgram.h"
+#include "Texture2D.h"
 
 namespace Hogra {
 
@@ -47,5 +48,7 @@ namespace Hogra {
 		virtual void Unbind() const override;
 
 		void SetFiltering(GLenum filtering) const override;
+
+		Texture2D GetFace(unsigned int face);
 	};
 }

@@ -102,6 +102,9 @@ namespace Hogra {
 		scene->AddLight(light2);
 		light2 = Allocator::New<PointLight>();
 		light2->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(50.0f, 50.0f, 250.0f));
+		omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
+		omniCaster->Init();
+		light2->SetShadowCaster(omniCaster);
 		scene->AddLight(light2);
 		std::srand(0);
 		for (int i = 0; i < 10; i++) {
@@ -131,7 +134,12 @@ namespace Hogra {
 		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "planks");
 		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "planks");
 		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "planks");
-		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "planks");
+		auto lightCarrier = InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "planks");
+		
+		auto* lightPosPrivoder = Allocator::New<PositionConnector>();
+		lightPosPrivoder->Init(lightCarrier, glm::vec3(0, 5, 0));
+		light2->SetPositionProvider(lightPosPrivoder);
+		
 		for (int i = 0; i < 5; i++) {
 			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "planks");
 		}

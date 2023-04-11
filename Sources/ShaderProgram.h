@@ -73,7 +73,7 @@ namespace Hogra {
 		}
 
 		inline void SetUniform(const char* name, const Texture* value) const {
-			glUniform1i(glGetUniformLocation(glID, name), value->glID);
+			glUniform1i(glGetUniformLocation(glID, name), value->unit);
 		}
 
 		inline static void ReloadAll() {

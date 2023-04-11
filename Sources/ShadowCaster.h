@@ -19,6 +19,6 @@ namespace Hogra {
 		}
 
 	protected:
-		int idx;
+		int idx = 0;
 	};
 }

@@ -130,15 +130,19 @@ namespace Hogra {
 		emptyCubeMap.Bind();
 		for (int i = 0; i < pointLights.size(); i++) {
 			if (pointLights[i]->IsActive()) {
-				Geometry::LightInstancedData d = { 
+				int casterIdx = 0;
+				if (nullptr != pointLights[i]->GetShadowCaster()) {
+					auto caster = pointLights[i]->GetShadowCaster();
+					casterIdx = caster->GetIdx();
+					caster->GetShadowMap()->Bind();
+					mesh->getMaterial()->GetShaderProgram()->SetUniform(std::string("shadowMaps[").append(std::to_string(casterIdx)).append("]").c_str(), caster->GetShadowMap());
+				}
+				Geometry::LightInstancedData d = {
 					pointLights[i]->GetVolumeModelMatrix(),
 					pointLights[i]->GetPosition4D(), 
 					glm::vec4(pointLights[i]->getPowerDensity(), 0.0f),
-					(nullptr != pointLights[i]->GetShadowCaster())? (float)pointLights[i]->GetShadowCaster()->GetIdx() : 0.0f
+					(float)casterIdx
 				};
-				if (nullptr != pointLights[i]->GetShadowCaster()) {
-					pointLights[i]->GetShadowCaster()->GetShadowMap()->Bind();
-				}
 				instanceData.push_back(d);
 			}
 		}

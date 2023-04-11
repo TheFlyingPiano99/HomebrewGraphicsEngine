@@ -96,4 +96,10 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, filtering);
 		Unbind();
 	}
+	Texture2D TextureCube::GetFace(unsigned int face)
+	{
+		Texture2D texture;
+		// TODO
+		return texture;
+	}
 }
