@@ -116,6 +116,16 @@ namespace Hogra {
 		glDeleteProgram(glID);
 	}
 
+	AbstractUniformVariable* ShaderProgram::findUniformVariable(std::string& key) const
+	{
+		auto iter = std::find_if(uniforms.begin(), uniforms.end(), [key](auto* uni)
+			{ return key == uni->getKey(); });
+		if (uniforms.end() != iter) {
+			return *iter;
+		}
+		return nullptr;
+	}
+
 	// Checks if the different Shaders have compiled properly
 	void ShaderProgram::compileErrors(unsigned int shader, const char* type) const
 	{

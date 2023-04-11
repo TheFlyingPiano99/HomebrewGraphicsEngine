@@ -77,14 +77,14 @@ namespace Hogra {
 		dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
 		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));
 		light1 = Allocator::New<DirectionalLight>();
-		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)), glm::vec3(0.5f, 1.0f, 0.9f));
+		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)), glm::vec3(0.1f, 0.1f, 0.2f));
 		light1->SetShadowCaster(dirShadowCaster);
 		scene->AddLight(light1);	// Directional light
 
 		dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
 		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)));
 		light1 = Allocator::New<DirectionalLight>();
-		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), glm::vec3(0.5f, 1.0f, 0.4f));
+		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), glm::vec3(0.1f, 0.1f, 0.2f));
 		light1->SetShadowCaster(dirShadowCaster);
 		scene->AddLight(light1);	// Directional light
 

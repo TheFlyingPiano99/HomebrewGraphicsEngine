@@ -31,7 +31,6 @@ namespace Hogra {
 		}
 
 	private:
-		std::string key;
 		T value;
 	};
 }

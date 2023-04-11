@@ -2,6 +2,7 @@
 #include "Component.h"
 #include<glm/glm.hpp>
 #include "SceneObject.h"
+
 namespace Hogra {
 
 	class Physics : public Component
@@ -193,7 +194,7 @@ namespace Hogra {
 			);
 		}
 
-		void Collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal);
+		void Collide(Physics& b, const glm::vec3& wPoint, const glm::vec3& wNormal, float overlapAlongNormal);
 
 		void forcePositionOffset(const glm::vec3& offset) {
 			forcedPositionOffsets.push_back(glm::vec3(offset));

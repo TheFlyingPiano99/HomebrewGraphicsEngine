@@ -51,8 +51,8 @@ namespace Hogra {
 			0.0f, modelSpaceRotationDrag.y, 0.0f,
 			0.0f, 0.0f, modelSpaceRotationDrag.z
 		);
-		angularMomentum = rotationMatrix * msRotDragMat * glm::transpose(rotationMatrix) * angularMomentum;
-		glm::vec3 rotation = dt * rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix) * angularMomentum;
+		angularMomentum = rotationMatrix * msRotDragMat * glm::transpose(rotationMatrix) * angularMomentum;	// with similarity transformation
+		glm::vec3 rotation = dt * rotationMatrix * invModelSpaceInertiaTensor * glm::transpose(rotationMatrix) * angularMomentum; // with similarity transformation
 		if (float ang = length(rotation); ang > 0.0f) {
 			orientation = glm::angleAxis(ang, glm::normalize(rotation)) * orientation;
 			owner->SetOrientation(orientation);
@@ -66,21 +66,21 @@ namespace Hogra {
 	}
 
 
-	void Physics::Collide(Physics& b, const glm::vec3& point, const glm::vec3& normal, float overlapAlongNormal) {
-		glm::vec3 ka = point - this->getOwnerPosition();
-		glm::vec3 kb = point - b.getOwnerPosition();
+	void Physics::Collide(Physics& b, const glm::vec3& wPoint, const glm::vec3& wNormal, float overlapAlongNormal) {
+		glm::vec3 ka = wPoint - this->getOwnerPosition();
+		glm::vec3 kb = wPoint - b.getOwnerPosition();
 		glm::vec3 va = this->getVelocity() + cross(this->getAngularVelocity(), ka);
 		glm::vec3 vb = b.getVelocity() + cross(b.getAngularVelocity(), kb);
-		float vRelNorm = glm::dot(normal, va - vb);
+		float vRelNorm = glm::dot(wNormal, va - vb);
 		float eb = b.getElasticity();
 		float j = -(1.0f + elasticity * eb) * vRelNorm
 			/ (this->getInvMass()
 			+ b.getInvMass()
-			+ glm::dot(normal, glm::cross(this->getInvInertiaTensor() * glm::cross(ka, normal), ka))
-			+ glm::dot(normal, glm::cross(b.getInvInertiaTensor() * glm::cross(kb, normal), kb))
+			+ glm::dot(wNormal, glm::cross(this->getInvInertiaTensor() * glm::cross(ka, wNormal), ka))
+			+ glm::dot(wNormal, glm::cross(b.getInvInertiaTensor() * glm::cross(kb, wNormal), kb))
 			);
 		j = std::min(j, 0.0f);
-		if (glm::vec3 tangV = va - vb - vRelNorm * normal; length(tangV) > 0.000000001f) {
+		if (glm::vec3 tangV = va - vb - vRelNorm * wNormal; length(tangV) > 0.000000001f) {
 			glm::vec3 tangent = glm::normalize(tangV);
 			float vRelTangent = glm::dot(va - vb, tangent);
 			float frictionJ = -friction * b.getFriction() * vRelTangent 
@@ -89,20 +89,20 @@ namespace Hogra {
 				+ glm::dot(tangent, glm::cross(this->getInvInertiaTensor() * glm::cross(ka, tangent), ka))
 				+ glm::dot(tangent, glm::cross(b.getInvInertiaTensor() * glm::cross(kb, tangent), kb))
 				);
-			this->ApplyImpulse(j * normal + frictionJ * tangent, ka);
-			b.ApplyImpulse(j * -normal - frictionJ * tangent, kb);
+			this->ApplyImpulse(j * wNormal + frictionJ * tangent, ka);
+			b.ApplyImpulse(j * -wNormal - frictionJ * tangent, kb);
 		}
 		else {	// Impulse without friction
-			this->ApplyImpulse(j * normal, ka);
-			b.ApplyImpulse(j * -normal, kb);
+			this->ApplyImpulse(j * wNormal, ka);
+			b.ApplyImpulse(j * -wNormal, kb);
 		}
 
-		float pfl0 = positionForcingLevel;
-		float pfl1 = b.getPositionForcingLevel();
-		float sumPFL = pfl0 + pfl1;
+		float pfla = positionForcingLevel;
+		float pflb = b.getPositionForcingLevel();
+		float sumPFL = pfla + pflb;
 		if (sumPFL > 0.0f) {
-			forcePositionOffset(pfl0 / sumPFL * overlapAlongNormal * -normal * 1.001f);
-			b.forcePositionOffset(pfl1 / sumPFL * overlapAlongNormal * normal * 1.001f);
+			forcePositionOffset(pfla / sumPFL * overlapAlongNormal * -wNormal * 1.001f);
+			b.forcePositionOffset(pflb / sumPFL * overlapAlongNormal * wNormal * 1.001f);
 		}
 	}
 }

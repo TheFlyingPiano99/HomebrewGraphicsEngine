@@ -22,9 +22,6 @@
     <Filter Include="Header Files\View">
       <UniqueIdentifier>{0129485d-eb1a-44a5-a5c4-789d5fad8c11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Model">
-      <UniqueIdentifier>{303efccb-d57d-4f7d-a2b4-7528a9ef79de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Controler">
       <UniqueIdentifier>{c17091e4-a585-43e9-a12a-8ef1c703bc11}</UniqueIdentifier>
     </Filter>
@@ -46,21 +43,6 @@
     <Filter Include="Header Files\OpenALObjects">
       <UniqueIdentifier>{b8022d03-d4fe-4f5b-8cd9-0a9305e3a83e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Model\Collision">
-      <UniqueIdentifier>{abbda47a-d2d7-47fd-ae16-c97a0c3d86e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Model\Factories">
-      <UniqueIdentifier>{f3d9861e-58b5-4922-b52a-14a7a73a7193}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Model\UserControls">
-      <UniqueIdentifier>{8d84df0f-8d14-4c96-a678-1f97e8f05aba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Model\Lighting">
-      <UniqueIdentifier>{0f6ba421-ec2c-4c51-9c3e-fccf30ce7c43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Model\Animations">
-      <UniqueIdentifier>{37fabc3f-7254-41d9-afdf-8382bc164645}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\View\Text">
       <UniqueIdentifier>{c0ecc28f-5d13-4569-b3fa-cde09786736d}</UniqueIdentifier>
     </Filter>
@@ -72,6 +54,21 @@
     </Filter>
     <Filter Include="Resource Files\Scenes">
       <UniqueIdentifier>{e19ec4f1-d8af-47fc-bf97-c6ccc6e6887e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Animations">
+      <UniqueIdentifier>{37fabc3f-7254-41d9-afdf-8382bc164645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collision">
+      <UniqueIdentifier>{abbda47a-d2d7-47fd-ae16-c97a0c3d86e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Factories">
+      <UniqueIdentifier>{f3d9861e-58b5-4922-b52a-14a7a73a7193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lighting">
+      <UniqueIdentifier>{0f6ba421-ec2c-4c51-9c3e-fccf30ce7c43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UserControls">
+      <UniqueIdentifier>{8d84df0f-8d14-4c96-a678-1f97e8f05aba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -351,9 +348,6 @@
     <ClCompile Include="RenderLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Header Files\Model</Filter>
-    </ClCompile>
     <ClCompile Include="volumetric\BoundingGeometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -411,6 +405,9 @@
     <ClCompile Include="DirectionalLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -467,20 +464,11 @@
     <ClInclude Include="TextureCube.h">
       <Filter>Header Files\OpenGLObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Header Files\View</Filter>
     </ClInclude>
     <ClInclude Include="Callbacks.h">
       <Filter>Header Files\Controler</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="AssetFolderPathManager.h">
       <Filter>Header Files\Controler</Filter>
@@ -500,26 +488,11 @@
     <ClInclude Include="MathUtil.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderProgram.h">
       <Filter>Header Files\OpenGLObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Header Files\OpenGLObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="PostProcessStage.h">
-      <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="AudioSource.h">
       <Filter>Header Files\OpenALObjects</Filter>
@@ -527,29 +500,17 @@
     <ClInclude Include="AudioListener.h">
       <Filter>Header Files\OpenALObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Ray.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="AABBCollider.h">
-      <Filter>Header Files\Model\Collision</Filter>
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
-      <Filter>Header Files\Model\Collision</Filter>
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
     <ClInclude Include="SphericalCollider.h">
-      <Filter>Header Files\Model\Collision</Filter>
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
     <ClInclude Include="CuboidCollider.h">
-      <Filter>Header Files\Model\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="ForceField.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
     <ClInclude Include="CollisionEventListener.h">
       <Filter>Header Files\Controler</Filter>
@@ -567,64 +528,49 @@
       <Filter>Header Files\Controler</Filter>
     </ClInclude>
     <ClInclude Include="CompositeCollider.h">
-      <Filter>Header Files\Model\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="PositionProvider.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
     <ClInclude Include="UniformBuffer.h">
       <Filter>Header Files\OpenGLObjects</Filter>
     </ClInclude>
-    <ClInclude Include="InstanceGroup.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionManager.h">
-      <Filter>Header Files\Model\Collision</Filter>
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ColliderGroup.h">
-      <Filter>Header Files\Model\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryLoader.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="ScaleProvider.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="OrientationProvider.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
     <ClInclude Include="GeometryFactory.h">
-      <Filter>Header Files\Model\Factories</Filter>
+      <Filter>Header Files\Factories</Filter>
     </ClInclude>
     <ClInclude Include="MaterialFactory.h">
-      <Filter>Header Files\Model\Factories</Filter>
+      <Filter>Header Files\Factories</Filter>
     </ClInclude>
     <ClInclude Include="ShaderProgramFactory.h">
-      <Filter>Header Files\Model\Factories</Filter>
+      <Filter>Header Files\Factories</Filter>
     </ClInclude>
     <ClInclude Include="UserControl.h">
-      <Filter>Header Files\Model\UserControls</Filter>
+      <Filter>Header Files\UserControls</Filter>
     </ClInclude>
     <ClInclude Include="FirstPersonControl.h">
-      <Filter>Header Files\Model\UserControls</Filter>
+      <Filter>Header Files\UserControls</Filter>
     </ClInclude>
     <ClInclude Include="PointLight.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="LightManager.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="DeferredLightingSystem.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="DirectionalShadowCaster.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Header Files\Model\Animations</Filter>
+      <Filter>Header Files\Animations</Filter>
     </ClInclude>
     <ClInclude Include="CameraAnimation.h">
-      <Filter>Header Files\Model\Animations</Filter>
+      <Filter>Header Files\Animations</Filter>
     </ClInclude>
     <ClInclude Include="HoGraEngineApplication.h">
       <Filter>Header Files</Filter>
@@ -639,16 +585,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bloom.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="SceneFactory.h">
-      <Filter>Header Files\Model\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneChange.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Factories</Filter>
     </ClInclude>
     <ClInclude Include="AudioBuffer.h">
       <Filter>Header Files\OpenALObjects</Filter>
@@ -665,23 +605,14 @@
     <ClInclude Include="SceneAudioSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioManager.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="UniformVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObserveObjectControl.h">
-      <Filter>Header Files\Model\UserControls</Filter>
+      <Filter>Header Files\UserControls</Filter>
     </ClInclude>
     <ClInclude Include="SceneObjectFactory.h">
-      <Filter>Header Files\Model\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="OrientationConnector.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="PositionConnector.h">
-      <Filter>Header Files\Model</Filter>
+      <Filter>Header Files\Factories</Filter>
     </ClInclude>
     <ClInclude Include="ScriptObject.h">
       <Filter>Header Files</Filter>
@@ -756,13 +687,79 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShadowCaster.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="OmniDirectionalShadowCaster.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="DirectionalLight.h">
-      <Filter>Header Files\Model\Lighting</Filter>
+      <Filter>Header Files\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InstanceGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrientationConnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrientationProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionConnector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneChange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

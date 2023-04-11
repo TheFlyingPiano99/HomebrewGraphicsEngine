@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 namespace Hogra {
 
@@ -7,6 +8,11 @@ namespace Hogra {
 		AbstractUniformVariable() = default;
 		virtual ~AbstractUniformVariable() = default;
 		virtual void Bind(unsigned int id) = 0;
+
+		std::string_view getKey() const { return key; }
+
+	protected:
+		std::string key;
 	};
 
 }

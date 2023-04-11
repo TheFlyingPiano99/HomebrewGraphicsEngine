@@ -109,6 +109,8 @@ namespace Hogra {
 			uniforms.clear();
 		}
 
+		AbstractUniformVariable* findUniformVariable(std::string& key) const;
+
 	private:
 		GLuint glID;
 
