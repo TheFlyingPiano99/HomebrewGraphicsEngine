@@ -150,6 +150,18 @@ namespace Hogra {
 			return val->second;
 		}
 
+		void AddPhysicsScript(std::function<void(float dt, float totalTime)> script) {
+			physicsScripts.push_back(script);
+		}
+
+		void AddBeforePhysicsScript(std::function<void()> script) {
+			beforePhysicsScripts.push_back(script);
+		}
+
+		void AddAfterPhysicsScript(std::function<void()> script) {
+			afterPhysicsScripts.push_back(script);
+		}
+
 	private:
 
 		void DeleteSceneObject(SceneObject* object);
@@ -179,6 +191,10 @@ namespace Hogra {
 		std::vector<PostProcessStage*> postProcessStages;
 
 		std::vector<SceneObject*> toDelete;
+
+		std::vector<std::function<void(float dt, float totalTime)>> physicsScripts;
+		std::vector<std::function<void()>> beforePhysicsScripts;
+		std::vector<std::function<void()>> afterPhysicsScripts;
 
 		CollisionManager collisionManager;
 		UniformVariable<float> timeSpent;

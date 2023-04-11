@@ -65,6 +65,10 @@ namespace Hogra {
 	}
 
 	void Scene::BeforePhysicsLoopUpdate() {
+		for (auto& script : beforePhysicsScripts) {
+			script();
+		}
+
 		for (auto& obj : sceneObjects) {
 			obj->BeforePhysicsLoopUpdate();
 		}
@@ -143,6 +147,10 @@ namespace Hogra {
 			obj->EarlyPhysicsUpdate(dt);
 		}
 
+		for (auto& script : physicsScripts) {
+			script(dt, Time::totalTime);
+		}
+
 		SceneEventManager::getInstance()->ExecuteQueue(*this);
 
 		for (auto& obj : sceneObjects) {
@@ -156,6 +164,10 @@ namespace Hogra {
 	void Scene::AfterPhysicsLoopUpdate()
 	{
 		camera.Update();
+		for (auto& script : afterPhysicsScripts) {
+			script();
+		}
+
 		for (auto& obj : sceneObjects) {
 			obj->AfterPhysicsLoopUpdate();
 		}

@@ -89,19 +89,19 @@ namespace Hogra {
 		scene->AddLight(light1);	// Directional light
 
 		auto* light2 = Allocator::New<PointLight>();
-		light2->Init(glm::vec4(-40.0f, 4.0f, 0.0f, 1.0f), glm::vec3(250.0f, 50.0f, 50.0f));
+		light2->Init(glm::vec4(-40.0f, 4.0f, 0.0f, 1.0f), glm::vec3(100.0f, 50.0f, 50.0f));
 		auto* omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
 		omniCaster->Init();
 		light2->SetShadowCaster(omniCaster);
 		scene->AddLight(light2);
 		light2 = Allocator::New<PointLight>();
-		light2->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(50.0f, 250.0f, 50.0f));
+		light2->Init(glm::vec4(0.0f, 2.0f, 80.0f, 1.0f), glm::vec3(50.0f, 100.0f, 50.0f));
 		omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
 		omniCaster->Init();
 		light2->SetShadowCaster(omniCaster);
 		scene->AddLight(light2);
 		light2 = Allocator::New<PointLight>();
-		light2->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(50.0f, 50.0f, 250.0f));
+		light2->Init(glm::vec4(80.0f, 2.0f, 0.0f, 1.0f), glm::vec3(40.0f, 40.0f, 60.0f));
 		omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
 		omniCaster->Init();
 		light2->SetShadowCaster(omniCaster);
@@ -134,11 +134,11 @@ namespace Hogra {
 		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "planks");
 		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "planks");
 		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "planks");
-		auto lightCarrier = InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "planks");
+		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "planks");
 		
-		auto* lightPosPrivoder = Allocator::New<PositionConnector>();
-		lightPosPrivoder->Init(lightCarrier, glm::vec3(0, 5, 0));
-		light2->SetPositionProvider(lightPosPrivoder);
+		scene->AddPhysicsScript(
+			[light2](float dt, float totalTime) { light2->SetPosition(glm::vec3(10.0 * sinf(totalTime * 0.6), 4, -15)); }
+		);
 		
 		for (int i = 0; i < 5; i++) {
 			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "planks");
