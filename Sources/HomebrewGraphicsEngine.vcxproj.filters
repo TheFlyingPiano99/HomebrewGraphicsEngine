@@ -408,6 +408,9 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="LagrangianMechanics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -759,6 +762,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LagrangianMechanics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
