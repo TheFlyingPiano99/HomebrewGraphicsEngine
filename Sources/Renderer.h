@@ -3,11 +3,4 @@
 
 namespace Hogra {
 
-	class Renderer {
-	public:
-		void Render(RenderLayer& layer);
-
-	private:
-
-	};
 }

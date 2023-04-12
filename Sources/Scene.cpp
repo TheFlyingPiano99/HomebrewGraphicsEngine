@@ -57,8 +57,8 @@ namespace Hogra {
 	{
 		audioManager.Init();
 		camera.Init((float)_contextWidth / (float)_contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		lightManager.InitDefferedSystem(_contextWidth, _contextHeight);
-		lightManager.InitDebug();
+		renderer.InitDefferedSystem(_contextWidth, _contextHeight);
+		renderer.InitDebug();
 		collisionManager.InitDebug();
 		timeSpent.Init("time", 0.0f);
 		OnContextResize(_contextWidth, _contextHeight);
@@ -78,7 +78,7 @@ namespace Hogra {
 	void Scene::Destroy()
 	{
 
-		lightManager.Clear();
+		renderer.Clear();
 
 		for (auto& light : dirLights) {
 			Allocator::Delete(light);
@@ -188,7 +188,7 @@ namespace Hogra {
 		for (auto& group : instanceGroups) {
 			group.second->Optimalize(camera);
 		}
-		lightManager.Update();
+		renderer.Update();
 		audioManager.Update();
 	}
 
@@ -198,7 +198,7 @@ namespace Hogra {
 
 		// Init and export data:
 		camera.ExportData();
-		lightManager.ExportData(omniDirShadowCasters);
+		renderer.ExportData(omniDirShadowCasters);
 
 		// Shadow pass:
 		for (auto& group : instanceGroups) {
@@ -217,7 +217,7 @@ namespace Hogra {
 			}
 		}
 
-		const Texture2D& depth = lightManager.GetDepthTexture();
+		const Texture2D& depth = renderer.GetDepthTexture();
 		FBO defaultFBO = FBO::GetDefault();
 
 		// Get first FBO in pipeline to use for state clearing and initialisation:
@@ -247,7 +247,7 @@ namespace Hogra {
 			if (nullptr == outFBO) {
 				outFBO = &defaultFBO;
 			}
-			renderLayers[i]->Render(*outFBO, depth, camera, lightManager);
+			renderLayers[i]->Render(*outFBO, depth, camera, renderer);
 		}
 
 		// Text pass:
@@ -257,7 +257,7 @@ namespace Hogra {
 
 		if (debugMode) {
 			collisionManager.DrawDebug();
-			lightManager.DrawDebug();
+			renderer.DrawDebug();
 		}
 
 		// Reset camera state:
@@ -303,7 +303,9 @@ namespace Hogra {
 		if (object->GetMesh() != nullptr) {
 			auto* layer = GetRenderLayer(renderLayerName);
 			if (nullptr == layer) {
-				std::cerr << "Scene Error: Trying to add scene object to unknown render layer!" << std::endl;
+				DebugUtils::PrintError("Scene", 
+					std::string("Trying to add scene object to unknown render layer named \"").append(renderLayerName).append("\"").c_str()
+				);
 				return;
 			}
 			if (instanceGroupName.length() > 0) {
@@ -376,7 +378,7 @@ namespace Hogra {
 
 	void Scene::AddLight(PointLight* light)
 	{	
-		lightManager.AddLight(light);
+		renderer.AddLight(light);
 		if (light->IsCastingShadow()) {
 			if (MAX_SHADOW_MAP_COUNT - 1 <= omniDirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
 				auto* p = light->GetShadowCaster();
@@ -395,7 +397,7 @@ namespace Hogra {
 
 	void Scene::AddLight(DirectionalLight* light)
 	{
-		lightManager.AddLight(light);
+		renderer.AddLight(light);
 		if (light->IsCastingShadow()) {
 			if (MAX_SHADOW_MAP_COUNT - 1 <= dirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
 				auto* p = light->GetShadowCaster();
@@ -459,7 +461,7 @@ namespace Hogra {
 		}
 		camera.SetChanged(true);
 
-		lightManager.OnContextResize(_contextWidth, _contextHeight);
+		renderer.OnContextResize(_contextWidth, _contextHeight);
 	}
 
 	void Scene::Serialize()

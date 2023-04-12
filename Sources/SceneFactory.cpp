@@ -895,7 +895,7 @@ namespace Hogra {
 	void SceneFactory::InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
 		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
-		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
+		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("planks");
 		Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 		auto* cubeMesh = Allocator::New<Mesh>();
 		cubeMesh->Init(volumeMaterial, cubeGeometry);
@@ -1008,30 +1008,33 @@ namespace Hogra {
 	
 	void SceneFactory::InitGround(Scene* scene)
 	{
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
+		float tileSize = 100;
+		int tileCount = 10;
+
+
+		for (int i = 0; i < tileCount; i++) {
+			for (int j = 0; j < tileCount; j++) {
+				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
 				Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 				auto* cubeMesh = Allocator::New<Mesh>();
-				cubeMesh->Init(volumeMaterial, cubeGeometry);
+				cubeMesh->Init(material, cubeGeometry);
 				cubeMesh->SetDepthTest(true);
 				auto* obj = Allocator::New<SceneObject>();
 				obj->Init(cubeMesh);
-				obj->SetPosition(glm::vec3(i * 100.0f - 500.0f, 0.0f, j * 100.0f - 500.0f));
-				obj->SetScale(glm::vec3(50.0f, 1.0f, 50.0f));
-
+				obj->SetPosition(glm::vec3(i * tileSize - tileSize * tileCount * 0.5, 0.0f, j * tileSize - tileSize * tileCount * 0.5));
+				obj->SetScale(glm::vec3(tileSize / 2.0f, 1.0f, tileSize / 2.0f));
 				auto* cubePhysics = Allocator::New<Physics>();
 				cubePhysics->Init(obj);
 				cubePhysics->setPositionForcingLevel(0.0f);
-				auto* collider = Allocator::New<AABBCollider>();
-				collider->Init();
 				cubePhysics->setElasticity(0.2f);
 				cubePhysics->setFriction(0.9f);
-				obj->AddComponent(cubePhysics);
-				collider->SetPhysics(cubePhysics);
-				collider->setMinRelToPosition(glm::vec3(-49.99f, -1.0f, -49.99f));
-				collider->setMaxRelToPosition(glm::vec3(49.99f, 1.0f, 49.99f));
+				auto* collider = Allocator::New<AABBCollider>();
+				collider->Init();
+				collider->setMinRelToPosition(glm::vec3(-tileSize * 0.499f, -1.0f, -tileSize * 0.499f));
+				collider->setMaxRelToPosition(glm::vec3(tileSize * 0.499f, 1.0f, tileSize * 0.499f));
 				collider->SetPositionProvider(obj);
+				collider->SetPhysics(cubePhysics);
+				obj->AddComponent(cubePhysics);
 				obj->AddComponent(collider);
 				scene->AddCollider(collider, "ground");
 				scene->AddSceneObject(obj, "ground", "DeferredLayer");
@@ -1067,6 +1070,7 @@ namespace Hogra {
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(skyBoxMesh);
 		scene->AddSceneObject(obj, "skybox", "ForwardLayer");
+		scene->SetSkybox(cubeMap);
 	}
 	
 	void SceneFactory::InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field)
@@ -1181,7 +1185,7 @@ namespace Hogra {
 	{
 		auto obj = Allocator::New<SceneObject>();
 		auto geom = GeometryFactory::GetInstance()->GetCilinder();
-		auto volumeMaterial = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 100.0f);
+		auto volumeMaterial = MaterialFactory::GetInstance()->getEmissiveMaterial("laser", glm::vec3(1.0f, 0.0f, 0.0f), 30.0f);
 		auto mesh = Allocator::New<Mesh>();
 		mesh->SetDepthTest(false);
 		mesh->Init(volumeMaterial, geom);
@@ -1189,12 +1193,34 @@ namespace Hogra {
 		obj->SetPosition(glm::vec3(0,5,0));
 		obj->SetIsVisible(true);
 		obj->SetIsCastingShadow(false);
-		scene->AddSceneObject(obj, "DeferredLayer");
+		scene->AddSceneObject(obj, "laserBeam", "DeferredLayer");
 		control->SetLaserObject(obj);
 		PointLight* laserInpactLight = Allocator::New<PointLight>();
 		laserInpactLight->Init(glm::vec4(0.0f, 10.0f, 0.0f, 1.0f), glm::vec3(25.0f, 20.0f, 10.0f));
+		auto* omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
+		omniCaster->Init();
+		laserInpactLight->SetShadowCaster(omniCaster);
 		scene->AddLight(laserInpactLight);
 		control->SetLaserInpactLight(laserInpactLight);
+
+		// Blaster:
+		auto blasterObj = Allocator::New<SceneObject>();
+		auto loader = GeometryLoader();
+		auto blasterGeom = loader.Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("laser_gun.obj"));
+		auto blasterMaterial = MaterialFactory::GetInstance()->getHomogenousPBRMaterial(glm::vec3(0.3, 0.405, 0.41), 0.1, 0.2, 0.9);
+		auto blasterMesh = Allocator::New<Mesh>();
+		blasterMesh->Init(blasterMaterial, blasterGeom);
+		blasterObj->Init(blasterMesh);
+		blasterObj->SetScale(glm::vec3(0.25f));
+		blasterObj->SetUseEulerAngles(true);
+;		scene->AddPhysicsScript(
+			[blasterObj](float dt, float total) {
+				blasterObj->SetEulerAngles(glm::vec3(0, total * 50.0f, 0));
+				blasterObj->SetPosition(glm::vec3(-15, 1.3 + 0.1f * sinf(total * 1.2), 10));
+			}
+		);
+		scene->AddSceneObject(blasterObj, "blaster", "DeferredLayer");
+
 	}
 
 	void SceneFactory::InitAudio(Scene* scene, FirstPersonControl* control)

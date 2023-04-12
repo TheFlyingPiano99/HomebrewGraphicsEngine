@@ -9,9 +9,9 @@ layout (binding = 2) uniform sampler2D aoMap;
 void main()
 {    
     roughnessMetallicAO = vec4(
-        texture(roughnessMap, texCoords).r,
-        texture(metallicMap, texCoords).r,
-        texture(aoMap, texCoords).r,
+        clamp(texture(roughnessMap, texCoords).r, 0, 255),
+        clamp(texture(metallicMap, texCoords).r, 0, 255),
+        clamp(texture(aoMap, texCoords).r, 0, 255),
         1.0
     );
 }

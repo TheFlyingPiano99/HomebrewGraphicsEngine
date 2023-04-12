@@ -22,7 +22,7 @@ namespace Hogra {
 
 		void BindGBuffer();
 
-		void Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights);
+		void Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights, TextureCube* skybox);
 
 		const Texture2D& GetDepthTexture();
 
@@ -35,7 +35,7 @@ namespace Hogra {
 	private:
 		FBO gBuffer;
 		ShaderProgram fullScreenProgram;
-		ShaderProgram fullScreenClearingProgram;
+		ShaderProgram fullScreenSkyboxProgram;
 		ShaderProgram lightVolumeProgram;
 		Texture2D gPosition;
 		Texture2D gNormal;

@@ -162,6 +162,10 @@ namespace Hogra {
 			afterPhysicsScripts.push_back(script);
 		}
 
+		void SetSkybox(TextureCube* skybox) {
+			renderer.SetSkybox(skybox);
+		}
+
 	private:
 
 		void DeleteSceneObject(SceneObject* object);
@@ -169,7 +173,7 @@ namespace Hogra {
 		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
 
 		Camera camera;
-		LightManager lightManager;
+		Renderer renderer;
 		AudioManager audioManager;
 		
 		//To deallocate:

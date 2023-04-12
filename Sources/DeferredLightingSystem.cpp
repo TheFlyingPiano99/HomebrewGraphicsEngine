@@ -7,7 +7,6 @@ namespace Hogra {
 	
 	static TextureCube emptyCubeMap;	// Only to avoid shader runtime errors when accessing unbound samplers.
 
-
 	DeferredLightingSystem::~DeferredLightingSystem()
 	{
 		emptyCubeMap.Delete();
@@ -20,10 +19,10 @@ namespace Hogra {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRDirectionalLightingPass.frag"));
 		
-		fullScreenClearingProgram.Init(
+		fullScreenSkyboxProgram.Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredDarkPass.frag"));
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredSkyboxPass.frag"));
 
 		materialFullScreen = Allocator::New<Material>();
 		materialFullScreen->Init(&fullScreenProgram);
@@ -101,10 +100,16 @@ namespace Hogra {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	
-	void DeferredLightingSystem::Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights) {
+	void DeferredLightingSystem::Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights, TextureCube* skybox) {
 		meshFullScreen->Bind();
-		fullScreenClearingProgram.Activate();
-		meshFullScreen->Draw();					// Clear behind objects with black
+		fullScreenSkyboxProgram.Activate();
+		if (nullptr != skybox) {
+			skybox->Bind();
+		}
+		else {
+			//TODO Bind empty
+		}
+		meshFullScreen->Draw();					// Draw skybox reflections
 		fullScreenProgram.Activate();
 
 		// Directional lights:
@@ -128,6 +133,7 @@ namespace Hogra {
 		mesh->Bind();
 		instanceData.clear();
 		emptyCubeMap.Bind();
+		volumeMaterial->GetShaderProgram()->SetUniform("shadowMaps[0]", &emptyCubeMap);	// First in array is the default, empty map
 		for (int i = 0; i < pointLights.size(); i++) {
 			if (pointLights[i]->IsActive()) {
 				int casterIdx = 0;
@@ -135,7 +141,7 @@ namespace Hogra {
 					auto caster = pointLights[i]->GetShadowCaster();
 					casterIdx = caster->GetIdx();
 					caster->GetShadowMap()->Bind();
-					mesh->getMaterial()->GetShaderProgram()->SetUniform(std::string("shadowMaps[").append(std::to_string(casterIdx)).append("]").c_str(), caster->GetShadowMap());
+					volumeMaterial->GetShaderProgram()->SetUniform(std::string("shadowMaps[").append(std::to_string(casterIdx)).append("]").c_str(), caster->GetShadowMap());
 				}
 				Geometry::LightInstancedData d = {
 					pointLights[i]->GetVolumeModelMatrix(),
@@ -155,7 +161,7 @@ namespace Hogra {
 	{
 		return depthTexture;
 	}
-
+	
 	void DeferredLightingSystem::ExportShadowMaps(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters)
 	{
 		volumeMaterial->GetShaderProgram()->Activate();

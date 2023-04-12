@@ -15,6 +15,8 @@ namespace Hogra {
 
 		Material* getPBRMaterial(const char* materialName);
 
+		Material* getHomogenousPBRMaterial(glm::vec3 albedo, float roughness, float metallic, float ao);
+
 		Material* getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity);
 
 		void ForgetPointers();

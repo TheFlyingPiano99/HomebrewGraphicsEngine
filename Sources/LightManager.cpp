@@ -5,7 +5,7 @@
 #include "DebugUtils.h"
 
 namespace Hogra {
-	LightManager::LightManager()
+	Renderer::Renderer()
 	{
 		std::vector<int> subDataSizes;
 		subDataSizes.push_back(sizeof(int));			// lightCount
@@ -17,11 +17,11 @@ namespace Hogra {
 		ubo.Init(subDataSizes, LIGHTS_UBO_BINDING);
 	}
 
-	LightManager::~LightManager()
+	Renderer::~Renderer()
 	{
 	}
 
-	void LightManager::ExportData(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters)
+	void Renderer::ExportData(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters)
 	{
 		deferredLightingSystem.ExportShadowMaps(omniDirShadowCasters);
 
@@ -35,11 +35,11 @@ namespace Hogra {
 		ubo.Unbind();
 	}
 
-	void LightManager::RenderDeferredLighting() {
-		deferredLightingSystem.Draw(pointLights, dirLights);
+	void Renderer::RenderDeferredLighting() {
+		deferredLightingSystem.Draw(pointLights, dirLights, skybox);
 	}
 
-	void LightManager::InitDebug()
+	void Renderer::InitDebug()
 	{
 		if (nullptr != debugLightVolumeMesh) {
 			return;
@@ -55,7 +55,7 @@ namespace Hogra {
 		debugLightVolumeMesh->SetDepthTest(false);
 	}
 
-	void LightManager::DrawDebug()
+	void Renderer::DrawDebug()
 	{
 		if (nullptr == debugLightVolumeMesh) {
 			return;
@@ -70,19 +70,19 @@ namespace Hogra {
 		debugLightVolumeMesh->DrawInstanced(data, data.size());
 
 	}
-	void LightManager::Clear()
+	void Renderer::Clear()
 	{
 		pointLights.clear();
 		dirLights.clear();
 
 	}
-	void LightManager::Update()
+	void Renderer::Update()
 	{
 		for (auto& light : pointLights) {
 			light->LatePhysicsUpdate(0.0f);
 		}
 	}
-	const Texture2D& LightManager::GetDepthTexture()
+	const Texture2D& Renderer::GetDepthTexture()
 	{
 		return deferredLightingSystem.GetDepthTexture();
 	}

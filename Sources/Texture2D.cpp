@@ -39,8 +39,17 @@ namespace Hogra {
 		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
+		auto chanel = GL_RGBA;
+		switch (numColCh)
+		{
+			case 4: {chanel = GL_RGBA; break; }
+			case 3: {chanel = GL_RGB; break; }
+			case 2: {chanel = GL_RG; break; }
+			case 1: {chanel = GL_R; break; }
+			default: break;
+		}
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, dimensions.x, dimensions.y, 0, format, pixelType, imgBytes);
+		glTexImage2D(GL_TEXTURE_2D, 0, chanel, dimensions.x, dimensions.y, 0, format, pixelType, imgBytes);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_2D);
 

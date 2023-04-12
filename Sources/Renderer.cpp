@@ -2,8 +2,4 @@
 
 namespace Hogra {
 
-	void Renderer::Render(RenderLayer& layer) {
-
-	}
-
 }

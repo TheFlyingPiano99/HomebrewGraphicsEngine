@@ -3,7 +3,7 @@
 
 namespace Hogra {
 	
-	void RenderLayer::Render(FBO& outFbo, const Texture2D& depthTexture, const Camera& camera, LightManager& lightManager) {
+	void RenderLayer::Render(FBO& outFbo, const Texture2D& depthTexture, const Camera& camera, Renderer& renderer) {
 		FBO* fbo = nullptr;
 		if (postProcessStages.empty()) {
 			fbo = &outFbo;
@@ -33,19 +33,19 @@ namespace Hogra {
 		case Hogra::RenderLayer::RenderMode::deferredRenderMode:
 		
 			// Geometry pass:
-			lightManager.BindGBuffer();
+			renderer.BindGBuffer();
 			for (auto& object : objects) {
 				object->Draw(*fbo, depthTexture, camera);
 			}
 
 			// Lighting pass:
 			fbo->Bind();
-			lightManager.RenderDeferredLighting();
+			renderer.RenderDeferredLighting();
 			
 			break;
 		case Hogra::RenderLayer::RenderMode::deferredInstancedRenderMode:
 			// Geometry pass:
-			lightManager.BindGBuffer();
+			renderer.BindGBuffer();
 			for (auto& group : instanceGroups) {
 				group->GatherInstanceData();
 				group->Draw();
@@ -53,7 +53,7 @@ namespace Hogra {
 
 			// Lighting pass:
 			fbo->Bind();
-			lightManager.RenderDeferredLighting();
+			renderer.RenderDeferredLighting();
 			break;
 		default:
 			break;

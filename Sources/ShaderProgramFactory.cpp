@@ -27,6 +27,16 @@ namespace Hogra {
 		return defaultBPRProgramWithMapping;
 	}
 
+	ShaderProgram* ShaderProgramFactory::GetDeferredPBRProgramForHomogenousMaterial() {
+		auto shader = Allocator::New<ShaderProgram>();
+		shader->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("instanced3DWithTBN.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredHomogeneGeometryPass.frag")
+		);
+		return shader;
+	}
+
 	ShaderProgram* ShaderProgramFactory::GetGlyphProgram()
 	{
 		if (nullptr == glyphProgram) {

@@ -111,9 +111,7 @@ void main()
 	vec3 F  = fresnelSchlick(max(dot(halfway, viewDir), 0.0), mix(vec3(0.04), albedo, metallic));
 
     FragColor = vec4(
-					vec3(0.001) * albedo * ao													// ambient
-																								// Lo: {
-					+ ((vec3(1.0) - F) * (1.0 - metallic)										// kD 
+					((vec3(1.0) - F) * (1.0 - metallic)										// kD 
 						* albedo / PI 
 																									// Specular: {
 						+ DistributionGGX(n, halfway, roughness)									// specular (nominator) {NDF * G * F}

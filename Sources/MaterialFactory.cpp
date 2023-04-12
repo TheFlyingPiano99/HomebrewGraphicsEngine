@@ -88,6 +88,17 @@ namespace Hogra {
 		loadedPBRMaterials.emplace(materialName, volumeMaterial);
 		return volumeMaterial;
 	}
+
+	Material* MaterialFactory::getHomogenousPBRMaterial(glm::vec3 albedo, float roughness, float metallic, float ao) {
+		auto material = Allocator::New<Material>();
+		auto shader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramForHomogenousMaterial();
+		material->Init(shader);
+		material->setAlbedo(albedo);
+		material->setRoughness(roughness);
+		material->setMetallic(metallic);
+		material->setAO(ao);
+		return material;
+	}
 	
 	Material* MaterialFactory::getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity)
 	{

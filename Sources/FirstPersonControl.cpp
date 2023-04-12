@@ -201,7 +201,7 @@ void Hogra::FirstPersonControl::primaryAction()
 		auto dir = glm::normalize(end - start);
 		laser->SetOrientation(glm::rotation(glm::vec3(0.0f, 1.0f, 0.0f), dir));
 		laserInpactLight->SetIsActive(true);
-		laserInpactLight->SetPosition(end - dir * 0.1f);
+		laserInpactLight->SetPosition(end - dir * 0.5f);
 		if (!laserAudioSource->IsPlaying()) {
 			laserAudioSource->Play();
 		}

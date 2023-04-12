@@ -64,7 +64,7 @@ namespace Hogra {
 			auto& jsonScenes = jsonData["scenes"];
 			auto s = jsonScenes.size();
 			std::string filename;
-			for (auto i = 0; i < s; i++) {
+			for (size_t i = 0; i < s; i++) {
 				if (sceneId == jsonScenes[i]["id"]) {
 					filename = jsonScenes[i]["filename"];
 					break;

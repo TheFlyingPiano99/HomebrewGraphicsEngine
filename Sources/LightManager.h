@@ -6,12 +6,12 @@
 #include "DeferredLightingSystem.h" 
 
 namespace Hogra {
-	class LightManager
+	class Renderer
 	{
 	public:
-		LightManager();
+		Renderer();
 
-		~LightManager();
+		~Renderer();
 
 		void ExportData(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters);
 		
@@ -21,6 +21,10 @@ namespace Hogra {
 
 		void AddLight(DirectionalLight* _light) {
 			dirLights.push_back(_light);
+		}
+
+		void SetSkybox(TextureCube* skybox) {
+			this->skybox = skybox;
 		}
 
 		void InitDefferedSystem(unsigned int _contextWidth, unsigned int _contextHeight) {
@@ -54,6 +58,7 @@ namespace Hogra {
 	private:
 		std::vector<PointLight*> pointLights;
 		std::vector<DirectionalLight*> dirLights;
+		TextureCube* skybox = nullptr;
 		UniformBufferObject ubo;
 		DeferredLightingSystem deferredLightingSystem;
 		Mesh* debugLightVolumeMesh = nullptr;

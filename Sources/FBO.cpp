@@ -122,7 +122,7 @@ namespace Hogra {
 	* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
 	* Accessed: 2023-03-25
 	*/
-	void FBO::saveToPPM(std::string& savePath)
+	void FBO::saveToPPM(const std::string& savePath)
 	{
 		FILE* output_image;
 		int output_width = viewport.z;

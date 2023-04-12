@@ -26,7 +26,7 @@ namespace Hogra {
 			deferredInstancedRenderMode = 3
 		};
 
-		void Render(FBO& outFbo, const Texture2D& depthTexture, const Camera& camera, LightManager& lightManager);
+		void Render(FBO& outFbo, const Texture2D& depthTexture, const Camera& camera, Renderer& renderer);
 
 		FBO* GetInFBO() {
 			return (postProcessStages.empty()) ? nullptr : &postProcessStages.front()->GetFBO();

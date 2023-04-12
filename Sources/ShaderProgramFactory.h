@@ -14,6 +14,8 @@ namespace Hogra {
 
 		ShaderProgram* GetDeferredPBRProgramWithMapping();
 
+		ShaderProgram* GetDeferredPBRProgramForHomogenousMaterial();
+
 		ShaderProgram* GetGlyphProgram();
 
 		ShaderProgram* GetForwardCaptionProgram();
