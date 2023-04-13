@@ -1,11 +1,12 @@
 #include "Texture2D.h"
 #include "MemoryManager.h"
 #include <stb/stb_image.h>
+#include "DebugUtils.h"
 
 
 namespace Hogra {
 	
-	void Texture2D::Init(const std::string& path, GLuint unit, GLenum _format, GLenum _pixelType)
+	void Texture2D::Init(const std::filesystem::path& path, GLuint unit, GLenum _format, GLenum _pixelType)
 	{
 		this->format = _format;
 		this->pixelType = _pixelType;
@@ -15,7 +16,12 @@ namespace Hogra {
 		// Flips the image so it appears right side up
 		stbi_set_flip_vertically_on_load(true);
 		// Reads the image from a file and stores it in bytes
-		unsigned char* imgBytes = stbi_load(path.c_str(), &widthImg, &heightImg, &numColCh, 0);
+		unsigned char* imgBytes = stbi_load(path.string().c_str(), &widthImg, &heightImg, &numColCh, 0);
+		if (nullptr == imgBytes) {	// Failed loading
+			DebugUtils::PrintError("Texture2D", std::string("Couldn't load image file to texture \"").append(path.string()).append("\"!").c_str());
+			this->Init(GL_RGBA, glm::ivec2(16, 16), unit, format, pixelType);
+			return;
+		}
 
 		dimensions.x = widthImg;
 		dimensions.y = heightImg;

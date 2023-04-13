@@ -6,6 +6,7 @@
 #include <vector>
 #include "ShaderProgram.h"
 #include "MemoryManager.h"
+#include <filesystem>
 
 namespace Hogra {
 
@@ -14,7 +15,7 @@ namespace Hogra {
 		friend class Allocator;
 	public:
 
-		void Init(const std::string& path, GLuint unit, GLenum format, GLenum pixelType);
+		void Init(const std::filesystem::path& path, GLuint unit, GLenum format, GLenum pixelType);
 
 		void Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType);
 

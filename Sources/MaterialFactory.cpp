@@ -7,6 +7,7 @@
 #include "GeometryFactory.h"
 #include "GlobalInclude.h"
 #include "FBO.h"
+#include <filesystem>
 
 namespace Hogra {
 
@@ -25,26 +26,43 @@ namespace Hogra {
 		Allocator::Delete(instance);
 	}
 
-	Material* MaterialFactory::getPBRMaterial(const char* materialName) {
-
+	Material* MaterialFactory::getPBRMaterial(const std::string& materialName) {
 		if (const auto& iter = loadedPBRMaterials.find(materialName); iter != loadedPBRMaterials.end()) {
 			return iter->second;
 		}
+		auto path = std::filesystem::path(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			.append(materialName).append("/").append(materialName).append("_albedo.png")
+		);
 		Texture2D* albedoMap = Allocator::New<Texture2D>();
-		albedoMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/albedo.jpg"), ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		albedoMap->Init(path, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D* normalMap = Allocator::New<Texture2D>();
-		normalMap->Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/normal.jpg"), NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		auto normalPath = std::filesystem::path(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			.append(materialName).append("/").append(materialName).append("_normal.png")
+		);
+		if (!std::filesystem::exists(normalPath)) {
+			normalPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_normal-ogl.png")
+			);
+		}
+		if (!std::filesystem::exists(normalPath)) {
+			normalPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_normal-dx.png")
+			);
+		}
+		normalMap->Init(normalPath, NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D roughnessMap;
 		roughnessMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/roughness.jpg"), 0, GL_RGB, GL_UNSIGNED_BYTE);
+			.append(materialName).append("/").append(materialName).append("_roughness.png"), 0, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D metallicMap;
 		metallicMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/metallic.jpg"), 1, GL_RGB, GL_UNSIGNED_BYTE);
+			.append(materialName).append("/").append(materialName).append("_metallic.png"), 1, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D aoMap;
 		aoMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/ao.jpg"), 2, GL_RGB, GL_UNSIGNED_BYTE);
+			.append(materialName).append("/").append(materialName).append("_ao.png"), 2, GL_R, GL_UNSIGNED_BYTE);
 
 		// Combining roughness, metallic and AO into a single texture:
 		auto& dim = albedoMap->GetDimensions();

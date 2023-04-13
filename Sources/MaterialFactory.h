@@ -13,7 +13,7 @@ namespace Hogra {
 		static MaterialFactory* GetInstance();
 		static void DestroyInstance();
 
-		Material* getPBRMaterial(const char* materialName);
+		Material* getPBRMaterial(const std::string& materialName);
 
 		Material* getHomogenousPBRMaterial(glm::vec3 albedo, float roughness, float metallic, float ao);
 

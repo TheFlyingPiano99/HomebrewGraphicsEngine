@@ -131,20 +131,20 @@ namespace Hogra {
 		InitCube(scene, glm::vec3(0.0f, 10.0f, -30.0f), col, field);
 		col = InitCompositeCollider();
 		InitCube(scene, glm::vec3(0.0f, 3.0f, 0.0f), col, field);
-		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "planks");
-		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "planks");
-		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "planks");
-		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "planks");
+		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "lumpy-wet-concrete");
+		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "lumpy-wet-concrete");
+		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "lumpy-wet-concrete");
+		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "lumpy-wet-concrete");
 		
 		scene->AddPhysicsScript(
 			[light2](float dt, float totalTime) { light2->SetPosition(glm::vec3(10.0 * sinf(totalTime * 0.6), 4, -15)); }
 		);
 		
 		for (int i = 0; i < 5; i++) {
-			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "planks");
+			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "lumpy-wet-concrete");
 		}
 		for (int i = 5; i < 10; i++) {
-			InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "gold");
+			InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "lumpy-wet-concrete");
 		}
 		for (int i = 10; i < 15; i++) {
 			auto* obj = InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "glowing");
@@ -306,8 +306,8 @@ namespace Hogra {
 
 		InitSkyBox(scene);
 		InitGround(scene);
-		InitSphere(scene, glm::vec3(0, 2, 0), nullptr, "planks");
-		InitSphere(scene, glm::vec3(1, 2, 1), nullptr, "planks");
+		InitSphere(scene, glm::vec3(0, 2, 0), nullptr, "lumpy-wet-concrete");
+		InitSphere(scene, glm::vec3(1, 2, 1), nullptr, "lumpy-wet-concrete");
 
 		auto* light = Allocator::New<PointLight>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -396,7 +396,7 @@ namespace Hogra {
 		volumeSceneObj->AddComponent(volumeObject);
 		scene->AddSceneObject(volumeSceneObj, "volumeObj", "VolumeLayer");
 
-		auto* ball = InitSphere(scene, glm::vec3(0,5,10), nullptr, "gold");
+		auto* ball = InitSphere(scene, glm::vec3(0,5,10), nullptr, "lumpy-wet-concrete");
 		auto* control = InitObjectObserverControl(scene, volumeObject);
 		InitVoxelCaption(scene, dataSetName);
 		auto* bloom = Allocator::New<Bloom>();
@@ -895,7 +895,7 @@ namespace Hogra {
 	void SceneFactory::InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
 		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
-		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("planks");
+		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("lumpy-wet-concrete");
 		Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 		auto* cubeMesh = Allocator::New<Mesh>();
 		cubeMesh->Init(volumeMaterial, cubeGeometry);
@@ -1014,7 +1014,7 @@ namespace Hogra {
 
 		for (int i = 0; i < tileCount; i++) {
 			for (int j = 0; j < tileCount; j++) {
-				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("vinyl");
+				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("lumpy-wet-concrete");
 				Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 				auto* cubeMesh = Allocator::New<Mesh>();
 				cubeMesh->Init(material, cubeGeometry);
@@ -1080,7 +1080,7 @@ namespace Hogra {
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
-		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("planks");
+		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("lumpy-wet-concrete");
 		Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->SetFaceCulling(false);
 		auto* mesh = Allocator::New<Mesh>();

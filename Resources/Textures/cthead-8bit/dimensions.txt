@@ -1,8 +1,0 @@
-name = cthead
-width = 256
-height = 256
-depth = 99
-bytesPerVoxel = 1
-widthScale = 1
-heightScale = 1
-depthScale = 2
