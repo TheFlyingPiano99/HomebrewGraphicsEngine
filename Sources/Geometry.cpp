@@ -71,6 +71,26 @@ namespace Hogra {
 		ebo.Unbind();
 	}
 
+	template<>
+	void Geometry::Init(std::vector<glm::vec3>& _vertices, std::vector<GLuint>& _indices)
+	{
+		this->indices = _indices;
+
+		vao.Init();
+		vao.Bind();
+		// Generates Vertex Buffer Object and links it to vertices
+		vbo.Init(_vertices);
+		// Generates Element Buffer Object and links it to indices
+		EBO ebo;
+		ebo.Init(indices);
+		// Links VBO attributes such as coordinates and colors to VAO
+		vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, sizeof(glm::vec3), (void*)0);	// pos
+		// Unbind all to prevent accidentally modifying them
+		vao.Unbind();
+		vbo.Unbind();
+		ebo.Unbind();
+	}
+
 	template<typename VertexType>
 	void Geometry::Update(std::vector<VertexType>& _vertices, std::vector<GLuint>& _indices)
 	{

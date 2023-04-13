@@ -22,7 +22,12 @@ namespace Hogra {
 
 		void BindGBuffer();
 
-		void Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights, TextureCube* skybox);
+		void Draw(
+			const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights,
+			TextureCube* environmentMap,
+			TextureCube* irradianceMap, 
+			TextureCube* prefilterMap
+		);
 
 		const Texture2D& GetDepthTexture();
 

@@ -18,7 +18,7 @@ namespace Hogra {
 		// Reads the image from a file and stores it in bytes
 		unsigned char* imgBytes = stbi_load(path.string().c_str(), &widthImg, &heightImg, &numColCh, 0);
 		if (nullptr == imgBytes) {	// Failed loading
-			DebugUtils::PrintError("Texture2D", std::string("Couldn't load image file to texture \"").append(path.string()).append("\"!").c_str());
+			DebugUtils::PrintError("Texture2D", std::string("Couldn't load image file:\n\"").append(path.string()).append("\"!").c_str());
 			this->Init(GL_RGBA, glm::ivec2(16, 16), unit, format, pixelType);
 			return;
 		}
@@ -45,17 +45,17 @@ namespace Hogra {
 		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
-		auto chanel = GL_RGBA;
+		auto internalFormat = GL_RGBA;
 		switch (numColCh)
 		{
-			case 4: {chanel = GL_RGBA; break; }
-			case 3: {chanel = GL_RGB; break; }
-			case 2: {chanel = GL_RG; break; }
-			case 1: {chanel = GL_R; break; }
-			default: break;
+		case 4: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RGBA16F : GL_RGBA; break; }
+		case 3: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RGB16F : GL_RGB; break; }
+		case 2: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RG16F : GL_RG; break; }
+		case 1: {internalFormat = (GL_FLOAT == _pixelType) ? GL_R16F : GL_R; break; }
+		default: break;
 		}
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, chanel, dimensions.x, dimensions.y, 0, format, pixelType, imgBytes);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, format, pixelType, imgBytes);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -81,8 +81,8 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		// Configures the way the texture repeats (if it does at all)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -114,8 +114,8 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		// Configures the way the texture repeats (if it does at all)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -132,16 +132,16 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture2D::Init(GLint internalformat, glm::ivec2 _dimensions, GLuint unit, GLenum format, GLenum pixelType)
+	void Texture2D::Init(GLint _internalformat, glm::ivec2 _dimensions, GLuint _unit, GLenum _format, GLenum _pixelType)
 	{
-		this->format = format;
-		this->pixelType = pixelType;
+		this->format = _format;
+		this->pixelType = _pixelType;
+		this->unit = _unit;
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
 		glActiveTexture(GL_TEXTURE0 + unit);
-		this->unit = unit;
 		glBindTexture(GL_TEXTURE_2D, glID);
 		this->dimensions = _dimensions;
 
@@ -154,7 +154,7 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, internalformat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, _internalformat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
 		/*
 		// Mipmap:
 		glTexImage2D(GL_TEXTURE_2D, 1, internalformat, dimensions.x / 2, dimensions.y / 2, 0, format, pixelType, nullptr);

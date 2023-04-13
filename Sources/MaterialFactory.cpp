@@ -30,12 +30,12 @@ namespace Hogra {
 		if (const auto& iter = loadedPBRMaterials.find(materialName); iter != loadedPBRMaterials.end()) {
 			return iter->second;
 		}
-		auto path = std::filesystem::path(
+		auto albedoPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/").append(materialName).append("_albedo.png")
 		);
 		Texture2D* albedoMap = Allocator::New<Texture2D>();
-		albedoMap->Init(path, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D* normalMap = Allocator::New<Texture2D>();
 		auto normalPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath()
@@ -55,14 +55,23 @@ namespace Hogra {
 		}
 		normalMap->Init(normalPath, NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D roughnessMap;
-		roughnessMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/").append(materialName).append("_roughness.png"), 0, GL_RGB, GL_UNSIGNED_BYTE);
+		auto roughnessPath = std::filesystem::path(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			.append(materialName).append("/").append(materialName).append("_roughness.png")
+		);
+		roughnessMap.Init(roughnessPath, 0, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D metallicMap;
-		metallicMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/").append(materialName).append("_metallic.png"), 1, GL_RGB, GL_UNSIGNED_BYTE);
+		auto metallicPath = std::filesystem::path(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			.append(materialName).append("/").append(materialName).append("_metallic.png")
+		);
+		metallicMap.Init(metallicPath, 1, GL_RGB, GL_UNSIGNED_BYTE);
 		Texture2D aoMap;
-		aoMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath()
-			.append(materialName).append("/").append(materialName).append("_ao.png"), 2, GL_R, GL_UNSIGNED_BYTE);
+		auto aoPath = std::filesystem::path(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			.append(materialName).append("/").append(materialName).append("_ao.png")
+		);
+		aoMap.Init(aoPath, 2, GL_R, GL_UNSIGNED_BYTE);
 
 		// Combining roughness, metallic and AO into a single texture:
 		auto& dim = albedoMap->GetDimensions();
@@ -98,13 +107,13 @@ namespace Hogra {
 		}
 
 		auto* shader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
-		auto* volumeMaterial = Allocator::New<Material>();
-		volumeMaterial->Init(shader);
-		volumeMaterial->AddTexture(albedoMap);
-		volumeMaterial->AddTexture(normalMap);
-		volumeMaterial->AddTexture(roughnessMetallicAO);
-		loadedPBRMaterials.emplace(materialName, volumeMaterial);
-		return volumeMaterial;
+		auto* material = Allocator::New<Material>();
+		material->Init(shader);
+		material->AddTexture(albedoMap);
+		material->AddTexture(normalMap);
+		material->AddTexture(roughnessMetallicAO);
+		loadedPBRMaterials.emplace(materialName, material);
+		return material;
 	}
 
 	Material* MaterialFactory::getHomogenousPBRMaterial(glm::vec3 albedo, float roughness, float metallic, float ao) {

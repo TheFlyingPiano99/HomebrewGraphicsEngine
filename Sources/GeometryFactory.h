@@ -21,6 +21,8 @@ namespace Hogra {
 
 		Geometry* GetCube();
 
+		Geometry* GetSimple1X1Cube();
+
 		Geometry* GetWireframeCube();
 
 		Geometry* GetSphere();

@@ -22,7 +22,7 @@ namespace Hogra {
 		fullScreenSkyboxProgram.Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredSkyboxPass.frag"));
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredAmbientPass.frag"));
 
 		materialFullScreen = Allocator::New<Material>();
 		materialFullScreen->Init(&fullScreenProgram);
@@ -51,7 +51,7 @@ namespace Hogra {
 		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 		glDrawBuffers(4, attachments);
 
-		emptyCubeMap.Init(12, 13, GL_DEPTH_COMPONENT, GL_FLOAT);
+		emptyCubeMap.Init(8, SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
 
 		OnContextResize(_contextWidth, _contextHeight);
 	}
@@ -64,16 +64,16 @@ namespace Hogra {
 		gRoughnessMetallicAO.Delete();
 		depthTexture.Delete();
 
-		gPosition.Init(GL_RGBA32F, glm::ivec2(_contextWidth, _contextHeight), 0, GL_RGBA, GL_FLOAT);
-		gNormal.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), 1, GL_RGBA, GL_FLOAT);
-		gAlbedo.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), 2, GL_RGBA, GL_FLOAT);
-		gRoughnessMetallicAO.Init(GL_RGBA8, glm::ivec2(_contextWidth, _contextHeight), 3, GL_RGBA, GL_UNSIGNED_BYTE);
-		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(_contextWidth, _contextHeight), 1, GL_DEPTH_COMPONENT, GL_FLOAT);
+		gPosition.Init(GL_RGBA32F, glm::ivec2(_contextWidth, _contextHeight), POSITION_MAP_UNIT, GL_RGBA, GL_FLOAT);
+		gAlbedo.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), ALBEDO_MAP_UNIT, GL_RGBA, GL_FLOAT);
+		gNormal.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), NORMAL_MAP_UNIT, GL_RGBA, GL_FLOAT);
+		gRoughnessMetallicAO.Init(GL_RGBA8, glm::ivec2(_contextWidth, _contextHeight), ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGBA, GL_UNSIGNED_BYTE);
+		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(_contextWidth, _contextHeight), DEPTH_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
 
-		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0, gPosition, 0);
-		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT1, gNormal, 0);
-		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT2, gAlbedo, 0);
-		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT3, gRoughnessMetallicAO, 0);
+		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + POSITION_MAP_UNIT, gPosition, 0);
+		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + ALBEDO_MAP_UNIT, gAlbedo, 0);
+		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + NORMAL_MAP_UNIT, gNormal, 0);
+		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + ROUGHNESS_METALLIC_AO_MAP_UNIT, gRoughnessMetallicAO, 0);
 		gBuffer.LinkTexture(GL_DEPTH_ATTACHMENT, depthTexture, 0);
 
 		gBuffer.Unbind();
@@ -100,11 +100,22 @@ namespace Hogra {
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	
-	void DeferredLightingSystem::Draw(const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights, TextureCube* skybox) {
+	void DeferredLightingSystem::Draw(
+		const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights,
+		TextureCube* environmentMap,
+		TextureCube* irradianceMap,
+		TextureCube* prefilterMap
+	) {
 		meshFullScreen->Bind();
 		fullScreenSkyboxProgram.Activate();
-		if (nullptr != skybox) {
-			skybox->Bind();
+		if (nullptr != environmentMap) {
+			environmentMap->Bind();
+		}
+		if (nullptr != irradianceMap) {
+			irradianceMap->Bind();
+		}
+		if (nullptr != prefilterMap) {
+			prefilterMap->Bind();
 		}
 		else {
 			//TODO Bind empty
@@ -119,14 +130,11 @@ namespace Hogra {
 					dirLight->GetShadowCaster()->BindMap();
 					fullScreenProgram.SetUniform("light.lightSpaceMatrix", dirLight->GetShadowCaster()->GetLightSpaceMatrix());
 				}
+				dirLight->GetShadowCaster()->BindMap();
 				fullScreenProgram.SetUniform("light.direction", dirLight->GetDirection4D());
 				fullScreenProgram.SetUniform("light.powerDensity", dirLight->getPowerDensity());
+				meshFullScreen->Draw();
 			}
-			else {
-				fullScreenProgram.SetUniform("light.direction", glm::vec4(0.0f));
-				fullScreenProgram.SetUniform("light.powerDensity", glm::vec3(0.0f));
-			}
-			meshFullScreen->Draw();
 		}
 
 		// Point lights:

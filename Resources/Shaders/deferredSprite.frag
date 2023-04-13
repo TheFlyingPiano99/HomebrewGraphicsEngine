@@ -1,8 +1,8 @@
 #version 460 core
 
 layout (location = 0) out vec4 gPosition;
-layout (location = 1) out vec4 gNormal;
-layout (location = 2) out vec4 gAlbedo;
+layout (location = 1) out vec4 gAlbedo;
+layout (location = 2) out vec4 gNormal;
 layout (location = 3) out vec4 gRoughnessMetallicAO;
 
 in VS_OUT {
@@ -22,7 +22,7 @@ void main()
 	}
 
 	gPosition				= fs_in.worldPos / fs_in.worldPos.w;
-	gNormal					= vec4(normalize(fs_in.TBN * vec3(0.0, 0.0, 1.0)), 0.0);
 	gAlbedo					= vec4(color.rgb, 0.0);	// w == 0 tells that the material should not be shaded
+	gNormal					= vec4(normalize(fs_in.TBN * vec3(0.0, 0.0, 1.0)), 0.0);
 	gRoughnessMetallicAO	= vec4(0.0);
 }

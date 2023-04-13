@@ -23,9 +23,11 @@ namespace Hogra {
 
 		const char* type;
 
-		void Init(std::vector<std::string>& images, GLuint unit);
+		void Init(std::vector<std::string>& images, GLuint unit, GLuint pixelType);
 
 		void Init(unsigned int resolution, GLuint unit, GLenum _format, GLenum _pixelType);
+
+		void InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int unit, GLuint format, GLuint pixelType);
 
 		~TextureCube() override {
 			this->Delete();

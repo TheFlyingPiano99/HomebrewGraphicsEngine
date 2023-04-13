@@ -23,12 +23,15 @@ uniform struct Light {			// aligned size: 32 bytes
 } light;
 
 layout (binding = 0) uniform sampler2D gPosition;
-layout (binding = 1) uniform sampler2D gNormal;
-layout (binding = 2) uniform sampler2D gAlbedo;
+layout (binding = 1) uniform sampler2D gAlbedo;
+layout (binding = 2) uniform sampler2D gNormal;
 layout (binding = 3) uniform sampler2D gRoughnessMetallicAO;
-//...
-layout (binding = 5) uniform samplerCube skybox;
-layout (binding = 6) uniform sampler2D shadowMap;
+
+layout (binding = 5) uniform samplerCube environmentMap;
+layout (binding = 6) uniform samplerCube irradianceMap;
+layout (binding = 7) uniform samplerCube prefilterMap;
+
+layout (binding = 14) uniform sampler2D shadowMap;
 
 
 const float PI = 3.14159265359;

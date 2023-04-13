@@ -131,20 +131,20 @@ namespace Hogra {
 		InitCube(scene, glm::vec3(0.0f, 10.0f, -30.0f), col, field);
 		col = InitCompositeCollider();
 		InitCube(scene, glm::vec3(0.0f, 3.0f, 0.0f), col, field);
-		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "lumpy-wet-concrete");
-		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "lumpy-wet-concrete");
-		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "lumpy-wet-concrete");
-		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "lumpy-wet-concrete");
+		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "TexturesCom_Metal_GoldOld_512");
+		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "TexturesCom_Metal_GoldOld_512");
+		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "TexturesCom_Metal_GoldOld_512");
+		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "TexturesCom_Metal_GoldOld_512");
 		
 		scene->AddPhysicsScript(
 			[light2](float dt, float totalTime) { light2->SetPosition(glm::vec3(10.0 * sinf(totalTime * 0.6), 4, -15)); }
 		);
 		
 		for (int i = 0; i < 5; i++) {
-			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "lumpy-wet-concrete");
+			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "TexturesCom_Wood_Planks1_2x2_1K");
 		}
 		for (int i = 5; i < 10; i++) {
-			InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "lumpy-wet-concrete");
+			InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "TexturesCom_Wood_Planks1_2x2_1K");
 		}
 		for (int i = 10; i < 15; i++) {
 			auto* obj = InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "glowing");
@@ -273,6 +273,15 @@ namespace Hogra {
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(saveFBOs);
 
+			auto* debugMode = Allocator::New<ButtonKeyAction>();
+			debugMode->Init(GLFW_KEY_I, ButtonKeyAction::TriggerType::triggerOnPress);
+			debugMode->SetAction(
+				[scene]() {
+					scene->setDrawDebug(!scene->getDrawDebug());
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(debugMode);
+
 			auto* moveCam = Allocator::New<AxisMoveAction>();
 			moveCam->SetAction(
 			[control](const glm::vec2& delta, const glm::vec2& pos) {
@@ -306,8 +315,8 @@ namespace Hogra {
 
 		InitSkyBox(scene);
 		InitGround(scene);
-		InitSphere(scene, glm::vec3(0, 2, 0), nullptr, "lumpy-wet-concrete");
-		InitSphere(scene, glm::vec3(1, 2, 1), nullptr, "lumpy-wet-concrete");
+		InitSphere(scene, glm::vec3(0, 2, 0), nullptr, "TexturesCom_Wood_Planks1_2x2_1K");
+		InitSphere(scene, glm::vec3(1, 2, 1), nullptr, "TexturesCom_Wood_Planks1_2x2_1K");
 
 		auto* light = Allocator::New<PointLight>();
 		light->Init(glm::normalize(glm::vec4(-1.0f, 1.0f, -1.0f, 0.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -1050,6 +1059,7 @@ namespace Hogra {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("forwardSkybox.frag")
 		);
+		/*
 		std::vector<std::string> imagePaths;
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/right.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/left.jpg").c_str());
@@ -1058,7 +1068,14 @@ namespace Hogra {
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/front.jpg").c_str());
 		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/back.jpg").c_str());
 		auto* cubeMap = Allocator::New<TextureCube>();
-		cubeMap->Init(imagePaths, SKYBOX_UNIT);
+		cubeMap->Init(imagePaths, ENVIRONMENT_MAP_UNIT, GL_UNSIGNED_BYTE);
+		*/
+		
+		auto hdrMap = Texture2D();
+		hdrMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("ibl_hdr_radiance.png"), 0, GL_RGB, GL_UNSIGNED_BYTE);
+		auto* cubeMap = Allocator::New<TextureCube>();
+		cubeMap->InitFromEquirectangular(hdrMap, ENVIRONMENT_MAP_UNIT, GL_RGB, GL_FLOAT);
+
 		auto* skyBoxMaterial = Allocator::New<Material>();
 		skyBoxMaterial->Init(skyboxShader);
 		skyBoxMaterial->AddTexture(cubeMap);
@@ -1401,7 +1418,7 @@ namespace Hogra {
 						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/bottom.jpg").c_str());
 						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/front.jpg").c_str());
 						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/back.jpg").c_str());
-						texture->Init(imagePaths, textureData["unit"]);
+						texture->Init(imagePaths, textureData["unit"], GL_UNSIGNED_BYTE);
 						textures.emplace(textureData["id"], texture);
 					}
 				}

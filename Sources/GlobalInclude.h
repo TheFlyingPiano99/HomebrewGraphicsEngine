@@ -7,22 +7,17 @@
 #define DEFAULT_WINDOW_WIDTH 1280
 #define DEFAULT_WINDOW_HEIGHT 720
 
-/*
-layout (binding = 0) uniform sampler2D gPosition;
-layout (binding = 1) uniform sampler2D gNormal;
-layout (binding = 2) uniform sampler2D gAlbedo;
-layout (binding = 3) uniform sampler2D gRoughnessMetallicAO;
-//...
-layout (binding = 5) uniform samplerCube skybox;
-layout (binding = 6) uniform sampler2D shadowMap;
-*/
+#define DEPTH_MAP_UNIT 1
 
-#define ALBEDO_MAP_UNIT 0
-#define NORMAL_MAP_UNIT 1
-#define ROUGHNESS_METALLIC_AO_MAP_UNIT 2
-// (ROUGHNESS, METALLIC, AO)
-#define SKYBOX_UNIT 5
-#define SHADOW_MAP_UNIT 6
+#define POSITION_MAP_UNIT 0
+#define ALBEDO_MAP_UNIT 1
+#define NORMAL_MAP_UNIT 2
+#define ROUGHNESS_METALLIC_AO_MAP_UNIT 3
+
+#define ENVIRONMENT_MAP_UNIT 5
+#define IRRADIANCE_MAP_UNIT 6
+#define PREFILTER_MAP_UNIT 7
+#define SHADOW_MAP_UNIT 14
 
 #define SHADOW_MAP_WIDTH 4096
 #define SHADOW_MAP_HEIGHT 4096

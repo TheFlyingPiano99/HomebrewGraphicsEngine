@@ -24,15 +24,16 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 
 
 layout (binding = 0) uniform sampler2D gPosition;
-layout (binding = 1) uniform sampler2D gNormal;
-layout (binding = 2) uniform sampler2D gAlbedo;
+layout (binding = 1) uniform sampler2D gAlbedo;
+layout (binding = 2) uniform sampler2D gNormal;
 layout (binding = 3) uniform sampler2D gRoughnessMetallicAO;
 //...
-layout (binding = 5) uniform samplerCube skybox;
-layout (binding = 6) uniform sampler2D shadowMap;
+layout (binding = 5) uniform samplerCube environmentMap;
+layout (binding = 6) uniform samplerCube irradianceMap;
+layout (binding = 7) uniform samplerCube prefilterMap;
 
 uniform samplerCube shadowMaps[32];		// shadowMaps[0] is the default empty map. This way we avoid accessing unbound samplers
-uniform float farPlane;		// shadow-map projection far plane
+uniform float farPlane;					// shadow-map projection far plane
 
 const float PI = 3.14159265359;
 
@@ -73,7 +74,6 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 
 void main()
 {
-
 	vec2 texCoords = fs_in.ndc.xy / fs_in.ndc.w * 0.5 + vec2(0.5);
 	vec4 wp4 = texture(gPosition, texCoords);
 	if (wp4.w < 0.0001) {
@@ -96,6 +96,7 @@ void main()
 	float shadow = 0.0;
 	
 	if (int(fs_in.shadowMapIdx) > 0) {	// Shadow calculation
+
 		// get vector between fragment position and light position
 		for (int x = -1; x < 2; x++) {	// blur shadow
 			for (int y = -1; y < 2; y++) {
@@ -109,7 +110,7 @@ void main()
 		}
 		shadow /= 27;
 	}
-		
+
 	vec3 lightDiff = fs_in.lightPosition.xyz - wp * fs_in.lightPosition.w;
 	float lightDistance = length(lightDiff);
 	vec3 lightDir = lightDiff / lightDistance;

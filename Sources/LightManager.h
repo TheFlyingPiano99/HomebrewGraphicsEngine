@@ -23,9 +23,7 @@ namespace Hogra {
 			dirLights.push_back(_light);
 		}
 
-		void SetSkybox(TextureCube* skybox) {
-			this->skybox = skybox;
-		}
+		void SetSkybox(TextureCube* map);
 
 		void InitDefferedSystem(unsigned int _contextWidth, unsigned int _contextHeight) {
 			deferredLightingSystem.Init(_contextWidth, _contextHeight);
@@ -58,7 +56,9 @@ namespace Hogra {
 	private:
 		std::vector<PointLight*> pointLights;
 		std::vector<DirectionalLight*> dirLights;
-		TextureCube* skybox = nullptr;
+		TextureCube* environmentMap = nullptr;
+		TextureCube* irradianceMap = nullptr;
+		TextureCube* prefilterMap = nullptr;
 		UniformBufferObject ubo;
 		DeferredLightingSystem deferredLightingSystem;
 		Mesh* debugLightVolumeMesh = nullptr;

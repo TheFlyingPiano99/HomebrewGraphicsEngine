@@ -118,6 +118,11 @@ namespace Hogra {
 		}
 	}
 
+	void FBO::SetViewport(int x0, int y0, int x1, int y1)
+	{
+		viewport = glm::vec4(x0, y0, x1, y1);
+	}
+
 	/*
 	* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
 	* Accessed: 2023-03-25

@@ -35,8 +35,43 @@ namespace Hogra {
 		ubo.Unbind();
 	}
 
+	void Renderer::SetSkybox(TextureCube* envMap) {
+		if (this->environmentMap != envMap && nullptr != envMap) { // Generate irradiance and prefilter map
+			this->environmentMap = envMap;
+			irradianceMap = Allocator::New<TextureCube>();
+			irradianceMap->Init(32, IRRADIANCE_MAP_UNIT, GL_RGB, GL_FLOAT);
+			prefilterMap = Allocator::New<TextureCube>();
+			prefilterMap->Init(32, PREFILTER_MAP_UNIT, GL_RGB, GL_FLOAT);
+
+			/*
+			auto irradianceShader = ShaderProgram();
+			irradianceShader.Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append(""),
+				"",
+				""
+			);
+			irradianceMap = Allocator::New<TextureCube>();
+			irradianceMap->Init(32, IRRADIANCE_MAP_UNIT, GL_RGB, GL_FLOAT);
+			auto fbo = FBO();
+			fbo.Init();
+			fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *irradianceMap);
+			fbo.Bind();
+			irradianceShader.Activate();
+			*/
+		}
+		else {
+			this->environmentMap = envMap;
+		}
+	}
+
 	void Renderer::RenderDeferredLighting() {
-		deferredLightingSystem.Draw(pointLights, dirLights, skybox);
+		deferredLightingSystem.Draw(
+			pointLights,
+			dirLights,
+			environmentMap,
+			irradianceMap,
+			prefilterMap
+		);
 	}
 
 	void Renderer::InitDebug()

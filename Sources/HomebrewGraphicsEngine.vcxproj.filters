@@ -942,7 +942,7 @@
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json">
       <Filter>Resource Files\Scenes</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredSkyboxPass.frag">
+    <None Include="..\Resources\Shaders\deferredAmbientPass.frag">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\omniDirShadowCast.frag">
@@ -958,6 +958,12 @@
       <Filter>Resource Files\Scenes</Filter>
     </None>
     <None Include="..\Resources\Shaders\magicMirror.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\equirectangularToCubemap.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\equirectangularToCubemap.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

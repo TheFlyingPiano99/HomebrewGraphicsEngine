@@ -395,8 +395,10 @@
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json" />
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
-    <None Include="..\Resources\Shaders\deferredSkyboxPass.frag" />
+    <None Include="..\Resources\Shaders\deferredAmbientPass.frag" />
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
+    <None Include="..\Resources\Shaders\equirectangularToCubemap.frag" />
+    <None Include="..\Resources\Shaders\equirectangularToCubemap.vert" />
     <None Include="..\Resources\Shaders\instanced2D.vert" />
     <None Include="..\Resources\Shaders\instanced3D.vert" />
     <None Include="..\Resources\Shaders\magicMirror.frag" />

@@ -732,6 +732,68 @@ Geometry* GeometryFactory::GetCube()
 	return cube;
 }
 
+Geometry* GeometryFactory::GetSimple1X1Cube()
+{
+	std::vector<glm::vec3> vertices;
+	std::vector<GLuint> indices;
+
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, -1.0f));
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, -1.0f));
+	vertices.push_back(glm::vec3(1.0f, -1.0f, -1.0f));
+
+	vertices.push_back(glm::vec3(1.0f, -1.0f, -1.0f));
+	vertices.push_back(glm::vec3(1.0f, 1.0f, -1.0f));
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, -1.0f));
+
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, -1.0f));
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, -1.0f));
+
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, -1.0f));
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+
+	vertices.push_back(glm::vec3(1.0f, -1.0f, -1.0f));
+	vertices.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
+	vertices.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	vertices.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	vertices.push_back(glm::vec3(1.0f, 1.0f, -1.0f));
+	vertices.push_back(glm::vec3(1.0f, -1.0f, -1.0f));
+
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
+	vertices.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	vertices.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	vertices.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, -1.0f));
+	vertices.push_back(glm::vec3(1.0f, 1.0f, -1.0f));
+	vertices.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	vertices.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, 1.0f));
+	vertices.push_back(glm::vec3(-1.0f, 1.0f, -1.0f));
+
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, -1.0f));
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+	vertices.push_back(glm::vec3(1.0f, -1.0f, -1.0f));
+
+	vertices.push_back(glm::vec3(1.0f, -1.0f, -1.0f));
+	vertices.push_back(glm::vec3(-1.0f, -1.0f, 1.0f));
+	vertices.push_back(glm::vec3(1.0f, -1.0f, 1.0f));
+
+
+	for (int i = 0; i < 36; i++) {
+		indices.push_back(i);
+	}
+	auto simpleCube = Allocator::New<Geometry>();
+	simpleCube->Init(vertices, indices);
+	return simpleCube;
+}
+
 Geometry* GeometryFactory::GetWireframeCube()
 {
 	if (Allocator::IsValid(wireframeCube)) {
