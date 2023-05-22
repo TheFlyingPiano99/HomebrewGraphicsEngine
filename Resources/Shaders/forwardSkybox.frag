@@ -11,5 +11,5 @@ layout (binding = 5) uniform samplerCube skybox;
 
 void main()
 {   
-    FragColor = vec4(texture(skybox, normalize(fs_in.rayDir.xyz)).rgb, 0.0);
+    FragColor = vec4(textureLod(skybox, normalize(fs_in.rayDir.xyz), 0).rgb, 0.0);
 }

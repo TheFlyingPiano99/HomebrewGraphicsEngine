@@ -30,6 +30,7 @@ layout (binding = 3) uniform sampler2D gRoughnessMetallicAO;
 layout (binding = 5) uniform samplerCube environmentMap;
 layout (binding = 6) uniform samplerCube irradianceMap;
 layout (binding = 7) uniform samplerCube prefilterMap;
+layout (binding = 8) uniform sampler2D brdfLUT;
 
 
 const float PI = 3.14159265359;
@@ -80,55 +81,30 @@ void main()
 	if (wp4.w < 0.0001) {
 		discard;
 	}
-	vec3 wp = wp4.xyz;
-	vec3 n =  texture(gNormal, texCoords).xyz;
+	vec3 n =  normalize(texture(gNormal, texCoords).xyz);
 	vec4 albedo4 = texture(gAlbedo, texCoords);
 	if (albedo4.w < 0.0001) {		// w = 0 means no shading
 		FragColor = vec4(albedo4.rgb, 1.0);	// w = 1 prevents adding same fragment color multiple times
 		return;
 	}
-	vec3 viewDir = normalize(cameraPosition - wp);
+	vec3 viewDir = normalize(cameraPosition - wp4.xyz);
 	vec3 reflectedDir = reflect(-viewDir, n);
 	vec3 roughnessMetallicAO = texture(gRoughnessMetallicAO, texCoords).rgb;
-	vec3 F0 = vec3(0.04);
 
-	vec3 F = fresnelSchlickRoughness(max(dot(n, viewDir), 0.0), F0, roughnessMetallicAO.r);
-
+	vec3 F0 = mix(vec3(0.04), albedo4.rgb, roughnessMetallicAO.y);
+	vec3 F = fresnelSchlickRoughness(max(dot(n, viewDir), 0.0), F0, roughnessMetallicAO.x);
 	vec3 kS = F;
 	vec3 kD = 1.0 - kS;
 	kD *= 1.0 - roughnessMetallicAO.y; 
-  	vec3 halfway = n;
 
-	const float MAX_REFLECTION_LOD = 4.0;
-
-	vec3 irradiance = texture(environmentMap, n).rgb;
+	vec3 irradiance = texture(irradianceMap, n).rgb;
 	vec3 diffuse    = irradiance * albedo4.rgb;
   
-	/*vec3 prefilteredColor = textureLod(prefilterMap, R,  roughness * MAX_REFLECTION_LOD).rgb;   */
-	vec3 prefilteredColor = irradiance;
-	/*vec2 envBRDF  = texture(brdfLUT, vec2(max(dot(N, V), 0.0), roughness)).rg;*/
-	vec2 envBRDF = vec2(0.01, 0.001);	// TODO Read from texture 
+	const float MAX_REFLECTION_LOD = 4.0;
+	vec3 prefilteredColor = textureLod(prefilterMap, reflectedDir,  roughnessMetallicAO.x * MAX_REFLECTION_LOD).rgb;
+	vec2 envBRDF  = texture(brdfLUT, vec2(max(dot(n, viewDir), 0.0), roughnessMetallicAO.x)).rg;
 	vec3 specular = prefilteredColor * (kS * envBRDF.x + envBRDF.y);
-  
-	vec3 ambient = (kD * diffuse + specular) * roughnessMetallicAO.z;
 
-    FragColor = vec4(
-					ambient	// ambient
-					/*
-					+
-						// Specular: {
-						((vec3(1.0) - F) * roughnessMetallicAO.y										// kD 
-						* albedo4.rgb / PI
-						+ DistributionGGX(n, halfway, roughnessMetallicAO.x)									// specular (nominator) {NDF * G * F}
-						* GeometrySmith(n, viewDir, reflectedDir, roughnessMetallicAO.x) 
-						* F						
-						/ 4.0 * max(dot(n, viewDir), 0.0) * max(dot(n, reflectedDir), 0.0)  + 0.0001)	// specular (denominator) 
-																									// }
-																								//		Radiance {
-					* irradiance
-					*/
-					,
-					1.0
-	);
-	
+	vec3 ambient = (kD * diffuse + specular) * roughnessMetallicAO.z;
+	FragColor = vec4(ambient, 1.0);
 }

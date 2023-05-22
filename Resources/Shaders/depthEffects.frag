@@ -28,7 +28,7 @@ void main()
                                         0.1,
                                         2000.0
                                     );
-    float t = pow(min(linDepth / 2000.0, 1.0), 0.6);
+    float t = pow(clamp((linDepth - 50) / 2000.0, 0.0, 1.0), 1.2);
     float blurT = pow(min(linDepth / 2000.0, 1.0), 0.4);
 
     vec2 offset = 1.0 / textureSize(screenColor, 0);
@@ -40,5 +40,5 @@ void main()
     }
     blurColor /= 25.0;
 
-    FragColor = vec4((1 - t) * ((1 - blurT) * color + blurT * blurColor.rgb) + t * vec3(0.4, 0.6, 0.9), 1.0);
+    FragColor = vec4((1 - t) * ((1 - blurT) * color + blurT * blurColor.rgb) + t * vec3(0.5, 0.6, 0.8), 1.0);
 }

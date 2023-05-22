@@ -20,6 +20,6 @@ void main()
 {
 	gPosition				= fs_in.worldPos / fs_in.worldPos.w;
 	gAlbedo					= vec4(texture(albedoMap, fs_in.texCoords).rgb, 1.0);
-	gNormal					= vec4(normalize(fs_in.TBN * (texture(normalMap, fs_in.texCoords).xyz * 2.0 - 1.0)), 0.0);
+	gNormal					= vec4(normalize(fs_in.TBN * normalize(texture(normalMap, fs_in.texCoords).xyz * 2.0 - 1.0)), 0.0);
 	gRoughnessMetallicAO	= vec4(texture(roughnessMetallicAOMap, fs_in.texCoords).rgb, 0.0);
 }
