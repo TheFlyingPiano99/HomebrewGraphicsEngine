@@ -43,8 +43,6 @@ namespace Hogra {
 
 		void InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control);
 
-		ObserveObjectControl* InitObjectObserverControl(Scene* scene, Volumetric::VolumeObject* volumeObject);
-
 		void InitLaserBeam(Scene* scene, FirstPersonControl* control);
 
 		void InitAudio(Scene* scene, FirstPersonControl* control);

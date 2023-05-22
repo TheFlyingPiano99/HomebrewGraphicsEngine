@@ -46,12 +46,6 @@
     <Filter Include="Header Files\View\Text">
       <UniqueIdentifier>{c0ecc28f-5d13-4569-b3fa-cde09786736d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\volumetric">
-      <UniqueIdentifier>{e34f44c3-a9a5-40b6-9cc0-57ac28052bce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\fallingSand">
-      <UniqueIdentifier>{f658a671-17ea-4da2-97c0-3c1a51a5c3bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Scenes">
       <UniqueIdentifier>{e19ec4f1-d8af-47fc-bf97-c6ccc6e6887e}</UniqueIdentifier>
     </Filter>
@@ -333,12 +327,6 @@
     <ClCompile Include="SceneObjectFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="volumetric\TransferFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="volumetric\VolumeObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScriptObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -347,45 +335,6 @@
     </ClCompile>
     <ClCompile Include="RenderLayer.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="volumetric\BoundingGeometry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\chunk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\gas.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\liquid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\particle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\sand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\solid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\stone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\water.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\smoke.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\steam.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\lava.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fallingSand\ice.cpp">
-      <Filter>Header Files\fallingSand</Filter>
     </ClCompile>
     <ClCompile Include="Identifiable.cpp">
       <Filter>Source Files</Filter>
@@ -629,53 +578,8 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="volumetric\BoundingGeometry.h">
-      <Filter>Header Files\volumetric</Filter>
-    </ClInclude>
-    <ClInclude Include="volumetric\TransferFunction.h">
-      <Filter>Header Files\volumetric</Filter>
-    </ClInclude>
-    <ClInclude Include="volumetric\VolumeObject.h">
-      <Filter>Header Files\volumetric</Filter>
-    </ClInclude>
     <ClInclude Include="UniformVariableImpl.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\chunk.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\gas.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\liquid.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\particle.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\sand.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\solid.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\stone.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\water.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\smoke.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\lava.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\steam.h">
-      <Filter>Header Files\fallingSand</Filter>
-    </ClInclude>
-    <ClInclude Include="fallingSand\ice.h">
-      <Filter>Header Files\fallingSand</Filter>
     </ClInclude>
     <ClInclude Include="jsonParseUtils.h">
       <Filter>Header Files</Filter>

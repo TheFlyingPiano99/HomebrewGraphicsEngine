@@ -182,18 +182,6 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
-    <ClCompile Include="fallingSand\chunk.cpp" />
-    <ClCompile Include="fallingSand\gas.cpp" />
-    <ClCompile Include="fallingSand\ice.cpp" />
-    <ClCompile Include="fallingSand\lava.cpp" />
-    <ClCompile Include="fallingSand\liquid.cpp" />
-    <ClCompile Include="fallingSand\particle.cpp" />
-    <ClCompile Include="fallingSand\sand.cpp" />
-    <ClCompile Include="fallingSand\smoke.cpp" />
-    <ClCompile Include="fallingSand\solid.cpp" />
-    <ClCompile Include="fallingSand\steam.cpp" />
-    <ClCompile Include="fallingSand\stone.cpp" />
-    <ClCompile Include="fallingSand\water.cpp" />
     <ClCompile Include="FBO.cpp" />
     <ClCompile Include="FirstPersonControl.cpp" />
     <ClCompile Include="Font.cpp" />
@@ -264,9 +252,6 @@
     <ClCompile Include="UserControl.cpp" />
     <ClCompile Include="VAO.cpp" />
     <ClCompile Include="VBO.cpp" />
-    <ClCompile Include="volumetric\BoundingGeometry.cpp" />
-    <ClCompile Include="volumetric\TransferFunction.cpp" />
-    <ClCompile Include="volumetric\VolumeObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABBCollider.h" />
@@ -297,18 +282,6 @@
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
-    <ClInclude Include="fallingSand\chunk.h" />
-    <ClInclude Include="fallingSand\gas.h" />
-    <ClInclude Include="fallingSand\ice.h" />
-    <ClInclude Include="fallingSand\lava.h" />
-    <ClInclude Include="fallingSand\liquid.h" />
-    <ClInclude Include="fallingSand\particle.h" />
-    <ClInclude Include="fallingSand\sand.h" />
-    <ClInclude Include="fallingSand\smoke.h" />
-    <ClInclude Include="fallingSand\solid.h" />
-    <ClInclude Include="fallingSand\steam.h" />
-    <ClInclude Include="fallingSand\stone.h" />
-    <ClInclude Include="fallingSand\water.h" />
     <ClInclude Include="FBO.h" />
     <ClInclude Include="FirstPersonControl.h" />
     <ClInclude Include="Font.h" />
@@ -384,9 +357,6 @@
     <ClInclude Include="UserControl.h" />
     <ClInclude Include="VAO.h" />
     <ClInclude Include="VBO.h" />
-    <ClInclude Include="volumetric\BoundingGeometry.h" />
-    <ClInclude Include="volumetric\TransferFunction.h" />
-    <ClInclude Include="volumetric\VolumeObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Scenes\demoScene00.json" />

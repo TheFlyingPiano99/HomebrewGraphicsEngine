@@ -35,8 +35,6 @@ namespace Hogra {
 
 		void preDrawInit();
 
-		void UpdateGUI(Volumetric::VolumeObject& volumeObject);
-
 		void Draw();
 
 		void setVisible(bool b) {

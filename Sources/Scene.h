@@ -25,7 +25,6 @@
 #include "AudioManager.h"
 #include "SceneAudioSource.h"
 #include "UniformVariable.h"
-#include "volumetric/VolumeObject.h"
 #include "RenderLayer.h"
 #include "UniformVariableImpl.h"
 #include "Identifiable.h"

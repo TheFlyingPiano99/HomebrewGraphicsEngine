@@ -82,7 +82,6 @@ void Hogra::ObserveObjectControl::DragPlane(float delta) {
 	}
 	glm::vec3 min(0.0f);
 	glm::vec3 max(0.0f);
-	volumeObject->GetMinAndMax(min, max);
 	if (glm::dot(planeNormal, glm::vec3(1,0,0)) > 0.9f) {
 		max += glm::vec3(delta, 0, 0);
 	}
@@ -101,8 +100,6 @@ void Hogra::ObserveObjectControl::DragPlane(float delta) {
 	else if (glm::dot(planeNormal, glm::vec3(0, 0, -1)) > 0.9f) {
 		min += glm::vec3(0, 0, -delta);
 	}
-	volumeObject->ResizeDisplayBoundingBox(min, max);
-	volumeObject->GetMinAndMax(min, max);
 	collider->SetMin(min);
 	collider->SetMax(max);
 }
