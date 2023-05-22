@@ -19,7 +19,7 @@ namespace Hogra {
 			return listeners;
 		}
 
-		void AddListener(Physics* physics) {
+		void AddAffectedPhysics(Physics* physics) {
 			listeners.push_back(physics);
 		}
 

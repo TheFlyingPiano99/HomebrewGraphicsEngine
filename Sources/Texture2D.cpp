@@ -6,7 +6,7 @@
 
 namespace Hogra {
 	
-	void Texture2D::Init(const std::filesystem::path& path, GLuint unit, GLenum _format, GLenum _pixelType)
+	void Texture2D::Init(const std::filesystem::path& path, GLuint unit, GLenum _format, GLenum _pixelType, bool gammaCorrectionOnFloat)
 	{
 		this->format = _format;
 		this->pixelType = _pixelType;
@@ -15,8 +15,37 @@ namespace Hogra {
 		int widthImg, heightImg, numColCh;
 		// Flips the image so it appears right side up
 		stbi_set_flip_vertically_on_load(true);
+
+		if (GL_FLOAT == pixelType && gammaCorrectionOnFloat) {
+			stbi_ldr_to_hdr_gamma(2.2f);
+		}
+		else {
+			stbi_ldr_to_hdr_gamma(1.0f);
+		}
+
+		bool is_hdr = stbi_is_hdr(path.string().c_str());
+		if (!is_hdr && GL_FLOAT == pixelType) {
+			DebugUtils::PrintWarning(
+				"Texture2D", 
+				std::string("Loading LDR image as GL_FLOAT texture from path:\n\"")
+				.append(path.string()).append("\".").c_str()
+			);
+		}
+		if (is_hdr && (GL_UNSIGNED_BYTE == pixelType || GL_BYTE == pixelType)) {
+			DebugUtils::PrintWarning(
+				"Texture2D",
+				std::string("Loading HDR image as GL_BYTE or GL_UNSIGNED_BYTE texture from path:\n\"")
+				.append(path.string()).append("\".").c_str()
+			);
+		}
 		// Reads the image from a file and stores it in bytes
-		unsigned char* imgBytes = stbi_load(path.string().c_str(), &widthImg, &heightImg, &numColCh, 0);
+		unsigned char* imgBytes = 0;
+		if (GL_FLOAT == pixelType) {
+			imgBytes = (unsigned char*)stbi_loadf(path.string().c_str(), &widthImg, &heightImg, &numColCh, 0);
+		}
+		else {
+			imgBytes = stbi_load(path.string().c_str(), &widthImg, &heightImg, &numColCh, 0);
+		}
 		if (nullptr == imgBytes) {	// Failed loading
 			DebugUtils::PrintError("Texture2D", std::string("Couldn't load image file:\n\"").append(path.string()).append("\"!").c_str());
 			this->Init(GL_RGBA, glm::ivec2(16, 16), unit, format, pixelType);
@@ -132,7 +161,7 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	void Texture2D::Init(GLint _internalformat, glm::ivec2 _dimensions, GLuint _unit, GLenum _format, GLenum _pixelType)
+	void Texture2D::Init(GLint _internalformat, glm::ivec2 _dimensions, GLuint _unit, GLenum _format, GLenum _pixelType, bool useMipmaps)
 	{
 		this->format = _format;
 		this->pixelType = _pixelType;
@@ -155,19 +184,13 @@ namespace Hogra {
 
 		// Assigns the image to the OpenGL Texture object
 		glTexImage2D(GL_TEXTURE_2D, 0, _internalformat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
-		/*
+		
 		// Mipmap:
-		glTexImage2D(GL_TEXTURE_2D, 1, internalformat, dimensions.x / 2, dimensions.y / 2, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 2, internalformat, dimensions.x / 4, dimensions.y / 4, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 3, internalformat, dimensions.x / 8, dimensions.y / 8, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 4, internalformat, dimensions.x / 16, dimensions.y / 16, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 5, internalformat, dimensions.x / 32, dimensions.y / 32, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 6, internalformat, dimensions.x / 64, dimensions.y / 64, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 7, internalformat, dimensions.x / 128, dimensions.y / 128, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 8, internalformat, dimensions.x / 256, dimensions.y / 256, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 9, internalformat, dimensions.x / 512, dimensions.y / 512, 0, format, pixelType, nullptr);
-		glTexImage2D(GL_TEXTURE_2D, 10, internalformat, dimensions.x / 1024, dimensions.y / 1024, 0, format, pixelType, nullptr);
-		*/
+		if (useMipmaps) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
 
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -206,7 +229,14 @@ namespace Hogra {
 		Bind();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering);
-		Unbind();
+	}
+
+	void Texture2D::GenerateMipmap()
+	{
+		Bind();
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 
 }

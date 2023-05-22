@@ -163,6 +163,5 @@ namespace Hogra {
 		}
 		fclose(output_image);
 		free(pixels);
-		Unbind();
 	}
 }

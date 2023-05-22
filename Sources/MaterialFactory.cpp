@@ -34,8 +34,18 @@ namespace Hogra {
 			AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/").append(materialName).append("_albedo.png")
 		);
+		if (!std::filesystem::exists(albedoPath)) {
+			albedoPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_albedo.jpg")
+			);
+		}
 		Texture2D* albedoMap = Allocator::New<Texture2D>();
-		albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false);
+		albedoMap->GenerateMipmap();
+
+		bool flipY = false;
+		// TODO flipY is currently not used!
 		Texture2D* normalMap = Allocator::New<Texture2D>();
 		auto normalPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath()
@@ -52,26 +62,65 @@ namespace Hogra {
 				AssetFolderPathManager::getInstance()->getTextureFolderPath()
 				.append(materialName).append("/").append(materialName).append("_normal-dx.png")
 			);
+			flipY = true;
 		}
-		normalMap->Init(normalPath, NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		if (!std::filesystem::exists(normalPath)) {
+			normalPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_normal.jpg")
+			);
+		}
+		if (!std::filesystem::exists(normalPath)) {
+			normalPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_normal-ogl.jpg")
+			);
+		}
+		if (!std::filesystem::exists(normalPath)) {
+			normalPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_normal-dx.jpg")
+			);
+			flipY = true;
+		}
+		normalMap->Init(normalPath, NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false);
+		normalMap->GenerateMipmap();
 		Texture2D roughnessMap;
 		auto roughnessPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/").append(materialName).append("_roughness.png")
 		);
-		roughnessMap.Init(roughnessPath, 0, GL_RGB, GL_UNSIGNED_BYTE);
+		if (!std::filesystem::exists(roughnessPath)) {
+			roughnessPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_roughness.jpg")
+			);
+		}
+		roughnessMap.Init(roughnessPath, 0, GL_RGB, GL_UNSIGNED_BYTE, false);
 		Texture2D metallicMap;
 		auto metallicPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/").append(materialName).append("_metallic.png")
 		);
-		metallicMap.Init(metallicPath, 1, GL_RGB, GL_UNSIGNED_BYTE);
+		if (!std::filesystem::exists(metallicPath)) {
+			metallicPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_metallic.jpg")
+			);
+		}
+		metallicMap.Init(metallicPath, 1, GL_RGB, GL_UNSIGNED_BYTE, false);
 		Texture2D aoMap;
 		auto aoPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath()
 			.append(materialName).append("/").append(materialName).append("_ao.png")
 		);
-		aoMap.Init(aoPath, 2, GL_R, GL_UNSIGNED_BYTE);
+		if (!std::filesystem::exists(aoPath)) {
+			aoPath = std::filesystem::path(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				.append(materialName).append("/").append(materialName).append("_ao.jpg")
+			);
+		}
+		aoMap.Init(aoPath, 2, GL_RGB, GL_UNSIGNED_BYTE, false);
 
 		// Combining roughness, metallic and AO into a single texture:
 		auto& dim = albedoMap->GetDimensions();
@@ -101,6 +150,7 @@ namespace Hogra {
 			glDisable(GL_DEPTH_TEST);
 			quad->Draw();
 			fbo.Unbind();
+			roughnessMetallicAO->GenerateMipmap();
 			roughnessMap.Unbind();
 			metallicMap.Unbind();
 			aoMap.Unbind();

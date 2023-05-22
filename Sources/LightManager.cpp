@@ -15,6 +15,29 @@ namespace Hogra {
 			subDataSizes.push_back(sizeof(int));		// shadowCasterIdx
 		}
 		ubo.Init(subDataSizes, LIGHTS_UBO_BINDING);
+
+		brdfLUT.Init(GL_RG16F, glm::ivec2(512, 512), BRDF_LUT_UNIT, GL_RG, GL_FLOAT);
+
+		FBO captureFBO;
+		captureFBO.Init();
+		captureFBO.LinkTexture(GL_COLOR_ATTACHMENT0, brdfLUT);
+		captureFBO.Bind();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		auto shader = ShaderProgram();
+		shader.Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("precalculateIndirectBRDF.frag")
+		);
+		shader.Activate();
+
+		auto quad = GeometryFactory::GetInstance()->GetSimpleQuad();
+		quad->Draw();
+		captureFBO.saveToPPM(
+			AssetFolderPathManager::getInstance()->getSavesFolderPath().append("brdfLUT.ppm")
+		);
+		captureFBO.Unbind();
 	}
 
 	Renderer::~Renderer()
@@ -38,26 +61,45 @@ namespace Hogra {
 	void Renderer::SetSkybox(TextureCube* envMap) {
 		if (this->environmentMap != envMap && nullptr != envMap) { // Generate irradiance and prefilter map
 			this->environmentMap = envMap;
-			irradianceMap = Allocator::New<TextureCube>();
-			irradianceMap->Init(32, IRRADIANCE_MAP_UNIT, GL_RGB, GL_FLOAT);
-			prefilterMap = Allocator::New<TextureCube>();
-			prefilterMap->Init(32, PREFILTER_MAP_UNIT, GL_RGB, GL_FLOAT);
-
-			/*
-			auto irradianceShader = ShaderProgram();
-			irradianceShader.Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append(""),
+			// Irradiance map:
+			auto irradianceConvolutionShader = ShaderProgram();
+			irradianceConvolutionShader.Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentToIrradiance.vert"),
 				"",
-				""
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentToIrradiance.frag")
 			);
+			DebugUtils::PrintMsg("Renderer", "Generating irradiance map.");
 			irradianceMap = Allocator::New<TextureCube>();
-			irradianceMap->Init(32, IRRADIANCE_MAP_UNIT, GL_RGB, GL_FLOAT);
-			auto fbo = FBO();
-			fbo.Init();
-			fbo.LinkTexture(GL_COLOR_ATTACHMENT0, *irradianceMap);
-			fbo.Bind();
-			irradianceShader.Activate();
-			*/
+			irradianceMap->InitFromCubeMap(
+				*environmentMap,
+				irradianceConvolutionShader,
+					32,
+				IRRADIANCE_MAP_UNIT,
+				GL_RGB, 
+				GL_FLOAT
+			);
+			DebugUtils::PrintMsg("Renderer", "Irradiance map complete.");
+
+			// Prefilter map:
+			auto prefilterConvolutionShader = ShaderProgram();
+			prefilterConvolutionShader.Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentToIrradiance.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentPrefilter.frag")
+			);
+			DebugUtils::PrintMsg("Renderer", "Generating prefilter map.");
+
+			prefilterMap = Allocator::New<TextureCube>();
+			prefilterMap->InitFromCubeMap(
+				*environmentMap,
+				prefilterConvolutionShader,
+				512,
+				PREFILTER_MAP_UNIT,
+				GL_RGB,
+				GL_FLOAT,
+				5
+			);
+			DebugUtils::PrintMsg("Renderer", "Prefilter map complete.");
 		}
 		else {
 			this->environmentMap = envMap;
@@ -70,7 +112,8 @@ namespace Hogra {
 			dirLights,
 			environmentMap,
 			irradianceMap,
-			prefilterMap
+			prefilterMap,
+			&brdfLUT
 		);
 	}
 

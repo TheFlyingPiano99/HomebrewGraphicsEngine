@@ -116,7 +116,7 @@ void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
 		tSinceLastInput += dt;
 	}
 	if (physics != nullptr) {
-		physics->applyTransientForce(walkForce);
+		physics->ApplyTransientForce(walkForce);
 	}
 }
 
@@ -230,7 +230,7 @@ bool Hogra::FirstPersonControl::PokeObject(const glm::vec2& ndcCoords, glm::vec3
 	ray.setDirection(dir);
 	const auto* selected = scene->IntersectRay(ray, intersectionPoint, intersectionNormal);
 	if (nullptr != selected && nullptr != selected->GetPhysics()) {
-		selected->GetPhysics()->ApplyImpulse(dir * 10.0f, intersectionPoint - selected->GetPhysics()->getOwnerPosition());
+		selected->GetPhysics()->ApplyImpulse(dir * 10.0f, intersectionPoint - selected->GetPhysics()->GetOwnerPosition());
 		pokePoint = intersectionPoint;
 		return true;
 	}

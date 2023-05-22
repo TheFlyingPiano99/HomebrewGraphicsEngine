@@ -104,7 +104,8 @@ namespace Hogra {
 		const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights,
 		TextureCube* environmentMap,
 		TextureCube* irradianceMap,
-		TextureCube* prefilterMap
+		TextureCube* prefilterMap,
+		Texture2D* brdfLUT
 	) {
 		meshFullScreen->Bind();
 		fullScreenSkyboxProgram.Activate();
@@ -117,8 +118,8 @@ namespace Hogra {
 		if (nullptr != prefilterMap) {
 			prefilterMap->Bind();
 		}
-		else {
-			//TODO Bind empty
+		if (nullptr != brdfLUT) {
+			brdfLUT->Bind();
 		}
 		meshFullScreen->Draw();					// Draw skybox reflections
 		fullScreenProgram.Activate();

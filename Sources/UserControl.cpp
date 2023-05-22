@@ -5,7 +5,7 @@ void Hogra::UserControl::MoveForward()
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(ahead * (orientationProvider->GetOrientation() * propellingForce));
+	physics->ApplyTransientForce(ahead * (orientationProvider->GetOrientation() * propellingForce));
 }
 
 void Hogra::UserControl::MoveBackward()
@@ -13,7 +13,7 @@ void Hogra::UserControl::MoveBackward()
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-ahead * (orientationProvider->GetOrientation() * propellingForce));
+	physics->ApplyTransientForce(-ahead * (orientationProvider->GetOrientation() * propellingForce));
 }
 
 void Hogra::UserControl::MoveLeft()
@@ -21,7 +21,7 @@ void Hogra::UserControl::MoveLeft()
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-right * (orientationProvider->GetOrientation() * propellingForce));
+	physics->ApplyTransientForce(-right * (orientationProvider->GetOrientation() * propellingForce));
 }
 
 void Hogra::UserControl::MoveRight()
@@ -29,7 +29,7 @@ void Hogra::UserControl::MoveRight()
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(right * (orientationProvider->GetOrientation() * propellingForce));
+	physics->ApplyTransientForce(right * (orientationProvider->GetOrientation() * propellingForce));
 }
 
 void Hogra::UserControl::MoveUp()
@@ -37,7 +37,7 @@ void Hogra::UserControl::MoveUp()
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(up * (orientationProvider->GetOrientation() * propellingForce));
+	physics->ApplyTransientForce(up * (orientationProvider->GetOrientation() * propellingForce));
 }
 
 void Hogra::UserControl::MoveDown()
@@ -45,7 +45,7 @@ void Hogra::UserControl::MoveDown()
 	if (physics == nullptr || !allowMove) {
 		return;
 	}
-	physics->applyTransientForce(-up * (orientationProvider->GetOrientation() * propellingForce));
+	physics->ApplyTransientForce(-up * (orientationProvider->GetOrientation() * propellingForce));
 }
 
 void Hogra::UserControl::Rotate(const glm::vec2& ndcDelta)
@@ -53,7 +53,7 @@ void Hogra::UserControl::Rotate(const glm::vec2& ndcDelta)
 	if (physics == nullptr || !allowRotate) {
 		return;
 	}
-	physics->applyTransientTorque(rotatingTorque * glm::vec3(ndcDelta.y, ndcDelta.x, 0.0f));
+	physics->ApplyTransientTorque(rotatingTorque * glm::vec3(ndcDelta.y, ndcDelta.x, 0.0f));
 }
 
 void Hogra::UserControl::Zoom(float delta)

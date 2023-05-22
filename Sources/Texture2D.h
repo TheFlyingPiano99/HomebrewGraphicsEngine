@@ -15,13 +15,13 @@ namespace Hogra {
 		friend class Allocator;
 	public:
 
-		void Init(const std::filesystem::path& path, GLuint unit, GLenum format, GLenum pixelType);
+		void Init(const std::filesystem::path& path, GLuint unit, GLenum format, GLenum pixelType, bool gammaCorrectionOnFloat = true);
 
 		void Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType);
 
 		void Init(const char* _buffer, glm::ivec2 _dimensions, GLuint _unit, GLenum _internalFormat, GLenum _format, GLenum _pixelType);
 
-		void Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType);
+		void Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType, bool useMipmaps = false);
 
 		~Texture2D() override {
 			this->Delete();
@@ -53,6 +53,18 @@ namespace Hogra {
 		void SetData(const std::vector<glm::vec4>& _data);
 
 		void SetFiltering(GLenum filtering) const override;
+
+		void SetMinFilter(GLenum filter) {
+			Bind();
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+		}
+
+		void SetMagFilter(GLenum filter) {
+			Bind();
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+		}
+
+		void GenerateMipmap();
 
 	private:
 		glm::ivec2 dimensions;

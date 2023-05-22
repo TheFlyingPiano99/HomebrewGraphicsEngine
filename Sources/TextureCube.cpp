@@ -3,15 +3,20 @@
 #include "DebugUtils.h"
 #include "GeometryFactory.h"
 #include "FBO.h"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/rotate_vector.hpp>
+
 
 namespace Hogra {
 	
 	void TextureCube::Init(std::vector<std::string>& images, GLuint unit, GLuint pixelType)
 	{
 		this->unit = unit;
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenTextures(1, &glID);
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, glID);
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 
 		// Stores the width, height, and the number of color channels of the image
 		int widthImg, heightImg, numColCh;
@@ -57,13 +62,14 @@ namespace Hogra {
 
 	}
 
-	void TextureCube::Init(unsigned int resolution, GLuint _unit, GLenum _format, GLenum _pixelType)
+	void TextureCube::Init(unsigned int resolution, GLuint _unit, GLenum _format, GLenum _pixelType, bool useLinearFiltering)
 	{
 		this->unit = _unit;
+		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenTextures(1, &glID);
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, glID);
-		
+
 		this->dimensions.x = resolution;
 		this->dimensions.y = resolution;
 
@@ -83,8 +89,14 @@ namespace Hogra {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat,
 				resolution, resolution, 0, _format, _pixelType, NULL);
 		}
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		if (useLinearFiltering) {
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		}
+		else {
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		}
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -100,11 +112,11 @@ namespace Hogra {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("equirectangularToCubemap.frag")
 			);
-		unsigned int resolution = 2048;
+		unsigned int resolution = 1024;
 		FBO captureFBO;
 		captureFBO.Init();
 		captureFBO.SetViewport(0, 0, resolution, resolution);
-		this->Init(resolution, unit, format, pixelType);	// Init empty cubemap
+		this->Init(resolution, unit, format, pixelType, true);	// Init empty cubemap
 		auto cubeGeometry = GeometryFactory::GetInstance()->GetSimple1X1Cube();
 		cubeGeometry->SetFaceCulling(false);
 		glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
@@ -140,7 +152,90 @@ namespace Hogra {
 		}
 		Allocator::Delete(cubeGeometry);
 		captureFBO.Unbind();
+		
+		/*
+		this->Bind();
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+		this->Unbind();
+		*/
+	}
 
+	void TextureCube::InitFromCubeMap(
+		const TextureCube& cubemap, 
+		ShaderProgram& conversionShader, 
+		unsigned int resolution, 
+		unsigned int _unit, 
+		GLuint format, 
+		GLuint pixelType,
+		unsigned int maxMipLevels
+	)
+	{
+		this->unit = _unit;
+
+		this->Init(resolution, unit, format, pixelType, true);	// Init empty cubemap
+		if (1 < maxMipLevels) {
+			this->Bind();
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+			this->Unbind();
+		}
+		auto cubeGeometry = GeometryFactory::GetInstance()->GetSimple1X1Cube();
+		cubeGeometry->SetFaceCulling(false);
+		glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
+		glm::mat4 captureViews[] =
+		{
+		   glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+		   glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+		   glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  1.0f,  0.0f), glm::vec3(0.0f,  0.0f,  1.0f)),
+		   glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, -1.0f,  0.0f), glm::vec3(0.0f,  0.0f, -1.0f)),
+		   glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f,  1.0f), glm::vec3(0.0f, -1.0f,  0.0f)),
+		   glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f,  0.0f, -1.0f), glm::vec3(0.0f, -1.0f,  0.0f))
+		};
+
+		FBO captureFBO;
+		captureFBO.Init();
+		captureFBO.SetViewport(0, 0, resolution, resolution);
+		RBO depthRBP;
+		depthRBP.Init(GL_DEPTH_COMPONENT24, resolution, resolution);
+		captureFBO.LinkRBO(GL_DEPTH_ATTACHMENT, depthRBP);
+		// convert HDR equirectangular environment map to cubemap equivalent
+		conversionShader.Activate();
+		conversionShader.SetUniform("projection", captureProjection);
+		cubemap.Bind();
+		captureFBO.Bind();
+		glDisable(GL_DEPTH_TEST);
+		for (unsigned int mip = 0; mip < maxMipLevels; mip++) {
+			for (int i = -1; i < 6; i++)
+			{
+				int side = (0 > i)? 0 : i;
+				// reisze framebuffer according to mip-level size.
+				unsigned int mipWidth = resolution * std::pow(0.5, mip);
+				unsigned int mipHeight = resolution * std::pow(0.5, mip);
+				captureFBO.SetViewport(0, 0, mipWidth, mipHeight);
+				conversionShader.SetUniform("view", captureViews[side]);
+				float roughness = (float)mip / (float)(maxMipLevels - 1);
+				conversionShader.SetUniform("roughness", roughness);
+
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+					GL_TEXTURE_CUBE_MAP_POSITIVE_X + side, this->glID, mip);
+
+				glClearColor(0.5, 0, 1, 1);
+				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+				cubeGeometry->Draw(); // renders a 1x1 cube
+				captureFBO.saveToPPM(
+					AssetFolderPathManager::getInstance()->getSavesFolderPath()
+					.append("side_").append(std::to_string(side)).append("_mip_")
+					.append(std::to_string(mip)).append(".ppm")
+				);
+			}
+		}
+
+		Allocator::Delete(cubeGeometry);
+		captureFBO.Unbind();
 	}
 
 	void TextureCube::Bind()

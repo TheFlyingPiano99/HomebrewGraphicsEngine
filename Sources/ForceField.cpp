@@ -5,10 +5,10 @@ namespace Hogra {
 	void HomogeneForceField::EarlyPhysicsUpdate(float dt)
 	{
 		for (auto& listener : listeners) {
-			float m = listener->getMass();
+			float m = listener->GetMass();
 			if (!isnan(m)) {
 				glm::vec3 f = direction * strength * m;
-				listener->applyTransientForce(f);
+				listener->ApplyTransientForce(f);
 			}
 		}
 	}

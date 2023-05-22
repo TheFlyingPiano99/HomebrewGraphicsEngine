@@ -9,8 +9,8 @@ namespace Hogra {
 	{
 	public:
 
-		FirstPersonControl() {
-			allowRotate = true;
+		FirstPersonControl() : allowRotate(true) {
+
 			GlobalVariables::hideCursor = true;
 		}
 

@@ -68,26 +68,12 @@ namespace Hogra {
 		scene->AddRenderLayer(defLayer);
 
 		auto* dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
-		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(-1.0f, 1.0f, -1.0f)));
+		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));
 		auto* light1 = Allocator::New<DirectionalLight>();
-		light1->Init(glm::normalize(glm::vec3(-1.0f, 1.0f, -1.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
+		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)), glm::vec3(1.0f, 1.0f, 1.0f));
 		light1->SetShadowCaster(dirShadowCaster);
 		scene->AddLight(light1);	// Directional light
 		
-		dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
-		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));
-		light1 = Allocator::New<DirectionalLight>();
-		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)), glm::vec3(0.1f, 0.1f, 0.2f));
-		light1->SetShadowCaster(dirShadowCaster);
-		scene->AddLight(light1);	// Directional light
-
-		dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
-		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)));
-		light1 = Allocator::New<DirectionalLight>();
-		light1->Init(glm::normalize(glm::vec3(1.0f, 1.0f, 1.0f)), glm::vec3(0.1f, 0.1f, 0.2f));
-		light1->SetShadowCaster(dirShadowCaster);
-		scene->AddLight(light1);	// Directional light
-
 		auto* light2 = Allocator::New<PointLight>();
 		light2->Init(glm::vec4(-40.0f, 4.0f, 0.0f, 1.0f), glm::vec3(100.0f, 50.0f, 50.0f));
 		auto* omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
@@ -131,11 +117,10 @@ namespace Hogra {
 		InitCube(scene, glm::vec3(0.0f, 10.0f, -30.0f), col, field);
 		col = InitCompositeCollider();
 		InitCube(scene, glm::vec3(0.0f, 3.0f, 0.0f), col, field);
-		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "TexturesCom_Metal_GoldOld_512");
-		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "TexturesCom_Metal_GoldOld_512");
-		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "TexturesCom_Metal_GoldOld_512");
-		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "TexturesCom_Metal_GoldOld_512");
-		
+		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -20.0f), field, "TexturesCom_Paint_GoldFake_512");
+		InitSphere(scene, glm::vec3(-20.0f, 3.0f, -10.0f), field, "TexturesCom_Paint_GoldFake_512");
+		InitSphere(scene, glm::vec3(-30.0f, 3.0f, -10.0f), field, "TexturesCom_Paint_GoldFake_512");
+		InitSphere(scene, glm::vec3(-10.0f, 3.0f, -20.0f), field, "TexturesCom_Paint_GoldFake_512");
 		scene->AddPhysicsScript(
 			[light2](float dt, float totalTime) { light2->SetPosition(glm::vec3(10.0 * sinf(totalTime * 0.6), 4, -15)); }
 		);
@@ -146,10 +131,22 @@ namespace Hogra {
 		for (int i = 5; i < 10; i++) {
 			InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "TexturesCom_Wood_Planks1_2x2_1K");
 		}
+
+		glm::vec3 color1 = glm::vec3(0.0f, 0.1f, 1.0f);
+		glm::vec3 color2 = glm::vec3(0.0f, 1.0f, 0.0f);
 		for (int i = 10; i < 15; i++) {
-			auto* obj = InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "glowing");
+			auto* obj 
+				= InitSphere(
+					scene, glm::vec3(-10.0f + 0.05f * (float)(i % 2), 
+					3.0f + (float)i * 5.0f, -10.0f), field, "glowing", (i % 2 == 1)? color1 : color2
+				);
 			auto* light = Allocator::New<PointLight>();
-			light->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.0f, 10.0f));
+			light->Init(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), 50.0f * (i % 2 == 1) ? color1 : color2);
+			
+			auto caster = Allocator::New<OmniDirectionalShadowCaster>();
+			caster->Init();
+			light->SetShadowCaster(caster);
+			caster->SetPositionProvider(light);
 			obj->AddComponent(light);
 			auto* provider = Allocator::New<PositionConnector>();
 			provider->Init(obj);
@@ -157,27 +154,35 @@ namespace Hogra {
 			scene->AddLight(light);
 		}
 
-		auto* mario = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/mario-bros-hd.png"),
+		auto* logoSpriteObj = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/HoGraEngineLogo.png"),
 			&scene->GetCamera()
 		);
 		
-		auto* marioColl = Allocator::New<AABBCollider>();
-		marioColl->Init();
-		marioColl->SetPositionProvider(mario);
-		marioColl->setMinRelToPosition(glm::vec3(-0.5f, -0.5f, -0.5f));
-		marioColl->setMaxRelToPosition(glm::vec3(0.5f, 0.5f, 0.5f));
-		scene->AddCollider(marioColl);
-		mario->AddComponent(marioColl);
-		
-		mario->SetPosition(glm::vec3(-11.0f, 4.0f, -20.0f));
-		scene->AddSceneObject(mario, "mario_sprite", "ForwardLayer");
+		auto* logoSpriteCollider = Allocator::New<AABBCollider>();
+		logoSpriteCollider->Init();
+		logoSpriteCollider->SetPositionProvider(logoSpriteObj);
+		logoSpriteCollider->setMinRelToPosition(glm::vec3(-1.0f, -2.0f, -1.0f));
+		logoSpriteCollider->setMaxRelToPosition(glm::vec3(1.0f, 2.0f, 1.0f));
+		auto* logoSpritePhys = Allocator::New<Physics>();
+		logoSpritePhys->Init(logoSpriteObj);
+		logoSpritePhys->SetMomentOfInertia(Physics::GetMomentOfInertiaOfCuboid(50, glm::vec3(2,2,2)));
+		logoSpritePhys->SetMass(50);
+		logoSpritePhys->SetElasticity(0.5f);
+		logoSpritePhys->SetFriction(0.2f);
+		field->AddAffectedPhysics(logoSpritePhys);
+		logoSpriteCollider->SetPhysics(logoSpritePhys);
+		logoSpriteObj->AddComponent(logoSpritePhys);
+		logoSpriteObj->AddComponent(logoSpriteCollider);
+		logoSpriteObj->SetPosition(glm::vec3(-15.0f, 10.0f, -20.0f));
+		scene->AddCollider(logoSpriteCollider);
+		scene->AddSceneObject(logoSpriteObj, "logo_sprite", "ForwardLayer");
 
 		InitLoadedGeometry(scene, glm::vec3(-10.0f, 3.0f, -30.0f), field);
 
 		FirstPersonControl* control = nullptr;
 		InitAvatar(scene, field, control);
-		InitCaptions(scene);
+		//InitCaptions(scene);
 
 		InitAudio(scene, control);
 
@@ -272,6 +277,15 @@ namespace Hogra {
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(saveFBOs);
+
+			auto* reloadShaders = Allocator::New<ButtonKeyAction>();
+			reloadShaders->Init(GLFW_KEY_R, ButtonKeyAction::TriggerType::triggerOnPress);
+			reloadShaders->SetAction(
+				[]() {
+					ShaderProgram::ReloadAll();
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(reloadShaders);
 
 			auto* debugMode = Allocator::New<ButtonKeyAction>();
 			debugMode->Init(GLFW_KEY_I, ButtonKeyAction::TriggerType::triggerOnPress);
@@ -904,7 +918,7 @@ namespace Hogra {
 	void SceneFactory::InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field)
 	{
 		ShaderProgram* cubeShader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
-		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("lumpy-wet-concrete");
+		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("stringy_marble");
 		Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 		auto* cubeMesh = Allocator::New<Mesh>();
 		cubeMesh->Init(volumeMaterial, cubeGeometry);
@@ -915,17 +929,17 @@ namespace Hogra {
 
 		auto* cubePhysics = Allocator::New<Physics>();
 		cubePhysics->Init(obj);
-		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
-		cubePhysics->setWorldSpaceDrag(glm::vec3(0.5f, 100.5f, 0.5f));
-		cubePhysics->setModelSpaceDrag(glm::vec3(0.1f, 0.3f, 0.1f));
-		cubePhysics->setMass(3140000.0f);
+		//cubePhysics->AddAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
+		cubePhysics->SetWorldSpaceDrag(glm::vec3(0.5f, 100.5f, 0.5f));
+		cubePhysics->SetModelSpaceDrag(glm::vec3(0.1f, 0.3f, 0.1f));
+		cubePhysics->SetMass(3140000.0f);
 		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
-		cubePhysics->setMomentOfInertia(Physics::getMomentOfInertiaOfCuboid(cubePhysics->getMass(), obj->GetScale()));
-		cubePhysics->setRotationalDrag(glm::vec3(2000.0f, 1000.0f, 2000.0f));
-		cubePhysics->setPositionForcingLevel(0.5f);
-		cubePhysics->setElasticity(0.1f);
+		cubePhysics->SetMomentOfInertia(Physics::GetMomentOfInertiaOfCuboid(cubePhysics->GetMass(), obj->GetScale()));
+		cubePhysics->SetRotationalDrag(glm::vec3(2000.0f, 1000.0f, 2000.0f));
+		cubePhysics->SetPositionForcingAffinity(0.5f);
+		cubePhysics->SetElasticity(0.1f);
 		if (field != nullptr) {
-			field->AddListener(cubePhysics);
+			field->AddAffectedPhysics(cubePhysics);
 		}
 		obj->AddComponent(cubePhysics);
 		collider->SetPhysics(cubePhysics);
@@ -936,22 +950,24 @@ namespace Hogra {
 		scene->AddSceneObject(obj, "cube", "DeferredLayer");
 	}
 	
-	SceneObject* SceneFactory::InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName)
+	SceneObject* SceneFactory::InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName, const glm::vec3& color)
 	{
 		SphericalCollider* collider = Allocator::New<SphericalCollider>();
 		collider->Init();
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
-		Material* volumeMaterial;
+		Material* material;
 		if (std::string(materialName) == std::string("glowing")) {
-			volumeMaterial = MaterialFactory::GetInstance()->getEmissiveMaterial("glowing", glm::vec3(0, 0, 1), 100.0f);
+			material = MaterialFactory::GetInstance()->getEmissiveMaterial(std::string("glowing").append(std::to_string(color.y)).append(std::to_string(color.z)).c_str(), color, 30.0f);
 		}
 		else {
-			volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
+			material = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
+			//material = MaterialFactory::GetInstance()->getHomogenousPBRMaterial(glm::vec3(0.9, 0.4, 0.4), 0.01, 0.6, 0.95);
 		}
+		//Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("sphere.obj"));
 		Geometry* geometry = GeometryFactory::GetInstance()->GetSphere();
 		auto* mesh = Allocator::New<Mesh>();
-		mesh->Init(volumeMaterial, geometry);
+		mesh->Init(material, geometry);
 		auto* obj = Allocator::New<SceneObject>();
 		obj->Init(mesh);
 		obj->SetPosition(pos);
@@ -959,22 +975,22 @@ namespace Hogra {
 
 		auto* physics = Allocator::New<Physics>();
 		physics->Init(obj);
-		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
-		physics->setMass(50.0f);
-		physics->setMomentOfInertia(Physics::getMomentOfInertiaOfSolidSphere(physics->getMass(), 0.5f));
-		physics->setRotationalDrag(glm::vec3(5.0f, 5.0f, 5.0f));
-		physics->setPositionForcingLevel(1.0f);
-		physics->setElasticity(0.95f);
-		physics->setFriction(1.0f);
+		physics->SetWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
+		physics->SetMass(50.0f);
+		physics->SetMomentOfInertia(Physics::GetMomentOfInertiaOfSolidSphere(physics->GetMass(), 0.5f));
+		physics->SetRotationalDrag(glm::vec3(5.0f, 5.0f, 5.0f));
+		physics->SetPositionForcingAffinity(0.5f);
+		physics->SetElasticity(0.95f);
+		physics->SetFriction(1.0f);
 		if (field != nullptr) {
-			field->AddListener(physics);
+			field->AddAffectedPhysics(physics);
 		}
 		obj->AddComponent(physics);
 		collider->SetPhysics(physics);
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
 		obj->AddComponent(collider);
-		scene->AddSceneObject(obj, std::string("sphere").append(materialName), "DeferredLayer");
+		scene->AddSceneObject(obj, std::string("sphere").append(materialName).append((materialName == "glowing") ? std::to_string(color.z) : ""), "DeferredLayer");
 		return obj;
 	}
 	
@@ -1020,10 +1036,9 @@ namespace Hogra {
 		float tileSize = 100;
 		int tileCount = 10;
 
-
 		for (int i = 0; i < tileCount; i++) {
 			for (int j = 0; j < tileCount; j++) {
-				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("lumpy-wet-concrete");
+				auto* material = MaterialFactory::GetInstance()->getPBRMaterial("patchy-meadow1");
 				Geometry* cubeGeometry = GeometryFactory::GetInstance()->GetCube();
 				auto* cubeMesh = Allocator::New<Mesh>();
 				cubeMesh->Init(material, cubeGeometry);
@@ -1034,9 +1049,9 @@ namespace Hogra {
 				obj->SetScale(glm::vec3(tileSize / 2.0f, 1.0f, tileSize / 2.0f));
 				auto* cubePhysics = Allocator::New<Physics>();
 				cubePhysics->Init(obj);
-				cubePhysics->setPositionForcingLevel(0.0f);
-				cubePhysics->setElasticity(0.2f);
-				cubePhysics->setFriction(0.9f);
+				cubePhysics->SetPositionForcingAffinity(0.0f);
+				cubePhysics->SetElasticity(0.2f);
+				cubePhysics->SetFriction(0.9f);
 				auto* collider = Allocator::New<AABBCollider>();
 				collider->Init();
 				collider->setMinRelToPosition(glm::vec3(-tileSize * 0.499f, -1.0f, -tileSize * 0.499f));
@@ -1071,8 +1086,9 @@ namespace Hogra {
 		cubeMap->Init(imagePaths, ENVIRONMENT_MAP_UNIT, GL_UNSIGNED_BYTE);
 		*/
 		
-		auto hdrMap = Texture2D();
-		hdrMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("ibl_hdr_radiance.png"), 0, GL_RGB, GL_UNSIGNED_BYTE);
+		auto hdrMap = Texture2D();		
+		//hdrMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("ibl_hdr_radiance.png"), 0, GL_RGB, GL_FLOAT);
+		hdrMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("dolomites_river.hdr"), 0, GL_RGB, GL_FLOAT);
 		auto* cubeMap = Allocator::New<TextureCube>();
 		cubeMap->InitFromEquirectangular(hdrMap, ENVIRONMENT_MAP_UNIT, GL_RGB, GL_FLOAT);
 
@@ -1111,16 +1127,16 @@ namespace Hogra {
 		auto* physics = Allocator::New<Physics>();
 		physics->Init(obj);
 		//cubePhysics->addAppliedForce(glm::vec3(100.0f, 0.0f, 0.0f));
-		physics->setWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
-		physics->setMass(50.0f);
+		physics->SetWorldSpaceDrag(glm::vec3(10.0f, 10.0f, 10.0f));
+		physics->SetMass(50.0f);
 		//cubePhysics->addAppliedTorque(glm::vec3(0.5f, 0.5f, 0.5f));
-		physics->setMomentOfInertia(Physics::getMomentOfInertiaOfSolidSphere(physics->getMass(), 0.5f));
-		physics->setRotationalDrag(glm::vec3(5.0f, 5.0f, 5.0f));
-		physics->setPositionForcingLevel(1.0f);
-		physics->setElasticity(0.95f);
-		physics->setFriction(1.0f);
+		physics->SetMomentOfInertia(Physics::GetMomentOfInertiaOfSolidSphere(physics->GetMass(), 0.5f));
+		physics->SetRotationalDrag(glm::vec3(5.0f, 5.0f, 5.0f));
+		physics->SetPositionForcingAffinity(1.0f);
+		physics->SetElasticity(0.95f);
+		physics->SetFriction(1.0f);
 		if (field != nullptr) {
-			field->AddListener(physics);
+			field->AddAffectedPhysics(physics);
 		}
 		obj->AddComponent(physics);
 		collider->SetPhysics(physics);
@@ -1133,7 +1149,7 @@ namespace Hogra {
 		auto* avatar = Allocator::New<SceneObject>();
 		avatar->Init();
 		avatar->SetIsVisible(false);
-		avatar->SetPosition(glm::vec3(-60.0f, 2.0f, -60.0f));
+		avatar->SetPosition(glm::vec3(-80.0f, 10.0f, -60.0f));
 		auto* posConnector = Allocator::New<PositionConnector>();
 		posConnector->Init(avatar, glm::vec3(0.0f, 0.8f, 0.0f));
 		scene->GetCamera().SetPositionConnetor(posConnector);
@@ -1143,12 +1159,12 @@ namespace Hogra {
 		collider->setMaxRelToPosition(glm::vec3(0.2f, 1.0f, 0.2f));
 		auto* physics = Allocator::New<Physics>();
 		physics->Init(avatar);
-		physics->setMass(80.0f);
-		physics->setWorldSpaceDrag(glm::vec3(200.0f, 0.01f, 200.0f));
-		physics->setPositionForcingLevel(1.0f);
-		physics->setFriction(0.001f);
+		physics->SetMass(80.0f);
+		physics->SetWorldSpaceDrag(glm::vec3(200.0f, 0.1f, 200.0f));
+		physics->SetPositionForcingAffinity(1.0f);
+		physics->SetFriction(0.001f);
 		if (nullptr != gravitation) {
-			gravitation->AddListener(physics);
+			gravitation->AddAffectedPhysics(physics);
 		}
 		collider->SetPhysics(physics);
 		collider->SetPositionProvider(avatar);
@@ -1224,7 +1240,7 @@ namespace Hogra {
 		auto blasterObj = Allocator::New<SceneObject>();
 		auto loader = GeometryLoader();
 		auto blasterGeom = loader.Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("laser_gun.obj"));
-		auto blasterMaterial = MaterialFactory::GetInstance()->getHomogenousPBRMaterial(glm::vec3(0.3, 0.405, 0.41), 0.1, 0.2, 0.9);
+		auto blasterMaterial = MaterialFactory::GetInstance()->getHomogenousPBRMaterial(glm::vec3(0.3, 0.405, 0.41), 0.4, 0.2, 0.95);
 		auto blasterMesh = Allocator::New<Mesh>();
 		blasterMesh->Init(blasterMaterial, blasterGeom);
 		blasterObj->Init(blasterMesh);

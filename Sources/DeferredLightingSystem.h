@@ -26,7 +26,8 @@ namespace Hogra {
 			const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights,
 			TextureCube* environmentMap,
 			TextureCube* irradianceMap, 
-			TextureCube* prefilterMap
+			TextureCube* prefilterMap,
+			Texture2D* brdfLUT
 		);
 
 		const Texture2D& GetDepthTexture();

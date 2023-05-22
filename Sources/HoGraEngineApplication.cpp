@@ -136,6 +136,8 @@ namespace Hogra {
 
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
+		unsigned int iterationCount = 0;
+
 		// Main while loop
 		while (!glfwWindowShouldClose(window))
 		{
@@ -164,6 +166,10 @@ namespace Hogra {
 
 			double dt = 0.0;
 			double realDelta = crntTime - prevIterTime;
+			if (iterationCount < 5) {	// Prevent physics sim
+				iterationCount++;
+				realDelta = 0.0;
+			}
 			int retVal = 0;
 			while (realDelta > 0.0) {
 				if (realDelta > dtLimit) {

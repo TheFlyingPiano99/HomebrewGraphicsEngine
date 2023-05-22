@@ -25,9 +25,19 @@ namespace Hogra {
 
 		void Init(std::vector<std::string>& images, GLuint unit, GLuint pixelType);
 
-		void Init(unsigned int resolution, GLuint unit, GLenum _format, GLenum _pixelType);
+		void Init(unsigned int resolution, GLuint unit, GLenum _format, GLenum _pixelType, bool useLinearFiltering = false);
 
 		void InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int unit, GLuint format, GLuint pixelType);
+
+		void InitFromCubeMap(
+			const TextureCube& cubemap,
+			ShaderProgram& conversionShader,
+			unsigned int resolution,
+			unsigned int unit,
+			GLuint format,
+			GLuint pixelType,
+			unsigned int maxMipLevels = 1
+		);
 
 		~TextureCube() override {
 			this->Delete();

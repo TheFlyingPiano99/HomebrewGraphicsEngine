@@ -14,7 +14,7 @@ namespace Hogra {
 			offset = _offset;
 		}
 
-		glm::vec3 GetPosition() const {
+		const glm::vec3& GetPosition() const {
 			return provider->GetPosition() + offset;
 		}
 

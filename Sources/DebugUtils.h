@@ -8,8 +8,9 @@
 #include<glm/glm.hpp>
 
 #define P_NONE 0
-#define P_ERROR_ONLY 1
-#define P_ALL 2
+#define P_WARNING_AND_ERROR 1
+#define P_ERROR_ONLY 2
+#define P_ALL 3
 
 // Set this defined value to select Print-priority:
 #define PRINT_PRIORITY P_ALL
@@ -37,7 +38,18 @@ namespace Hogra {
 
 		constexpr bool logToFile = false;
 
+#if PRINT_PRIORITY >= P_WARNING_AND_ERROR
+		inline void PrintWarning(const char* context, const char* message)
+		{
+			const auto now = std::chrono::system_clock::now();
+			std::cerr << "WARNING: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
+			if (logToFile) {
 
+			}
+		}
+#else
+		inline void PrintWarning(const char* context, const char* message) { /* Empty implementation */ }
+#endif
 
 #if PRINT_PRIORITY >= P_ERROR_ONLY
 		inline void PrintError(const char* context, const char* message)
@@ -57,7 +69,7 @@ namespace Hogra {
 		inline void PrintMsg(const char* context, const char* message)
 		{
 			const auto now = std::chrono::system_clock::now();
-			std::cout << "Msg: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
+			std::cout << "MESSAGE: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
 			if (logToFile) {
 
 			}

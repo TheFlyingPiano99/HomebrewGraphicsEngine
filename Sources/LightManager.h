@@ -64,6 +64,7 @@ namespace Hogra {
 		Mesh* debugLightVolumeMesh = nullptr;
 		ShaderProgram glyphProgram;
 		Material debugMaterial;
+		Texture2D brdfLUT;
 		Geometry* debugGeometry = nullptr;
 	};
 }

@@ -397,6 +397,9 @@
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
     <None Include="..\Resources\Shaders\deferredAmbientPass.frag" />
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
+    <None Include="..\Resources\Shaders\environmentPrefilter.frag" />
+    <None Include="..\Resources\Shaders\environmentToIrradiance.frag" />
+    <None Include="..\Resources\Shaders\environmentToIrradiance.vert" />
     <None Include="..\Resources\Shaders\equirectangularToCubemap.frag" />
     <None Include="..\Resources\Shaders\equirectangularToCubemap.vert" />
     <None Include="..\Resources\Shaders\instanced2D.vert" />
@@ -409,6 +412,7 @@
     <None Include="..\Resources\Shaders\pixelPhysics2.frag" />
     <None Include="..\Resources\Shaders\fullScreenQuad.vert" />
     <None Include="..\Resources\Shaders\fullScreenQuadWithRayDir.vert" />
+    <None Include="..\Resources\Shaders\precalculateIndirectBRDF.frag" />
     <None Include="..\Resources\Shaders\screenQuadrant.vert" />
     <None Include="..\Resources\Shaders\single3D.vert" />
     <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag" />

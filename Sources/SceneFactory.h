@@ -29,7 +29,7 @@ namespace Hogra {
 
 		void InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field);
 
-		SceneObject* InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName);
+		SceneObject* InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName, const glm::vec3& color = glm::vec3(0,0,1));
 
 		void InitCaptions(Scene* scene);
 

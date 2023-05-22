@@ -966,6 +966,18 @@
     <None Include="..\Resources\Shaders\equirectangularToCubemap.vert">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\Resources\Shaders\environmentToIrradiance.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\environmentToIrradiance.vert">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\environmentPrefilter.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\precalculateIndirectBRDF.frag">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HomebrewGraphicsEngine.rc">
