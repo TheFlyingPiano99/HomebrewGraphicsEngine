@@ -28,7 +28,6 @@ namespace Hogra {
 			return *this;
 		}
 
-
 		Dnum operator+(Dnum r) {
 			return Dnum(f + r.f, d + r.d);
 		}

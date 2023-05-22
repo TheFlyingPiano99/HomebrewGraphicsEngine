@@ -8,6 +8,8 @@
 
 Asset-Importer-Lib (assimp)	|	Homepage: https://assimp-docs.readthedocs.io/en/v5.1.0/		|	License: modified, 3-clause BSD-License
 							|																|
+FFTW++						|	Homepage: https://fftwpp.sourceforge.net/					|	License: GNU V3
+							|																|
 FreeType			 		|	Homepage: https://freetype.org/								|	License: FreeType License
 							|																|
 glad						|	Homepage: https://glad.dav1d.de/							|	License: Public domain + See Khronos license

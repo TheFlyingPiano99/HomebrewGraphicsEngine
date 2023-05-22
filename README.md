@@ -25,6 +25,7 @@ A grahics/videogame engine writen in C++ using OpenGL.
 ## Third-party libraries
 
 - Asset-Importer-Lib (assimp)
+- FFTW++
 - FreeType
 - glad
 - GLFW OpenGL Library
