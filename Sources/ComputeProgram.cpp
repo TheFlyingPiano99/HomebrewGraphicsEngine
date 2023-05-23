@@ -70,13 +70,21 @@ namespace Hogra {
 		return nullptr;
 	}
 
-	void ComputeProgram::Dispatch()
+	void ComputeProgram::Dispatch() const
 	{
-		glDispatchComputeGroupSizeARB(
+		DebugUtils::PrintMsg("Compute", "Dispatch");
+		glDispatchCompute(
+			numberOfWorkGroups.x, numberOfWorkGroups.y, numberOfWorkGroups.z
+		);
+		/*
+		glDispatchComputeGroupSize(
 			numberOfWorkGroups.x, numberOfWorkGroups.y, numberOfWorkGroups.z,
 			workGroupSize.x, workGroupSize.y, workGroupSize.z
 		);
+		*/
+		DebugUtils::PrintMsg("Compute", "Dispatch over");
 		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+		DebugUtils::PrintMsg("Compute", "After memory barrier");
 	}
 
 

@@ -76,7 +76,7 @@ namespace Hogra {
 			velBuffer.WriteData(vel);
 
 			ComputeProgram computeShader;
-			computeShader.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("particles.comp"));
+			computeShader.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("gradient.comp"));
 			computeShader.Activate();
 			computeShader.Dispatch();
 		}

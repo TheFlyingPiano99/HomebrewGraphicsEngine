@@ -900,6 +900,9 @@
     <None Include="..\Resources\Shaders\compute\particles.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
+    <None Include="..\Resources\Shaders\Compute\gradient.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HomebrewGraphicsEngine.rc">

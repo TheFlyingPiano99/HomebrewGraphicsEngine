@@ -369,6 +369,7 @@
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json" />
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
+    <None Include="..\Resources\Shaders\Compute\gradient.comp" />
     <None Include="..\Resources\Shaders\compute\particles.comp" />
     <None Include="..\Resources\Shaders\deferredAmbientPass.frag" />
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />

@@ -106,7 +106,7 @@ namespace Hogra {
 
 		void SetWorkGroupSize(glm::uvec3 size);
 
-		void Dispatch();
+		void Dispatch() const;
 
 	private:
 		GLuint glID;
