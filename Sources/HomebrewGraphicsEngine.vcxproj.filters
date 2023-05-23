@@ -64,6 +64,9 @@
     <Filter Include="Header Files\UserControls">
       <UniqueIdentifier>{8d84df0f-8d14-4c96-a678-1f97e8f05aba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\compute">
+      <UniqueIdentifier>{cc7bdf16-4218-4ba0-a345-e38fdafe8598}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -358,6 +361,12 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="LagrangianMechanics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComputeProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderStorageBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -671,6 +680,12 @@
     <ClInclude Include="LagrangianMechanics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderStorageBuffer.h">
+      <Filter>Header Files\OpenGLObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ComputeProgram.h">
+      <Filter>Header Files\OpenGLObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -881,6 +896,9 @@
     </None>
     <None Include="..\Resources\Shaders\precalculateIndirectBRDF.frag">
       <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\compute\particles.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

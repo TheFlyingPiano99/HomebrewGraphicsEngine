@@ -36,6 +36,14 @@ namespace Hogra {
 		return shaderFolderPath;
 	}
 
+	std::string AssetFolderPathManager::getComputeShaderFolderPath()
+	{
+		if (computeShaderFolderPath.empty()) {
+			computeShaderFolderPath = FindPathIntoFolder("Resources/Shaders/Compute");
+		}
+		return computeShaderFolderPath;
+	}
+
 	std::string AssetFolderPathManager::getTextureFolderPath() {
 		if (textureFolderPath.empty()) {
 			textureFolderPath = FindPathIntoFolder("Resources/Textures");

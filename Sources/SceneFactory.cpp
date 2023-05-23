@@ -29,6 +29,9 @@
 #include "HograTime.h"
 #include "DirectionalShadowCaster.h"
 
+#include "ComputeProgram.h"
+#include "ShaderStorageBuffer.h"
+
 #include "nlohmann/json.hpp"
 #include "jsonParseUtils.h"
 #include <Windows.h>
@@ -59,6 +62,24 @@ namespace Hogra {
 		defLayer->SetRenderMode(RenderLayer::RenderMode::deferredInstancedRenderMode);
 		defLayer->SetName("DeferredLayer");
 		scene->AddRenderLayer(defLayer);
+
+		{	// Compute shader init:
+			int wh = 1024;
+			std::vector<glm::vec4> pos(wh * wh);
+			ShaderStorageBuffer<glm::vec4> posBuffer;
+			posBuffer.Init((size_t)(wh * wh));
+			posBuffer.WriteData(pos);
+
+			std::vector<glm::vec4> vel(wh * wh);
+			ShaderStorageBuffer<glm::vec4> velBuffer;
+			velBuffer.Init((size_t)(wh * wh));
+			velBuffer.WriteData(vel);
+
+			ComputeProgram computeShader;
+			computeShader.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("particles.comp"));
+			computeShader.Activate();
+			computeShader.Dispatch();
+		}
 
 		auto* dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
 		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));

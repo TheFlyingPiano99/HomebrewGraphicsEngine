@@ -14,6 +14,7 @@ namespace Hogra {
 		static AssetFolderPathManager* instance;
 
 		std::string shaderFolderPath;
+		std::string computeShaderFolderPath;
 		std::string textureFolderPath;
 		std::string geometryFolderPath;
 		std::string fontsFolderPath;
@@ -47,6 +48,8 @@ namespace Hogra {
 		}
 
 		std::string getShaderFolderPath();
+
+		std::string getComputeShaderFolderPath();
 
 		std::string getTextureFolderPath();
 

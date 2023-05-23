@@ -174,6 +174,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="CompositeCollider.cpp" />
+    <ClCompile Include="ComputeProgram.cpp" />
     <ClCompile Include="ControlAction.cpp" />
     <ClCompile Include="ControlActionManager.cpp" />
     <ClCompile Include="CuboidCollider.cpp" />
@@ -239,6 +240,7 @@
     <ClCompile Include="ShaderProgramFactory.cpp" />
     <ClCompile Include="DirectionalShadowCaster.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
+    <ClCompile Include="ShaderStorageBuffer.cpp" />
     <ClCompile Include="ShadowCaster.cpp" />
     <ClCompile Include="SphericalCollider.cpp" />
     <ClCompile Include="stb.cpp" />
@@ -274,6 +276,7 @@
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CompositeCollider.h" />
+    <ClInclude Include="ComputeProgram.h" />
     <ClInclude Include="ControlAction.h" />
     <ClInclude Include="ControlActionManager.h" />
     <ClInclude Include="CuboidCollider.h" />
@@ -344,6 +347,7 @@
     <ClInclude Include="ShaderProgramFactory.h" />
     <ClInclude Include="DirectionalShadowCaster.h" />
     <ClInclude Include="MemoryManager.h" />
+    <ClInclude Include="ShaderStorageBuffer.h" />
     <ClInclude Include="ShadowCaster.h" />
     <ClInclude Include="SphericalCollider.h" />
     <ClInclude Include="Texture.h" />
@@ -365,6 +369,7 @@
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json" />
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
+    <None Include="..\Resources\Shaders\compute\particles.comp" />
     <None Include="..\Resources\Shaders\deferredAmbientPass.frag" />
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
     <None Include="..\Resources\Shaders\environmentPrefilter.frag" />
