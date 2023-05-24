@@ -31,9 +31,8 @@ namespace Hogra {
 
 		// Inherited via Texture
 		void Bind() const override;
-		void Unbind() const override;
 
-		const std::vector<glm::vec4>& GetBytes() const;
+		void Unbind() const override;
 
 		const glm::vec4& operator()(glm::ivec2 position) const {
 			if (position.x >= dimensions.x || position.x < 0
@@ -50,8 +49,6 @@ namespace Hogra {
 				normalisedPosition.y * (dimensions.y - 1)));
 		}
 
-		void SetData(const std::vector<glm::vec4>& _data);
-
 		void SetFiltering(GLenum filtering) const override;
 
 		void SetMinFilter(GLenum filter) {
@@ -66,11 +63,13 @@ namespace Hogra {
 
 		void GenerateMipmap();
 
+		void WriteData(void* dataPtr) override;
+
+		void ReadData(void* dataPtr) override;
+
 	private:
 		glm::ivec2 dimensions;
 		glm::vec4 nullVector;
 		std::vector<glm::vec4> bytes;
-		GLenum format = GL_RGBA;
-		GLenum pixelType = GL_FLOAT;
 	};
 }

@@ -3,15 +3,19 @@
 
 namespace Hogra {
 
-	void Texture1D::Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType)
+	void Texture1D::Init(unsigned char* _bytes, int _width, GLuint _unit, GLenum _format, GLenum _pixelType)
 	{
-		this->width = width;
+		this->width = _width;
+		this->unit = _unit;
+		this->format = _format;
+		this->internalFormat = _format;
+		this->pixelType = _pixelType;
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
-		glActiveTexture(GL_TEXTURE0 + slot);
-		unit = slot;
+		glActiveTexture(GL_TEXTURE0 + _unit);
+		unit = _unit;
 		glBindTexture(GL_TEXTURE_1D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
@@ -27,7 +31,7 @@ namespace Hogra {
 		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage1D(GL_TEXTURE_1D, 0, format, width, 0, format, pixelType, bytes);
+		glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, pixelType, _bytes);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_1D);
 
@@ -52,6 +56,20 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, filtering);
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, filtering);
 		Unbind();
+	}
+
+	void Texture1D::WriteData(void* dataPtr)
+	{
+		glBindTexture(GL_TEXTURE_1D, glID);
+		glTexSubImage1D(GL_TEXTURE_1D, 0, 0,
+			width,
+			format, pixelType, dataPtr);
+	}
+
+	void Texture1D::ReadData(void* dataPtr)
+	{
+		glBindTexture(GL_TEXTURE_1D, glID);
+		glGetTexImage(GL_TEXTURE_1D, 0, format, pixelType, dataPtr);
 	}
 
 }

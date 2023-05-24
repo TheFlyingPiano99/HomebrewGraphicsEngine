@@ -72,19 +72,44 @@ namespace Hogra {
 
 	void ComputeProgram::Dispatch() const
 	{
-		DebugUtils::PrintMsg("Compute", "Dispatch");
 		glDispatchCompute(
 			numberOfWorkGroups.x, numberOfWorkGroups.y, numberOfWorkGroups.z
 		);
 		/*
+		// TODO: Figure out why is it not working and throwing null ptr exception
 		glDispatchComputeGroupSize(
 			numberOfWorkGroups.x, numberOfWorkGroups.y, numberOfWorkGroups.z,
 			workGroupSize.x, workGroupSize.y, workGroupSize.z
 		);
 		*/
-		DebugUtils::PrintMsg("Compute", "Dispatch over");
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
-		DebugUtils::PrintMsg("Compute", "After memory barrier");
+		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+	}
+
+	glm::uvec3 ComputeProgram::GetMaxNumberOfWorkGroup()
+	{
+		int max_work_grp_cnt[3];
+		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 0, &max_work_grp_cnt[0]);
+		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, &max_work_grp_cnt[1]);
+		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, &max_work_grp_cnt[2]);
+
+		return glm::uvec3(max_work_grp_cnt[0], max_work_grp_cnt[1], max_work_grp_cnt[2]);
+	}
+
+	glm::uvec3 ComputeProgram::GetMaxWorkGroupSize()
+	{
+		int max_work_grp_size[3];
+		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 0, &max_work_grp_size[0]);
+		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 1, &max_work_grp_size[1]);
+		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_SIZE, 2, &max_work_grp_size[2]);
+
+		return glm::uvec3(max_work_grp_size[0], max_work_grp_size[1], max_work_grp_size[2]);
+	}
+
+	unsigned int ComputeProgram::GetMaxInvocationsPerWorkGroup()
+	{
+		int max_invocations;
+		glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, 0, &max_invocations);
+		return max_invocations;
 	}
 
 
@@ -137,8 +162,25 @@ namespace Hogra {
 	void ComputeProgram::SetWorkGroupSize(glm::uvec3 size)
 	{
 		workGroupSize = size;
-	}
+		const auto maxSize = GetMaxWorkGroupSize();
+		if (maxSize.x < workGroupSize.x) {
+			DebugUtils::PrintError("ComputeProgram", "Trying to set work group size in X dimension to a value greater than max allowed.");
+			workGroupSize.x = maxSize.x;
+		}
+		if (maxSize.y < workGroupSize.y) {
+			DebugUtils::PrintError("ComputeProgram", "Trying to set work group size in Y dimension to a value greater than max allowed.");
+			workGroupSize.y = maxSize.y;
+		}
+		if (maxSize.z < workGroupSize.z) {
+			DebugUtils::PrintError("ComputeProgram", "Trying to set work group size in Z dimension to a value greater than max allowed.");
+			workGroupSize.z = maxSize.z;
+		}
 
+		const auto maxInvocations = GetMaxInvocationsPerWorkGroup();
+		if (maxInvocations < workGroupSize.x * workGroupSize.y * workGroupSize.z) {
+			DebugUtils::PrintError("ComputeProgram", "Trying to set work group size so that invocations in a work group exceed the max allowed invocation count.");
+		}
+	}
 
 	std::string ComputeProgram::getFileContent(const std::filesystem::path& path) const
 	{

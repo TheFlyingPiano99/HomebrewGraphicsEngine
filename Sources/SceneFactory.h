@@ -19,10 +19,6 @@ namespace Hogra {
 
 		Scene* CreateEasyScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		Scene* CreateVoxelDemoScene(unsigned int contextWidth, unsigned int contextHeight);
-
-		Scene* CreatePixelPhysicsDemoScene(unsigned int _contextW, unsigned int _contextH);
-
 		ForceField* InitGravitation(Scene* scene);
 
 		CompositeCollider* InitCompositeCollider();

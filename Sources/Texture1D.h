@@ -29,5 +29,9 @@ namespace Hogra {
 		void Bind() const override;
 		void Unbind() const override;
 		void SetFiltering(GLenum filtering) const override;
+
+		void WriteData(void* dataPtr) override;
+
+		void ReadData(void* dataPtr) override;
 	};
 }

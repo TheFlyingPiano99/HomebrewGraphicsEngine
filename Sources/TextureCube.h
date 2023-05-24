@@ -13,11 +13,7 @@ namespace Hogra {
 
 	class TextureCube : public Texture
 	{
-		friend class Allocator;
-	
-		glm::ivec2 dimensions;
-		glm::vec4 nullVector;
-
+	ALLOCATOR_CONSTRUCTIBLE
 	public:
 		friend class FBO;
 
@@ -62,5 +58,14 @@ namespace Hogra {
 		void SetFiltering(GLenum filtering) const override;
 
 		Texture2D GetFace(unsigned int face);
+
+		void WriteData(void* dataPtr) override;
+
+		void ReadData(void* dataPtr) override;
+
+	private:
+		glm::ivec2 dimensions;
+		glm::vec4 nullVector;
+
 	};
 }

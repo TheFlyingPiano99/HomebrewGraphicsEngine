@@ -108,13 +108,23 @@ namespace Hogra {
 
 		void Dispatch() const;
 
+		static glm::uvec3 GetMaxNumberOfWorkGroup();
+
+		static glm::uvec3 GetMaxWorkGroupSize();
+
+		static unsigned int GetMaxInvocationsPerWorkGroup();
+
+		inline unsigned int GetGlID() const {
+			return glID;
+		}
+
 	private:
 		GLuint glID;
 
 		std::filesystem::path sourcePath;
 
 		glm::uvec3 numberOfWorkGroups = glm::vec3(1, 1, 1);
-		glm::uvec3 workGroupSize = glm::vec3(0, 0, 0);
+		glm::uvec3 workGroupSize = glm::vec3(1, 1, 1);
 
 
 		// Checks if the different Shaders have compiled properly

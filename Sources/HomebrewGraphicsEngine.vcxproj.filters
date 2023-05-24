@@ -369,6 +369,9 @@
     <ClCompile Include="ShaderStorageBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FFT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -686,6 +689,9 @@
     <ClInclude Include="ComputeProgram.h">
       <Filter>Header Files\OpenGLObjects</Filter>
     </ClInclude>
+    <ClInclude Include="FFT.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -901,6 +907,12 @@
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
     <None Include="..\Resources\Shaders\Compute\gradient.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Compute\fft.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Compute\gradient3D.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
   </ItemGroup>

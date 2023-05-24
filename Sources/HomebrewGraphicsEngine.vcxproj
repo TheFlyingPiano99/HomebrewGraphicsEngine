@@ -184,6 +184,7 @@
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
     <ClCompile Include="FBO.cpp" />
+    <ClCompile Include="FFT.cpp" />
     <ClCompile Include="FirstPersonControl.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="ForceField.cpp" />
@@ -286,6 +287,7 @@
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
     <ClInclude Include="FBO.h" />
+    <ClInclude Include="FFT.h" />
     <ClInclude Include="FirstPersonControl.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="ForceField.h" />
@@ -369,7 +371,9 @@
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json" />
     <None Include="..\Resources\Shaders\bloomPrefilter.frag" />
     <None Include="..\Resources\Shaders\bloomRecombine.frag" />
+    <None Include="..\Resources\Shaders\Compute\fft.comp" />
     <None Include="..\Resources\Shaders\Compute\gradient.comp" />
+    <None Include="..\Resources\Shaders\Compute\gradient3D.comp" />
     <None Include="..\Resources\Shaders\compute\particles.comp" />
     <None Include="..\Resources\Shaders\deferredAmbientPass.frag" />
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />

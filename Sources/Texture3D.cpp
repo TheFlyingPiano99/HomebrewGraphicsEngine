@@ -8,15 +8,18 @@
 
 namespace Hogra {
 	
-	void Texture3D::Init(const std::string& directory, GLuint slot, GLenum format)
+	void Texture3D::Init(const std::string& directory, GLuint _unit, GLenum _format)
 	{
+		this->unit = _unit;
+		this->internalFormat = _format;
+		this->format = _format;
+
 		std::string name;	// Discarded !!!
 		if (!ReadDimensions(std::string(directory).append("/dimensions.txt").c_str(), name, this->dimensions)) {
 			throw std::exception("Failed to read dimensions of voxel data!");
 		}
 		bool swapBytes = false;
 		unsigned int headerSize = 0;
-		GLenum pixelType;
 		if (dimensions.bytesPerVoxel == 1) {
 			pixelType = GL_UNSIGNED_BYTE;
 		}
@@ -67,8 +70,7 @@ namespace Hogra {
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
-		glActiveTexture(GL_TEXTURE0 + slot);
-		unit = slot;
+		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_3D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
@@ -90,8 +92,13 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_3D, 0);
 	}
 
-	void Texture3D::Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum format)
+	void Texture3D::Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint _unit, GLenum _format)
 	{
+		this->unit = _unit;
+		this->internalFormat = _format;
+		this->format = _format;
+		this->pixelType = GL_UNSIGNED_BYTE;
+
 		dimensions.width = resolution.x;
 		dimensions.height = resolution.y;
 		dimensions.depth = resolution.z;
@@ -118,8 +125,7 @@ namespace Hogra {
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
 		// Assigns the texture to a Texture Unit
-		glActiveTexture(GL_TEXTURE0 + slot);
-		unit = slot;
+		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_3D, glID);
 
 		// Configures the type of algorithm that is used to make the image smaller or bigger
@@ -133,12 +139,39 @@ namespace Hogra {
 
 		// Assigns the image to the OpenGL Texture object
 		//TODO
-		glTexImage3D(GL_TEXTURE_3D, 0, format, dimensions.width, dimensions.height, dimensions.depth, 0, format, GL_UNSIGNED_BYTE, &bytes[0]);
+		glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.width, dimensions.height, dimensions.depth, 0, format, GL_UNSIGNED_BYTE, &bytes[0]);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_3D);
 
 		// Unbinds the OpenGL Texture object so that it can't accidentally be modified
 		glBindTexture(GL_TEXTURE_3D, 0);
+	}
+
+	void Texture3D::Init(glm::uvec3 dimensions, GLuint _unit, GLenum _internalFormat, GLenum _format, GLenum _pixelType)
+	{
+		this->unit = _unit;
+		this->internalFormat = _internalFormat;
+		this->format = _format;
+		this->pixelType = _pixelType;
+
+		glGenTextures(1, &glID);
+		glBindTexture(GL_TEXTURE_3D, glID);
+		glTexStorage3D(GL_TEXTURE_3D, 1, internalFormat, dimensions.x, dimensions.y, dimensions.z);
+		glBindTexture(GL_TEXTURE_3D, 0);
+	}
+
+	void Texture3D::WriteData(void* dataPtr)
+	{
+		glBindTexture(GL_TEXTURE_3D, glID);
+		glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, 
+			dimensions.width, dimensions.height, dimensions.depth,
+			format, pixelType, dataPtr);
+	}
+
+	void Texture3D::ReadData(void* dataPtr)
+	{
+		glBindTexture(GL_TEXTURE_3D, glID);
+		glGetTexImage(GL_TEXTURE_3D, 0, format, pixelType, dataPtr);
 	}
 
 	Texture3D::~Texture3D()
@@ -238,15 +271,6 @@ namespace Hogra {
 						}
 						else if (tokens[tokens.size() - 3] == "bytesPerVoxel") {
 							dimensions.bytesPerVoxel = std::stoi(tokens[tokens.size() - 1]);
-						}
-						else if (tokens[tokens.size() - 3] == "widthScale") {
-							dimensions.widthScale = std::stof(tokens[tokens.size() - 1]);
-						}
-						else if (tokens[tokens.size() - 3] == "heightScale") {
-							dimensions.heightScale = std::stof(tokens[tokens.size() - 1]);
-						}
-						else if (tokens[tokens.size() - 3] == "depthScale") {
-							dimensions.depthScale = std::stof(tokens[tokens.size() - 1]);
 						}
 					}
 				}

@@ -1,0 +1,204 @@
+#version 450 core
+
+uniform float u_Dir;   // FFT direction
+uniform int u_ArgSize; // N
+uniform int u_PassID;  // pass number in [0, lg2(N))\n
+
+vec2 expi(float ang) { return vec2(cos(ang), sin(ang)); }
+
+vec2 zmul(vec2 z1, vec2 z2) {
+    return vec2(z1.x * z2.x - z1.y * z2.y,
+                z1.x * z2.y + z1.y * z2.x);
+}
+
+/*
+#ifdef FFT_1D
+layout (local_size_x = 32,  local_size_y = 1, local_size_z = 1) in;
+layout (rg32f) uniform coherent image1D u_Arg; // FFT arg
+void main()
+{
+    int j = int(gl_GlobalInvocationID.x);
+
+    if (j >= u_ArgSize/2)
+        return;
+
+   const float pi = 3.141592653589793238462643383279502884f;
+    int i = u_PassID;
+    int bm = 1 << i;
+    int bw = 2 << i;
+    float ang = u_Dir * pi / float(bm);
+    int i1 = ((j >> i) << (i + 1)) + j % bm; // xmin wing
+    int i2 = i1 ^ bm;                        // xmax wing
+    vec2 z1 = expi(ang * float(i1 ^ bw));
+    vec2 z2 = expi(ang * float(i2 ^ bw));
+    vec2 b1 = imageLoad(u_Arg, i1).xy;
+    vec2 b2 = imageLoad(u_Arg, i2).xy;
+
+    imageStore(u_Arg, i1, vec4(b1 + zmul(z1, b2), 0, 0));
+    imageStore(u_Arg, i2, vec4(b1 + zmul(z2, b2), 0, 0));
+}
+#endif
+
+
+#ifdef FFT_2D
+layout (local_size_x = 32,  local_size_y = 32, local_size_z = 1) in;
+layout (rg32f) uniform coherent image2D u_Arg; // FFT arg
+
+void main()
+{
+    int j1 = int(gl_GlobalInvocationID.x);
+    int j2 = int(gl_GlobalInvocationID.y);
+    if (j1 >= u_ArgSize/2 || j2 >= u_ArgSize/2)
+        return;
+    const float pi = 3.141592653589793238462643383279502884f;
+    int i = u_PassID;
+    int bm = 1 << i;
+    int bw = 2 << i;
+    float ang = u_Dir * pi / float(bm);
+    int i11 = ((j1 >> i) << (i + 1)) + j1 % bm; // xmin wing
+    int i21 = ((j2 >> i) << (i + 1)) + j2 % bm; // ymin wing
+    int i12 = i11 ^ bm;                         // xmax wing
+    int i22 = i21 ^ bm;                         // ymax wing
+    ivec2 k11 = ivec2(i11, i21);
+    ivec2 k12 = ivec2(i12, i21);
+    ivec2 k21 = ivec2(i11, i22);
+    ivec2 k22 = ivec2(i12, i22);
+    // FFT-X
+    {
+        vec2 b11 = imageLoad(u_Arg, k11).xy;
+        vec2 b12 = imageLoad(u_Arg, k12).xy;
+        vec2 b21 = imageLoad(u_Arg, k21).xy;
+        vec2 b22 = imageLoad(u_Arg, k22).xy;
+        vec2 z11 = expi(ang * float(i11 ^ bw));
+        vec2 z12 = expi(ang * float(i12 ^ bw));
+        imageStore(u_Arg, k11, vec4(b11 + zmul(z11, b12), 0, 0));
+        imageStore(u_Arg, k12, vec4(b11 + zmul(z12, b12), 0, 0));
+        imageStore(u_Arg, k21, vec4(b21 + zmul(z11, b22), 0, 0));
+        imageStore(u_Arg, k22, vec4(b21 + zmul(z12, b22), 0, 0));
+    }
+    // FFT-Y
+    {
+        vec2 b11 = imageLoad(u_Arg, k11).xy;
+        vec2 b12 = imageLoad(u_Arg, k12).xy;
+        vec2 b21 = imageLoad(u_Arg, k21).xy;
+        vec2 b22 = imageLoad(u_Arg, k22).xy;
+        vec2 z21 = expi(ang * float(i21 ^ bw));
+        vec2 z22 = expi(ang * float(i22 ^ bw));
+        imageStore(u_Arg, k11, vec4(b11 + zmul(z21, b21), 0, 0));
+        imageStore(u_Arg, k21, vec4(b11 + zmul(z22, b21), 0, 0));
+        imageStore(u_Arg, k12, vec4(b12 + zmul(z21, b22), 0, 0));
+        imageStore(u_Arg, k22, vec4(b12 + zmul(z22, b22), 0, 0));
+    }
+}
+#endif
+*/
+
+
+// #ifdef FFT_3D
+layout (local_size_x = 8,  local_size_y = 8, local_size_z = 8) in;
+layout (rg32f) uniform image3D u_Arg; // FFT arg
+
+void main()
+{
+    int j1 = int(gl_GlobalInvocationID.x);
+    int j2 = int(gl_GlobalInvocationID.y);
+    int j3 = int(gl_GlobalInvocationID.z);
+    if (j1 >= u_ArgSize/2 || j2 >= u_ArgSize/2 || j3 >= u_ArgSize/2)
+        return;
+    const float pi = 3.141592653589793238462643383279502884f;
+    int i = u_PassID;
+    int bm = 1 << i;
+    int bw = 2 << i;
+    float ang = u_Dir * pi / float(bm);
+    /*
+    int i11 = ((j1 >> i) << (i + 1)) + j1 % bm; // xmin wing
+    int i21 = ((j2 >> i) << (i + 1)) + j2 % bm; // ymin wing
+    int i31 = ((j3 >> i) << (i + 1)) + j3 % bm; // zmin wing
+    int i12 = i11 ^ bm;                         // xmax wing
+    int i22 = i21 ^ bm;                         // ymax wing
+    int i32 = i31 ^ bm;                         // zmax wing
+    */
+
+    // Test:
+    int i11 = 1;
+    int i21 = 1;
+    int i31 = 1;
+    int i12 = 1;
+    int i22 = 1;
+    int i32 = 1;    
+
+
+    ivec3 k111 = ivec3(i11, i21, i31);
+    ivec3 k121 = ivec3(i12, i21, i31);
+    ivec3 k211 = ivec3(i11, i22, i31);
+    ivec3 k221 = ivec3(i12, i22, i31);
+    ivec3 k112 = ivec3(i11, i21, i32);
+    ivec3 k122 = ivec3(i12, i21, i32);
+    ivec3 k212 = ivec3(i11, i22, i32);
+    ivec3 k222 = ivec3(i12, i22, i32);
+    // FFT-X
+    {
+        vec2 b111 = imageLoad(u_Arg, k111).xy;
+        vec2 b121 = imageLoad(u_Arg, k121).xy;
+        vec2 b211 = imageLoad(u_Arg, k211).xy;
+        vec2 b221 = imageLoad(u_Arg, k221).xy;
+        vec2 b112 = imageLoad(u_Arg, k112).xy;
+        vec2 b122 = imageLoad(u_Arg, k122).xy;
+        vec2 b212 = imageLoad(u_Arg, k212).xy;
+        vec2 b222 = imageLoad(u_Arg, k222).xy;
+        vec2 z11 = expi(ang * float(i11 ^ bw));
+        vec2 z12 = expi(ang * float(i12 ^ bw));
+        imageStore(u_Arg, k111, vec4(b111 + zmul(z11, b121), 0, 0));
+        imageStore(u_Arg, k121, vec4(b111 + zmul(z12, b121), 0, 0));
+        imageStore(u_Arg, k211, vec4(b211 + zmul(z11, b221), 0, 0));
+        imageStore(u_Arg, k221, vec4(b211 + zmul(z12, b221), 0, 0));
+        imageStore(u_Arg, k112, vec4(b112 + zmul(z11, b122), 0, 0));
+        imageStore(u_Arg, k122, vec4(b112 + zmul(z12, b122), 0, 0));
+        imageStore(u_Arg, k212, vec4(b212 + zmul(z11, b222), 0, 0));
+        imageStore(u_Arg, k222, vec4(b212 + zmul(z12, b222), 0, 0));
+    }
+    // FFT-Y
+    {
+        vec2 b111 = imageLoad(u_Arg, k111).xy;
+        vec2 b121 = imageLoad(u_Arg, k121).xy;
+        vec2 b211 = imageLoad(u_Arg, k211).xy;
+        vec2 b221 = imageLoad(u_Arg, k221).xy;
+        vec2 b112 = imageLoad(u_Arg, k112).xy;
+        vec2 b122 = imageLoad(u_Arg, k122).xy;
+        vec2 b212 = imageLoad(u_Arg, k212).xy;
+        vec2 b222 = imageLoad(u_Arg, k222).xy;
+        vec2 z21 = expi(ang * float(i21 ^ bw));
+        vec2 z22 = expi(ang * float(i22 ^ bw));
+
+        imageStore(u_Arg, k111, vec4(b111 + zmul(z21, b211), 0, 0));
+        imageStore(u_Arg, k211, vec4(b111 + zmul(z22, b211), 0, 0));
+        imageStore(u_Arg, k121, vec4(b121 + zmul(z21, b221), 0, 0));
+        imageStore(u_Arg, k221, vec4(b121 + zmul(z22, b221), 0, 0));
+        imageStore(u_Arg, k112, vec4(b112 + zmul(z21, b212), 0, 0));
+        imageStore(u_Arg, k212, vec4(b112 + zmul(z22, b212), 0, 0));
+        imageStore(u_Arg, k122, vec4(b122 + zmul(z21, b222), 0, 0));
+        imageStore(u_Arg, k222, vec4(b122 + zmul(z22, b222), 0, 0));
+    }
+    // FFT-Z
+    {
+        vec2 b111 = imageLoad(u_Arg, k111).xy;
+        vec2 b121 = imageLoad(u_Arg, k121).xy;
+        vec2 b211 = imageLoad(u_Arg, k211).xy;
+        vec2 b221 = imageLoad(u_Arg, k221).xy;
+        vec2 b112 = imageLoad(u_Arg, k112).xy;
+        vec2 b122 = imageLoad(u_Arg, k122).xy;
+        vec2 b212 = imageLoad(u_Arg, k212).xy;
+        vec2 b222 = imageLoad(u_Arg, k222).xy;
+        vec2 z31 = expi(ang * float(i31 ^ bw));
+        vec2 z32 = expi(ang * float(i32 ^ bw));
+        imageStore(u_Arg, k111, vec4(b111 + zmul(z31, b112), 0, 0));
+        imageStore(u_Arg, k112, vec4(b111 + zmul(z32, b112), 0, 0));
+        imageStore(u_Arg, k121, vec4(b121 + zmul(z31, b122), 0, 0));
+        imageStore(u_Arg, k122, vec4(b121 + zmul(z32, b122), 0, 0));
+        imageStore(u_Arg, k211, vec4(b211 + zmul(z31, b212), 0, 0));
+        imageStore(u_Arg, k212, vec4(b211 + zmul(z32, b212), 0, 0));
+        imageStore(u_Arg, k221, vec4(b221 + zmul(z31, b222), 0, 0));
+        imageStore(u_Arg, k222, vec4(b221 + zmul(z32, b222), 0, 0));
+    }
+}
+// #endif

@@ -9,9 +9,12 @@
 
 namespace Hogra {
 	
-	void TextureCube::Init(std::vector<std::string>& images, GLuint unit, GLuint pixelType)
+	void TextureCube::Init(std::vector<std::string>& images, GLuint _unit, GLuint _pixelType)
 	{
-		this->unit = unit;
+		this->unit = _unit;
+		this->pixelType = _pixelType;
+
+
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenTextures(1, &glID);
 		glActiveTexture(GL_TEXTURE0 + unit);
@@ -30,8 +33,8 @@ namespace Hogra {
 				DebugUtils::PrintError("TextureCube", std::string("Failed loading cube texture side:\n\"").append(images[i]).append("\"").c_str());
 				throw std::exception();
 			}
-			auto internalFormat = GL_RGBA;
-			auto format = GL_RGBA;
+			this->internalFormat = GL_RGBA;
+			this->format = GL_RGBA;
 			switch (numColCh)
 			{
 				case 4: {internalFormat = (GL_FLOAT == pixelType)? GL_RGBA16F : GL_RGBA; format = GL_RGBA; break; }
@@ -65,6 +68,9 @@ namespace Hogra {
 	void TextureCube::Init(unsigned int resolution, GLuint _unit, GLenum _format, GLenum _pixelType, bool useLinearFiltering)
 	{
 		this->unit = _unit;
+		this->format = _format;
+		this->pixelType = _pixelType;
+
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenTextures(1, &glID);
 		glActiveTexture(GL_TEXTURE0 + unit);
@@ -74,7 +80,7 @@ namespace Hogra {
 		this->dimensions.y = resolution;
 
 		
-		GLenum internalFormat = GL_RGBA;
+		this->internalFormat = GL_RGBA;
 		switch (_format)
 		{
 		case GL_RGBA: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RGBA16F : GL_RGBA; break; }
@@ -87,7 +93,7 @@ namespace Hogra {
 		
 		for (unsigned int i = 0; i < 6; ++i) {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat,
-				resolution, resolution, 0, _format, _pixelType, NULL);
+				resolution, resolution, 0, format, pixelType, NULL);
 		}
 		if (useLinearFiltering) {
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -103,9 +109,12 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 
-	void TextureCube::InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int _unit, GLuint format, GLuint pixelType)
+	void TextureCube::InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int _unit, GLuint _format, GLuint _pixelType)
 	{
 		this->unit = _unit;
+		this->format = _format;
+		this->pixelType = _pixelType;
+
 		ShaderProgram equirectangularToCubemapShader;
 		equirectangularToCubemapShader.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("equirectangularToCubemap.vert"),
@@ -167,12 +176,14 @@ namespace Hogra {
 		ShaderProgram& conversionShader, 
 		unsigned int resolution, 
 		unsigned int _unit, 
-		GLuint format, 
-		GLuint pixelType,
+		GLuint _format, 
+		GLuint _pixelType,
 		unsigned int maxMipLevels
 	)
 	{
 		this->unit = _unit;
+		this->format = _format;
+		this->pixelType = _pixelType;
 
 		this->Init(resolution, unit, format, pixelType, true);	// Init empty cubemap
 		if (1 < maxMipLevels) {
@@ -277,5 +288,15 @@ namespace Hogra {
 		Texture2D texture;
 		// TODO
 		return texture;
+	}
+
+	void TextureCube::WriteData(void* dataPtr)
+	{
+		DebugUtils::PrintError("TextureCube", "Unimplemented function: WriteData");
+	}
+
+	void TextureCube::ReadData(void* dataPtr)
+	{
+		DebugUtils::PrintError("TextureCube", "Unimplemented function: ReadData");
 	}
 }

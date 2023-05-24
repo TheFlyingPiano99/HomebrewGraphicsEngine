@@ -12,7 +12,6 @@ namespace Hogra {
 
 	struct Dimensions {
 		int width, height, depth, bytesPerVoxel;
-		float widthScale = 1.0f, heightScale = 1.0f, depthScale = 1.0f;
 	};
 
 	class Texture3D : public Texture
@@ -29,6 +28,12 @@ namespace Hogra {
 		*/
 		void Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum format);
 		
+		void Init(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum format, GLenum pixelType);
+
+		void WriteData(void* dataPtr);
+
+		void ReadData(void* dataPtr);
+
 		~Texture3D() override;
 
 		// Inherited via Texture

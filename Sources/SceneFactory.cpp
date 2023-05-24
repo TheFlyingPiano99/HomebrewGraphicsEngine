@@ -34,6 +34,8 @@
 
 #include "nlohmann/json.hpp"
 #include "jsonParseUtils.h"
+#include "MathUtil.h"
+
 #include <Windows.h>
 
 
@@ -51,6 +53,7 @@ namespace Hogra {
 		Allocator::Delete(instance);
 	}
 
+
 	Scene* SceneFactory::CreateDemoScene(unsigned int contextWidth, unsigned int contextHeight) {
 		auto* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
@@ -63,23 +66,130 @@ namespace Hogra {
 		defLayer->SetName("DeferredLayer");
 		scene->AddRenderLayer(defLayer);
 
-		{	// Compute shader init:
-			int wh = 1024;
-			std::vector<glm::vec4> pos(wh * wh);
-			ShaderStorageBuffer<glm::vec4> posBuffer;
-			posBuffer.Init((size_t)(wh * wh));
-			posBuffer.WriteData(pos);
+		/*
+		// Testing gradient compute shader:
+		{
+			// Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType, bool useMipmaps = false);
+			ComputeProgram program;
+			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("gradient.comp"));
+			program.SetNumberOfWorkGroups({ 512, 512, 1 });
+			program.Activate();
+			Texture2D texture;
+			texture.Init(GL_RGBA32F, glm::ivec2(512, 512), 0, GL_RGBA, GL_FLOAT);
+			texture.BindToImageUnit();
+			program.Dispatch();
+			glm::vec4* pixels = new glm::vec4[512 * 512];
+			texture.ReadData(pixels);
 
-			std::vector<glm::vec4> vel(wh * wh);
-			ShaderStorageBuffer<glm::vec4> velBuffer;
-			velBuffer.Init((size_t)(wh * wh));
-			velBuffer.WriteData(vel);
-
-			ComputeProgram computeShader;
-			computeShader.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("gradient.comp"));
-			computeShader.Activate();
-			computeShader.Dispatch();
+			FBO fbo;
+			fbo.Init();
+			fbo.LinkTexture(GL_COLOR_ATTACHMENT0, texture);
+			fbo.saveToPPM(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("savedGradient.ppm"));
 		}
+		*/
+
+		{
+			auto groups = ComputeProgram::GetMaxNumberOfWorkGroup();
+			DebugUtils::PrintMsg("SceneLoader",
+				std::string("Max number of work groups: ")
+				.append(std::to_string(groups.x))
+				.append(", ").append(std::to_string(groups.y))
+				.append(", ").append(std::to_string(groups.z)).c_str()
+			);
+
+			auto size = ComputeProgram::GetMaxWorkGroupSize();
+			DebugUtils::PrintMsg("SceneLoader", 
+				std::string("Max group size: ")
+				.append(std::to_string(size.x))
+				.append(", ").append(std::to_string(size.y))
+				.append(", ").append(std::to_string(size.z)).c_str()
+			);
+
+			auto invoc = ComputeProgram::GetMaxInvocationsPerWorkGroup();
+			DebugUtils::PrintMsg("SceneLoader",
+				std::string("Max invocation count: ")
+				.append(std::to_string(invoc)).c_str()
+			);
+
+			DebugUtils::PrintMsg("SceneLoader",
+				std::string("32 x 32 x 32 = ")
+				.append(std::to_string(32 * 32 * 32)).c_str()
+			);
+
+			FFT_3D fft;
+
+			const int cnt = 16;
+			auto* input = new std::complex<float>[cnt * cnt * cnt];
+			auto* output = new std::complex<float>[cnt * cnt * cnt];
+			for (int i = 0; i < cnt * cnt * cnt; i++) {
+				input[i] = sinf(i);
+			}
+			fft.Init(cnt);
+			fft.Transform(input, output, FFT_3D::Direction::Forward);
+			std::cout << "Output:" << std::endl;
+			for (int i = 0; i < 8 * 8 * 2; i++) {
+				std::cout << output[i] << std::endl;
+			}
+			/*
+			for (int k = 0; k < cnt; ++k) {
+				for (int i = 0; i < cnt; ++i) {
+					for (int j = 0; j < cnt; ++j) {
+						printf("{%f %f}\n",
+							input[i + cnt * (j + cnt * k)].real(), output[i + cnt * (j + cnt * k)].imag());
+					}
+					printf("\n");
+				}
+				printf("\n\n");
+			}
+			DebugUtils::PrintMsg("SceneLoader", "Output:");
+			for (int k = 0; k < cnt; ++k) {
+				for (int i = 0; i < cnt; ++i) {
+					for (int j = 0; j < cnt; ++j) {
+						printf("{%f %f}\n",
+							output[i + cnt * (j + cnt * k)].real(), output[i + cnt * (j + cnt * k)].imag());
+					}
+					printf("\n");
+				}
+				printf("\n\n");
+			}
+			*/
+		}
+
+		/*
+		// Test dj_fft:
+		{
+			srand(3234);
+			int cnt = 8;
+			dj::fft_arg<float> xi;
+
+			for (int i = 0; i < (cnt * cnt * cnt); ++i)
+				xi.push_back(std::complex<float>((2.0f * rng() - 1.0f) * 64.f, 0.0f));
+
+			auto s1 = std::chrono::high_resolution_clock::now();
+			dj::fft_arg<float> cpu = dj::fft3d(xi, dj::fft_dir::DIR_FWD);
+			auto s2 = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> d1 = s2 - s1;
+			printf("=> [%i^3] CPU: %f s\n", cnt, d1.count()); fflush(stdout);
+
+			auto s3 = std::chrono::high_resolution_clock::now();
+			dj::fft_arg<float> gpu = dj::fft3d_gpu_glready(xi, dj::fft_dir::DIR_FWD);
+			auto s4 = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> d2 = s4 - s3;
+			printf("=> [%i^3] GPU: %f s\n", cnt, d2.count()); fflush(stdout);
+
+			for (int k = 0; k < cnt; ++k) {
+				for (int i = 0; i < cnt; ++i) {
+					for (int j = 0; j < cnt; ++j) {
+						printf("{%f %f} vs {%f %f}\n",
+							cpu[i + cnt * (j + cnt * k)].real(), cpu[i + cnt * (j + cnt * k)].imag(),
+							gpu[i + cnt * (j + cnt * k)].real(), gpu[i + cnt * (j + cnt * k)].imag());
+					}
+					printf("\n");
+				}
+				printf("\n\n");
+			}
+		}
+		*/
 
 		auto* dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
 		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));

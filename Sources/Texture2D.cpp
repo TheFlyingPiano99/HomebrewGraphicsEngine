@@ -6,8 +6,9 @@
 
 namespace Hogra {
 	
-	void Texture2D::Init(const std::filesystem::path& path, GLuint unit, GLenum _format, GLenum _pixelType, bool gammaCorrectionOnFloat)
+	void Texture2D::Init(const std::filesystem::path& path, GLuint _unit, GLenum _format, GLenum _pixelType, bool gammaCorrectionOnFloat)
 	{
+		this->unit = _unit;
 		this->format = _format;
 		this->pixelType = _pixelType;
 
@@ -54,7 +55,6 @@ namespace Hogra {
 
 		dimensions.x = widthImg;
 		dimensions.y = heightImg;
-		this->unit = unit;
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
@@ -74,7 +74,7 @@ namespace Hogra {
 		// float flatColor[] = {1.0f, 1.0f, 1.0f, 1.0f};
 		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
-		auto internalFormat = GL_RGBA;
+		internalFormat = GL_RGBA;
 		switch (numColCh)
 		{
 		case 4: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RGBA16F : GL_RGBA; break; }
@@ -102,6 +102,7 @@ namespace Hogra {
 		this->unit = _unit;
 		this->format = _format;
 		this->pixelType = _pixelType;
+		this->internalFormat = GL_RGBA16;
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
@@ -118,7 +119,7 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
 		
 		/*
 		// Generates MipMaps
@@ -133,6 +134,7 @@ namespace Hogra {
 	{
 		this->dimensions = _dimensions;
 		this->unit = _unit;
+		this->internalFormat = _internalFormat;
 		this->format = _format;
 		this->pixelType = _pixelType;
 
@@ -151,7 +153,7 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, _internalFormat, dimensions.x, dimensions.y, 0, format, pixelType, _buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, format, pixelType, _buffer);
 
 		/*
 		// Generates MipMaps
@@ -163,9 +165,10 @@ namespace Hogra {
 
 	void Texture2D::Init(GLint _internalformat, glm::ivec2 _dimensions, GLuint _unit, GLenum _format, GLenum _pixelType, bool useMipmaps)
 	{
+		this->unit = _unit;
+		this->internalFormat = _internalformat;
 		this->format = _format;
 		this->pixelType = _pixelType;
-		this->unit = _unit;
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
@@ -183,7 +186,7 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage2D(GL_TEXTURE_2D, 0, _internalformat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, dimensions.x, dimensions.y, 0, format, pixelType, nullptr);
 		
 		// Mipmap:
 		if (useMipmaps) {
@@ -211,18 +214,6 @@ namespace Hogra {
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
-	
-	const std::vector<glm::vec4>& Texture2D::GetBytes() const {
-		return bytes;
-	}
-
-	void Texture2D::SetData(const std::vector<glm::vec4>& _data) {
-		this->bytes = _data;
-		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_2D, glID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, dimensions.x, dimensions.y, 0, format, pixelType, &bytes[0]);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
 
 	void Texture2D::SetFiltering(GLenum filtering) const
 	{
@@ -237,6 +228,20 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+
+	void Texture2D::WriteData(void* dataPtr)
+	{
+		glBindTexture(GL_TEXTURE_2D, glID);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+			dimensions.x, dimensions.y,
+			format, pixelType, dataPtr);
+	}
+
+	void Texture2D::ReadData(void* dataPtr)
+	{
+		glBindTexture(GL_TEXTURE_2D, glID);
+		glGetTexImage(GL_TEXTURE_2D, 0, format, pixelType, dataPtr);
 	}
 
 }
