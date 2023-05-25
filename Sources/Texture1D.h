@@ -10,12 +10,14 @@ namespace Hogra {
 
 	class Texture1D : public Texture
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
 		const char* type;
 		unsigned int width = 0;
 
-		void Init(unsigned char* bytes, int width, GLuint slot, GLenum format, GLenum pixelType);
+		void Init(unsigned char* bytes, int width, GLuint unit, GLenum format, GLenum pixelType);
+
+		void Init(int width, GLuint unit, GLenum internalFormat, GLenum format, GLenum pixelType);
 
 		~Texture1D() override {
 			this->Delete();

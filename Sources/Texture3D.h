@@ -18,6 +18,7 @@ namespace Hogra {
 	{
 		friend class Allocator;
 	public:
+		Texture3D();
 
 		std::vector<char> bytes;
 		

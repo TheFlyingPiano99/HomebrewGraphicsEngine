@@ -19,19 +19,19 @@
 namespace Hogra {
 
 	inline std::ostream& operator<<(std::ostream& stream, const glm::vec3& v) {
-		return stream << "[" << v.x << ", " << v.y << ", " << v.z << "]";
+		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ")";
 	}
 
 	inline std::ostream& operator<<(std::ostream& stream, const glm::vec4& v) {
-		return stream << "[" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << "]";
+		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 	}
 
 	inline std::ostream& operator<<(std::ostream& stream, const glm::mat3& m) {
-		return stream << "[" << m[0] << ", " << m[1] << ", " << m[2] << "]";
+		return stream << "(" << m[0] << ", " << m[1] << ", " << m[2] << ")";
 	}
 
 	inline std::ostream& operator<<(std::ostream& stream, const glm::mat4& m) {
-		return stream << "[" << m[0] << ", " << m[1] << ", " << m[2] << ", " << m[3] << "]";
+		return stream << "(" << m[0] << ", " << m[1] << ", " << m[2] << ", " << m[3] << ")";
 	}
 
 	namespace DebugUtils {

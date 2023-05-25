@@ -7,7 +7,11 @@
 
 
 namespace Hogra {
-	
+	Texture3D::Texture3D()
+	{
+		glEnable(GL_TEXTURE_3D);
+	}
+
 	void Texture3D::Init(const std::string& directory, GLuint _unit, GLenum _format)
 	{
 		this->unit = _unit;
@@ -138,7 +142,6 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 
 		// Assigns the image to the OpenGL Texture object
-		//TODO
 		glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.width, dimensions.height, dimensions.depth, 0, format, GL_UNSIGNED_BYTE, &bytes[0]);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_3D);

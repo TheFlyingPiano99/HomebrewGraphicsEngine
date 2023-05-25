@@ -375,6 +375,9 @@
     <None Include="..\Resources\Shaders\Compute\gradient.comp" />
     <None Include="..\Resources\Shaders\Compute\gradient3D.comp" />
     <None Include="..\Resources\Shaders\compute\particles.comp" />
+    <None Include="..\Resources\Shaders\Compute\test1D.comp" />
+    <None Include="..\Resources\Shaders\Compute\test2D.comp" />
+    <None Include="..\Resources\Shaders\Compute\test3D.comp" />
     <None Include="..\Resources\Shaders\deferredAmbientPass.frag" />
     <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag" />
     <None Include="..\Resources\Shaders\environmentPrefilter.frag" />

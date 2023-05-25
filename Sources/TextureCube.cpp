@@ -237,11 +237,6 @@ namespace Hogra {
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				cubeGeometry->Draw(); // renders a 1x1 cube
-				captureFBO.saveToPPM(
-					AssetFolderPathManager::getInstance()->getSavesFolderPath()
-					.append("side_").append(std::to_string(side)).append("_mip_")
-					.append(std::to_string(mip)).append(".ppm")
-				);
 			}
 		}
 

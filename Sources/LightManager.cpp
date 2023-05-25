@@ -34,9 +34,6 @@ namespace Hogra {
 
 		auto quad = GeometryFactory::GetInstance()->GetSimpleQuad();
 		quad->Draw();
-		captureFBO.saveToPPM(
-			AssetFolderPathManager::getInstance()->getSavesFolderPath().append("brdfLUT.ppm")
-		);
 		captureFBO.Unbind();
 	}
 

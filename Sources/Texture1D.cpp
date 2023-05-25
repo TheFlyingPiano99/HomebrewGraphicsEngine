@@ -39,6 +39,32 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_1D, 0);
 	}
 
+	void Texture1D::Init(int _width, GLuint _unit, GLenum _internalFormat, GLenum _format, GLenum _pixelType)
+	{
+		this->width = _width;
+		this->unit = _unit;
+		this->internalFormat = _internalFormat;
+		this->format = _format;
+		this->pixelType = _pixelType;
+
+		// Generates an OpenGL texture object
+		glGenTextures(1, &glID);
+		// Assigns the texture to a Texture Unit
+		glActiveTexture(GL_TEXTURE0 + unit);
+		glBindTexture(GL_TEXTURE_1D, glID);
+
+		// Configures the type of algorithm that is used to make the image smaller or bigger
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		// Configures the way the texture repeats (if it does at all)
+		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+
+		// Assigns the image to the OpenGL Texture object
+		glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, pixelType, nullptr);
+		glBindTexture(GL_TEXTURE_1D, 0);
+	}
+
 	void Texture1D::Bind() const
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);

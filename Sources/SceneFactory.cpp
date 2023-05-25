@@ -28,6 +28,9 @@
 #include "UniformVariableImpl.h"
 #include "HograTime.h"
 #include "DirectionalShadowCaster.h"
+#include "Texture1D.h"
+#include "Texture2D.h"
+#include "Texture3D.h"
 
 #include "ComputeProgram.h"
 #include "ShaderStorageBuffer.h"
@@ -88,6 +91,8 @@ namespace Hogra {
 		}
 		*/
 
+
+		/*
 		{
 			auto groups = ComputeProgram::GetMaxNumberOfWorkGroup();
 			DebugUtils::PrintMsg("SceneLoader",
@@ -98,7 +103,7 @@ namespace Hogra {
 			);
 
 			auto size = ComputeProgram::GetMaxWorkGroupSize();
-			DebugUtils::PrintMsg("SceneLoader", 
+			DebugUtils::PrintMsg("SceneLoader",
 				std::string("Max group size: ")
 				.append(std::to_string(size.x))
 				.append(", ").append(std::to_string(size.y))
@@ -130,7 +135,6 @@ namespace Hogra {
 			for (int i = 0; i < 8 * 8 * 2; i++) {
 				std::cout << output[i] << std::endl;
 			}
-			/*
 			for (int k = 0; k < cnt; ++k) {
 				for (int i = 0; i < cnt; ++i) {
 					for (int j = 0; j < cnt; ++j) {
@@ -152,8 +156,8 @@ namespace Hogra {
 				}
 				printf("\n\n");
 			}
-			*/
 		}
+		*/
 
 		/*
 		// Test dj_fft:
@@ -190,6 +194,71 @@ namespace Hogra {
 			}
 		}
 		*/
+
+		/*
+		// Compute shader with 1D output
+		{
+			Texture1D texture;
+			texture.Init(32, 0, GL_RGBA32F, GL_RGBA, GL_FLOAT);
+			ComputeProgram program;
+			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("test1D.comp"));
+			program.SetNumberOfWorkGroups({ 32, 1, 1 });
+			texture.BindToImageUnit();
+			program.Activate();
+			program.Dispatch();
+			glm::vec4* output = new glm::vec4[32];
+			texture.ReadData(output);
+			for (int i = 0; i < 32; i++) {
+				std::cout << output[i] << std::endl;
+			}
+			delete[] output;
+		}
+		*/
+
+		/*
+		// Compute shader with 2D output
+		{
+			Texture2D texture;
+			texture.Init(GL_RGBA32F, glm::ivec2(32), 0, GL_RGBA, GL_FLOAT);
+			ComputeProgram program;
+			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("test2D.comp"));
+			program.SetNumberOfWorkGroups({ 32, 32, 1 });
+			texture.BindToImageUnit();
+			program.Activate();
+			program.Dispatch();
+			glm::vec4* output = new glm::vec4[32 * 32];
+			texture.ReadData(output);
+			for (int i = 0; i < 32 * 2; i++) {
+				std::cout << output[i] << std::endl;
+			}
+			delete[] output;
+		}
+		*/
+
+		/*
+		// Compute shader with 3D output
+		{
+			Texture3D texture;
+			texture.Init(glm::ivec3(32, 32, 32), 0, GL_RGBA32F, GL_RGBA, GL_FLOAT);
+			ComputeProgram program;
+			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("test3D.comp"));
+			program.SetNumberOfWorkGroups({ 32, 32, 32 });
+			texture.BindToImageUnit();
+			program.Activate();
+			program.Dispatch();
+			glm::vec4* output = new glm::vec4[32 * 32 * 32];
+			texture.ReadData(output);
+			for (int i = 0; i < 32 * 2; i++) {
+				std::cout << output[i] << std::endl;
+			}
+			delete[] output;
+		}
+		*/
+		
+
+
+
+
 
 		auto* dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
 		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));
