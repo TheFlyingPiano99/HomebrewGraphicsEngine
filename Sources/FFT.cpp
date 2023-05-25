@@ -58,7 +58,7 @@ namespace Hogra {
 	{
         this->cnt = _cnt;
 		computeProgram.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("gradient3D.comp"));
-		texture.Init(glm::uvec3(cnt), 0, GL_RG32F, GL_RG, GL_FLOAT);
+		texture.InitForCompute(glm::uvec3(cnt), 0, GL_RG32F, GL_RG, GL_FLOAT);
 	}
 
     void FFT_3D::Transform(std::complex<float> input[], std::complex<float> output[], Direction dir)

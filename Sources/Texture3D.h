@@ -31,6 +31,8 @@ namespace Hogra {
 		
 		void Init(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum format, GLenum pixelType);
 
+		void InitForCompute(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum format, GLenum pixelType);
+
 		void WriteData(void* dataPtr);
 
 		void ReadData(void* dataPtr);

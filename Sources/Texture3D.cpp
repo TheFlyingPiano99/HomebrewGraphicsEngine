@@ -9,6 +9,7 @@
 namespace Hogra {
 	Texture3D::Texture3D()
 	{
+		isLayered = GL_TRUE;
 		glEnable(GL_TEXTURE_3D);
 	}
 
@@ -160,6 +161,24 @@ namespace Hogra {
 		glGenTextures(1, &glID);
 		glBindTexture(GL_TEXTURE_3D, glID);
 		glTexStorage3D(GL_TEXTURE_3D, 1, internalFormat, dimensions.x, dimensions.y, dimensions.z);
+		glBindTexture(GL_TEXTURE_3D, 0);
+	}
+
+	void Texture3D::InitForCompute(glm::uvec3 dimensions, GLuint _unit, GLenum _internalFormat, GLenum _format, GLenum _pixelType)
+	{
+		this->unit = _unit;
+		this->internalFormat = _internalFormat;
+		this->format = _format;
+		this->pixelType = _pixelType;
+
+		glGenTextures(1, &glID);
+		glBindTexture(GL_TEXTURE_3D, glID);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.x, dimensions.y, dimensions.z, 0, format, pixelType, nullptr);
 		glBindTexture(GL_TEXTURE_3D, 0);
 	}
 

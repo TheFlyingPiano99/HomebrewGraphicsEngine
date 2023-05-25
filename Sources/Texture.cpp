@@ -5,7 +5,7 @@
 namespace Hogra {
 	void Texture::BindToImageUnit() const
 	{
-		glBindImageTexture(unit, glID, 0, GL_FALSE, 0, GL_READ_WRITE, internalFormat);
+		glBindImageTexture(unit, glID, 0, isLayered, 0, GL_READ_WRITE, internalFormat);
 	}
 
 	void Texture::Delete() const

@@ -16,6 +16,7 @@ namespace Hogra {
 		GLenum internalFormat = GL_RGBA16F;
 		GLenum format = GL_RGBA;
 		GLenum pixelType = GL_FLOAT;
+		GLboolean isLayered = GL_FALSE;
 
 		virtual ~Texture() = default;
 
