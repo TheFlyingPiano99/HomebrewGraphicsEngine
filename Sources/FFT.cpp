@@ -57,7 +57,7 @@ namespace Hogra {
 	void FFT_3D::Init(unsigned int _cnt)
 	{
         this->cnt = _cnt;
-		computeProgram.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("gradient3D.comp"));
+		computeProgram.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("gradient.comp"));
 		texture.InitForCompute(glm::uvec3(cnt), 0, GL_RG32F, GL_RG, GL_FLOAT);
 	}
 
@@ -86,19 +86,15 @@ namespace Hogra {
         int msb = FindMSB(cnt3) / 3; // lg2(N) = lg2(cbrt(NxNxN))
         auto cnt_copy = cnt >> 1;   // division by 2
         int groupCnt = (int)std::ceilf(cnt / 8.0f);
-        //computeProgram.SetNumberOfWorkGroups({ groupCnt, groupCnt , groupCnt });
-        computeProgram.SetNumberOfWorkGroups({ cnt, cnt, cnt });
-        /*
-            for (int i = 0; i < msb; ++i) {
-                glUniform1i(passID, i);
-                computeProgram.Dispatch();
-            }
-        */
+        computeProgram.SetNumberOfWorkGroups({ groupCnt, groupCnt , groupCnt });
+            
+        for (int i = 0; i < msb; ++i) {
+            glUniform1i(passID, i);
+            computeProgram.Dispatch();
+        }
         computeProgram.Dispatch();
 
         // retrieve data
         texture.ReadData(output);
-        std::cout << "Complex byte size: " << sizeof(std::complex<float>) << "; cnt: " << cnt << std::endl;
-
     }
 }

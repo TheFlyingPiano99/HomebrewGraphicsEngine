@@ -18,6 +18,10 @@
 
 namespace Hogra {
 
+	inline std::ostream& operator<<(std::ostream& stream, const glm::vec2& v) {
+		return stream << "(" << v.x << ", " << v.y << ")";
+	}
+
 	inline std::ostream& operator<<(std::ostream& stream, const glm::vec3& v) {
 		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ")";
 	}
@@ -26,12 +30,40 @@ namespace Hogra {
 		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 	}
 
+	inline std::ostream& operator<<(std::ostream& stream, const glm::mat2& m) {
+		return stream << "(" << m[0] << ", " << m[1] << ")";
+	}
+
 	inline std::ostream& operator<<(std::ostream& stream, const glm::mat3& m) {
 		return stream << "(" << m[0] << ", " << m[1] << ", " << m[2] << ")";
 	}
 
 	inline std::ostream& operator<<(std::ostream& stream, const glm::mat4& m) {
 		return stream << "(" << m[0] << ", " << m[1] << ", " << m[2] << ", " << m[3] << ")";
+	}
+
+	inline std::ostream& operator<<(std::ostream& stream, const glm::ivec2& v) {
+		return stream << "(" << v.x << ", " << v.y << ")";
+	}
+
+	inline std::ostream& operator<<(std::ostream& stream, const glm::ivec3& v) {
+		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+	}
+
+	inline std::ostream& operator<<(std::ostream& stream, const glm::ivec4& v) {
+		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
+	}
+
+	inline std::ostream& operator<<(std::ostream& stream, const glm::uvec2& v) {
+		return stream << "(" << v.x << ", " << v.y << ")";
+	}
+
+	inline std::ostream& operator<<(std::ostream& stream, const glm::uvec3& v) {
+		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ")";
+	}
+
+	inline std::ostream& operator<<(std::ostream& stream, const glm::uvec4& v) {
+		return stream << "(" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ")";
 	}
 
 	namespace DebugUtils {

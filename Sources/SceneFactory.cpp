@@ -92,7 +92,7 @@ namespace Hogra {
 		*/
 
 
-		
+		/*
 		{
 			auto groups = ComputeProgram::GetMaxNumberOfWorkGroup();
 			DebugUtils::PrintMsg("SceneLoader",
@@ -157,6 +157,7 @@ namespace Hogra {
 				printf("\n\n");
 			}
 		}
+		*/
 		
 
 		
@@ -237,25 +238,26 @@ namespace Hogra {
 		}
 		*/
 
-		/*
+		
 		// Compute shader with 3D output
 		{
 			Texture3D texture;
 			texture.InitForCompute(glm::ivec3(32, 32, 32), 0, GL_RGBA32F, GL_RGBA, GL_FLOAT);
 			ComputeProgram program;
 			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("test3D.comp"));
-			program.SetNumberOfWorkGroups({ 32, 32, 32 });
+			int groupSize = 8;
+			program.SetNumberOfWorkGroups({ 32 / groupSize, 32 / groupSize, 32 / groupSize });
 			texture.BindToImageUnit();
 			program.Activate();
 			program.Dispatch();
 			glm::vec4* output = new glm::vec4[32 * 32 * 32];
 			texture.ReadData(output);
-			for (int i = 0; i < 32 * 2; i++) {
+			for (int i = 0; i < 32 * 32 * 2; i++) {
 				std::cout << output[i] << std::endl;
 			}
 			delete[] output;
 		}
-		*/
+		
 
 
 		auto* dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
