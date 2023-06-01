@@ -82,7 +82,7 @@ namespace Hogra {
 			workGroupSize.x, workGroupSize.y, workGroupSize.z
 		);
 		*/
-		glMemoryBarrier(GL_ALL_BARRIER_BITS);
+		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);	// To make sure all image writing is done before reading data on client-side
 	}
 
 	glm::uvec3 ComputeProgram::GetMaxNumberOfWorkGroup()

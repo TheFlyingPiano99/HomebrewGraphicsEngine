@@ -5,7 +5,6 @@
 #include "ShaderProgramFactory.h"
 #include <glm/ext/vector_float3.hpp>
 #include <glm/ext/vector_float4.hpp>
-#include "GeometryLoader.h"
 #include "ShaderProgramFactory.h"
 #include "AudioDevice.h"
 #include "Texture3D.h"
@@ -845,7 +844,7 @@ namespace Hogra {
 		scene->AddCollider(collider);
 		ShaderProgram* shader = ShaderProgramFactory::GetInstance()->GetDeferredPBRProgramWithMapping();
 		auto* volumeMaterial = MaterialFactory::GetInstance()->getPBRMaterial("lumpy-wet-concrete");
-		Geometry* geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
+		Geometry* geometry = GeometryFactory::GetInstance()->Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("mango.obj"));
 		geometry->SetFaceCulling(false);
 		auto* mesh = Allocator::New<Mesh>();
 		mesh->Init(volumeMaterial, geometry);
@@ -950,8 +949,9 @@ namespace Hogra {
 
 		// Blaster:
 		auto blasterObj = Allocator::New<SceneObject>();
-		auto loader = GeometryLoader();
-		auto blasterGeom = loader.Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("laser_gun.obj"));
+		auto blasterGeom = GeometryFactory::GetInstance()->Load(
+			AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("laser_gun.obj")
+		);
 		auto blasterMaterial = MaterialFactory::GetInstance()->getHomogenousPBRMaterial(glm::vec3(0.3, 0.405, 0.41), 0.4, 0.2, 0.95);
 		auto blasterMesh = Allocator::New<Mesh>();
 		blasterMesh->Init(blasterMaterial, blasterGeom);
@@ -1259,7 +1259,7 @@ namespace Hogra {
 					}
 					else
 					{
-					geometry = GeometryLoader().Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append(srcFileName));
+					geometry = GeometryFactory::GetInstance()->Load(AssetFolderPathManager::getInstance()->getGeometryFolderPath().append(srcFileName));
 					}
 					geometry->SetId(geometryData["id"]);
 					geometry->SetName(geometryData["name"]);

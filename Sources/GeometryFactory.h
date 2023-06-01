@@ -2,6 +2,7 @@
 
 #include "Geometry.h"
 #include "MemoryManager.h"
+#include <filesystem>
 
 namespace Hogra {
 
@@ -31,12 +32,18 @@ namespace Hogra {
 
 		Geometry* GetCilinder();
 
+		class GeometryLoadingException : public std::exception {
+		};
+
+		Geometry* Load(const std::filesystem::path& path);
+
 		/*
 		* The Front face is the opposite (uses counter-clockwise as front facing)
 		*/
 		Geometry* getLightVolumeSphere();
 
 		void ForgetPointers();
+
 
 	private:
 		Geometry* GenerateSphere();

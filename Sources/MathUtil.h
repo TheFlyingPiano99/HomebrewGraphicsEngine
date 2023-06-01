@@ -11,9 +11,7 @@
 #include <complex>
 #include "FFT.h"
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
+inline constexpr double m_pi = 3.141592653589793238462643383279502884;
 
 /*
 * Returns value from [0..1] interval

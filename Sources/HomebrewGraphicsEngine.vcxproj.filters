@@ -249,9 +249,6 @@
     <ClCompile Include="FirstPersonControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeometryLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeometryFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -627,9 +624,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InstanceGroup.h">

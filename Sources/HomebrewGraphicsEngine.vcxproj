@@ -190,7 +190,6 @@
     <ClCompile Include="ForceField.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GeometryFactory.cpp" />
-    <ClCompile Include="GeometryLoader.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="GUI.cpp" />
@@ -293,7 +292,6 @@
     <ClInclude Include="ForceField.h" />
     <ClInclude Include="GeometryFactory.h" />
     <ClInclude Include="Geometry.h" />
-    <ClInclude Include="GeometryLoader.h" />
     <ClInclude Include="GlobalInclude.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="HoGraEngineApplication.h" />

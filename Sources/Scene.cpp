@@ -13,7 +13,6 @@
 #include "ForceField.h"
 #include "CompositeCollider.h"
 #include "FirstPersonControl.h"
-#include "GeometryLoader.h"
 #include "MaterialFactory.h"
 #include "ShaderProgramFactory.h"
 #include "GUI.h"
