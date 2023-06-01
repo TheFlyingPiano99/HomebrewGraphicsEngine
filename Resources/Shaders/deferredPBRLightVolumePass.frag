@@ -32,7 +32,7 @@ layout (binding = 5) uniform samplerCube environmentMap;
 layout (binding = 6) uniform samplerCube irradianceMap;
 layout (binding = 7) uniform samplerCube prefilterMap;
 
-uniform samplerCube shadowMaps[32];		// shadowMaps[0] is the default empty map. This way we avoid accessing unbound samplers
+uniform samplerCube shadowMaps[16];		// shadowMaps[0] is the default empty map. This way we avoid accessing unbound samplers
 uniform float farPlane;					// shadow-map projection far plane
 
 const float PI = 3.14159265359;

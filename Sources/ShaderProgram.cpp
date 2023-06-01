@@ -49,7 +49,7 @@ namespace Hogra {
 		glShaderSource(vertexShader, 1, &vertexSource, nullptr);
 		// Compile the Vertex Shader into machine code
 		glCompileShader(vertexShader);
-		std::string paths = std::string("{\n").append(vertexFile).append("\n").append(geometryFile).append("\n").append(fragmentFile).append("\n}");
+		std::string paths = std::string("{\n\"").append(vertexFile).append("\"\n\"").append(geometryFile).append("\"\n\"").append(fragmentFile).append("\"\n}");
 		// Checks if Shader compiled succesfully
 		compileErrors(paths,
 			"VERTEX");
@@ -142,7 +142,7 @@ namespace Hogra {
 			{
 				glGetShaderInfoLog(glID, 1024, nullptr, infoLog);
 				DebugUtils::PrintError("ShaderProgram", 
-					std::string("SHADER_COMPILATION_ERROR for:").append(type).append(paths).append("\n").append(infoLog).c_str()
+					std::string("SHADER_COMPILATION_ERROR for: ").append(type).append("\n").append(paths).append("\n").append(infoLog).c_str()
 				);
 			}
 		}
@@ -153,7 +153,7 @@ namespace Hogra {
 			{
 				glGetProgramInfoLog(glID, 1024, nullptr, infoLog);
 				DebugUtils::PrintError("ShaderProgram",
-					std::string("SHADER_LINKING_ERROR for:").append(type).append(paths).append("\n").append(infoLog).c_str()
+					std::string("SHADER_LINKING_ERROR for: ").append(type).append("\n").append(paths).append("\n").append(infoLog).c_str()
 				);
 			}
 		}
