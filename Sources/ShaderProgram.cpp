@@ -49,8 +49,10 @@ namespace Hogra {
 		glShaderSource(vertexShader, 1, &vertexSource, nullptr);
 		// Compile the Vertex Shader into machine code
 		glCompileShader(vertexShader);
+		std::string paths = std::string("{\n").append(vertexFile).append("\n").append(geometryFile).append("\n").append(fragmentFile).append("\n}");
 		// Checks if Shader compiled succesfully
-		compileErrors(vertexShader, "VERTEX");
+		compileErrors(paths,
+			"VERTEX");
 
 		// Create Fragment Shader Object and get its reference
 		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -59,7 +61,7 @@ namespace Hogra {
 		// Compile the Vertex Shader into machine code
 		glCompileShader(fragmentShader);
 		// Checks if Shader compiled succesfully
-		compileErrors(fragmentShader, "FRAGMENT");
+		compileErrors(paths, "FRAGMENT");
 
 		// Create Shader Program Object and get its reference
 		glID = glCreateProgram();
@@ -74,14 +76,14 @@ namespace Hogra {
 			geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 			glShaderSource(geometryShader, 1, &geometrySource, nullptr);
 			glCompileShader(geometryShader);
-			compileErrors(geometryShader, "GEOMETRY");
+			compileErrors(paths, "GEOMETRY");
 			glAttachShader(glID, geometryShader);
 		}
 
 		// Wrap-up/Link all the shaders together into the Shader Program
 		glLinkProgram(glID);
 		// Checks if Shaders linked succesfully
-		compileErrors(glID, "PROGRAM");
+		compileErrors(paths, "PROGRAM");
 
 		// Delete the now useless Vertex and Fragment Shader objects
 		glDeleteShader(vertexShader);
@@ -127,7 +129,7 @@ namespace Hogra {
 	}
 
 	// Checks if the different Shaders have compiled properly
-	void ShaderProgram::compileErrors(unsigned int shader, const char* type) const
+	void ShaderProgram::compileErrors(const std::string& paths, const std::string& type) const
 	{
 		// Stores status of compilation
 		GLint hasCompiled;
@@ -135,20 +137,24 @@ namespace Hogra {
 		char infoLog[1024];
 		if (type != "PROGRAM")
 		{
-			glGetShaderiv(shader, GL_COMPILE_STATUS, &hasCompiled);
+			glGetShaderiv(glID, GL_COMPILE_STATUS, &hasCompiled);
 			if (hasCompiled == GL_FALSE)
 			{
-				glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-				std::cout << "SHADER_COMPILATION_ERROR for:" << type << "\n" << infoLog << std::endl;
+				glGetShaderInfoLog(glID, 1024, nullptr, infoLog);
+				DebugUtils::PrintError("ShaderProgram", 
+					std::string("SHADER_COMPILATION_ERROR for:").append(type).append(paths).append("\n").append(infoLog).c_str()
+				);
 			}
 		}
 		else
 		{
-			glGetProgramiv(shader, GL_LINK_STATUS, &hasCompiled);
+			glGetProgramiv(glID, GL_LINK_STATUS, &hasCompiled);
 			if (hasCompiled == GL_FALSE)
 			{
-				glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
-				std::cout << "SHADER_LINKING_ERROR for:" << type << "\n" << infoLog << std::endl;
+				glGetProgramInfoLog(glID, 1024, nullptr, infoLog);
+				DebugUtils::PrintError("ShaderProgram",
+					std::string("SHADER_LINKING_ERROR for:").append(type).append(paths).append("\n").append(infoLog).c_str()
+				);
 			}
 		}
 	}

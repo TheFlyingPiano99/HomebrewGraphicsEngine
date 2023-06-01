@@ -119,7 +119,7 @@ namespace Hogra {
 		std::string fragmentShaderPath;
 
 		// Checks if the different Shaders have compiled properly
-		void compileErrors(unsigned int shader, const char* type) const;
+		void compileErrors(const std::string& paths, const std::string& type) const;
 
 		std::string getFileContent(const std::string& filename) const;
 
