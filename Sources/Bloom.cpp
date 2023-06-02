@@ -42,10 +42,10 @@ void Hogra::Bloom::OnContextResize(unsigned int contextW, unsigned int contextH)
 		downScaledTexture.Delete();
 	}
 	glm::ivec2 dim = glm::ivec2(contextW, contextH);
-	hdrTexture.Init(GL_RGBA16F, dim, 1, GL_RGBA, GL_FLOAT);
+	hdrTexture.Init(dim, 1, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 	int divider = 2;
 	for (int i = 0; i < BLOOM_MIP_LEVELS; i++) {
-		downScaledTextures[i].Init(GL_R11F_G11F_B10F, dim / divider, 0, GL_RGB, GL_FLOAT);
+		downScaledTextures[i].Init(dim / divider, 0, GL_R11F_G11F_B10F, GL_RGB, GL_FLOAT);
 		divider *= 2;
 	}
 	fbo.LinkTexture(GL_COLOR_ATTACHMENT0, hdrTexture, 0);

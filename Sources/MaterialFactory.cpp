@@ -9,6 +9,7 @@
 #include "GlobalInclude.h"
 #include "FBO.h"
 #include "ComputeProgram.h"
+#include "DebugUtils.h"
 
 namespace Hogra {
 
@@ -43,17 +44,19 @@ namespace Hogra {
 		}
 		Texture2D* albedoMap = Allocator::New<Texture2D>();
 		if (!std::filesystem::exists(albedoPath)) {
-			albedoMap->Init(GL_RGBA, glm::ivec2(32, 32), ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, true);
+			albedoMap->Init(glm::ivec2(16, 16), ALBEDO_MAP_UNIT, GL_RGBA8, GL_RGB, GL_UNSIGNED_BYTE, false);
+			albedoMap->SetFiltering(GL_NEAREST);
 			ComputeProgram generatorProgram;
 			generatorProgram.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("missingTexturePattern.comp"));
-			generatorProgram.SetNumberOfWorkGroups({ 32, 32, 1 });
+			generatorProgram.SetNumberOfWorkGroups({ 16, 16, 1 });
 			generatorProgram.Activate();
 			albedoMap->BindToImageUnit();
 			generatorProgram.Dispatch();
+
+			DebugUtils::PrintWarning("MaterialFactory", std::string("Missing albedo map of material \"").append(materialName).append("\"! (Using placeholder pattern.)"));
 		}
 		else {
-			albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false);
-			albedoMap->GenerateMipmap();
+			albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false, true);
 		}
 
 		bool flipY = false;
@@ -95,8 +98,21 @@ namespace Hogra {
 			);
 			flipY = true;
 		}
-		normalMap->Init(normalPath, NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false);
-		normalMap->GenerateMipmap();
+		if (std::filesystem::exists(normalPath)) {
+			normalMap->Init(normalPath, NORMAL_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false, true);
+		}
+		else {
+			normalMap->Init(glm::ivec2(16, 16), NORMAL_MAP_UNIT, GL_RGBA8, GL_RGB, GL_UNSIGNED_BYTE, false);
+			normalMap->SetFiltering(GL_NEAREST);
+			ComputeProgram generatorProgram;
+			generatorProgram.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("smoothNormalMap.comp"));
+			generatorProgram.SetNumberOfWorkGroups({ 16, 16, 1 });
+			generatorProgram.Activate();
+			normalMap->BindToImageUnit();
+			generatorProgram.Dispatch();
+			DebugUtils::PrintWarning("MaterialFactory", std::string("Missing normal map of material \"").append(materialName).append("\"! (Using placeholder: n = (0.5, 0.5, 1.0).)"));
+		}
+
 		Texture2D roughnessMap;
 		auto roughnessPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
@@ -108,7 +124,20 @@ namespace Hogra {
 				.append(materialName).append("/").append(materialName).append("_roughness.jpg")
 			);
 		}
-		roughnessMap.Init(roughnessPath, 0, GL_RGB, GL_UNSIGNED_BYTE, false);
+		if (std::filesystem::exists(roughnessPath)) {
+			roughnessMap.Init(roughnessPath, 0, GL_RGB, GL_UNSIGNED_BYTE, false, true);
+		}
+		else {
+			roughnessMap.Init({16, 16}, 0, GL_RGBA8, GL_RGB, GL_UNSIGNED_BYTE, false);
+			ComputeProgram generator;
+			generator.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("maximumRoughness.comp"));
+			generator.Activate();
+			generator.SetNumberOfWorkGroups({ 16, 16, 1 });
+			roughnessMap.BindToImageUnit();
+			generator.Dispatch();
+			DebugUtils::PrintWarning("MaterialFactory", std::string("Missing roughness map of material \"").append(materialName).append("\"! (Using placeholder: r = 0.8)"));
+		}
+
 		Texture2D metallicMap;
 		auto metallicPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
@@ -120,7 +149,15 @@ namespace Hogra {
 				.append(materialName).append("/").append(materialName).append("_metallic.jpg")
 			);
 		}
-		metallicMap.Init(metallicPath, 1, GL_RGB, GL_UNSIGNED_BYTE, false);
+		if (std::filesystem::exists(metallicPath)) {
+			metallicMap.Init(metallicPath, 1, GL_RGB, GL_UNSIGNED_BYTE, false, true);
+		}
+		else {
+			metallicMap.Init({ 16, 16 }, 1, GL_RGBA8, GL_RGB, GL_UNSIGNED_BYTE, false);
+			metallicMap.SetFiltering(GL_NEAREST);
+			DebugUtils::PrintWarning("MaterialFactory", std::string("Missing metallic map of material \"").append(materialName).append("\"! (Using placeholder: m = 0)"));
+		}
+
 		Texture2D aoMap;
 		auto aoPath = std::filesystem::path(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
@@ -132,12 +169,19 @@ namespace Hogra {
 				.append(materialName).append("/").append(materialName).append("_ao.jpg")
 			);
 		}
-		aoMap.Init(aoPath, 2, GL_RGB, GL_UNSIGNED_BYTE, false);
+		if (std::filesystem::exists(aoPath)) {
+			aoMap.Init(aoPath, 2, GL_RGB, GL_UNSIGNED_BYTE, false, true);
+		}
+		else {
+			aoMap.Init({ 16, 16 }, 2, GL_RGBA8, GL_RGB, GL_UNSIGNED_BYTE, false);
+			aoMap.SetFiltering(GL_NEAREST);
+			DebugUtils::PrintWarning("MaterialFactory", std::string("Missing AO map of material \"").append(materialName).append("\"! (Using placeholder: ao = 0)"));
+		}
 
 		// Combining roughness, metallic and AO into a single texture:
 		auto& dim = albedoMap->GetDimensions();
 		Texture2D* roughnessMetallicAO = Allocator::New<Texture2D>();
-		roughnessMetallicAO->Init(GL_RGBA, dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE);
+		roughnessMetallicAO->Init(dim, ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGBA, GL_RGB, GL_UNSIGNED_BYTE, false);
 
 		// Combine maps:
 		{
@@ -162,7 +206,7 @@ namespace Hogra {
 			glDisable(GL_DEPTH_TEST);
 			quad->Draw();
 			fbo.Unbind();
-			roughnessMetallicAO->GenerateMipmap();
+			//roughnessMetallicAO->GenerateMipmap();
 			roughnessMap.Unbind();
 			metallicMap.Unbind();
 			aoMap.Unbind();

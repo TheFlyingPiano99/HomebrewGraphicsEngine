@@ -1,6 +1,7 @@
 #include "FBO.h"
 #include "GlobalInclude.h"
 #include "AssetFolderPathManager.h"
+#include "DebugUtils.h"
 
 namespace Hogra {
 	std::vector<FBO*> FBO::fbos = std::vector<FBO*>();
@@ -70,6 +71,7 @@ namespace Hogra {
 		viewport = glm::vec4(0, 0, dim.x, dim.y);
 		Bind();
 		glFramebufferTexture(GL_FRAMEBUFFER, attachment, texture.glID, 0);
+
 	}
 
 
@@ -113,7 +115,7 @@ namespace Hogra {
 	{	
 		int i = 0;
 		for (auto item : fbos) {
-			item->saveToPPM(AssetFolderPathManager::getInstance()->getSavesFolderPath().string().append("screenshot").append(std::to_string(i)).append(".ppm"));
+			item->SaveToPPM(AssetFolderPathManager::getInstance()->getSavesFolderPath().string().append("fbo").append(std::to_string(i)).append(".ppm"));
 			i++;
 		}
 	}
@@ -127,7 +129,7 @@ namespace Hogra {
 	* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
 	* Accessed: 2023-03-25
 	*/
-	void FBO::saveToPPM(const std::filesystem::path& savePath)
+	void FBO::SaveToPPM(const std::filesystem::path& savePath)
 	{
 		FILE* output_image;
 		int output_width = viewport.z;
@@ -153,9 +155,9 @@ namespace Hogra {
 			for (int y = 0; y < output_height; y++)
 			{
 				int baseIdx = x * output_height * pixelSize + y * pixelSize;
-				fprintf(output_image, 
-					"%u %u %u ", 
-					(unsigned int)pixels[baseIdx], 
+				fprintf(output_image,
+					"%u %u %u ",
+					(unsigned int)pixels[baseIdx],
 					(unsigned int)pixels[baseIdx + 1],
 					(unsigned int)pixels[baseIdx + 2]);
 			}

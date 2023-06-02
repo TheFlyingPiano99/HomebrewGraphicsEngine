@@ -17,7 +17,7 @@ namespace Hogra {
 	{
 		this->unit = _unit;
 		this->internalFormat = _format;
-		this->format = _format;
+		this->clientDataFormat = _format;
 
 		std::string name;	// Discarded !!!
 		if (!ReadDimensions(std::string(directory).append("/dimensions.txt").c_str(), name, this->dimensions)) {
@@ -26,13 +26,13 @@ namespace Hogra {
 		bool swapBytes = false;
 		unsigned int headerSize = 0;
 		if (dimensions.bytesPerVoxel == 1) {
-			pixelType = GL_UNSIGNED_BYTE;
+			clientDataType = GL_UNSIGNED_BYTE;
 		}
 		else if (dimensions.bytesPerVoxel == 2) {
-			pixelType = GL_HALF_FLOAT;
+			clientDataType = GL_HALF_FLOAT;
 		}
 		else if (dimensions.bytesPerVoxel == 4) {
-			pixelType = GL_FLOAT;
+			clientDataType = GL_FLOAT;
 		}
 
 		bytes = std::vector<char>(dimensions.width * dimensions.height * dimensions.depth * dimensions.bytesPerVoxel);
@@ -89,7 +89,7 @@ namespace Hogra {
 
 		// Assigns the image to the OpenGL Texture object
 		//TODO
-		glTexImage3D(GL_TEXTURE_3D, 0, format, dimensions.width, dimensions.height, dimensions.depth, 0, format, pixelType, &bytes[0]);
+		glTexImage3D(GL_TEXTURE_3D, 0, clientDataFormat, dimensions.width, dimensions.height, dimensions.depth, 0, clientDataFormat, clientDataType, &bytes[0]);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_3D);
 
@@ -101,8 +101,8 @@ namespace Hogra {
 	{
 		this->unit = _unit;
 		this->internalFormat = _format;
-		this->format = _format;
-		this->pixelType = GL_UNSIGNED_BYTE;
+		this->clientDataFormat = _format;
+		this->clientDataType = GL_UNSIGNED_BYTE;
 
 		dimensions.width = resolution.x;
 		dimensions.height = resolution.y;
@@ -143,7 +143,7 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_BORDER);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.width, dimensions.height, dimensions.depth, 0, format, GL_UNSIGNED_BYTE, &bytes[0]);
+		glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.width, dimensions.height, dimensions.depth, 0, clientDataFormat, GL_UNSIGNED_BYTE, &bytes[0]);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_3D);
 
@@ -155,8 +155,8 @@ namespace Hogra {
 	{
 		this->unit = _unit;
 		this->internalFormat = _internalFormat;
-		this->format = _format;
-		this->pixelType = _pixelType;
+		this->clientDataFormat = _format;
+		this->clientDataType = _pixelType;
 
 		glGenTextures(1, &glID);
 		glBindTexture(GL_TEXTURE_3D, glID);
@@ -168,8 +168,8 @@ namespace Hogra {
 	{
 		this->unit = _unit;
 		this->internalFormat = _internalFormat;
-		this->format = _format;
-		this->pixelType = _pixelType;
+		this->clientDataFormat = _format;
+		this->clientDataType = _pixelType;
 
 		glGenTextures(1, &glID);
 		glBindTexture(GL_TEXTURE_3D, glID);
@@ -178,7 +178,7 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.x, dimensions.y, dimensions.z, 0, format, pixelType, nullptr);
+		glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, dimensions.x, dimensions.y, dimensions.z, 0, clientDataFormat, clientDataType, nullptr);
 		glBindTexture(GL_TEXTURE_3D, 0);
 	}
 
@@ -187,13 +187,13 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_3D, glID);
 		glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, 
 			dimensions.width, dimensions.height, dimensions.depth,
-			format, pixelType, dataPtr);
+			clientDataFormat, clientDataType, dataPtr);
 	}
 
-	void Texture3D::ReadData(void* dataPtr)
+	void Texture3D::ReadData(void* dataPtr) const
 	{
 		glBindTexture(GL_TEXTURE_3D, glID);
-		glGetTexImage(GL_TEXTURE_3D, 0, format, pixelType, dataPtr);
+		glGetTexImage(GL_TEXTURE_3D, 0, clientDataFormat, clientDataType, dataPtr);
 	}
 
 	Texture3D::~Texture3D()

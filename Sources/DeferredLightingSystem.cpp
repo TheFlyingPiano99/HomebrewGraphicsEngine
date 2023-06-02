@@ -14,7 +14,7 @@ namespace Hogra {
 
 	void DeferredLightingSystem::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 		gBuffer.Init();
-		fullScreenProgram.Init(
+		dirLightProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredPBRDirectionalLightingPass.frag"));
@@ -25,7 +25,7 @@ namespace Hogra {
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredAmbientPass.frag"));
 
 		materialFullScreen = Allocator::New<Material>();
-		materialFullScreen->Init(&fullScreenProgram);
+		materialFullScreen->Init(&dirLightProgram);
 		materialFullScreen->SetAlphaBlend(true);
 		materialFullScreen->SetBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);	// Allow blending intensity of multiple directional light sources
 		meshFullScreen = Allocator::New<Mesh>();
@@ -51,7 +51,7 @@ namespace Hogra {
 		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 		glDrawBuffers(4, attachments);
 
-		emptyCubeMap.Init(8, SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
+		emptyCubeMap.Init(8, SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT, GL_FLOAT);
 
 		OnContextResize(_contextWidth, _contextHeight);
 	}
@@ -64,11 +64,11 @@ namespace Hogra {
 		gRoughnessMetallicAO.Delete();
 		depthTexture.Delete();
 
-		gPosition.Init(GL_RGBA32F, glm::ivec2(_contextWidth, _contextHeight), POSITION_MAP_UNIT, GL_RGBA, GL_FLOAT);
-		gAlbedo.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), ALBEDO_MAP_UNIT, GL_RGBA, GL_FLOAT);
-		gNormal.Init(GL_RGBA16F, glm::ivec2(_contextWidth, _contextHeight), NORMAL_MAP_UNIT, GL_RGBA, GL_FLOAT);
-		gRoughnessMetallicAO.Init(GL_RGBA8, glm::ivec2(_contextWidth, _contextHeight), ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGBA, GL_UNSIGNED_BYTE);
-		depthTexture.Init(GL_DEPTH_COMPONENT, glm::ivec2(_contextWidth, _contextHeight), DEPTH_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
+		gPosition.Init(glm::ivec2(_contextWidth, _contextHeight), POSITION_MAP_UNIT, GL_RGBA32F, GL_RGBA, GL_FLOAT);
+		gAlbedo.Init(glm::ivec2(_contextWidth, _contextHeight), ALBEDO_MAP_UNIT, GL_RGBA16F, GL_RGBA, GL_FLOAT);
+		gNormal.Init(glm::ivec2(_contextWidth, _contextHeight), NORMAL_MAP_UNIT, GL_RGBA16F, GL_RGBA, GL_FLOAT);
+		gRoughnessMetallicAO.Init(glm::ivec2(_contextWidth, _contextHeight), ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE);
+		depthTexture.Init(glm::ivec2(_contextWidth, _contextHeight), DEPTH_MAP_UNIT, GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT);
 
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + POSITION_MAP_UNIT, gPosition, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + ALBEDO_MAP_UNIT, gAlbedo, 0);
@@ -122,18 +122,18 @@ namespace Hogra {
 			brdfLUT->Bind();
 		}
 		meshFullScreen->Draw();					// Draw skybox reflections
-		fullScreenProgram.Activate();
 
 		// Directional lights:
+		dirLightProgram.Activate();
 		for (auto dirLight : dirLights) {
 			if (dirLight->IsActive()) {
 				if (dirLight->IsCastingShadow()) {
 					dirLight->GetShadowCaster()->BindMap();
-					fullScreenProgram.SetUniform("light.lightSpaceMatrix", dirLight->GetShadowCaster()->GetLightSpaceMatrix());
+					dirLightProgram.SetUniform("light.lightSpaceMatrix", dirLight->GetShadowCaster()->GetLightSpaceMatrix());
 				}
 				dirLight->GetShadowCaster()->BindMap();
-				fullScreenProgram.SetUniform("light.direction", dirLight->GetDirection4D());
-				fullScreenProgram.SetUniform("light.powerDensity", dirLight->getPowerDensity());
+				dirLightProgram.SetUniform("light.direction", dirLight->GetDirection4D());
+				dirLightProgram.SetUniform("light.powerDensity", dirLight->getPowerDensity());
 				meshFullScreen->Draw();
 			}
 		}

@@ -15,9 +15,9 @@ namespace Hogra {
 		const char* type;
 		unsigned int width = 0;
 
-		void Init(unsigned char* bytes, int width, GLuint unit, GLenum format, GLenum pixelType);
+		void Init(unsigned char* bytes, int width, GLuint unit, GLenum clientDataFormat, GLenum clientDataType);
 
-		void Init(int width, GLuint unit, GLenum internalFormat, GLenum format, GLenum pixelType);
+		void Init(int width, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
 		~Texture1D() override {
 			this->Delete();
@@ -34,6 +34,6 @@ namespace Hogra {
 
 		void WriteData(void* dataPtr) override;
 
-		void ReadData(void* dataPtr) override;
+		void ReadData(void* dataPtr) const override;
 	};
 }

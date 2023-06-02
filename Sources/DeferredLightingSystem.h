@@ -40,7 +40,7 @@ namespace Hogra {
 
 	private:
 		FBO gBuffer;
-		ShaderProgram fullScreenProgram;
+		ShaderProgram dirLightProgram;
 		ShaderProgram fullScreenSkyboxProgram;
 		ShaderProgram lightVolumeProgram;
 		Texture2D gPosition;

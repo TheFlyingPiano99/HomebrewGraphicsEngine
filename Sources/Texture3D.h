@@ -22,20 +22,20 @@ namespace Hogra {
 
 		std::vector<char> bytes;
 		
-		void Init(const std::string& directory, GLuint slot, GLenum format);
+		void Init(const std::string& directory, GLuint slot, GLenum clientDataFormat);
 
 		/*
 		* func sholud receive normalized coordinates and outputs normalized intensity
 		*/
-		void Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum format);
+		void Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum clientDataFormat);
 		
-		void Init(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum format, GLenum pixelType);
+		void Init(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
-		void InitForCompute(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum format, GLenum pixelType);
+		void InitForCompute(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
 		void WriteData(void* dataPtr);
 
-		void ReadData(void* dataPtr);
+		void ReadData(void* dataPtr) const override;
 
 		~Texture3D() override;
 

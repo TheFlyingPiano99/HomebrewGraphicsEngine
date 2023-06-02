@@ -94,7 +94,7 @@ void main()
 	float ao = roughnessMetallicAO.b;
 	vec3 viewDir = normalize(cameraPosition - wp);
 	float shadow = 0.0;
-	
+	float closestDepth = 0.0; // for test
 	if (int(fs_in.shadowMapIdx) > 0) {	// Shadow calculation
 
 		// get vector between fragment position and light position
@@ -103,7 +103,7 @@ void main()
 				for (int z = -1; z < 2; z++) {
 					vec3 fragToLight = wp + vec3(x, y, z) * 0.02 - fs_in.lightPosition.xyz;
 					// use the light to fragment vector to sample from the depth map    
-					float closestDepth = texture(shadowMaps[int(fs_in.shadowMapIdx)], fragToLight).r * farPlane;
+					closestDepth = texture(shadowMaps[int(fs_in.shadowMapIdx)], fragToLight).r * farPlane;
 					shadow += (length(fragToLight) - 0.2 * clamp(pow(1.0 - dot(n, normalize(fragToLight)), 1), 0, 1) > closestDepth) ? 1.0 : 0.0;
 				}
 			}

@@ -19,19 +19,19 @@ namespace Hogra {
 
 		const char* type;
 
-		void Init(std::vector<std::filesystem::path>& images, GLuint unit, GLuint pixelType);
+		void Init(std::vector<std::filesystem::path>& images, GLuint unit, GLuint clientDataType);
 
-		void Init(unsigned int resolution, GLuint unit, GLenum _format, GLenum _pixelType, bool useLinearFiltering = false);
+		void Init(unsigned int resolution, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType, bool useLinearFiltering = false);
 
-		void InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int unit, GLuint format, GLuint pixelType);
+		void InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
 		void InitFromCubeMap(
 			const TextureCube& cubemap,
 			ShaderProgram& conversionShader,
 			unsigned int resolution,
 			unsigned int unit,
-			GLuint format,
-			GLuint pixelType,
+			GLuint clientDataFormat,
+			GLuint clientDataType,
 			unsigned int maxMipLevels = 1
 		);
 
@@ -61,7 +61,7 @@ namespace Hogra {
 
 		void WriteData(void* dataPtr) override;
 
-		void ReadData(void* dataPtr) override;
+		void ReadData(void* dataPtr) const override;
 
 	private:
 		glm::ivec2 dimensions;

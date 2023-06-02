@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include <type_traits>
 #include "AssetFolderPathManager.h"
@@ -68,15 +69,19 @@ namespace Hogra {
 
 	namespace DebugUtils {
 
-		constexpr bool logToFile = false;
+		inline constexpr bool logToFile = true;
 
 #if PRINT_PRIORITY >= P_WARNING_AND_ERROR
 		inline void PrintWarning(const std::string& context, const std::string& message)
 		{
 			const auto now = std::chrono::system_clock::now();
-			std::cerr << "WARNING: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
+			std::cerr << "WARNING: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tMsg: " << message << "\n}" << std::endl;
 			if (logToFile) {
-
+				std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("log.txt"), std::ios_base::app);
+				if (stream.is_open()) {
+					stream << "WARNING: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tMsg: " << message << "\n}" << std::endl;
+					stream.close();
+				}
 			}
 		}
 #else
@@ -87,9 +92,13 @@ namespace Hogra {
 		inline void PrintError(const std::string& context, const std::string& message)
 		{
 			const auto now = std::chrono::system_clock::now();
-			std::cerr << "ERROR: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
+			std::cerr << "ERROR: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tMsg: " << message << "\n}" << std::endl;
 			if (logToFile) {
-
+				std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("log.txt"), std::ios_base::app);
+				if (stream.is_open()) {
+					stream << "ERROR: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tMsg: " << message << "\n}" << std::endl;
+					stream.close();
+				}
 			}
 		}
 #else
@@ -101,9 +110,13 @@ namespace Hogra {
 		inline void PrintMsg(const std::string& context, const std::string& message)
 		{
 			const auto now = std::chrono::system_clock::now();
-			std::cout << "MESSAGE: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
+			std::cout << "MESSAGE: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tMsg: " << message << "\n}" << std::endl;
 			if (logToFile) {
-
+				std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("log.txt"), std::ios_base::app);
+				if (stream.is_open()) {
+					stream << "MESSAGE: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tMsg: " << message << "\n}" << std::endl;
+					stream.close();
+				}
 			}
 		}
 
@@ -111,18 +124,26 @@ namespace Hogra {
 		inline void PrintTextureInfo(const std::string& context, const Texture2D& texture)
 		{
 			const auto now = std::chrono::system_clock::now();
-			std::cout << "Info: { Context: " << context << ", Time: " << now << ", TextureInfo: { ID: " << texture.glID << ", Unit: " << texture.unit << ", W: " << texture.GetDimensions().x << ", H: " << texture.GetDimensions().y << " }" << std::endl;
+			std::cout << "INFO: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tTextureInfo: { ID: " << texture.glID << ", Unit: " << texture.unit << ", W: " << texture.GetDimensions().x << ", H: " << texture.GetDimensions().y << " }\n}" << std::endl;
 			if (logToFile) {
-
+				std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("log.txt"), std::ios_base::app);
+				if (stream.is_open()) {
+					stream << "INFO: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tTextureInfo: { ID: " << texture.glID << ", Unit: " << texture.unit << ", W: " << texture.GetDimensions().x << ", H: " << texture.GetDimensions().y << " }\n}" << std::endl;
+					stream.close();
+				}
 			}
 		}
 
 		inline void PrintCameraInfo(const std::string& context, const Camera& cam)
 		{
 			const auto now = std::chrono::system_clock::now();
-			std::cout << "Info: { Context: " << context << ", Time: " << now << ", CameraInfo: { AspectRatio: " << cam.GetAspectRatio() << ", FOV: " << cam.GetFOV() << ", EyePos: " << cam.GetPosition() << ", LookDir: " << cam.GetLookDir() << ", PrefUp: " << cam.getPreferedUp() << " }" << std::endl;
+			std::cout << "INFO: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tCameraInfo: { AspectRatio: " << cam.GetAspectRatio() << ", FOV: " << cam.GetFOV() << ", EyePos: " << cam.GetPosition() << ", LookDir: " << cam.GetLookDir() << ", PrefUp: " << cam.getPreferedUp() << " }\n}" << std::endl;
 			if (logToFile) {
-
+				std::ofstream stream(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("log.txt"), std::ios_base::app);
+				if (stream.is_open()) {
+					stream << "INFO: {\n\tContext: " << context << "\n\tTime: " << now << "\n\tCameraInfo: { AspectRatio: " << cam.GetAspectRatio() << ", FOV: " << cam.GetFOV() << ", EyePos: " << cam.GetPosition() << ", LookDir: " << cam.GetLookDir() << ", PrefUp: " << cam.getPreferedUp() << " }\n}" << std::endl;
+					stream.close();
+				}
 			}
 		}
 #else

@@ -13,7 +13,7 @@ namespace Hogra {
 		fbo.Bind();
 		fbo.DisableDrawBuffer();
 		fbo.DisableReadBuffer();
-		shadowMap.Init(GL_DEPTH_COMPONENT, glm::ivec2(SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT), SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT, GL_FLOAT);
+		shadowMap.Init(glm::ivec2(SHADOW_MAP_WIDTH, SHADOW_MAP_HEIGHT), SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT);
 		shadowMap.Bind();
 
 		// Configures the way the texture repeats (if it does at all)

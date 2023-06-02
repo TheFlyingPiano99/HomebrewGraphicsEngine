@@ -9,7 +9,7 @@ namespace Hogra {
 	void OmniDirectionalShadowCaster::Init(const glm::vec3& pos)
 	{
 		static unsigned int nextUnit = SHADOW_MAP_UNIT + 1;
-		shadowMap.Init(2048, nextUnit++, GL_DEPTH_COMPONENT, GL_FLOAT);
+		shadowMap.Init(2048, nextUnit++, GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT);
 		fbo.Init();
 		fbo.LinkTexture(GL_DEPTH_ATTACHMENT, shadowMap);
 		fbo.DisableDrawBuffer();

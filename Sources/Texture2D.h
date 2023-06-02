@@ -12,18 +12,22 @@ namespace Hogra {
 
 	class Texture2D : public Texture
 	{
-		friend class Allocator;
+		ALLOCATOR_CONSTRUCTIBLE
+
 	public:
 
-		void Init(const std::filesystem::path& path, GLuint unit, GLenum format, GLenum pixelType, bool gammaCorrectionOnFloat = true);
+		void Init(const std::filesystem::path& path, GLuint unit, GLenum clientDataFormat, GLenum clientDataType, bool gammaCorrectionOnFloat = true, bool useMipMaps = false);
 
-		void Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType);
+		void Init(const std::vector<glm::vec4>& _bytes, glm::ivec2 _dimensions, GLuint unit, GLenum _format, GLenum _pixelType, bool useMipmaps = false);
 
 		void Init(const char* _buffer, glm::ivec2 _dimensions, GLuint _unit, GLenum _internalFormat, GLenum _format, GLenum _pixelType);
 
-		void Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType, bool useMipmaps = false);
+		void Init(glm::ivec2 dimensions, GLuint unit, GLint internalformat, GLenum clientDataFormat, GLenum clientDataType, bool useMipmaps = false);
 
 		~Texture2D() override {
+			if (auto iter = std::find(allTexture2Ds.begin(), allTexture2Ds.end(), this); iter != allTexture2Ds.end()) {
+				allTexture2Ds.erase(iter);
+			}
 			this->Delete();
 		}
 
@@ -61,15 +65,20 @@ namespace Hogra {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 		}
 
-		void GenerateMipmap();
+		void GenerateMipmap() const;
 
 		void WriteData(void* dataPtr) override;
 
-		void ReadData(void* dataPtr) override;
+		void ReadData(void* dataPtr) const override;
+
+		void SaveToPPM(const std::filesystem::path& path);
+
+		static void SaveAllToPPM();
 
 	private:
 		glm::ivec2 dimensions;
 		glm::vec4 nullVector;
 		std::vector<glm::vec4> bytes;
+		static std::vector<Texture2D*> allTexture2Ds;
 	};
 }

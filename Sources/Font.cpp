@@ -132,7 +132,7 @@ namespace Hogra {
         glm::ivec2 dim = GetTextDimension(text, baseline);
 
         Texture2D* textureToReturn = Allocator::New<Texture2D>();
-        textureToReturn->Init(GL_RED, dim, 0, GL_RED, GL_UNSIGNED_BYTE);
+        textureToReturn->Init(dim, 0, GL_RED, GL_RED, GL_UNSIGNED_BYTE);
 
         FBO fbo;
         fbo.Init();

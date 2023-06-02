@@ -11,8 +11,9 @@ void main()
     float lightDistance = length(FragPos.xyz - casterPosition);
     
     // map to [0;1] range by dividing by farPlane
-    lightDistance = lightDistance / farPlane;
-    
+    lightDistance = clamp(lightDistance / farPlane, 0.0, 1.0);
     // write this as modified depth
-    gl_FragDepth = lightDistance;
+    if (gl_FragDepth > lightDistance) {
+        gl_FragDepth = lightDistance;
+    }
 }

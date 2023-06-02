@@ -16,7 +16,7 @@ namespace Hogra {
 		}
 		ubo.Init(subDataSizes, LIGHTS_UBO_BINDING);
 
-		brdfLUT.Init(GL_RG16F, glm::ivec2(512, 512), BRDF_LUT_UNIT, GL_RG, GL_FLOAT);
+		brdfLUT.Init(glm::ivec2(512, 512), BRDF_LUT_UNIT, GL_RG16F, GL_RG, GL_FLOAT);
 
 		FBO captureFBO;
 		captureFBO.Init();

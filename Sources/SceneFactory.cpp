@@ -237,7 +237,7 @@ namespace Hogra {
 		}
 		*/
 
-		
+		/*
 		// Compute shader with 3D output
 		{
 			Texture3D texture;
@@ -256,6 +256,7 @@ namespace Hogra {
 			}
 			delete[] output;
 		}
+		*/
 		
 
 
@@ -466,6 +467,7 @@ namespace Hogra {
 			saveFBOs->SetAction(
 				[]() {
 					FBO::SaveToFileAll();
+					Texture2D::SaveAllToPPM();
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(saveFBOs);
@@ -804,23 +806,12 @@ namespace Hogra {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forwardSkybox.frag")
 		);
-		/*
-		std::vector<std::string> imagePaths;
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/right.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/left.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/top.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/bottom.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/front.jpg").c_str());
-		imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("seaSkybox/back.jpg").c_str());
-		auto* cubeMap = Allocator::New<TextureCube>();
-		cubeMap->Init(imagePaths, ENVIRONMENT_MAP_UNIT, GL_UNSIGNED_BYTE);
-		*/
 		
 		auto hdrMap = Texture2D();		
 		//hdrMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("ibl_hdr_radiance.png"), 0, GL_RGB, GL_FLOAT);
 		hdrMap.Init(AssetFolderPathManager::getInstance()->getTextureFolderPath().append("dolomites_river.hdr"), 0, GL_RGB, GL_FLOAT);
 		auto* cubeMap = Allocator::New<TextureCube>();
-		cubeMap->InitFromEquirectangular(hdrMap, ENVIRONMENT_MAP_UNIT, GL_RGB, GL_FLOAT);
+		cubeMap->InitFromEquirectangular(hdrMap, ENVIRONMENT_MAP_UNIT, GL_RGB16F, GL_RGB, GL_FLOAT);
 
 		auto* skyBoxMaterial = Allocator::New<Material>();
 		skyBoxMaterial->Init(skyboxShader);

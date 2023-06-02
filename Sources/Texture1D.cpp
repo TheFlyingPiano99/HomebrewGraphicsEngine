@@ -7,9 +7,9 @@ namespace Hogra {
 	{
 		this->width = _width;
 		this->unit = _unit;
-		this->format = _format;
+		this->clientDataFormat = _format;
 		this->internalFormat = _format;
-		this->pixelType = _pixelType;
+		this->clientDataType = _pixelType;
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
@@ -31,7 +31,7 @@ namespace Hogra {
 		// glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, flatColor);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, pixelType, _bytes);
+		glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, clientDataFormat, clientDataType, _bytes);
 		// Generates MipMaps
 		glGenerateMipmap(GL_TEXTURE_1D);
 
@@ -44,8 +44,8 @@ namespace Hogra {
 		this->width = _width;
 		this->unit = _unit;
 		this->internalFormat = _internalFormat;
-		this->format = _format;
-		this->pixelType = _pixelType;
+		this->clientDataFormat = _format;
+		this->clientDataType = _pixelType;
 
 		// Generates an OpenGL texture object
 		glGenTextures(1, &glID);
@@ -61,7 +61,7 @@ namespace Hogra {
 		glTexParameteri(GL_TEXTURE_1D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 
 		// Assigns the image to the OpenGL Texture object
-		glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, pixelType, nullptr);
+		glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, clientDataFormat, clientDataType, nullptr);
 		glBindTexture(GL_TEXTURE_1D, 0);
 	}
 
@@ -89,13 +89,13 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_1D, glID);
 		glTexSubImage1D(GL_TEXTURE_1D, 0, 0,
 			width,
-			format, pixelType, dataPtr);
+			clientDataFormat, clientDataType, dataPtr);
 	}
 
-	void Texture1D::ReadData(void* dataPtr)
+	void Texture1D::ReadData(void* dataPtr) const
 	{
 		glBindTexture(GL_TEXTURE_1D, glID);
-		glGetTexImage(GL_TEXTURE_1D, 0, format, pixelType, dataPtr);
+		glGetTexImage(GL_TEXTURE_1D, 0, clientDataFormat, clientDataType, dataPtr);
 	}
 
 }

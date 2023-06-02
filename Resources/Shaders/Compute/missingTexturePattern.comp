@@ -7,9 +7,9 @@ layout(rgba8, binding = 1) uniform image2D imgOutput;
 void main() {
     ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
 	
-	uvec4 value = uvec4(255, 0, 0, 255);
+	vec4 value = vec4(0, 0, 0, 1);
 	if ((texelCoord.x + texelCoord.y) % 2 == 0) {
-		value = uvec4(100, 100, 100, 255);
+		value = vec4(255, 87, 51, 255) / 255.0;
 	}
     imageStore(imgOutput, texelCoord, value);
 }

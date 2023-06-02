@@ -897,6 +897,12 @@
     <None Include="..\Resources\Shaders\Compute\missingTexturePattern.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
+    <None Include="..\Resources\Shaders\Compute\smoothNormalMap.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Compute\maximumRoughness.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HomebrewGraphicsEngine.rc">

@@ -13,9 +13,9 @@ namespace Hogra {
 	public:
 		GLuint glID = 0;
 		GLuint unit = 0;
-		GLenum internalFormat = GL_RGBA16F;
-		GLenum format = GL_RGBA;
-		GLenum pixelType = GL_FLOAT;
+		GLenum internalFormat = GL_RGBA8;
+		GLenum clientDataFormat = GL_RGBA;
+		GLenum clientDataType = GL_UNSIGNED_BYTE;
 		GLboolean isLayered = GL_FALSE;
 
 		virtual ~Texture() = default;
@@ -32,7 +32,11 @@ namespace Hogra {
 
 		virtual void WriteData(void* dataPtr) = 0;
 
-		virtual void ReadData(void* dataPtr) = 0;
+		virtual void ReadData(void* dataPtr) const = 0;
+
+		unsigned int GetNumberOfClientSideChannels() const;
+
+		unsigned int GetNumberOfClientSideBytesPerChannel() const;
 
 	protected:
 		//inline void* operator new(std::size_t size) { return ::operator new(size); }

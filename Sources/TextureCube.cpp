@@ -12,7 +12,7 @@ namespace Hogra {
 	void TextureCube::Init(std::vector<std::filesystem::path>& images, GLuint _unit, GLuint _pixelType)
 	{
 		this->unit = _unit;
-		this->pixelType = _pixelType;
+		this->clientDataType = _pixelType;
 
 
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
@@ -34,18 +34,18 @@ namespace Hogra {
 				throw std::exception();
 			}
 			this->internalFormat = GL_RGBA;
-			this->format = GL_RGBA;
+			this->clientDataFormat = GL_RGBA;
 			switch (numColCh)
 			{
-				case 4: {internalFormat = (GL_FLOAT == pixelType)? GL_RGBA16F : GL_RGBA; format = GL_RGBA; break; }
-				case 3: {internalFormat = (GL_FLOAT == pixelType) ? GL_RGB16F : GL_RGB; format = GL_RGB; break; }
-				case 2: {internalFormat = (GL_FLOAT == pixelType) ? GL_RG16F : GL_RG; format = GL_RG; break; }
-				case 1: {internalFormat = (GL_FLOAT == pixelType) ? GL_R16F : GL_R; format = GL_R; break; }
+				case 4: {internalFormat = (GL_FLOAT == clientDataType)? GL_RGBA16F : GL_RGBA; clientDataFormat = GL_RGBA; break; }
+				case 3: {internalFormat = (GL_FLOAT == clientDataType) ? GL_RGB16F : GL_RGB; clientDataFormat = GL_RGB; break; }
+				case 2: {internalFormat = (GL_FLOAT == clientDataType) ? GL_RG16F : GL_RG; clientDataFormat = GL_RG; break; }
+				case 1: {internalFormat = (GL_FLOAT == clientDataType) ? GL_R16F : GL_R; clientDataFormat = GL_R; break; }
 				default: break;
 			}
 			glTexImage2D(
 				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0, internalFormat, widthImg, heightImg, 0, format, pixelType, imgBytes);
+				0, internalFormat, widthImg, heightImg, 0, clientDataFormat, clientDataType, imgBytes);
 			stbi_image_free(imgBytes);
 		}
 
@@ -65,11 +65,12 @@ namespace Hogra {
 
 	}
 
-	void TextureCube::Init(unsigned int resolution, GLuint _unit, GLenum _format, GLenum _pixelType, bool useLinearFiltering)
+	void TextureCube::Init(unsigned int resolution, GLuint _unit, GLenum _internalFormat, GLenum _clientDataFormat, GLenum _clientDataType, bool useLinearFiltering)
 	{
 		this->unit = _unit;
-		this->format = _format;
-		this->pixelType = _pixelType;
+		this->clientDataFormat = _clientDataFormat;
+		this->clientDataType = _clientDataType;
+		this->internalFormat = _internalFormat;
 
 		glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 		glGenTextures(1, &glID);
@@ -78,22 +79,10 @@ namespace Hogra {
 
 		this->dimensions.x = resolution;
 		this->dimensions.y = resolution;
-
-		
-		this->internalFormat = GL_RGBA;
-		switch (_format)
-		{
-		case GL_RGBA: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RGBA16F : GL_RGBA; break; }
-		case GL_RGB: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RGB16F : GL_RGB; break; }
-		case GL_RG: {internalFormat = (GL_FLOAT == _pixelType) ? GL_RG16F : GL_RG; break; }
-		case GL_R: {internalFormat = (GL_FLOAT == _pixelType) ? GL_R16F : GL_R; break; }
-		case GL_DEPTH_COMPONENT: {internalFormat = (GL_FLOAT == _pixelType) ? GL_DEPTH_COMPONENT16 : GL_DEPTH_COMPONENT ; break; }
-		default: break;
-		}
 		
 		for (unsigned int i = 0; i < 6; ++i) {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, internalFormat,
-				resolution, resolution, 0, format, pixelType, NULL);
+				resolution, resolution, 0, clientDataFormat, clientDataType, NULL);
 		}
 		if (useLinearFiltering) {
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -109,11 +98,16 @@ namespace Hogra {
 		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	}
 
-	void TextureCube::InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int _unit, GLuint _format, GLuint _pixelType)
+	void TextureCube::InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int _unit, GLenum _internalFormat, GLenum _clientDataFormat, GLenum _clientDataType)
 	{
+		unsigned int resolution = 1024;
+		this->dimensions = { resolution , resolution };
 		this->unit = _unit;
-		this->format = _format;
-		this->pixelType = _pixelType;
+		this->internalFormat = _internalFormat;
+		this->clientDataFormat = _clientDataFormat;
+		this->clientDataType = _clientDataType;
+
+		equirectangularMap.GenerateMipmap();
 
 		ShaderProgram equirectangularToCubemapShader;
 		equirectangularToCubemapShader.Init(
@@ -121,11 +115,10 @@ namespace Hogra {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/equirectangularToCubemap.frag")
 			);
-		unsigned int resolution = 1024;
 		FBO captureFBO;
 		captureFBO.Init();
 		captureFBO.SetViewport(0, 0, resolution, resolution);
-		this->Init(resolution, unit, format, pixelType, true);	// Init empty cubemap
+		this->Init(resolution, unit, internalFormat, clientDataFormat, clientDataType, true);	// Init empty cubemap
 		auto cubeGeometry = GeometryFactory::GetInstance()->GetSimple1X1Cube();
 		cubeGeometry->SetFaceCulling(false);
 		glm::mat4 captureProjection = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 10.0f);
@@ -182,10 +175,11 @@ namespace Hogra {
 	)
 	{
 		this->unit = _unit;
-		this->format = _format;
-		this->pixelType = _pixelType;
+		this->clientDataFormat = _format;
+		this->clientDataType = _pixelType;
+		this->internalFormat = cubemap.internalFormat;
 
-		this->Init(resolution, unit, format, pixelType, true);	// Init empty cubemap
+		this->Init(resolution, unit, internalFormat, clientDataFormat, clientDataType, true);	// Init empty cubemap
 		if (1 < maxMipLevels) {
 			this->Bind();
 			glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -208,10 +202,10 @@ namespace Hogra {
 
 		FBO captureFBO;
 		captureFBO.Init();
-		captureFBO.SetViewport(0, 0, resolution, resolution);
 		RBO depthRBP;
-		depthRBP.Init(GL_DEPTH_COMPONENT24, resolution, resolution);
+		depthRBP.Init(GL_DEPTH_COMPONENT, resolution, resolution);
 		captureFBO.LinkRBO(GL_DEPTH_ATTACHMENT, depthRBP);
+		
 		// convert HDR equirectangular environment map to cubemap equivalent
 		conversionShader.Activate();
 		conversionShader.SetUniform("projection", captureProjection);
@@ -237,11 +231,7 @@ namespace Hogra {
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				cubeGeometry->Draw(); // renders a 1x1 cube
-				captureFBO.saveToPPM(
-					AssetFolderPathManager::getInstance()->getSavesFolderPath().string()
-					.append("side_").append(std::to_string(side)).append("_mip_")
-					.append(std::to_string(mip)).append(".ppm")
-				);
+				captureFBO.Bind();
 			}
 		}
 
@@ -295,7 +285,7 @@ namespace Hogra {
 		DebugUtils::PrintError("TextureCube", "Unimplemented function: WriteData");
 	}
 
-	void TextureCube::ReadData(void* dataPtr)
+	void TextureCube::ReadData(void* dataPtr) const
 	{
 		DebugUtils::PrintError("TextureCube", "Unimplemented function: ReadData");
 	}
