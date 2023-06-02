@@ -121,6 +121,7 @@ void main()
 	FragColor = vec4((fs_in.shadowMapIdx).xxx / 5.0, 1);
 	return;
 	*/
+	
     FragColor = vec4(
 					((vec3(1.0) - F) * (1.0 - metallic) * albedo / PI + DistributionGGX(n, halfway, roughness) 
 					* GeometrySmith(n, viewDir, lightDir, roughness) 
@@ -133,4 +134,5 @@ void main()
 					* max(dot(n, lightDir), 0.0),
 					0.0
 					);
+
 }

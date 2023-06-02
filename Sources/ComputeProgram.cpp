@@ -159,6 +159,7 @@ namespace Hogra {
 		}
 	}
 
+	/*
 	void ComputeProgram::SetWorkGroupSize(glm::uvec3 size)
 	{
 		workGroupSize = size;
@@ -181,6 +182,7 @@ namespace Hogra {
 			DebugUtils::PrintError("ComputeProgram", "Trying to set work group size so that invocations in a work group exceed the max allowed invocation count.");
 		}
 	}
+	*/
 
 	std::string ComputeProgram::GetFileContent(const std::filesystem::path& path) const
 	{

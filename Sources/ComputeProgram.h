@@ -104,8 +104,6 @@ namespace Hogra {
 
 		void SetNumberOfWorkGroups(glm::uvec3 groups);
 
-		void SetWorkGroupSize(glm::uvec3 size);
-
 		void Dispatch() const;
 
 		static glm::uvec3 GetMaxNumberOfWorkGroup();
@@ -124,7 +122,6 @@ namespace Hogra {
 		std::filesystem::path sourcePath;
 
 		glm::uvec3 numberOfWorkGroups = glm::vec3(1, 1, 1);
-		glm::uvec3 workGroupSize = glm::vec3(1, 1, 1);
 
 
 		// Checks if the different Shaders have compiled properly

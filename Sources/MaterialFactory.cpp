@@ -1,5 +1,6 @@
 #include "MaterialFactory.h"
 #include <algorithm>
+#include <filesystem>
 #include "ShaderProgramFactory.h"
 #include "VAO.h"
 #include "VBO.h"
@@ -7,7 +8,7 @@
 #include "GeometryFactory.h"
 #include "GlobalInclude.h"
 #include "FBO.h"
-#include <filesystem>
+#include "ComputeProgram.h"
 
 namespace Hogra {
 
@@ -31,54 +32,65 @@ namespace Hogra {
 			return iter->second;
 		}
 		auto albedoPath = std::filesystem::path(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 			.append(materialName).append("/").append(materialName).append("_albedo.png")
 		);
 		if (!std::filesystem::exists(albedoPath)) {
 			albedoPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_albedo.jpg")
 			);
 		}
 		Texture2D* albedoMap = Allocator::New<Texture2D>();
-		albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false);
-		albedoMap->GenerateMipmap();
+		if (!std::filesystem::exists(albedoPath)) {
+			albedoMap->Init(GL_RGBA, glm::ivec2(32, 32), ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, true);
+			ComputeProgram generatorProgram;
+			generatorProgram.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("missingTexturePattern.comp"));
+			generatorProgram.SetNumberOfWorkGroups({ 32, 32, 1 });
+			generatorProgram.Activate();
+			albedoMap->BindToImageUnit();
+			generatorProgram.Dispatch();
+		}
+		else {
+			albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false);
+			albedoMap->GenerateMipmap();
+		}
 
 		bool flipY = false;
 		// TODO flipY is currently not used!
 		Texture2D* normalMap = Allocator::New<Texture2D>();
 		auto normalPath = std::filesystem::path(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 			.append(materialName).append("/").append(materialName).append("_normal.png")
 		);
 		if (!std::filesystem::exists(normalPath)) {
 			normalPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_normal-ogl.png")
 			);
 		}
 		if (!std::filesystem::exists(normalPath)) {
 			normalPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_normal-dx.png")
 			);
 			flipY = true;
 		}
 		if (!std::filesystem::exists(normalPath)) {
 			normalPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_normal.jpg")
 			);
 		}
 		if (!std::filesystem::exists(normalPath)) {
 			normalPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_normal-ogl.jpg")
 			);
 		}
 		if (!std::filesystem::exists(normalPath)) {
 			normalPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_normal-dx.jpg")
 			);
 			flipY = true;
@@ -87,36 +99,36 @@ namespace Hogra {
 		normalMap->GenerateMipmap();
 		Texture2D roughnessMap;
 		auto roughnessPath = std::filesystem::path(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 			.append(materialName).append("/").append(materialName).append("_roughness.png")
 		);
 		if (!std::filesystem::exists(roughnessPath)) {
 			roughnessPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_roughness.jpg")
 			);
 		}
 		roughnessMap.Init(roughnessPath, 0, GL_RGB, GL_UNSIGNED_BYTE, false);
 		Texture2D metallicMap;
 		auto metallicPath = std::filesystem::path(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 			.append(materialName).append("/").append(materialName).append("_metallic.png")
 		);
 		if (!std::filesystem::exists(metallicPath)) {
 			metallicPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_metallic.jpg")
 			);
 		}
 		metallicMap.Init(metallicPath, 1, GL_RGB, GL_UNSIGNED_BYTE, false);
 		Texture2D aoMap;
 		auto aoPath = std::filesystem::path(
-			AssetFolderPathManager::getInstance()->getTextureFolderPath()
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 			.append(materialName).append("/").append(materialName).append("_ao.png")
 		);
 		if (!std::filesystem::exists(aoPath)) {
 			aoPath = std::filesystem::path(
-				AssetFolderPathManager::getInstance()->getTextureFolderPath()
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().string()
 				.append(materialName).append("/").append(materialName).append("_ao.jpg")
 			);
 		}

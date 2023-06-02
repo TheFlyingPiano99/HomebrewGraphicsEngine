@@ -894,6 +894,9 @@
     <None Include="..\Resources\Shaders\Utility\EnvironmentMap\precalculateIndirectBRDF.frag">
       <Filter>Resource Files\Shaders\Utility\EnvironmentMap</Filter>
     </None>
+    <None Include="..\Resources\Shaders\Compute\missingTexturePattern.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HomebrewGraphicsEngine.rc">
