@@ -13,7 +13,7 @@ namespace Hogra {
 	std::vector<ShaderProgram*> ShaderProgram::instances = std::vector<ShaderProgram*>();
 
 	// Reads a text file and outputs a string with everything in the text file
-	std::string ShaderProgram::getFileContent(const std::string& filename) const
+	std::string ShaderProgram::GetFileContent(const std::filesystem::path& filename) const
 	{
 		if (std::ifstream in(filename, std::ios::binary); in)
 		{
@@ -25,19 +25,19 @@ namespace Hogra {
 			in.close();
 			return(contents);
 		}
-		DebugUtils::PrintError("ShaderProgram", "Source file can not be opened.");
+		DebugUtils::PrintError("ShaderProgram", std::string("Source file \"").append(filename.string()).append("\" can not be opened."));
 		throw(errno);
 	}
 
-	void ShaderProgram::Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile)
+	void ShaderProgram::Init(const std::filesystem::path& vertexFile, const std::filesystem::path& geometryFile, const std::filesystem::path& fragmentFile)
 	{
 		vertexShaderPath = vertexFile;
 		geometryShaderPath = geometryFile;
 		fragmentShaderPath = fragmentFile;
 
 		// Read vertexFile and fragmentFile and store the strings
-		std::string vertexCode = getFileContent(vertexFile);
-		std::string fragmentCode = getFileContent(fragmentFile);
+		std::string vertexCode = GetFileContent(vertexFile);
+		std::string fragmentCode = GetFileContent(fragmentFile);
 
 		// Convert the shader source strings into character arrays
 		const char* vertexSource = vertexCode.c_str();
@@ -49,9 +49,9 @@ namespace Hogra {
 		glShaderSource(vertexShader, 1, &vertexSource, nullptr);
 		// Compile the Vertex Shader into machine code
 		glCompileShader(vertexShader);
-		std::string paths = std::string("{\n\"").append(vertexFile).append("\"\n\"").append(geometryFile).append("\"\n\"").append(fragmentFile).append("\"\n}");
+		std::string paths = std::string("{\n\"").append(vertexFile.string()).append("\"\n\"").append(geometryFile.string()).append("\"\n\"").append(fragmentFile.string()).append("\"\n}");
 		// Checks if Shader compiled succesfully
-		compileErrors(paths,
+		CompileErrors(paths,
 			"VERTEX");
 
 		// Create Fragment Shader Object and get its reference
@@ -61,7 +61,7 @@ namespace Hogra {
 		// Compile the Vertex Shader into machine code
 		glCompileShader(fragmentShader);
 		// Checks if Shader compiled succesfully
-		compileErrors(paths, "FRAGMENT");
+		CompileErrors(paths, "FRAGMENT");
 
 		// Create Shader Program Object and get its reference
 		glID = glCreateProgram();
@@ -70,25 +70,25 @@ namespace Hogra {
 		glAttachShader(glID, fragmentShader);
 
 		GLuint geometryShader = 0;
-		if (0 < geometryFile.length()) {	// Geometry shader
-			std::string geometryCode = getFileContent(geometryFile);
+		if (!geometryFile.empty()) {	// Geometry shader
+			std::string geometryCode = GetFileContent(geometryFile);
 			const char* geometrySource = geometryCode.c_str();
 			geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 			glShaderSource(geometryShader, 1, &geometrySource, nullptr);
 			glCompileShader(geometryShader);
-			compileErrors(paths, "GEOMETRY");
+			CompileErrors(paths, "GEOMETRY");
 			glAttachShader(glID, geometryShader);
 		}
 
 		// Wrap-up/Link all the shaders together into the Shader Program
 		glLinkProgram(glID);
 		// Checks if Shaders linked succesfully
-		compileErrors(paths, "PROGRAM");
+		CompileErrors(paths, "PROGRAM");
 
 		// Delete the now useless Vertex and Fragment Shader objects
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
-		if (0 < geometryFile.length()) {
+		if (!geometryFile.empty()) {
 			glDeleteShader(geometryShader);
 		}
 	}
@@ -129,7 +129,7 @@ namespace Hogra {
 	}
 
 	// Checks if the different Shaders have compiled properly
-	void ShaderProgram::compileErrors(const std::string& paths, const std::string& type) const
+	void ShaderProgram::CompileErrors(const std::string& paths, const std::string& type) const
 	{
 		// Stores status of compilation
 		GLint hasCompiled;

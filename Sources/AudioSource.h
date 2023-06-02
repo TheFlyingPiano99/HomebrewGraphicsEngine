@@ -35,7 +35,7 @@ namespace Hogra {
 		bool IsPlaying();
 
 	private:
-		ALuint glID;
+		ALuint alID;
 		AudioBuffer* buffer = nullptr;
 	};
 }

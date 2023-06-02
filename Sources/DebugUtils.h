@@ -71,7 +71,7 @@ namespace Hogra {
 		constexpr bool logToFile = false;
 
 #if PRINT_PRIORITY >= P_WARNING_AND_ERROR
-		inline void PrintWarning(const char* context, const char* message)
+		inline void PrintWarning(const std::string& context, const std::string& message)
 		{
 			const auto now = std::chrono::system_clock::now();
 			std::cerr << "WARNING: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
@@ -80,11 +80,11 @@ namespace Hogra {
 			}
 		}
 #else
-		inline void PrintWarning(const char* context, const char* message) { /* Empty implementation */ }
+		inline void PrintWarning(const std::string& context, const std::string& message) { /* Empty implementation */ }
 #endif
 
 #if PRINT_PRIORITY >= P_ERROR_ONLY
-		inline void PrintError(const char* context, const char* message)
+		inline void PrintError(const std::string& context, const std::string& message)
 		{
 			const auto now = std::chrono::system_clock::now();
 			std::cerr << "ERROR: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
@@ -93,12 +93,12 @@ namespace Hogra {
 			}
 		}
 #else
-		inline void PrintError(const char* context, const char* message) { /* Empty implementation */ }
+		inline void PrintError(const std::string& context, const std::string& message) { /* Empty implementation */ }
 #endif
 
 
 #if PRINT_PRIORITY == P_ALL
-		inline void PrintMsg(const char* context, const char* message)
+		inline void PrintMsg(const std::string& context, const std::string& message)
 		{
 			const auto now = std::chrono::system_clock::now();
 			std::cout << "MESSAGE: { Context: " << context << ", Time: " << now << ", Msg: " << message << " }" << std::endl;
@@ -108,7 +108,7 @@ namespace Hogra {
 		}
 
 
-		inline void PrintTextureInfo(const char* context, const Texture2D& texture)
+		inline void PrintTextureInfo(const std::string& context, const Texture2D& texture)
 		{
 			const auto now = std::chrono::system_clock::now();
 			std::cout << "Info: { Context: " << context << ", Time: " << now << ", TextureInfo: { ID: " << texture.glID << ", Unit: " << texture.unit << ", W: " << texture.GetDimensions().x << ", H: " << texture.GetDimensions().y << " }" << std::endl;
@@ -117,7 +117,7 @@ namespace Hogra {
 			}
 		}
 
-		inline void PrintCameraInfo(const char* context, const Camera& cam)
+		inline void PrintCameraInfo(const std::string& context, const Camera& cam)
 		{
 			const auto now = std::chrono::system_clock::now();
 			std::cout << "Info: { Context: " << context << ", Time: " << now << ", CameraInfo: { AspectRatio: " << cam.GetAspectRatio() << ", FOV: " << cam.GetFOV() << ", EyePos: " << cam.GetPosition() << ", LookDir: " << cam.GetLookDir() << ", PrefUp: " << cam.getPreferedUp() << " }" << std::endl;
@@ -126,9 +126,9 @@ namespace Hogra {
 			}
 		}
 #else
-		inline void PrintMsg(const char* context, const char* message) { /* Empty implementation */ }
-		inline void PrintTextureInfo(const char* context, const Texture2D& texture) { /* Empty implementation */ }
-		inline void PrintCameraInfo(const char* context, const Camera& cam) { /* Empty implementation */ }
+		inline void PrintMsg(const std::string& context, const std::string& message) { /* Empty implementation */ }
+		inline void PrintTextureInfo(const std::string& context, const Texture2D& texture) { /* Empty implementation */ }
+		inline void PrintCameraInfo(const std::string& context, const Camera& cam) { /* Empty implementation */ }
 #endif
 	}
 }

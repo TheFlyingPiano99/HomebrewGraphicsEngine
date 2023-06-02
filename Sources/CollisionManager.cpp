@@ -85,9 +85,9 @@ void Hogra::CollisionManager::SetUseSpatialTree(bool b) {
 void Hogra::CollisionManager::InitDebug()
 {
 	glyphProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"), 
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Debug/debug.vert"), 
 		"", 
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Debug/debug.frag"));
 	debugGeometry = GeometryFactory::GetInstance()->GetWireframeCube();
 	debugMaterial.Init(&glyphProgram);
 	debugMesh.Init(&debugMaterial, debugGeometry);

@@ -15,17 +15,17 @@ namespace Hogra {
 			return;
 		}
 
-		std::string sourceCode = getFileContent(sourcePath);
+		std::string sourceCode = GetFileContent(sourcePath);
 		const char* source_c_str = sourceCode.c_str();
 		GLuint glcomputeID = glCreateShader(GL_COMPUTE_SHADER);
 		glShaderSource(glcomputeID, 1, &source_c_str, nullptr);
 		glCompileShader(glcomputeID);
-		compileErrors(glcomputeID, "COMPUTE");
+		CompileErrors(glcomputeID, "COMPUTE");
 
 		glID = glCreateProgram();
 		glAttachShader(glID, glcomputeID);
 		glLinkProgram(glID);
-		compileErrors(glID, "PROGRAM");
+		CompileErrors(glID, "PROGRAM");
 
 		glDeleteShader(glcomputeID);
 	}
@@ -113,7 +113,7 @@ namespace Hogra {
 	}
 
 
-	void ComputeProgram::compileErrors(unsigned int shader, const char* type) const {
+	void ComputeProgram::CompileErrors(unsigned int shader, const char* type) const {
 		// Stores status of compilation
 		GLint hasCompiled;
 		// Character array to store error message in
@@ -182,7 +182,7 @@ namespace Hogra {
 		}
 	}
 
-	std::string ComputeProgram::getFileContent(const std::filesystem::path& path) const
+	std::string ComputeProgram::GetFileContent(const std::filesystem::path& path) const
 	{
 		if (std::ifstream in(path, std::ios::binary); in)
 		{

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <set>
+#include <filesystem>
 #include "MemoryManager.h"
 
 namespace Hogra {
@@ -17,7 +18,7 @@ namespace Hogra {
 		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
-		void Init(std::string& path);
+		void Init(const std::filesystem::path& path);
 
 		~AudioBuffer();
 
@@ -38,7 +39,7 @@ namespace Hogra {
 		}
 
 	private:
-		ALuint glID;
+		ALuint alID;
 		std::set<ALuint> sourcesUsingThisBuffer;
 		/*
 		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
@@ -63,7 +64,7 @@ namespace Hogra {
 		* Published on the website indiegamedev.net
 		* URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
 		*/
-		bool LoadWav(const std::string& path,
+		bool LoadWav(const std::filesystem::path& path,
             std::uint8_t& channels,
             std::int32_t& sampleRate,
             std::uint8_t& bitsPerSample,

@@ -136,9 +136,9 @@ namespace Hogra {
 			fbo.Bind();
 			ShaderProgram combinationProgram;
 			combinationProgram.Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("roughnessMetallicAOCombination.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/roughnessMetallicAOCombination.frag")
 			);
 			combinationProgram.Activate();
 			roughnessMap.Bind();

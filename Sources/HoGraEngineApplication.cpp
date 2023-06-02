@@ -37,7 +37,7 @@ namespace Hogra {
 		int channels = 0;
 		auto path = AssetFolderPathManager::getInstance()->getIconsFolderPath().append(GlobalVariables::windowIcon);
 		icons[0].pixels = stbi_load(
-			path.c_str(),
+			path.string().c_str(),
 			&(icons[0].width),
 			&(icons[0].height),
 			&channels,

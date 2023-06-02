@@ -5,16 +5,16 @@ namespace Hogra {
 
 	AssetFolderPathManager* AssetFolderPathManager::instance = nullptr;
 
-	inline std::string AssetFolderPathManager::FindPathIntoFolder(std::string folderName) {
+	std::filesystem::path AssetFolderPathManager::FindPathIntoFolder(const std::string& folderName) {
 		std::string path = folderName;
 		path.append("/");
 		std::filesystem::path p = std::filesystem::path(folderName.c_str());
 		int i = 0;
 		while (!std::filesystem::is_directory(p)) {
 			if (i > 5) {
-				std::string errorMessage = "Folder <";
+				std::string errorMessage = "Folder \"";
 				errorMessage.append(folderName);
-				errorMessage.append("> not found!");
+				errorMessage.append("\" not found!");
 				throw AssetFolderNotFound(errorMessage.c_str());
 			}
 			path.clear();
@@ -29,14 +29,21 @@ namespace Hogra {
 		return path;
 	}
 
-	std::string AssetFolderPathManager::getShaderFolderPath() {
+	AssetFolderPathManager* AssetFolderPathManager::getInstance() {
+		if (instance == nullptr) {
+			instance = Allocator::New<AssetFolderPathManager>();
+		}
+		return instance;
+	}
+
+	std::filesystem::path AssetFolderPathManager::getShaderFolderPath() {
 		if (shaderFolderPath.empty()) {
 			shaderFolderPath = FindPathIntoFolder("Resources/Shaders");
 		}
 		return shaderFolderPath;
 	}
 
-	std::string AssetFolderPathManager::getComputeShaderFolderPath()
+	std::filesystem::path AssetFolderPathManager::getComputeShaderFolderPath()
 	{
 		if (computeShaderFolderPath.empty()) {
 			computeShaderFolderPath = FindPathIntoFolder("Resources/Shaders/Compute");
@@ -44,14 +51,14 @@ namespace Hogra {
 		return computeShaderFolderPath;
 	}
 
-	std::string AssetFolderPathManager::getTextureFolderPath() {
+	std::filesystem::path AssetFolderPathManager::getTextureFolderPath() {
 		if (textureFolderPath.empty()) {
 			textureFolderPath = FindPathIntoFolder("Resources/Textures");
 		}
 		return textureFolderPath;
 	}
 
-	std::string AssetFolderPathManager::getGeometryFolderPath()
+	std::filesystem::path AssetFolderPathManager::getGeometryFolderPath()
 	{
 		if (geometryFolderPath.empty()) {
 			geometryFolderPath = FindPathIntoFolder("Resources/Geometries");
@@ -59,34 +66,34 @@ namespace Hogra {
 		return geometryFolderPath;
 	}
 
-	std::string AssetFolderPathManager::getSavesFolderPath() {
+	std::filesystem::path AssetFolderPathManager::getSavesFolderPath() {
 		if (savesFolderPath.empty()) {
 			savesFolderPath = FindPathIntoFolder("Saves");
 		}
 		return savesFolderPath;
 	}
-	std::string AssetFolderPathManager::getFontsFolderPath()
+	std::filesystem::path AssetFolderPathManager::getFontsFolderPath()
 	{
 		if (fontsFolderPath.empty()) {
 			fontsFolderPath = FindPathIntoFolder("Resources/Fonts");
 		}
 		return fontsFolderPath;
 	}
-	std::string AssetFolderPathManager::getSoundsFolderPath()
+	std::filesystem::path AssetFolderPathManager::getSoundsFolderPath()
 	{
 		if (soundsFolderPath.empty()) {
 			soundsFolderPath = FindPathIntoFolder("Resources/Sounds");
 		}
 		return soundsFolderPath;
 	}
-	std::string AssetFolderPathManager::getIconsFolderPath()
+	std::filesystem::path AssetFolderPathManager::getIconsFolderPath()
 	{
 		if (iconsFolderPath.empty()) {
 			iconsFolderPath = FindPathIntoFolder("Resources/Icons");
 		}
 		return iconsFolderPath;
 	}
-	std::string AssetFolderPathManager::getScenesFolderPath()
+	std::filesystem::path AssetFolderPathManager::getScenesFolderPath()
 	{
 		if (scenesFolderPath.empty()) {
 			scenesFolderPath = FindPathIntoFolder("Resources/Scenes");

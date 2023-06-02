@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <map>
+#include <filesystem>
 #include "ShaderProgram.h"
 #include "GlobalInclude.h"
 #include <glm/gtc/type_ptr.hpp>
@@ -29,13 +30,7 @@ namespace Hogra {
             unsigned int advance;    // Offset to advance to next glyph
         };
 
-        void Init(const char* fileName) {
-            glyphProgram = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
-            path = AssetFolderPathManager::getInstance()->getFontsFolderPath().append(fileName);
-            for (wchar_t c = 31; c < 90; c++) {
-                LoadChar(path, c);
-            }
-        }
+        void Init(const std::string& fileName);
 
         ~Font();
 
@@ -47,13 +42,13 @@ namespace Hogra {
 
 
     private:
-        bool LoadChar(const std::string& path, wchar_t c);
+        bool LoadChar(const std::filesystem::path& path, wchar_t c);
 
         glm::ivec2 GetTextDimension(const std::wstring& text, int& maxBaseline);
 
         Character& GetCharacter(wchar_t c);
 
-        std::string path;
+        std::filesystem::path path;
         ShaderProgram* glyphProgram = nullptr;
         std::map<wchar_t, Character> characters;
         unsigned int vao = 0;

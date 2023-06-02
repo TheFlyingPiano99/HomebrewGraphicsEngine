@@ -19,9 +19,9 @@ namespace Hogra {
 		if (nullptr == defaultBPRProgramWithMapping) {
 			defaultBPRProgramWithMapping = Allocator::New<ShaderProgram>();
 			defaultBPRProgramWithMapping->Init(
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("instanced3DWithTBN.vert"),
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/instanced3DWithTBN.vert"),
 					"",
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredMappedGeometryPass.frag")
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredMappedGeometryPass.frag")
 				);
 		}
 		return defaultBPRProgramWithMapping;
@@ -30,9 +30,9 @@ namespace Hogra {
 	ShaderProgram* ShaderProgramFactory::GetDeferredPBRProgramForHomogenousMaterial() {
 		auto shader = Allocator::New<ShaderProgram>();
 		shader->Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("instanced3DWithTBN.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/instanced3DWithTBN.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredHomogeneGeometryPass.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredHomogeneGeometryPass.frag")
 		);
 		return shader;
 	}
@@ -43,9 +43,9 @@ namespace Hogra {
 			glyphProgram
 				= Allocator::New<ShaderProgram>();
 			glyphProgram->Init(
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("single2D.vert"),
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2D.vert"),
 					"",
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("glyph.frag")
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("UI/glyph.frag")
 				);
 		}
 		return glyphProgram;
@@ -56,9 +56,9 @@ namespace Hogra {
 		if (nullptr == captionProgram) {
 			captionProgram = Allocator::New<ShaderProgram>();
 			captionProgram->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("single2D.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2D.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("caption.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("UI/caption.frag")
 			);
 		}
 		return captionProgram;
@@ -69,9 +69,9 @@ namespace Hogra {
 		if (nullptr == emissiveMaterial) {
 			emissiveMaterial = Allocator::New<ShaderProgram>();
 			emissiveMaterial->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("instanced3DWithTBN.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/instanced3DWithTBN.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredEmissiveGeometryPass.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredEmissiveGeometryPass.frag")
 			);
 		}
 		return emissiveMaterial;
@@ -81,9 +81,9 @@ namespace Hogra {
 		if (nullptr == spriteProgram) {
 			spriteProgram = Allocator::New<ShaderProgram>();
 			spriteProgram->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("single3DWithTBN.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single3DWithTBN.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("forwardSprite.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forwardSprite.frag")
 			);
 		}
 		return spriteProgram;

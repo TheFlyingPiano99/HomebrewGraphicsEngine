@@ -19,7 +19,7 @@ namespace Hogra {
 
 		const char* type;
 
-		void Init(std::vector<std::string>& images, GLuint unit, GLuint pixelType);
+		void Init(std::vector<std::filesystem::path>& images, GLuint unit, GLuint pixelType);
 
 		void Init(unsigned int resolution, GLuint unit, GLenum _format, GLenum _pixelType, bool useLinearFiltering = false);
 

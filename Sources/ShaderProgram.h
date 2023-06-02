@@ -1,9 +1,10 @@
 #pragma once
 
-#include<glad/glad.h>
-#include<string>
+#include <glad/glad.h>
+#include <filesystem>
+#include <string>
 #include <vector>
-#include<glm/glm.hpp>
+#include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "UniformVariable.h"
 #include "Identifiable.h"
@@ -16,7 +17,7 @@ namespace Hogra {
 		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
-		void Init(const std::string& vertexFile, const std::string& geometryFile, const std::string& fragmentFile);
+		void Init(const std::filesystem::path& vertexFile, const std::filesystem::path& geometryFile, const std::filesystem::path& fragmentFile);
 
 		ShaderProgram();
 
@@ -89,15 +90,15 @@ namespace Hogra {
 			}
 		}
 
-		inline const std::string& GetVertexPath() {
+		inline const std::filesystem::path& GetVertexPath() {
 			return vertexShaderPath;
 		}
 
-		inline const std::string& GetGeometryPath() {
+		inline const std::filesystem::path& GetGeometryPath() {
 			return geometryShaderPath;
 		}
 
-		inline const std::string& GetFragmentPath() {
+		inline const std::filesystem::path& GetFragmentPath() {
 			return fragmentShaderPath;
 		}
 
@@ -114,14 +115,14 @@ namespace Hogra {
 	private:
 		GLuint glID;
 
-		std::string vertexShaderPath;
-		std::string geometryShaderPath;
-		std::string fragmentShaderPath;
+		std::filesystem::path vertexShaderPath;
+		std::filesystem::path geometryShaderPath;
+		std::filesystem::path fragmentShaderPath;
 
 		// Checks if the different Shaders have compiled properly
-		void compileErrors(const std::string& paths, const std::string& type) const;
+		void CompileErrors(const std::string& paths, const std::string& type) const;
 
-		std::string getFileContent(const std::string& filename) const;
+		std::string GetFileContent(const std::filesystem::path& filename) const;
 
 		std::vector<AbstractUniformVariable*> uniforms;
 

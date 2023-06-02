@@ -381,7 +381,7 @@ namespace Hogra {
 		// Post processing:
 		{
 			auto* stage0 = Allocator::New<PostProcessStage>();
-			stage0->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("depthEffects.frag"),
+			stage0->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/depthEffects.frag"),
 				contextWidth, contextHeight);
 			scene->AddPostProcessStage(stage0, "DeferredLayer");
 
@@ -390,7 +390,7 @@ namespace Hogra {
 			scene->AddPostProcessStage(bloom, "DeferredLayer");
 
 			auto* stage1 = Allocator::New<PostProcessStage>();
-			stage1->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("hdr.frag"),
+			stage1->Init(AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/hdr.frag"),
 				contextWidth, contextHeight);
 			scene->AddPostProcessStage(stage1, "DeferredLayer");
 		}
@@ -800,9 +800,9 @@ namespace Hogra {
 	{
 		ShaderProgram* skyboxShader = Allocator::New<ShaderProgram>();
 		skyboxShader->Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuadWithRayDir.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuadWithRayDir.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("forwardSkybox.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forwardSkybox.frag")
 		);
 		/*
 		std::vector<std::string> imagePaths;
@@ -971,7 +971,7 @@ namespace Hogra {
 	void SceneFactory::InitAudio(Scene* scene, FirstPersonControl* control)
 	{
 		auto buffer = Allocator::New<AudioBuffer>();
-		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append("human-impact.wav"));
+		buffer->Init(AssetFolderPathManager::getInstance()->getSoundsFolderPath().append(std::string("human-impact.wav")));
 
 		auto source = Allocator::New<AudioSource>();
 		source->Init(buffer);
@@ -1035,7 +1035,7 @@ namespace Hogra {
 	
 
 
-	Scene* SceneFactory::LoadSceneFromFile(const std::string& path)
+	Scene* SceneFactory::LoadSceneFromFile(const std::filesystem::path& path)
 	{
 		auto inputFile = std::ifstream(path);
 		if (inputFile.is_open()) {
@@ -1125,7 +1125,7 @@ namespace Hogra {
 							format = GL_RGBA;
 						}
 						texture->Init(
-							AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]),
+							AssetFolderPathManager::getInstance()->getTextureFolderPath().append(std::string(textureData["sourceFileName"])),
 							(GLuint)textureData["unit"],
 							format,
 							pixelType);
@@ -1137,15 +1137,15 @@ namespace Hogra {
 					else if ("CubeMap" == type) {
 						auto texture = Allocator::New<TextureCube>();
 
-						std::vector<std::string> imagePaths;
+						std::vector<std::filesystem::path> imagePaths;
 						texture->SetId(textureData["id"]);
 						texture->SetName(textureData["name"]);
-						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/right.jpg").c_str());
-						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/left.jpg").c_str());
-						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/top.jpg").c_str());
-						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/bottom.jpg").c_str());
-						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/front.jpg").c_str());
-						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(textureData["sourceFileName"]).append("/back.jpg").c_str());
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(std::string(textureData["sourceFileName"])).append("/right.jpg"));
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(std::string(textureData["sourceFileName"])).append("/left.jpg"));
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(std::string(textureData["sourceFileName"])).append("/top.jpg"));
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(std::string(textureData["sourceFileName"])).append("/bottom.jpg"));
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(std::string(textureData["sourceFileName"])).append("/front.jpg"));
+						imagePaths.push_back(AssetFolderPathManager::getInstance()->getTextureFolderPath().append(std::string(textureData["sourceFileName"])).append("/back.jpg"));
 						texture->Init(imagePaths, textureData["unit"], GL_UNSIGNED_BYTE);
 						textures.emplace(textureData["id"], texture);
 					}
@@ -1158,9 +1158,9 @@ namespace Hogra {
 					shader->SetId(shaderData["id"]);
 					shader->SetName(shaderData["name"]);
 					shader->Init(
-						AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["vertexSourceFileName"]),
-						(!std::string(shaderData["geometrySourceFileName"]).empty()) ? AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["geometrySourceFileName"]) : "",
-						AssetFolderPathManager::getInstance()->getShaderFolderPath().append(shaderData["fragmentSourceFileName"])
+						AssetFolderPathManager::getInstance()->getShaderFolderPath().append(std::string(shaderData["vertexSourceFileName"])),
+						(!std::string(shaderData["geometrySourceFileName"]).empty()) ? AssetFolderPathManager::getInstance()->getShaderFolderPath().append(std::string(shaderData["geometrySourceFileName"])) : "",
+						AssetFolderPathManager::getInstance()->getShaderFolderPath().append(std::string(shaderData["fragmentSourceFileName"]))
 					);
 					for (auto& uniformData : shaderData["uniforms"]) {
 						std::string typeStr = uniformData["type"];
@@ -1318,7 +1318,7 @@ namespace Hogra {
 					if ("custom" == typeStr) {
 						stage = Allocator::New<PostProcessStage>();
 						stage->Init(
-							AssetFolderPathManager::getInstance()->getShaderFolderPath().append(stageData["fragmentSourceFileName"]),
+							AssetFolderPathManager::getInstance()->getShaderFolderPath().append(std::string(stageData["fragmentSourceFileName"])),
 							GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 					}
 					else if ("bloom" == typeStr) {

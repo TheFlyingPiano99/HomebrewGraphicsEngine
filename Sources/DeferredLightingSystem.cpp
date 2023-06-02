@@ -15,14 +15,14 @@ namespace Hogra {
 	void DeferredLightingSystem::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 		gBuffer.Init();
 		fullScreenProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRDirectionalLightingPass.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredPBRDirectionalLightingPass.frag"));
 		
 		fullScreenSkyboxProgram.Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredAmbientPass.frag"));
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredAmbientPass.frag"));
 
 		materialFullScreen = Allocator::New<Material>();
 		materialFullScreen->Init(&fullScreenProgram);
@@ -34,9 +34,9 @@ namespace Hogra {
 		meshFullScreen->setStencilTest(false);
 
 		lightVolumeProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("lightVolume.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/lightVolume.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("deferredPBRLightVolumePass.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredPBRLightVolumePass.frag"));
 		lightVolumeProgram.SetUniform("farPlane", OMNI_DIR_SHADOW_MAP_FAR_PLANE);
 		volumeMaterial = Allocator::New<Material>();
 		volumeMaterial->Init(&lightVolumeProgram);

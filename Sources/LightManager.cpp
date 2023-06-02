@@ -26,9 +26,9 @@ namespace Hogra {
 
 		auto shader = ShaderProgram();
 		shader.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("precalculateIndirectBRDF.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/precalculateIndirectBRDF.frag")
 		);
 		shader.Activate();
 
@@ -61,9 +61,9 @@ namespace Hogra {
 			// Irradiance map:
 			auto irradianceConvolutionShader = ShaderProgram();
 			irradianceConvolutionShader.Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentToIrradiance.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/environmentToIrradiance.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentToIrradiance.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/environmentToIrradiance.frag")
 			);
 			DebugUtils::PrintMsg("Renderer", "Generating irradiance map.");
 			irradianceMap = Allocator::New<TextureCube>();
@@ -80,9 +80,9 @@ namespace Hogra {
 			// Prefilter map:
 			auto prefilterConvolutionShader = ShaderProgram();
 			prefilterConvolutionShader.Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentToIrradiance.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/environmentToIrradiance.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("environmentPrefilter.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/environmentPrefilter.frag")
 			);
 			DebugUtils::PrintMsg("Renderer", "Generating prefilter map.");
 
@@ -120,9 +120,9 @@ namespace Hogra {
 			return;
 		}
 		glyphProgram.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Debug/debug.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("debug.frag"));
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Debug/debug.frag"));
 		debugMaterial.Init(&glyphProgram);
 		debugGeometry = GeometryFactory::GetInstance()->GetWireFrameSphere();
 		debugLightVolumeMesh = Allocator::New<Mesh>();

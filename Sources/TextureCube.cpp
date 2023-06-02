@@ -9,7 +9,7 @@
 
 namespace Hogra {
 	
-	void TextureCube::Init(std::vector<std::string>& images, GLuint _unit, GLuint _pixelType)
+	void TextureCube::Init(std::vector<std::filesystem::path>& images, GLuint _unit, GLuint _pixelType)
 	{
 		this->unit = _unit;
 		this->pixelType = _pixelType;
@@ -28,9 +28,9 @@ namespace Hogra {
 
 		stbi_set_flip_vertically_on_load(false);
 		for (int i = 0; i < 6; i++) {
-			unsigned char* imgBytes = stbi_load(images[i].c_str(), &widthImg, &heightImg, &numColCh, 0);
+			unsigned char* imgBytes = stbi_load(images[i].string().c_str(), &widthImg, &heightImg, &numColCh, 0);
 			if (imgBytes == nullptr) {
-				DebugUtils::PrintError("TextureCube", std::string("Failed loading cube texture side:\n\"").append(images[i]).append("\"").c_str());
+				DebugUtils::PrintError("TextureCube", std::string("Failed loading cube texture side:\n\"").append(images[i].string()).append("\"").c_str());
 				throw std::exception();
 			}
 			this->internalFormat = GL_RGBA;
@@ -117,9 +117,9 @@ namespace Hogra {
 
 		ShaderProgram equirectangularToCubemapShader;
 		equirectangularToCubemapShader.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("equirectangularToCubemap.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/equirectangularToCubemap.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("equirectangularToCubemap.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Utility/EnvironmentMap/equirectangularToCubemap.frag")
 			);
 		unsigned int resolution = 1024;
 		FBO captureFBO;
@@ -238,7 +238,7 @@ namespace Hogra {
 
 				cubeGeometry->Draw(); // renders a 1x1 cube
 				captureFBO.saveToPPM(
-					AssetFolderPathManager::getInstance()->getSavesFolderPath()
+					AssetFolderPathManager::getInstance()->getSavesFolderPath().string()
 					.append("side_").append(std::to_string(side)).append("_mip_")
 					.append(std::to_string(mip)).append(".ppm")
 				);

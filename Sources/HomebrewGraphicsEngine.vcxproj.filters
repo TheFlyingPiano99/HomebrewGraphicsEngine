@@ -67,6 +67,27 @@
     <Filter Include="Resource Files\Shaders\compute">
       <UniqueIdentifier>{cc7bdf16-4218-4ba0-a345-e38fdafe8598}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Debug">
+      <UniqueIdentifier>{0aa71cb6-a6bc-48a4-875b-b9ea9e95767a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\DefaultPipeline">
+      <UniqueIdentifier>{a5ea96b7-42c5-4298-94ea-459bb501c30a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\PostProcess">
+      <UniqueIdentifier>{877fed8a-9cda-42c6-a38b-0c6df3b844e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\PostProcess\Bloom">
+      <UniqueIdentifier>{7fd18ef0-a2e2-411c-8194-d557daf15aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\UI">
+      <UniqueIdentifier>{c8a36efd-0486-4990-a0e3-4d6534e5d390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Utility">
+      <UniqueIdentifier>{e432cc45-e56e-4123-bfc4-ae03786d3b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Utility\EnvironmentMap">
+      <UniqueIdentifier>{8b8dd6b0-88fb-466b-81fd-c400d62c23ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -689,169 +710,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
-    <None Include="..\Resources\Shaders\volumeBoundingGeometry.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\volumeBoundingGeometry.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\deferredMappedGeometryPass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\instanced3DWithTBN.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\boundingGeometryFlatColor.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\light.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\light.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\postprocess.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\proxyGeometryLightCamera.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\proxyGeometryViewCamera.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\forwardSkybox.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\transfer.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\transfer.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelColor.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\edgeDetect.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\shadowCast.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\shadowCast.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\hdr.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="ClassDiagram.cd" />
-    <None Include="..\Resources\Shaders\displayNormals.geom">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\deferredPBRDirectionalLightingPass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\debug.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\debug.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\glyph.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\single2D.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\caption.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\roughnessMetallicAOCombination.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\gausianBlur.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\deferredEmissiveGeometryPass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\bloomDownSampling.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\bloomUpSampling.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\bloomPrefilter.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\bloomRecombine.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\lightVolume.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\deferredPBRLightVolumePass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\depthEffects.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\tapeEffect.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\bypass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelAttenuation.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\deferredSprite.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelAttenuationCheap.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelColorCheap.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\forwardSprite.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\single3DWithTBN.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelRayCast.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\screenQuadrant.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\voxelRayCastCheap.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\pixelPhysics.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\pixelPhysics2.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\fullScreenQuad.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\fullScreenQuadWithRayDir.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\instanced2D.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\instanced3D.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\single3D.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\deferredHomogeneGeometryPass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="..\Resources\Scenes\demoScene00.json">
       <Filter>Resource Files\Scenes</Filter>
     </None>
@@ -861,41 +720,8 @@
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json">
       <Filter>Resource Files\Scenes</Filter>
     </None>
-    <None Include="..\Resources\Shaders\deferredAmbientPass.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\omniDirShadowCast.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\omniDirShadowCast.geom">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\omniDirShadowCast.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="..\Resources\Scenes\magicMirrorScene.json">
       <Filter>Resource Files\Scenes</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\magicMirror.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\equirectangularToCubemap.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\equirectangularToCubemap.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\environmentToIrradiance.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\environmentToIrradiance.vert">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\environmentPrefilter.frag">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\precalculateIndirectBRDF.frag">
-      <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\compute\particles.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
@@ -917,6 +743,156 @@
     </None>
     <None Include="..\Resources\Shaders\Compute\test3D.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Debug\boundingBox.frag">
+      <Filter>Resource Files\Shaders\Debug</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Debug\boundingBox.vert">
+      <Filter>Resource Files\Shaders\Debug</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Debug\boundingGeometryFlatColor.frag">
+      <Filter>Resource Files\Shaders\Debug</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Debug\debug.frag">
+      <Filter>Resource Files\Shaders\Debug</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Debug\debug.vert">
+      <Filter>Resource Files\Shaders\Debug</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Debug\displayNormals.geom">
+      <Filter>Resource Files\Shaders\Debug</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\deferredAmbientPass.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\deferredEmissiveGeometryPass.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\deferredHomogeneGeometryPass.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\deferredMappedGeometryPass.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\deferredPBRDirectionalLightingPass.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\deferredPBRLightVolumePass.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\deferredSprite.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\forwardSkybox.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\forwardSprite.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\fullScreenQuad.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\fullScreenQuadWithRayDir.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\instanced2D.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\instanced3D.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\instanced3DWithTBN.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\lightVolume.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\omniDirShadowCast.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\omniDirShadowCast.geom">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\omniDirShadowCast.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\single2D.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\single3D.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\single3DWithTBN.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\atmosphere.frag">
+      <Filter>Resource Files\Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\depthEffects.frag">
+      <Filter>Resource Files\Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\edgeDetect.frag">
+      <Filter>Resource Files\Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\gausianBlur.frag">
+      <Filter>Resource Files\Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\hdr.frag">
+      <Filter>Resource Files\Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\tapeEffect.frag">
+      <Filter>Resource Files\Shaders\PostProcess</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\Bloom\bloomDownSampling.frag">
+      <Filter>Resource Files\Shaders\PostProcess\Bloom</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\Bloom\bloomPrefilter.frag">
+      <Filter>Resource Files\Shaders\PostProcess\Bloom</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\Bloom\bloomRecombine.frag">
+      <Filter>Resource Files\Shaders\PostProcess\Bloom</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\Bloom\bloomUpSampling.frag">
+      <Filter>Resource Files\Shaders\PostProcess\Bloom</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\UI\caption.frag">
+      <Filter>Resource Files\Shaders\UI</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\UI\glyph.frag">
+      <Filter>Resource Files\Shaders\UI</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\bypass.frag">
+      <Filter>Resource Files\Shaders\Utility</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\roughnessMetallicAOCombination.frag">
+      <Filter>Resource Files\Shaders\Utility</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\screenQuadrant.vert">
+      <Filter>Resource Files\Shaders\Utility</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\EnvironmentMap\environmentPrefilter.frag">
+      <Filter>Resource Files\Shaders\Utility\EnvironmentMap</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\EnvironmentMap\environmentToIrradiance.frag">
+      <Filter>Resource Files\Shaders\Utility\EnvironmentMap</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\EnvironmentMap\environmentToIrradiance.vert">
+      <Filter>Resource Files\Shaders\Utility\EnvironmentMap</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\EnvironmentMap\equirectangularToCubemap.frag">
+      <Filter>Resource Files\Shaders\Utility\EnvironmentMap</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\EnvironmentMap\equirectangularToCubemap.vert">
+      <Filter>Resource Files\Shaders\Utility\EnvironmentMap</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Utility\EnvironmentMap\precalculateIndirectBRDF.frag">
+      <Filter>Resource Files\Shaders\Utility\EnvironmentMap</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -48,9 +48,9 @@
     {
       "id": 3,
       "name": "skybox",
-      "vertexSourceFileName": "fullScreenQuadWithRayDir.vert",
+      "vertexSourceFileName": "DefaultPipeline/fullScreenQuadWithRayDir.vert",
       "geometrySourceFileName": "",
-      "fragmentSourceFileName": "forwardSkybox.frag",
+      "fragmentSourceFileName": "DefaultPipeline/forwardSkybox.frag",
       "uniforms": [
         {
           "type": "float",

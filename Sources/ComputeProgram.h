@@ -128,9 +128,9 @@ namespace Hogra {
 
 
 		// Checks if the different Shaders have compiled properly
-		void compileErrors(unsigned int shader, const char* type) const;
+		void CompileErrors(unsigned int shader, const char* type) const;
 
-		std::string getFileContent(const std::filesystem::path& filename) const;
+		std::string GetFileContent(const std::filesystem::path& filename) const;
 
 		std::vector<AbstractUniformVariable*> uniforms;
 

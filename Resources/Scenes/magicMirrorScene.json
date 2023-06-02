@@ -21,7 +21,7 @@
     {
       "id": 3,
       "name": "magicMirrorShader",
-      "vertexSourceFileName": "fullScreenQuad.vert",
+      "vertexSourceFileName": "DefaultPipeline/fullScreenQuad.vert",
       "geometrySourceFileName": "",
       "fragmentSourceFileName": "magicMirror.frag",
       "uniforms": [

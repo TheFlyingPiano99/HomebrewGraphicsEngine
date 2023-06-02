@@ -1,6 +1,6 @@
 #include "OmniDirectionalShadowCaster.h"
 
-#include<glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "GlobalInclude.h"
 #include "AssetFolderPathManager.h"
 
@@ -16,9 +16,9 @@ namespace Hogra {
 		fbo.DisableReadBuffer();
 
 		program.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("omniDirShadowCast.vert"),
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("omniDirShadowCast.geom"),
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("omniDirShadowCast.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/omniDirShadowCast.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/omniDirShadowCast.geom"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/omniDirShadowCast.frag")
 			);
 	}
 

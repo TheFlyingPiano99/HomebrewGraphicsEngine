@@ -2,7 +2,7 @@
 
 namespace Hogra {
     
-    void AudioBuffer::Init(std::string& path) {
+    void AudioBuffer::Init(const std::filesystem::path& path) {
         std::uint8_t numChannels;
         std::int32_t sampleRate;
         std::uint8_t bitsPerSample;
@@ -35,8 +35,8 @@ namespace Hogra {
             return;
         }
 
-        alGenBuffers(1, &glID);
-        alBufferData(glID, format, &soundData[0], (ALsizei)soundData.size(), sampleRate);
+        alGenBuffers(1, &alID);
+        alBufferData(alID, format, &soundData[0], (ALsizei)soundData.size(), sampleRate);
     }
 
     AudioBuffer::~AudioBuffer()
@@ -44,11 +44,11 @@ namespace Hogra {
         for (auto& src : sourcesUsingThisBuffer) {  // Unbind buffer from sources referencing it
             alSourcei(src, AL_BUFFER, 0);
         }
-        alDeleteBuffers(1, &glID);
+        alDeleteBuffers(1, &alID);
     }
     ALuint AudioBuffer::Get() const
     {
-        return glID;
+        return alID;
     }
     
     std::int32_t AudioBuffer::ConvertToInt(char const* buffer, std::size_t len)
@@ -193,7 +193,7 @@ namespace Hogra {
         return true;
     }
     
-    bool AudioBuffer::LoadWav(const std::string& path, std::uint8_t& channels, std::int32_t& sampleRate, std::uint8_t& bitsPerSample, std::vector<char>& soundData)
+    bool AudioBuffer::LoadWav(const std::filesystem::path& path, std::uint8_t& channels, std::int32_t& sampleRate, std::uint8_t& bitsPerSample, std::vector<char>& soundData)
     {
         int size = 0;
         std::ifstream in(path, std::ios::binary);

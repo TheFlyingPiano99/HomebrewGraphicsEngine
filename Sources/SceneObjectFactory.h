@@ -13,7 +13,7 @@ namespace Hogra {
 
 		static SceneObjectFactory* GetInstance();
 
-		SceneObject* Create2DSpriteObject(const std::string& texturePath, OrientationProvider* orientationProvider);
+		SceneObject* Create2DSpriteObject(const std::filesystem::path& texturePath, OrientationProvider* orientationProvider);
 
 	private:
 		static SceneObjectFactory* instance;

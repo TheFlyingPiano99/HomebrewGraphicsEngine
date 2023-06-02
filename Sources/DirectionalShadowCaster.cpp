@@ -27,9 +27,9 @@ namespace Hogra {
 		FBO::BindDefault();
 
 		program.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/shadowCast.vert"),
 			"",
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("shadowCast.frag")
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/shadowCast.frag")
 		);
 
 		Update();

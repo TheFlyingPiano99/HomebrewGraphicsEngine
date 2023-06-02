@@ -8,13 +8,21 @@ namespace Hogra {
 
     std::vector<Font*> Font::heapAllocatedInstances = std::vector<Font*>();
 
+    void Font::Init(const std::string& fileName) {
+        glyphProgram = ShaderProgramFactory::GetInstance()->GetGlyphProgram();
+        path = AssetFolderPathManager::getInstance()->getFontsFolderPath().append(fileName);
+        for (wchar_t c = 31; c < 90; c++) {
+            LoadChar(path, c);
+        }
+    }
+
     Font::~Font() {
         glDeleteBuffers(1, &vbo);
         glDeleteVertexArrays(1, &vao);
         // Deleting ShaderProgram is not the responsibility of this class
     }
 
-    bool Font::LoadChar(const std::string& path, wchar_t c) {
+    bool Font::LoadChar(const std::filesystem::path& path, wchar_t c) {
         FT_Library ft;
         if (FT_Init_FreeType(&ft))
         {
@@ -22,7 +30,7 @@ namespace Hogra {
             return false;
         }
         FT_Face face;
-        if (FT_New_Face(ft, path.c_str(), 0, &face))
+        if (FT_New_Face(ft, path.string().c_str(), 0, &face))
         {
             DebugUtils::PrintError("Freetype font loading", "Failed to load font");
             return false;

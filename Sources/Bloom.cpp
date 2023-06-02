@@ -12,24 +12,24 @@ Hogra::Bloom::Bloom() {
 
 void Hogra::Bloom::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
 	prefilterProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 		"",
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomPrefilter.frag")
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/Bloom/bloomPrefilter.frag")
 	);
 	downSampleProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 		"",
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomDownSampling.frag")
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/Bloom/bloomDownSampling.frag")
 	);
 	upSampleProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 		"",
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomUpSampling.frag")
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/Bloom/bloomUpSampling.frag")
 	);
 	recombineProgram.Init(
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuad.vert"),
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 		"",
-		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("bloomRecombine.frag")
+		AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/Bloom/bloomRecombine.frag")
 	);
 	fbo.Init();
 	quad = GeometryFactory::GetInstance()->GetSimpleQuad();

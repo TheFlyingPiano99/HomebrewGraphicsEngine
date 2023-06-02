@@ -64,7 +64,7 @@ namespace Hogra {
 		* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
 		* Accessed: 2023-03-25
 		*/
-		void saveToPPM(const std::string& savePath);
+		void saveToPPM(const std::filesystem::path& savePath);
 
 	};
 

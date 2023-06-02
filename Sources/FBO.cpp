@@ -113,7 +113,7 @@ namespace Hogra {
 	{	
 		int i = 0;
 		for (auto item : fbos) {
-			item->saveToPPM(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("screenshot").append(std::to_string(i)).append(".ppm"));
+			item->saveToPPM(AssetFolderPathManager::getInstance()->getSavesFolderPath().string().append("screenshot").append(std::to_string(i)).append(".ppm"));
 			i++;
 		}
 	}
@@ -127,7 +127,7 @@ namespace Hogra {
 	* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
 	* Accessed: 2023-03-25
 	*/
-	void FBO::saveToPPM(const std::string& savePath)
+	void FBO::saveToPPM(const std::filesystem::path& savePath)
 	{
 		FILE* output_image;
 		int output_width = viewport.z;
@@ -141,7 +141,7 @@ namespace Hogra {
 		glReadBuffer(GL_COLOR_ATTACHMENT0);
 		glReadPixels(viewport.x, viewport.y, viewport.z, viewport.w, GL_RGB, GL_UNSIGNED_BYTE, pixels);
 
-		auto errn = fopen_s(&output_image, savePath.c_str(), "wt");
+		auto errn = fopen_s(&output_image, savePath.string().c_str(), "wt");
 		fprintf(output_image, "P3\n");
 		fprintf(output_image, "# Created with Hogra engine\n");
 		fprintf(output_image, "%d %d\n", output_width, output_height);

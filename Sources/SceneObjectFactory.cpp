@@ -8,7 +8,7 @@ namespace Hogra {
 		return instance;
 	}
 
-	SceneObject* SceneObjectFactory::Create2DSpriteObject(const std::string& texturePath, OrientationProvider* orientationProvider) {
+	SceneObject* SceneObjectFactory::Create2DSpriteObject(const std::filesystem::path& texturePath, OrientationProvider* orientationProvider) {
 		auto* geometry = GeometryFactory::GetInstance()->GetQuad();
 		auto* program = ShaderProgramFactory::GetInstance()->GetForwardSpriteProgram();
 		auto* volumeMaterial = Allocator::New<Material>();

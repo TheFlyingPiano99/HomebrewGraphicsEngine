@@ -2,11 +2,11 @@
 
 namespace Hogra {
 
-	void PostProcessStage::Init(std::string& fragmentShaderPath, int contextWidth, int contextHeight) {
+	void PostProcessStage::Init(const std::filesystem::path& fragmentShaderPath, int contextWidth, int contextHeight) {
 		fbo.Init();
 		fbo.Bind();
 		program.Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("fullScreenQuadWithRayDir.vert"),
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuadWithRayDir.vert"),
 			"",
 			fragmentShaderPath
 		);

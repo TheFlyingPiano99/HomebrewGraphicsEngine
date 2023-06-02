@@ -15,7 +15,7 @@ namespace Hogra {
 
 		PostProcessStage() = default;
 
-		void Init(std::string& fragmentShaderPath, int contextWidth, int contextHeight);
+		void Init(const std::filesystem::path& fragmentShaderPath, int contextWidth, int contextHeight);
 
 		virtual ~PostProcessStage() {
 			fbo.Delete();
