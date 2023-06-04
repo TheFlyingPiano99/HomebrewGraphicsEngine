@@ -88,6 +88,9 @@
     <Filter Include="Resource Files\Shaders\Utility\EnvironmentMap">
       <UniqueIdentifier>{8b8dd6b0-88fb-466b-81fd-c400d62c23ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Raytrace">
+      <UniqueIdentifier>{7c90fc51-4565-4abf-b13e-01001fb258eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp">
@@ -901,6 +904,15 @@
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
     <None Include="..\Resources\Shaders\Compute\maximumRoughness.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Raytrace\simpleRaytrace.frag">
+      <Filter>Resource Files\Shaders\Raytrace</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Compute\initWaveFunction.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Compute\normalizeFFTInput.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
   </ItemGroup>

@@ -1384,4 +1384,107 @@ namespace Hogra {
 		}
 		return nullptr;
 	}
+
+	Scene* SceneFactory::CreateWaveFunctionScene(unsigned int contextWidth, unsigned int contextHeight) {
+		Scene* scene = Allocator::New<Scene>();
+		scene->Init(contextWidth, contextHeight);
+
+		auto* forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		forwardLayer->SetName("ForwardLayer");
+		scene->AddRenderLayer(forwardLayer);
+
+		auto* voxels = Allocator::New<Texture3D>();
+		unsigned int resolution = 64;
+		voxels->InitForCompute({ resolution, resolution, resolution }, 0, GL_RG32F, GL_RG, GL_FLOAT);
+
+		ComputeProgram generator;
+		generator.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("initWaveFunction.comp"));
+		generator.SetNumberOfWorkGroups({ resolution, resolution, resolution });
+		generator.Activate();
+		voxels->BindToImageUnit();
+		generator.Dispatch();
+
+		dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_FWD);
+		//dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_BWD);
+
+		auto* quadGeometry = GeometryFactory::GetInstance()->GetSimpleQuad();
+		auto* program = Allocator::New<ShaderProgram>();
+		program->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuadWithRayDir.vert"),
+			"",
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("Raytrace/simpleRaytrace.frag")
+		);
+		auto* quadMaterial = Allocator::New<Material>();
+		quadMaterial->Init(program);
+		quadMaterial->AddTexture(voxels);
+		auto quadMesh = Allocator::New<Mesh>();
+		quadMesh->Init(quadMaterial, quadGeometry);
+		auto* object = Allocator::New<SceneObject>();
+		object->Init(quadMesh);
+
+		// Script:
+		{
+			auto* script = Allocator::New<ScriptObject>();
+			script->SetEarlyPhysicsUpdateFunc(
+				[voxels](double dt_sec) {
+					dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_FWD);
+					dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_BWD);
+				}
+			);
+			object->AddComponent(script);
+		}
+
+		scene->AddSceneObject(object, "quad", "ForwardLayer");
+		scene->GetCamera().SetPosition({ 0, 0, -3 });
+		scene->GetCamera().SetLookDir(glm::normalize(glm::vec3(0, 0, 1)));
+
+
+
+		// Controls:
+		{
+			auto* moveForward = Allocator::New<ButtonKeyAction>();
+			moveForward->Init(GLFW_KEY_W, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveForward->SetAction(
+				[scene]() {
+					scene->GetCamera().MoveForward(-0.4);
+					std::cout << scene->GetCamera().GetPosition() << std::endl;
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveForward);
+
+			auto* moveBackward = Allocator::New<ButtonKeyAction>();
+			moveBackward->Init(GLFW_KEY_S, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveBackward->SetAction(
+				[scene]() {
+					scene->GetCamera().MoveBackward(-0.4);
+					std::cout << scene->GetCamera().GetPosition() << std::endl;
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveBackward);
+
+			auto* moveLeft = Allocator::New<ButtonKeyAction>();
+			moveLeft->Init(GLFW_KEY_A, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveLeft->SetAction(
+				[scene]() {
+					scene->GetCamera().MoveLeft(-0.4);
+					std::cout << scene->GetCamera().GetPosition() << std::endl;
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveLeft);
+
+			auto* moveRight = Allocator::New<ButtonKeyAction>();
+			moveRight->Init(GLFW_KEY_D, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveRight->SetAction(
+				[scene]() {
+					scene->GetCamera().MoveRight(-0.4);
+					std::cout << scene->GetCamera().GetPosition() << std::endl;
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveRight);
+		}
+
+		return scene;
+	}
+
 }

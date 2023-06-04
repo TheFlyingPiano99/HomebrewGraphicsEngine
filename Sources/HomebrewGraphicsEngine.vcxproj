@@ -370,8 +370,10 @@
     <None Include="..\Resources\Shaders\Compute\fft.comp" />
     <None Include="..\Resources\Shaders\Compute\gradient.comp" />
     <None Include="..\Resources\Shaders\Compute\gradient3D.comp" />
+    <None Include="..\Resources\Shaders\Compute\initWaveFunction.comp" />
     <None Include="..\Resources\Shaders\Compute\maximumRoughness.comp" />
     <None Include="..\Resources\Shaders\Compute\missingTexturePattern.comp" />
+    <None Include="..\Resources\Shaders\Compute\normalizeFFTInput.comp" />
     <None Include="..\Resources\Shaders\compute\particles.comp" />
     <None Include="..\Resources\Shaders\Compute\smoothNormalMap.comp" />
     <None Include="..\Resources\Shaders\Compute\test1D.comp" />
@@ -416,6 +418,7 @@
     <None Include="..\Resources\Shaders\PostProcess\gausianBlur.frag" />
     <None Include="..\Resources\Shaders\PostProcess\hdr.frag" />
     <None Include="..\Resources\Shaders\PostProcess\tapeEffect.frag" />
+    <None Include="..\Resources\Shaders\Raytrace\simpleRaytrace.frag" />
     <None Include="..\Resources\Shaders\UI\caption.frag" />
     <None Include="..\Resources\Shaders\UI\glyph.frag" />
     <None Include="..\Resources\Shaders\Utility\bypass.frag" />

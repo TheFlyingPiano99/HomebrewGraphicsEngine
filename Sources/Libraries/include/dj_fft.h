@@ -11,8 +11,12 @@ by Jonathan Dupuy
 
 #pragma once
 
+#include <glad/glad.h>
 #include <complex> // std::complex
 #include <vector>  // std::vector
+#include "../../Texture3D.h"
+#include "../../ComputeProgram.h"
+#include "../../AssetFolderPathManager.h"
 
 namespace dj {
 
@@ -36,6 +40,7 @@ namespace dj {
     fft_arg<float> fft1d_gpu_glready(const fft_arg<float>& xi, const fft_dir& dir);
     fft_arg<float> fft2d_gpu_glready(const fft_arg<float>& xi, const fft_dir& dir);
     fft_arg<float> fft3d_gpu_glready(const fft_arg<float>& xi, const fft_dir& dir);
+    void fft3d_gpu_glready(const Hogra::Texture3D& texture, const fft_dir& dir);
 
 } // namespace dj
 
@@ -362,6 +367,7 @@ typedef std::ptrdiff_t GLsizeiptr;
 #   include <X11/Xlib.h>
 #   include <GL/glx.h>
 #endif
+#include "../../Texture3D.h"
 
 namespace dj {
 
@@ -979,6 +985,123 @@ namespace dj {
         glDeleteTextures(1, &gl.texture);
 
         return xo;
+    }
+
+    void fft3d_gpu_glready(const Hogra::Texture3D& texture, const fft_dir& dir)
+    {
+        auto dim = texture.GetDimensions();
+        int cnt3 = (int)(dim.width * dim.height * dim.depth);   // NxNxN
+        int msb = findMSB(cnt3) / 3; // lg2(N) = lg2(cbrt(NxNxN))
+        int cnt = 1 << msb;          // N = 2^lg2(N)
+        float nrm = float(1) / (float(cnt) * std::sqrt(float(cnt)));
+        struct {
+            GLuint texture, program;
+            struct { GLint passID; } uniformLocations;
+        } gl;
+        gl.uniformLocations.passID = 0;
+
+        /*
+        // pre-process the input data
+        for (int j3 = 0; j3 < cnt; ++j3)
+            for (int j2 = 0; j2 < cnt; ++j2)
+                for (int j1 = 0; j1 < cnt; ++j1) {
+                    int k3 = bitr(j3, msb);
+                    int k2 = bitr(j2, msb);
+                    int k1 = bitr(j1, msb);
+
+                    xo[j1 + cnt * (j2 + cnt * j3)] = nrm * xi[k1 + cnt * (k2 + cnt * k3)];
+                }
+        */
+
+        /*
+        // upload data to GPU
+        glGenTextures(1, &gl.texture);
+        glBindTexture(GL_TEXTURE_3D, gl.texture);
+        glTexStorage3D(GL_TEXTURE_3D, 1, GL_RG32F, cnt, cnt, cnt);
+        glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, cnt, cnt, cnt,
+            GL_RG, GL_FLOAT, &xo[0]);
+        glBindImageTexture(0, gl.texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RG32F);
+        */
+        texture.BindToImageUnit();
+
+        /*
+        // setup GPU Kernel
+        {
+            GLuint shader = glCreateShader(GL_COMPUTE_SHADER);
+            const GLchar* shaderSrc[] = {
+                "#version 450 core\n",
+                "#define FFT_3D\n",
+                s_ComputeShaderSrc
+            };
+
+            // create program
+            gl.program = glCreateProgram();
+
+            // compile and attach shader
+            glShaderSource(shader,
+                sizeof(shaderSrc) / sizeof(shaderSrc[0]),
+                shaderSrc,
+                NULL);
+            glCompileShader(shader);
+            glAttachShader(gl.program, shader);
+            glDeleteShader(shader);
+
+            // link program and setup uniforms
+            glLinkProgram(gl.program);
+            glUseProgram(gl.program);
+            gl.uniformLocations.passID =
+                glGetUniformLocation(gl.program, "u_PassID");
+        }
+        */
+        static Hogra::ComputeProgram program;
+        static Hogra::ComputeProgram normalizingProgram;
+        static bool firstInvocation = true;
+        if (firstInvocation) {
+            firstInvocation = false;
+            program.Init(Hogra::AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("fft.comp"));
+            normalizingProgram.Init(Hogra::AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("normalizeFFTInput.comp"));
+        }                
+
+        program.Activate();
+        gl.program = program.GetGlID();
+        gl.texture = texture.glID;
+//        gl.uniformLocations.passID = glGetUniformLocation(gl.program, "u_PassID");
+
+        /*
+        glUniform1f(glGetUniformLocation(gl.program, "u_Dir"), float(dir));
+        glUniform1i(glGetUniformLocation(gl.program, "u_ArgSize"), cnt);
+        glUniform1i(glGetUniformLocation(gl.program, "u_Arg"), 0);
+        */
+        program.SetUniform("u_Dir", float(dir));
+        program.SetUniform("u_ArgSize", cnt);
+        program.SetUniform("u_Arg", 0);
+
+        // run
+        cnt >>= 1;  // Division by 2
+        int groupCnt = cnt;
+        program.SetNumberOfWorkGroups({ groupCnt, groupCnt, groupCnt });
+        for (int i = 0; i < msb; ++i) {
+            program.SetUniform("u_PassID", i);
+            program.Dispatch();
+        }
+
+        if (dir == fft_dir::DIR_BWD) {
+            normalizingProgram.Activate();
+            normalizingProgram.SetNumberOfWorkGroups({ cnt, cnt, cnt });
+            normalizingProgram.SetUniform("u_norm", nrm);
+            normalizingProgram.Dispatch();
+        }
+
+        /*
+        // retrieve data
+        glGetTexImage(GL_TEXTURE_3D, 0, GL_RG, GL_FLOAT, &xo[0]);
+        */
+
+        // cleanup GL state
+        /*
+        glDeleteProgram(gl.program);
+        glDeleteTextures(1, &gl.texture);
+        */
     }
 
     // disable macro protection on linux

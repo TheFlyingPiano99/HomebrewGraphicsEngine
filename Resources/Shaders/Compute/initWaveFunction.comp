@@ -1,0 +1,29 @@
+#version 430 core
+
+layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+layout(rg32f, binding = 0) uniform image3D imgOutput;
+
+float lerp(float from, float to, float rel){
+  return ((1 - rel) * from) + (rel * to);
+}
+
+float invLerp(float from, float to, float value){
+  return (value - from) / (to - from);
+}
+
+float remap(float origFrom, float origTo, float targetFrom, float targetTo, float value){
+  float rel = invLerp(origFrom, origTo, value);
+  return lerp(targetFrom, targetTo, rel);
+}
+
+void main() {
+    vec4 value = vec4(0.0, 0.0, 0.0, 1.0);
+    ivec3 texelCoord = ivec3(gl_GlobalInvocationID.xyz);
+    vec3 normPos = (vec3(gl_GlobalInvocationID) / vec3(gl_NumWorkGroups));
+	float d = distance(normPos, vec3(0.5, 0.5, 0.5));
+    if (d < 0.3) {
+        float t = remap(0, 0.3, 0, 1.0, d);
+        value.xy = (1.0 / sqrt(2.0) * pow(1 - t, 1.5)).xx;
+    }
+    imageStore(imgOutput, texelCoord, value);
+}

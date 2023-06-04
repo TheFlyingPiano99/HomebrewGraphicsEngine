@@ -1,10 +1,12 @@
 #pragma once
 
+
 /*
 #include "fftw/fftw++.h"
 #include "fftw/Complex.h"
 #include "fftw/Array.h"
 */
+
 #define DJ_FFT_IMPLEMENTATION
 #include "dj_fft.h"
 #include <algorithm>

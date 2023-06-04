@@ -47,6 +47,8 @@ namespace Hogra {
 
 		Scene* LoadSceneFromFile(const std::filesystem::path& path);
 
+		Scene* CreateWaveFunctionScene(unsigned int contextWidth, unsigned int contextHeight);
+
 	private:
 		static SceneFactory* instance;
 	};

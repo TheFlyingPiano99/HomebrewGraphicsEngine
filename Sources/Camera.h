@@ -129,6 +129,18 @@ namespace Hogra {
 			changed = b;
 		}
 
+		void SetPosition(const glm::vec3& pos) {
+			auto dirToLookAt = lookAt - eye;
+			eye = pos;
+			lookAt = pos + dirToLookAt;
+			changed = true;
+		}
+
+		void SetLookDir(const glm::vec3& dir) {
+			lookAt = eye + dir;
+			changed = true;
+		}
+
 	private:
 		UniformBufferObject ubo;
 		// Stores the main vectors of the camera

@@ -25,7 +25,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
-#include <fftw3.h>
+#include <fftw/fftw3.h>
 #include <cerrno>
 #include <map>
 

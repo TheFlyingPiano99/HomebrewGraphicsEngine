@@ -93,11 +93,8 @@ void main()
 #endif
 */
 
-
-// #ifdef FFT_3D
-layout (local_size_x = 8,  local_size_y = 8, local_size_z = 8) in;
+layout (local_size_x = 1,  local_size_y = 1, local_size_z = 1) in;
 layout (rg32f) uniform image3D u_Arg; // FFT arg
-
 void main()
 {
     int j1 = int(gl_GlobalInvocationID.x);
@@ -110,24 +107,12 @@ void main()
     int bm = 1 << i;
     int bw = 2 << i;
     float ang = u_Dir * pi / float(bm);
-    /*
     int i11 = ((j1 >> i) << (i + 1)) + j1 % bm; // xmin wing
     int i21 = ((j2 >> i) << (i + 1)) + j2 % bm; // ymin wing
     int i31 = ((j3 >> i) << (i + 1)) + j3 % bm; // zmin wing
     int i12 = i11 ^ bm;                         // xmax wing
     int i22 = i21 ^ bm;                         // ymax wing
     int i32 = i31 ^ bm;                         // zmax wing
-    */
-
-    // Test:
-    int i11 = 1;
-    int i21 = 1;
-    int i31 = 1;
-    int i12 = 1;
-    int i22 = 1;
-    int i32 = 1;    
-
-
     ivec3 k111 = ivec3(i11, i21, i31);
     ivec3 k121 = ivec3(i12, i21, i31);
     ivec3 k211 = ivec3(i11, i22, i31);
@@ -169,7 +154,6 @@ void main()
         vec2 b222 = imageLoad(u_Arg, k222).xy;
         vec2 z21 = expi(ang * float(i21 ^ bw));
         vec2 z22 = expi(ang * float(i22 ^ bw));
-
         imageStore(u_Arg, k111, vec4(b111 + zmul(z21, b211), 0, 0));
         imageStore(u_Arg, k211, vec4(b111 + zmul(z22, b211), 0, 0));
         imageStore(u_Arg, k121, vec4(b121 + zmul(z21, b221), 0, 0));
@@ -201,4 +185,3 @@ void main()
         imageStore(u_Arg, k222, vec4(b221 + zmul(z32, b222), 0, 0));
     }
 }
-// #endif
