@@ -367,6 +367,7 @@
     <None Include="..\Resources\Scenes\demoScene01.json" />
     <None Include="..\Resources\Scenes\magicMirrorScene.json" />
     <None Include="..\Resources\Scenes\sceneIdToFilenameMapping.json" />
+    <None Include="..\Resources\Shaders\Compute\applyKineticEnergy.comp" />
     <None Include="..\Resources\Shaders\Compute\fft.comp" />
     <None Include="..\Resources\Shaders\Compute\gradient.comp" />
     <None Include="..\Resources\Shaders\Compute\gradient3D.comp" />

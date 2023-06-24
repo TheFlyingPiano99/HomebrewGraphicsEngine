@@ -35,7 +35,7 @@ namespace Hogra {
 #elif 1 == INIT_MODE
 		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);
 #elif 2 == INIT_MODE
-		currentScene = SceneFactory::getInstance()->CreateWaveFunctionScene(contextWidth, contextHeight);
+		currentScene = SceneFactory::getInstance()->CreateDemoScene(contextWidth, contextHeight);
 #elif 3 == INIT_MODE
 		currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
 #elif 4 == INIT_MODE

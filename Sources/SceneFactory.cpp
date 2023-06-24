@@ -68,198 +68,6 @@ namespace Hogra {
 		defLayer->SetName("DeferredLayer");
 		scene->AddRenderLayer(defLayer);
 
-		/*
-		// Testing gradient compute shader:
-		{
-			// Init(GLint internalformat, glm::ivec2 dimensions, GLuint unit, GLenum format, GLenum pixelType, bool useMipmaps = false);
-			ComputeProgram program;
-			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("gradient.comp"));
-			program.SetNumberOfWorkGroups({ 512, 512, 1 });
-			program.Activate();
-			Texture2D texture;
-			texture.Init(GL_RGBA32F, glm::ivec2(512, 512), 0, GL_RGBA, GL_FLOAT);
-			texture.BindToImageUnit();
-			program.Dispatch();
-			glm::vec4* pixels = new glm::vec4[512 * 512];
-			texture.ReadData(pixels);
-
-			FBO fbo;
-			fbo.Init();
-			fbo.LinkTexture(GL_COLOR_ATTACHMENT0, texture);
-			fbo.saveToPPM(AssetFolderPathManager::getInstance()->getSavesFolderPath().append("savedGradient.ppm"));
-		}
-		*/
-
-
-		/*
-		{
-			auto groups = ComputeProgram::GetMaxNumberOfWorkGroup();
-			DebugUtils::PrintMsg("SceneLoader",
-				std::string("Max number of work groups: ")
-				.append(std::to_string(groups.x))
-				.append(", ").append(std::to_string(groups.y))
-				.append(", ").append(std::to_string(groups.z)).c_str()
-			);
-
-			auto size = ComputeProgram::GetMaxWorkGroupSize();
-			DebugUtils::PrintMsg("SceneLoader",
-				std::string("Max group size: ")
-				.append(std::to_string(size.x))
-				.append(", ").append(std::to_string(size.y))
-				.append(", ").append(std::to_string(size.z)).c_str()
-			);
-
-			auto invoc = ComputeProgram::GetMaxInvocationsPerWorkGroup();
-			DebugUtils::PrintMsg("SceneLoader",
-				std::string("Max invocation count: ")
-				.append(std::to_string(invoc)).c_str()
-			);
-
-			DebugUtils::PrintMsg("SceneLoader",
-				std::string("32 x 32 x 32 = ")
-				.append(std::to_string(32 * 32 * 32)).c_str()
-			);
-
-			FFT_3D fft;
-
-			const int cnt = 16;
-			auto* input = new std::complex<float>[cnt * cnt * cnt];
-			auto* output = new std::complex<float>[cnt * cnt * cnt];
-			for (int i = 0; i < cnt * cnt * cnt; i++) {
-				input[i] = sinf(i);
-			}
-			fft.Init(cnt);
-			fft.Transform(input, output, FFT_3D::Direction::Forward);
-			std::cout << "Output:" << std::endl;
-			for (int i = 0; i < 8 * 8 * 2; i++) {
-				std::cout << output[i] << std::endl;
-			}
-			for (int k = 0; k < cnt; ++k) {
-				for (int i = 0; i < cnt; ++i) {
-					for (int j = 0; j < cnt; ++j) {
-						printf("{%f %f}\n",
-							input[i + cnt * (j + cnt * k)].real(), output[i + cnt * (j + cnt * k)].imag());
-					}
-					printf("\n");
-				}
-				printf("\n\n");
-			}
-			DebugUtils::PrintMsg("SceneLoader", "Output:");
-			for (int k = 0; k < cnt; ++k) {
-				for (int i = 0; i < cnt; ++i) {
-					for (int j = 0; j < cnt; ++j) {
-						printf("{%f %f}\n",
-							output[i + cnt * (j + cnt * k)].real(), output[i + cnt * (j + cnt * k)].imag());
-					}
-					printf("\n");
-				}
-				printf("\n\n");
-			}
-		}
-		*/
-		
-
-		
-		/*
-		// Test dj_fft:
-		{
-			srand(3234);
-			int cnt = 8;
-			dj::fft_arg<float> xi;
-
-			for (int i = 0; i < (cnt * cnt * cnt); ++i)
-				xi.push_back(std::complex<float>((2.0f * rng() - 1.0f) * 64.f, 0.0f));
-
-			auto s1 = std::chrono::high_resolution_clock::now();
-			dj::fft_arg<float> cpu = dj::fft3d(xi, dj::fft_dir::DIR_FWD);
-			auto s2 = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double> d1 = s2 - s1;
-			printf("=> [%i^3] CPU: %f s\n", cnt, d1.count()); fflush(stdout);
-
-			auto s3 = std::chrono::high_resolution_clock::now();
-			dj::fft_arg<float> gpu = dj::fft3d_gpu_glready(xi, dj::fft_dir::DIR_FWD);
-			auto s4 = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double> d2 = s4 - s3;
-			printf("=> [%i^3] GPU: %f s\n", cnt, d2.count()); fflush(stdout);
-
-			for (int k = 0; k < cnt; ++k) {
-				for (int i = 0; i < cnt; ++i) {
-					for (int j = 0; j < cnt; ++j) {
-						printf("{%f %f} vs {%f %f}\n",
-							cpu[i + cnt * (j + cnt * k)].real(), cpu[i + cnt * (j + cnt * k)].imag(),
-							gpu[i + cnt * (j + cnt * k)].real(), gpu[i + cnt * (j + cnt * k)].imag());
-					}
-					printf("\n");
-				}
-				printf("\n\n");
-			}
-		}
-		*/
-		
-
-		/*
-		// Compute shader with 1D output
-		{
-			Texture1D texture;
-			texture.Init(32, 0, GL_RGBA32F, GL_RGBA, GL_FLOAT);
-			ComputeProgram program;
-			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("test1D.comp"));
-			program.SetNumberOfWorkGroups({ 32, 1, 1 });
-			texture.BindToImageUnit();
-			program.Activate();
-			program.Dispatch();
-			glm::vec4* output = new glm::vec4[32];
-			texture.ReadData(output);
-			for (int i = 0; i < 32; i++) {
-				std::cout << output[i] << std::endl;
-			}
-			delete[] output;
-		}
-		*/
-
-		/*
-		// Compute shader with 2D output
-		{
-			Texture2D texture;
-			texture.Init(GL_RGBA32F, glm::ivec2(32), 0, GL_RGBA, GL_FLOAT);
-			ComputeProgram program;
-			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("test2D.comp"));
-			program.SetNumberOfWorkGroups({ 32, 32, 1 });
-			texture.BindToImageUnit();
-			program.Activate();
-			program.Dispatch();
-			glm::vec4* output = new glm::vec4[32 * 32];
-			texture.ReadData(output);
-			for (int i = 0; i < 32 * 2; i++) {
-				std::cout << output[i] << std::endl;
-			}
-			delete[] output;
-		}
-		*/
-
-		/*
-		// Compute shader with 3D output
-		{
-			Texture3D texture;
-			texture.InitForCompute(glm::ivec3(32, 32, 32), 0, GL_RGBA32F, GL_RGBA, GL_FLOAT);
-			ComputeProgram program;
-			program.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("test3D.comp"));
-			int groupSize = 8;
-			program.SetNumberOfWorkGroups({ 32 / groupSize, 32 / groupSize, 32 / groupSize });
-			texture.BindToImageUnit();
-			program.Activate();
-			program.Dispatch();
-			glm::vec4* output = new glm::vec4[32 * 32 * 32];
-			texture.ReadData(output);
-			for (int i = 0; i < 32 * 32 * 2; i++) {
-				std::cout << output[i] << std::endl;
-			}
-			delete[] output;
-		}
-		*/
-		
-
-
 		auto* dirShadowCaster = Allocator::New<DirectionalShadowCaster>();
 		dirShadowCaster->Init(glm::vec3(0.0f), glm::normalize(glm::vec3(1.0f, 1.0f, -1.0f)));
 		auto* light1 = Allocator::New<DirectionalLight>();
@@ -1394,19 +1202,29 @@ namespace Hogra {
 		forwardLayer->SetName("ForwardLayer");
 		scene->AddRenderLayer(forwardLayer);
 
+		/*
+		*/
 		auto* voxels = Allocator::New<Texture3D>();
-		unsigned int resolution = 64;
+		unsigned int resolution = 32;
 		voxels->InitForCompute({ resolution, resolution, resolution }, 0, GL_RG32F, GL_RG, GL_FLOAT);
+		voxels->BindToImageUnit();
 
 		ComputeProgram generator;
 		generator.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("initWaveFunction.comp"));
 		generator.SetNumberOfWorkGroups({ resolution, resolution, resolution });
 		generator.Activate();
-		voxels->BindToImageUnit();
 		generator.Dispatch();
 
 		dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_FWD);
-		//dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_BWD);
+
+		ComputeProgram kineticOperator;
+		kineticOperator.Init(AssetFolderPathManager::getInstance()->getComputeShaderFolderPath().append("applyKineticEnergy.comp"));
+		kineticOperator.SetNumberOfWorkGroups({ resolution, resolution, resolution });
+		kineticOperator.Activate();
+		kineticOperator.SetUniform("u_delta_time", 0.00001f);
+		kineticOperator.Dispatch();
+
+		dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_BWD);
 
 		auto* quadGeometry = GeometryFactory::GetInstance()->GetSimpleQuad();
 		auto* program = Allocator::New<ShaderProgram>();
@@ -1428,8 +1246,8 @@ namespace Hogra {
 			auto* script = Allocator::New<ScriptObject>();
 			script->SetEarlyPhysicsUpdateFunc(
 				[voxels](double dt_sec) {
-					dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_FWD);
-					dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_BWD);
+					//dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_FWD);
+					//dj::fft3d_gpu_glready(*voxels, dj::fft_dir::DIR_BWD);
 				}
 			);
 			object->AddComponent(script);
@@ -1448,7 +1266,6 @@ namespace Hogra {
 			moveForward->SetAction(
 				[scene]() {
 					scene->GetCamera().MoveForward(-0.4);
-					std::cout << scene->GetCamera().GetPosition() << std::endl;
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(moveForward);
@@ -1458,7 +1275,6 @@ namespace Hogra {
 			moveBackward->SetAction(
 				[scene]() {
 					scene->GetCamera().MoveBackward(-0.4);
-					std::cout << scene->GetCamera().GetPosition() << std::endl;
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(moveBackward);
@@ -1468,7 +1284,6 @@ namespace Hogra {
 			moveLeft->SetAction(
 				[scene]() {
 					scene->GetCamera().MoveLeft(-0.4);
-					std::cout << scene->GetCamera().GetPosition() << std::endl;
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(moveLeft);
@@ -1478,10 +1293,27 @@ namespace Hogra {
 			moveRight->SetAction(
 				[scene]() {
 					scene->GetCamera().MoveRight(-0.4);
-					std::cout << scene->GetCamera().GetPosition() << std::endl;
 				}
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(moveRight);
+
+			auto* moveUp = Allocator::New<ButtonKeyAction>();
+			moveUp->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerContinuosly);
+			moveUp->SetAction(
+				[scene]() {
+					scene->GetCamera().MoveUp(0.4);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(moveUp);
+
+			auto* modeDown = Allocator::New<ButtonKeyAction>();
+			modeDown->Init(GLFW_KEY_C, ButtonKeyAction::TriggerType::triggerContinuosly);
+			modeDown->SetAction(
+				[scene]() {
+					scene->GetCamera().MoveDown(0.4);
+				}
+			);
+			ControlActionManager::getInstance()->RegisterKeyAction(modeDown);
 		}
 
 		return scene;

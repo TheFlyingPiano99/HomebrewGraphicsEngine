@@ -915,6 +915,9 @@
     <None Include="..\Resources\Shaders\Compute\normalizeFFTInput.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
+    <None Include="..\Resources\Shaders\Compute\applyKineticEnergy.comp">
+      <Filter>Resource Files\Shaders\compute</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HomebrewGraphicsEngine.rc">
