@@ -11,6 +11,7 @@
 #include "dj_fft.h"
 #include <algorithm>
 #include <complex>
+#include <cmath>
 #include "FFT.h"
 
 inline constexpr double m_pi = 3.141592653589793238462643383279502884;

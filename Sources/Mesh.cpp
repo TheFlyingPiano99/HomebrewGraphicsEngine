@@ -10,6 +10,12 @@ namespace Hogra {
 		this->geometry = _geometry;
 	}
 
+	void Mesh::Init(Geometry* _geometry, Material* _material)
+	{
+		this->volumeMaterial = _material;
+		this->geometry = _geometry;
+	}
+
 	void Mesh::Bind() const
 	{
 		volumeMaterial->Bind();

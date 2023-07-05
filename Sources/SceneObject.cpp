@@ -12,18 +12,18 @@ namespace Hogra {
 		}
 	}
 
-	void SceneObject::EarlyPhysicsUpdate(float dt) {
+	void SceneObject::EarlyPhysicsUpdate(float dt_sec) {
 		for (auto& component : components) {
-			component->EarlyPhysicsUpdate(dt);
+			component->EarlyPhysicsUpdate(dt_sec);
 		}
 	}
 
-	void SceneObject::LatePhysicsUpdate(float dt) {
+	void SceneObject::LatePhysicsUpdate(float dt_sec) {
 		for (auto& component : components) {
-			component->LatePhysicsUpdate(dt);
+			component->LatePhysicsUpdate(dt_sec);
 		}
 		for (auto& comp : components) {
-			comp->LatePhysicsUpdate(dt);
+			comp->LatePhysicsUpdate(dt_sec);
 		}
 		if (nullptr != positionConnector) {
 			position = positionConnector->GetPosition();

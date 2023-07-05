@@ -17,10 +17,10 @@ namespace Hogra {
         ~CompositeCollider() {
         }
 
-        void EarlyPhysicsUpdate(float dt) override {
+        void EarlyPhysicsUpdate(float dt_sec) override {
         }
 
-        void LatePhysicsUpdate(float dt) override {
+        void LatePhysicsUpdate(float dt_sec) override {
             if (nullptr != positionProvider) {
                 if (nullptr != orientationProvider) {
                     orientation = orientationProvider->GetOrientation();
@@ -32,7 +32,7 @@ namespace Hogra {
                     parts[i]->SetPosition(orientation * positionsInOrigo[i] + position);
                     parts[i]->SetScale(scale);
                     parts[i]->SetOrientation(orientation);
-                    parts[i]->LatePhysicsUpdate(dt);
+                    parts[i]->LatePhysicsUpdate(dt_sec);
                     glm::vec3 currentMin = parts[i]->GetAABBMin();
                     if (!isMinSet) {
                         aabbMin = currentMin;

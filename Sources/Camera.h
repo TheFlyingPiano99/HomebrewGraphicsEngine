@@ -23,7 +23,7 @@ namespace Hogra {
 		void Update();
 
 		// Updates the camera matrix to the Vertex Shader
-		void LatePhysicsUpdate(float dt);
+		void LatePhysicsUpdate(float dt_sec);
 
 		void UpdatePreferedUp(glm::vec3 prefUp);
 
@@ -32,12 +32,12 @@ namespace Hogra {
 		*/
 		void ExportData();
 
-		void MoveForward(float dt);
-		void MoveBackward(float dt);
-		void MoveLeft(float dt);
-		void MoveRight(float dt);
-		void MoveUp(float dt);
-		void MoveDown(float dt);
+		void MoveForward(float dt_sec);
+		void MoveBackward(float dt_sec);
+		void MoveLeft(float dt_sec);
+		void MoveRight(float dt_sec);
+		void MoveUp(float dt_sec);
+		void MoveDown(float dt_sec);
 
 		void Rotate(const glm::vec2& deltaAngle);
 		

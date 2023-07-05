@@ -24,6 +24,10 @@ namespace Hogra {
 
 		ShaderProgram* GetForwardSpriteProgram();
 
+		ShaderProgram* GetForwardCellShadingProgramWithMapping();
+
+		ShaderProgram* GetForwardCellShadingProgramForHomogenousMaterial();
+
 		void ForgetPointers();
 
 	private:
@@ -34,5 +38,8 @@ namespace Hogra {
 		ShaderProgram* glyphProgram = nullptr;
 		ShaderProgram* captionProgram = nullptr;
 		ShaderProgram* spriteProgram = nullptr;
+		ShaderProgram* forwardCellShadingProgram = nullptr;
+		ShaderProgram* forwardHomogenousCellShadingProgram = nullptr;
+
 	};
 }

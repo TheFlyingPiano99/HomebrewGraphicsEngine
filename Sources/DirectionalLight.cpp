@@ -20,11 +20,11 @@ namespace Hogra {
 		ubo.UploadSubData((void*)((nullptr != shadowCaster) ? &(shadowCaster->GetIdx()) : &noShadowMap), idx++);
 	}
 
-	void DirectionalLight::EarlyPhysicsUpdate(float dt)
+	void DirectionalLight::EarlyPhysicsUpdate(float dt_sec)
 	{
 	}
 
-	void DirectionalLight::LatePhysicsUpdate(float dt)
+	void DirectionalLight::LatePhysicsUpdate(float dt_sec)
 	{
 	}
 }

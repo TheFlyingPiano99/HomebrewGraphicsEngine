@@ -18,7 +18,7 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 									// 16				96				(column 1)
 									// 16				192				(column 2)
 									// 16				208				(column 3)
-};
+} camera;
 
 struct SceneObject {
 	mat4 modelMatrix;	
@@ -30,5 +30,5 @@ void main()
 {
 	vs_out.worldPos = sceneObject.modelMatrix * vec4(aPos, 1.0);
 	vs_out.texCoords = aTex;
-	gl_Position = viewProjMatrix * vs_out.worldPos;
+	gl_Position = camera.viewProjMatrix * vs_out.worldPos;
 }

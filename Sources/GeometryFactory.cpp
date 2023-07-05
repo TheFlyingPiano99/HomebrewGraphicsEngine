@@ -4,7 +4,7 @@
 #include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/postprocess.h>      
 #include <assimp/scene.h>
-
+#include "DebugUtils.h"
 
 namespace Hogra {
 
@@ -878,6 +878,7 @@ namespace Hogra {
 			| aiProcess_CalcTangentSpace
 		);
 		if (nullptr == scene) {
+			DebugUtils::PrintError("GeometryFactory", std::string("Unable to load model: \'").append(path.string()).append("\'"));
 			throw GeometryLoadingException();
 		}
 

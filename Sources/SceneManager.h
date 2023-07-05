@@ -40,7 +40,7 @@ namespace Hogra {
 
 		void BeforePhysicsLoopUpdate();
 
-		int PhysicsUpdate(float dt);
+		int PhysicsUpdate(float dt_sec);
 
 		void AfterPhysicsLoopUpdate();
 

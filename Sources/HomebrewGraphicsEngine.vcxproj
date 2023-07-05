@@ -393,6 +393,8 @@
     <None Include="..\Resources\Shaders\DefaultPipeline\deferredPBRDirectionalLightingPass.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\deferredPBRLightVolumePass.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\deferredSprite.frag" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\forwardCellShading.frag" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\forwardHomogenousCellShading.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\forwardSkybox.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\forwardSprite.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\fullScreenQuad.vert" />
@@ -406,6 +408,7 @@
     <None Include="..\Resources\Shaders\DefaultPipeline\omniDirShadowCast.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.vert" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\silhouette.geom" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single2D.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single3D.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single3DWithTBN.vert" />
@@ -418,6 +421,7 @@
     <None Include="..\Resources\Shaders\PostProcess\edgeDetect.frag" />
     <None Include="..\Resources\Shaders\PostProcess\gausianBlur.frag" />
     <None Include="..\Resources\Shaders\PostProcess\hdr.frag" />
+    <None Include="..\Resources\Shaders\PostProcess\silhouettePostProcess.frag" />
     <None Include="..\Resources\Shaders\PostProcess\tapeEffect.frag" />
     <None Include="..\Resources\Shaders\Raytrace\simpleRaytrace.frag" />
     <None Include="..\Resources\Shaders\UI\caption.frag" />

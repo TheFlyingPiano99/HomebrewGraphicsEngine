@@ -9,13 +9,15 @@ in VS_OUT {
 
 layout (location = 0) out vec4 FragColor;
 
-layout (binding = 0) uniform sampler2D albedoMap;
+layout (binding = 0) uniform sampler2D sprite;
 
 void main()
 {
-	vec4 color = texture(albedoMap, fs_in.texCoords);
+	vec4 color = texture(sprite, fs_in.texCoords);
+	
 	if (color.a < 0.001) {
 		discard;
 	}
+	
 	FragColor = color;
 }

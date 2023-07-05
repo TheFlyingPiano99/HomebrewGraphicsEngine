@@ -89,6 +89,32 @@ namespace Hogra {
 		return spriteProgram;
 	}
 
+	ShaderProgram* ShaderProgramFactory::GetForwardCellShadingProgramWithMapping()
+	{
+		if (nullptr == forwardCellShadingProgram) {
+			forwardCellShadingProgram = Allocator::New<ShaderProgram>();
+			forwardCellShadingProgram->Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single3DWithTBN.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forwardCellShading.frag")
+			);
+		}
+		return forwardCellShadingProgram;
+	}
+
+	ShaderProgram* ShaderProgramFactory::GetForwardCellShadingProgramForHomogenousMaterial()
+	{
+		if (nullptr == forwardHomogenousCellShadingProgram) {
+			forwardHomogenousCellShadingProgram = Allocator::New<ShaderProgram>();
+			forwardHomogenousCellShadingProgram->Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single3DWithTBN.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forwardHomogenousCellShading.frag")
+			);
+		}
+		return forwardHomogenousCellShadingProgram;
+	}
+
 	void ShaderProgramFactory::ForgetPointers()
 	{
 		defaultBPRProgramWithMapping = nullptr;

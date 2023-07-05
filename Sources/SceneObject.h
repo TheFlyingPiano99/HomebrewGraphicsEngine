@@ -36,9 +36,9 @@ namespace Hogra {
 
 		void BeforePhysicsLoopUpdate();
 
-		void EarlyPhysicsUpdate(float dt);
+		void EarlyPhysicsUpdate(float dt_sec);
 
-		void LatePhysicsUpdate(float dt);
+		void LatePhysicsUpdate(float dt_sec);
 
 		void AfterPhysicsLoopUpdate();
 

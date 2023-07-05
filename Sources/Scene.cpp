@@ -138,25 +138,25 @@ namespace Hogra {
 		}
 	}
 
-	void Scene::PhysicsUpdate(float dt)
+	void Scene::PhysicsUpdate(float dt_sec)
 	{
 		collisionManager.Collide();
-		timeSpent.Set(Time::totalTime);
+		timeSpent.Set(Time::totalTime_sec);
 		for (auto& obj : sceneObjects) {
-			obj->EarlyPhysicsUpdate(dt);
+			obj->EarlyPhysicsUpdate(dt_sec);
 		}
 
 		for (auto& script : physicsScripts) {
-			script(dt, Time::totalTime);
+			script(dt_sec, Time::totalTime_sec);
 		}
 
 		SceneEventManager::getInstance()->ExecuteQueue(*this);
 
 		for (auto& obj : sceneObjects) {
-			obj->LatePhysicsUpdate(dt);
+			obj->LatePhysicsUpdate(dt_sec);
 		}
 
-		camera.LatePhysicsUpdate(dt);
+		camera.LatePhysicsUpdate(dt_sec);
 		collisionManager.Update();
 	}
 

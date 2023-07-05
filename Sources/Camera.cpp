@@ -42,10 +42,10 @@ namespace Hogra {
 		rayDirMatrix = glm::inverse(viewProjMatrix * glm::translate(eye + animationOffset));
 	}
 
-	void Camera::LatePhysicsUpdate(float dt)
+	void Camera::LatePhysicsUpdate(float dt_sec)
 	{
 		if (nullptr != animation) {
-			animation->perform(this, dt);
+			animation->perform(this, dt_sec);
 		}
 		if (nullptr != positionConnector) {
 			eye = positionConnector->GetPosition();
@@ -88,62 +88,62 @@ namespace Hogra {
 		ubo.Unbind();
 	}
 
-	void Camera::MoveForward(float dt) {
+	void Camera::MoveForward(float dt_sec) {
 		if (nullptr != positionConnector) {
 			return;
 		}
-		eye += dt * speed * lookDir;
-		lookAt += dt * speed * lookDir;
+		eye += dt_sec * speed * lookDir;
+		lookAt += dt_sec * speed * lookDir;
 		changed = true;
 	}
 
-	void Camera::MoveBackward(float dt)
+	void Camera::MoveBackward(float dt_sec)
 	{
 		if (nullptr != positionConnector) {
 			return;
 		}
-		eye += dt * speed * -lookDir;
-		lookAt += dt * speed * -lookDir;
+		eye += dt_sec * speed * -lookDir;
+		lookAt += dt_sec * speed * -lookDir;
 		changed = true;
 	}
 
-	void Camera::MoveLeft(float dt)
+	void Camera::MoveLeft(float dt_sec)
 	{
 		if (nullptr != positionConnector) {
 			return;
 		}
-		eye += dt * speed * -right;
-		lookAt += dt * speed * -right;
+		eye += dt_sec * speed * -right;
+		lookAt += dt_sec * speed * -right;
 		changed = true;
 	}
 
-	void Camera::MoveRight(float dt)
+	void Camera::MoveRight(float dt_sec)
 	{
 		if (nullptr != positionConnector) {
 			return;
 		}
-		eye += dt * speed * right;
-		lookAt += dt * speed * right;
+		eye += dt_sec * speed * right;
+		lookAt += dt_sec * speed * right;
 		changed = true;
 	}
 
-	void Camera::MoveUp(float dt)
+	void Camera::MoveUp(float dt_sec)
 	{
 		if (nullptr != positionConnector) {
 			return;
 		}
-		eye += dt * speed * up;
-		lookAt += dt * speed * up;
+		eye += dt_sec * speed * up;
+		lookAt += dt_sec * speed * up;
 		changed = true;
 	}
 
-	void Camera::MoveDown(float dt)
+	void Camera::MoveDown(float dt_sec)
 	{
 		if (nullptr != positionConnector) {
 			return;
 		}
-		eye += dt * speed * -up;
-		lookAt += dt * speed * -up;
+		eye += dt_sec * speed * -up;
+		lookAt += dt_sec * speed * -up;
 		changed = true;
 	}
 

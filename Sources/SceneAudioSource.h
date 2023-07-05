@@ -30,9 +30,9 @@ namespace Hogra {
 
 	
 		// Inherited via Component
-		void EarlyPhysicsUpdate(float dt) override;
+		void EarlyPhysicsUpdate(float dt_sec) override;
 
-		void LatePhysicsUpdate(float dt) override;
+		void LatePhysicsUpdate(float dt_sec) override;
 
 		bool IsPlaying() const {
 			return isPlaying;

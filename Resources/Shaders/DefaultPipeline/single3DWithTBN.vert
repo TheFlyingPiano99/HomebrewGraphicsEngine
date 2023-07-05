@@ -22,7 +22,7 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 									// 16				96				(column 1)
 									// 16				192				(column 2)
 									// 16				208				(column 3)
-};
+} camera;
 
 struct SceneObject {
 	mat4 modelMatrix;	
@@ -38,5 +38,5 @@ void main()
 	vec3 wBitangent = (vec4(aBitangent, 0.0) * sceneObject.invModelMatrix).xyz;
 	vec3 wNormal = (vec4(aNormal, 0.0) * sceneObject.invModelMatrix).xyz;
 	vs_out.TBN = mat3(wTangent, wBitangent, wNormal);
-	gl_Position = viewProjMatrix * vs_out.worldPos;
+	gl_Position = camera.viewProjMatrix * vs_out.worldPos;
 }

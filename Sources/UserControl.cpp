@@ -76,12 +76,12 @@ void Hogra::UserControl::release()
 {
 }
 
-void Hogra::UserControl::EarlyPhysicsUpdate(float dt)
+void Hogra::UserControl::EarlyPhysicsUpdate(float dt_sec)
 {
 
 }
 
-void Hogra::UserControl::LatePhysicsUpdate(float dt)
+void Hogra::UserControl::LatePhysicsUpdate(float dt_sec)
 {
 	if (nullptr == physics) {
 		return;

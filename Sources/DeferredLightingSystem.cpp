@@ -131,7 +131,9 @@ namespace Hogra {
 					dirLight->GetShadowCaster()->BindMap();
 					dirLightProgram.SetUniform("light.lightSpaceMatrix", dirLight->GetShadowCaster()->GetLightSpaceMatrix());
 				}
-				dirLight->GetShadowCaster()->BindMap();
+				if (nullptr != dirLight->GetShadowCaster()) {
+					dirLight->GetShadowCaster()->BindMap();
+				}
 				dirLightProgram.SetUniform("light.direction", dirLight->GetDirection4D());
 				dirLightProgram.SetUniform("light.powerDensity", dirLight->getPowerDensity());
 				meshFullScreen->Draw();

@@ -21,10 +21,10 @@ namespace Hogra {
 
         virtual bool TestPointInside(const glm::vec3& point) const override;
 
-        void EarlyPhysicsUpdate(float dt) override {
+        void EarlyPhysicsUpdate(float dt_sec) override {
         }
 
-        void LatePhysicsUpdate(float dt) override {
+        void LatePhysicsUpdate(float dt_sec) override {
             if (nullptr != positionProvider) {
                 position = positionProvider->GetPosition();
             }

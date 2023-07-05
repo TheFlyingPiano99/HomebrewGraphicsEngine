@@ -4,9 +4,8 @@ namespace Hogra {
 	class Time
 	{
 	public:
-		static float dt;
-		static double totalTime;
-	private:
+		static float dt_sec;
+		static long double totalTime_sec;
 	};
 }
 

@@ -918,6 +918,18 @@
     <None Include="..\Resources\Shaders\Compute\applyKineticEnergy.comp">
       <Filter>Resource Files\Shaders\compute</Filter>
     </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\forwardCellShading.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\forwardHomogenousCellShading.frag">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\silhouette.geom">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\PostProcess\silhouettePostProcess.frag">
+      <Filter>Resource Files\Shaders\PostProcess</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HomebrewGraphicsEngine.rc">

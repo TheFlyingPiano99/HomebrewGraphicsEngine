@@ -52,7 +52,7 @@ namespace Hogra {
 		* Calls SceneObject::LatePhysicsUpdate(float dt)
 		* Calls SceneObject::Update()
 		*/
-		void PhysicsUpdate(float dt);
+		void PhysicsUpdate(float dt_sec);
 
 		/*
 		* Calls SceneObject::AfterPhysicsLoopUpdate()
@@ -149,7 +149,7 @@ namespace Hogra {
 			return val->second;
 		}
 
-		void AddPhysicsScript(std::function<void(float dt, float totalTime)> script) {
+		void AddPhysicsScript(std::function<void(float dt_sec, float totalTime_sec)> script) {
 			physicsScripts.push_back(script);
 		}
 
@@ -195,7 +195,7 @@ namespace Hogra {
 
 		std::vector<SceneObject*> toDelete;
 
-		std::vector<std::function<void(float dt, float totalTime)>> physicsScripts;
+		std::vector<std::function<void(float dt_sec, float totalTime_sec)>> physicsScripts;
 		std::vector<std::function<void()>> beforePhysicsScripts;
 		std::vector<std::function<void()>> afterPhysicsScripts;
 

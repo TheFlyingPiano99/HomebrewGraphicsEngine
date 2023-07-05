@@ -20,7 +20,9 @@ namespace Hogra {
 			greater_func
 		};
 
-		void Init(Material* volumeMaterial, Geometry* geometry);
+		void Init(Material* material, Geometry* geometry);
+
+		void Init(Geometry* geometry, Material* material);
 
 		// Draws the mesh
 		void Bind() const;

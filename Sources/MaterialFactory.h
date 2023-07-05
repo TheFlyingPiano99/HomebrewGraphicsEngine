@@ -19,6 +19,10 @@ namespace Hogra {
 
 		Material* getEmissiveMaterial(const char* materialName, const glm::vec3& color, const float intensity);
 
+		Material* getCellShadedMaterial(std::filesystem::path& path);
+
+		Material* getHomogenousCellShadedMaterial(const glm::vec3& color);
+
 		void ForgetPointers();
 
 	private:

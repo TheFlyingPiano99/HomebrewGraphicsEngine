@@ -1,0 +1,39 @@
+# Wavefront Object Material File
+# Generated using SpeedTree tools
+
+newmtl yamaboushi_leaf_spr1_1_Mat
+map_Kd yamaboushi_leaf_spr1_1.png
+map_d yamaboushi_leaf_spr1_1_Opacity.png
+map_bump yamaboushi_leaf_spr1_1_Normal.png
+bump yamaboushi_leaf_spr1_1_Normal.png -bm 1
+Ns 128
+illum 2
+
+
+newmtl yamaboushi_leaf_spr1_2_Mat
+map_Kd yamaboushi_leaf_spr1_2.png
+map_d yamaboushi_leaf_spr1_2_Opacity.png
+map_bump yamaboushi_leaf_spr1_2_Normal.png
+bump yamaboushi_leaf_spr1_2_Normal.png -bm 1
+Ns 128
+illum 2
+
+
+newmtl yamaboushi_leaf_spr1_3_Mat
+map_Kd yamaboushi_leaf_spr1_3.png
+map_d yamaboushi_leaf_spr1_3_Opacity.png
+map_bump yamaboushi_leaf_spr1_3_Normal.png
+bump yamaboushi_leaf_spr1_3_Normal.png -bm 1
+Ns 128
+illum 2
+
+
+newmtl yamaboushi_tan_trunk_Mat
+map_Kd yamaboushi_tan_trunk.png
+map_d yamaboushi_tan_trunk_Opacity.png
+map_bump yamaboushi_tan_trunk_Normal.png
+bump yamaboushi_tan_trunk_Normal.png -bm 1
+Ns 128
+illum 2
+
+

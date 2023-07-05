@@ -22,11 +22,11 @@ namespace Hogra {
 		ubo.UploadSubData((void*)((nullptr != shadowCaster)? &(shadowCaster->GetIdx()) : &noShadowMap), idx++);
 	}
 
-	void PointLight::EarlyPhysicsUpdate(float dt)
+	void PointLight::EarlyPhysicsUpdate(float dt_sec)
 	{
 	}
 
-	void PointLight::LatePhysicsUpdate(float dt)
+	void PointLight::LatePhysicsUpdate(float dt_sec)
 	{
 		if (positionConnector != nullptr) {
 			position3D = glm::vec4(positionConnector->GetPosition(), 1.0f);

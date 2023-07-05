@@ -38,7 +38,7 @@ namespace Hogra {
 		}
 
 		// Inherited via CameraAnimation
-		void perform(void* obj, float dt) override;
+		void perform(void* obj, float dt_sec) override;
 
 	private:
 		Camera* camera = nullptr;

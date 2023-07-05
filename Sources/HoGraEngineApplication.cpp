@@ -164,7 +164,7 @@ namespace Hogra {
 			// Special controll events triggering per frame
 			SceneManager::getInstance()->BeforePhysicsLoopUpdate();
 
-			double dt = 0.0;
+			double dt_sec = 0.0;
 			double realDelta = crntTime - prevIterTime;
 			if (iterationCount < 5) {	// Prevent physics sim
 				iterationCount++;
@@ -173,16 +173,16 @@ namespace Hogra {
 			int retVal = 0;
 			while (realDelta > 0.0) {
 				if (realDelta > dtLimit) {
-					dt = dtLimit;
+					dt_sec = dtLimit;
 					realDelta -= dtLimit;
 				}
 				else {
-					dt = realDelta;
+					dt_sec = realDelta;
 					realDelta = 0.0;
 				}
-				Time::dt = (float)dt;
-				Time::totalTime += dt;
-				retVal = SceneManager::getInstance()->PhysicsUpdate(dt);
+				Time::dt_sec = (float)dt_sec;
+				Time::totalTime_sec += dt_sec;
+				retVal = SceneManager::getInstance()->PhysicsUpdate(dt_sec);
 				if (-1 == retVal) {
 					break;
 				}

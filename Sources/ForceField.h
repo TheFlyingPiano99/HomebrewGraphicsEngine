@@ -11,9 +11,9 @@ namespace Hogra {
 		ForceField() = default;
 
 		// Inherited via Component
-		virtual void EarlyPhysicsUpdate(float dt) override = 0;
+		virtual void EarlyPhysicsUpdate(float dt_sec) override = 0;
 
-		virtual void LatePhysicsUpdate(float dt) override = 0;
+		virtual void LatePhysicsUpdate(float dt_sec) override = 0;
 
 		std::span<const Physics* const > getListeners() const {
 			return listeners;
@@ -43,9 +43,9 @@ namespace Hogra {
 		CentralForceField() = default;
 
 		// Inherited via Component
-		void EarlyPhysicsUpdate(float dt) override;
+		void EarlyPhysicsUpdate(float dt_sec) override;
 
-		void LatePhysicsUpdate(float dt) override;
+		void LatePhysicsUpdate(float dt_sec) override;
 
 	};
 
@@ -56,9 +56,9 @@ namespace Hogra {
 		HomogeneForceField() = default;
 
 		// Inherited via Component
-		void EarlyPhysicsUpdate(float dt) override;
+		void EarlyPhysicsUpdate(float dt_sec) override;
 
-		void LatePhysicsUpdate(float dt) override;
+		void LatePhysicsUpdate(float dt_sec) override;
 
 		const glm::vec3& getDirection() const {
 			return direction;

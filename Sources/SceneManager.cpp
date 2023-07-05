@@ -14,7 +14,7 @@ public:
 
 	std::map<int, std::string> scenes;
 };
-#define INIT_MODE 2
+#define INIT_MODE 5
 
 namespace Hogra {
 	SceneManager* SceneManager::instance = nullptr;
@@ -40,6 +40,8 @@ namespace Hogra {
 		currentScene = SceneFactory::getInstance()->CreateEasyScene(contextWidth, contextHeight);
 #elif 4 == INIT_MODE
 		LoadScene(2);		// Magic mirror
+#elif 5 == INIT_MODE
+		currentScene = SceneFactory::getInstance()->CreateShadingHomeWorkScene(contextWidth, contextHeight); // Home Work
 #endif
 
 	}
@@ -106,12 +108,12 @@ namespace Hogra {
 		}
 	}
 
-	int SceneManager::PhysicsUpdate(float dt)
+	int SceneManager::PhysicsUpdate(float dt_sec)
 	{
 		if (nullptr == currentScene) {
 			return 0;
 		}
-		currentScene->PhysicsUpdate(dt);
+		currentScene->PhysicsUpdate(dt_sec);
 		SceneChange change = currentScene->GetSceneChange();
 		switch (change.changeType)
 		{

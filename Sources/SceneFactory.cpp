@@ -106,6 +106,8 @@ namespace Hogra {
 
 		
 		ForceField* field = InitGravitation(scene);
+
+		/*
 		auto* col = InitCompositeCollider();
 		InitCube(scene, glm::vec3(0.0f, 0.0f, 0.0f), col, field);
 		col = InitCompositeCollider();
@@ -125,13 +127,14 @@ namespace Hogra {
 		scene->AddPhysicsScript(
 			[light2](float dt, float totalTime) { light2->SetPosition(glm::vec3(10.0 * sinf(totalTime * 0.6), 4, -15)); }
 		);
-		
+
 		for (int i = 0; i < 5; i++) {
 			InitSphere(scene, glm::vec3(-10.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "TexturesCom_Wood_Planks1_2x2_1K");
 		}
 		for (int i = 5; i < 10; i++) {
 			InitSphere(scene, glm::vec3(-11.0f + 0.02f * (float)(i % 2), 3.0f + (float)i * 5.0f, -20.0f), field, "TexturesCom_Wood_Planks1_2x2_1K");
 		}
+		*/
 
 		glm::vec3 color1 = glm::vec3(0.0f, 0.1f, 1.0f);
 		glm::vec3 color2 = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -497,10 +500,16 @@ namespace Hogra {
 		collider->SetRadius(0.5f);
 		scene->AddCollider(collider);
 		Material* material;
-		if (std::string(materialName) == std::string("glowing")) {
+		if (std::string(materialName) == std::string("glowing"))
+		{
 			material = MaterialFactory::GetInstance()->getEmissiveMaterial(std::string("glowing").append(std::to_string(color.y)).append(std::to_string(color.z)).c_str(), color, 30.0f);
 		}
-		else {
+		else if (std::string(materialName) == std::string("cellShaded"))
+		{
+			material = MaterialFactory::GetInstance()->getHomogenousCellShadedMaterial(color);
+		}
+		else
+		{
 			material = MaterialFactory::GetInstance()->getPBRMaterial(materialName);
 			//material = MaterialFactory::GetInstance()->getHomogenousPBRMaterial(glm::vec3(0.9, 0.4, 0.4), 0.01, 0.6, 0.95);
 		}
@@ -530,7 +539,11 @@ namespace Hogra {
 		collider->SetPositionProvider(obj);
 		collider->SetOrientationProvider(obj);
 		obj->AddComponent(collider);
-		scene->AddSceneObject(obj, std::string("sphere").append(materialName).append((materialName == "glowing") ? std::to_string(color.z) : ""), "DeferredLayer");
+		scene->AddSceneObject(
+			obj, 
+			std::string("sphere").append(materialName).append((materialName == "glowing") ? std::to_string(color.z) : ""),
+			(std::string(materialName) == std::string("cellShaded"))? "ForwardLayer" : "DeferredLayer"
+		);
 		return obj;
 	}
 	
@@ -670,7 +683,8 @@ namespace Hogra {
 		obj->AddComponent(physics);
 		collider->SetPhysics(physics);
 		obj->AddComponent(collider);
-		scene->AddSceneObject(obj, "DeferredLayer");
+		static int i = 0;
+		scene->AddSceneObject(obj, std::string("loaded").append(std::to_string(i++)), "DeferredLayer");
 	}
 	
 	void SceneFactory::InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control)
@@ -758,7 +772,7 @@ namespace Hogra {
 		blasterObj->SetScale(glm::vec3(0.25f));
 		blasterObj->SetUseEulerAngles(true);
 ;		scene->AddPhysicsScript(
-			[blasterObj](float dt, float total) {
+			[blasterObj](float dt_sec, float total) {
 				blasterObj->SetEulerAngles(glm::vec3(0, total * 50.0f, 0));
 				blasterObj->SetPosition(glm::vec3(-15, 1.3 + 0.1f * sinf(total * 1.2), 10));
 			}
@@ -1315,6 +1329,233 @@ namespace Hogra {
 			);
 			ControlActionManager::getInstance()->RegisterKeyAction(modeDown);
 		}
+
+		return scene;
+	}
+
+	Scene* SceneFactory::CreateShadingHomeWorkScene(unsigned int contextWidth, unsigned int contextHeight)
+	{
+		auto scene = Allocator::New<Scene>();
+		scene->Init(contextWidth, contextHeight);
+
+		// Camera:
+		scene->GetCamera().SetPosition(glm::vec3(0, 5, 0));
+		scene->GetCamera().SetLookDir(glm::normalize(glm::vec3(0, -0.1, -1)));
+
+		// Layers:
+		auto forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetName("ForwardLayer");
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(forwardLayer);
+
+		auto deferredLayer = Allocator::New<RenderLayer>();
+		deferredLayer->SetName("DeferredLayer");
+		deferredLayer->SetRenderMode(RenderLayer::RenderMode::deferredInstancedRenderMode);
+		scene->AddRenderLayer(deferredLayer);
+
+		// ----------------------------------------------------
+		// Objects:
+		auto gravitation = InitGravitation(scene);
+		InitSkyBox(scene);
+		InitGround(scene);
+		InitSphere(scene, glm::vec3(0,3, -10), gravitation, "TexturesCom_Wood_Planks1_2x2_1K");
+		InitSphere(scene, glm::vec3(3, 3, -10), gravitation, "lumpy-wet-concrete");
+		InitSphere(scene, glm::vec3(-3, 3, -10), gravitation, "TexturesCom_Paint_GoldFake_512");
+		InitSphere(scene, glm::vec3(-5, 3, -8), gravitation, "cellShaded", {0.25, 0.01, 0});
+
+		{
+			auto geometry = GeometryFactory::GetInstance()->Load(
+				AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("yamaboushi_tan_6000_a_spr1.obj")
+			);
+			auto material = MaterialFactory::GetInstance()->getEmissiveMaterial("magicTree", glm::vec3(0.5, 0.8, 0.9), 2);
+			auto mesh = Allocator::New<Mesh>();
+			mesh->Init(material, geometry);
+			auto treeObj = Allocator::New<SceneObject>();
+			treeObj->Init(mesh);
+			treeObj->SetPosition({ 6, 0.3, 6 });
+			treeObj->SetScale({ 0.005, 0.005, 0.005 });
+			scene->AddSceneObject(treeObj, "tree", "DeferredLayer");
+
+			for (int i = 0; i < 20; i++) {
+				auto* leafObj = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
+					AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/leaf.png"),
+					&(scene->GetCamera())
+				);
+				leafObj->SetScale({ 0.1, 0.1, 0.1 });
+				ScriptObject* fallingLeafScript = Allocator::New<ScriptObject>();
+				fallingLeafScript->SetEarlyPhysicsUpdateFunc([leafObj, treeObj, i](float dt_sec) {
+					double t = std::remainder(Time::totalTime_sec + i, 6.0);
+					leafObj->SetPosition(glm::vec3(treeObj->GetPosition().x + std::sinf(t * 2.0 + i * 0.3) * 2.0 + 2.0 * std::sinf((float)i), 4.0 - t, treeObj->GetPosition().z + 2.0 * std::cosf((float)i)));
+					});
+				leafObj->AddComponent(fallingLeafScript);
+				leafObj->SetPosition(glm::vec3(5.0f, 5.0f, 5.0f));
+				scene->AddSceneObject(leafObj, "logo_sprite", "ForwardLayer");
+			}
+		}
+		
+		{
+			// Blaster:
+			auto blasterObj = Allocator::New<SceneObject>();
+			auto blasterGeom = GeometryFactory::GetInstance()->Load(
+				AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("laser_gun.obj")
+			);
+			auto blasterMaterial = MaterialFactory::GetInstance()->getHomogenousCellShadedMaterial({0.5, 0.5, 0.6});
+			auto blasterMesh = Allocator::New<Mesh>();
+			blasterMesh->Init(blasterMaterial, blasterGeom);
+			blasterObj->Init(blasterMesh);
+			blasterObj->SetScale(glm::vec3(0.25f));
+			blasterObj->SetUseEulerAngles(true);
+			;		scene->AddPhysicsScript(
+				[blasterObj](float dt_sec, float total) {
+					blasterObj->SetEulerAngles(glm::vec3(0, total * 50.0f, 0));
+					blasterObj->SetPosition(glm::vec3(-15, 1.3 + 0.1f * sinf(total * 1.2), 10));
+				}
+			);
+			scene->AddSceneObject(blasterObj, "blaster", "ForwardLayer");
+		}
+
+
+		// ----------------------------------------------------
+		// Lights:
+		auto sunLight = Allocator::New<DirectionalLight>();
+		sunLight->Init(glm::normalize(glm::vec3(1, 1, 1)), glm::vec3(3, 3, 3));
+		auto sunShadowCaster = Allocator::New<DirectionalShadowCaster>();
+		sunShadowCaster->Init();
+		sunLight->SetShadowCaster(sunShadowCaster);
+		scene->AddLight(sunLight);
+
+		auto pointLight = Allocator::New<PointLight>();
+		pointLight->Init(glm::vec3(-5, 6, 5), glm::vec3(100, 100, 1));
+		scene->AddPhysicsScript(
+			[pointLight](float _dt, float _tt)
+			{
+				pointLight->SetPosition({ -5, 4, std::sinf(Time::totalTime_sec * 0.5) * 10.0 - 5.0 });
+			}
+		);
+		auto omniCaster = Allocator::New<OmniDirectionalShadowCaster>();
+		omniCaster->Init();
+		pointLight->SetShadowCaster(omniCaster);
+		scene->AddLight(pointLight);
+
+		// ----------------------------------------------------
+		// Effects:
+
+		auto silhouette = Allocator::New<PostProcessStage>();
+		silhouette->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/silhouettePostProcess.frag"),
+			contextWidth,
+			contextHeight
+		);
+		forwardLayer->AddPostProcessStage(silhouette);
+
+		auto bloom = Allocator::New<Bloom>();
+		bloom->Init(contextWidth, contextHeight);
+		deferredLayer->AddPostProcessStage(bloom);
+		
+		auto hdr = Allocator::New<PostProcessStage>();
+		hdr->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/hdr.frag"),
+			contextWidth, 
+			contextHeight
+		);
+		deferredLayer->AddPostProcessStage(hdr);
+
+
+		// ----------------------------------------------------
+		// Control:
+		auto* moveForward = Allocator::New<ButtonKeyAction>();
+		moveForward->Init(GLFW_KEY_W, ButtonKeyAction::TriggerType::triggerContinuosly);
+		moveForward->SetAction(
+			[scene]() {
+				scene->GetCamera().MoveForward(Time::dt_sec * 1000.0f);
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(moveForward);
+
+		auto* moveBack = Allocator::New<ButtonKeyAction>();
+		moveBack->Init(GLFW_KEY_S, ButtonKeyAction::TriggerType::triggerContinuosly);
+		moveBack->SetAction(
+			[scene]() {
+				scene->GetCamera().MoveBackward(Time::dt_sec * 1000.0f);
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(moveBack);
+		auto* moveLeft = Allocator::New<ButtonKeyAction>();
+		moveLeft->Init(GLFW_KEY_A, ButtonKeyAction::TriggerType::triggerContinuosly);
+		moveLeft->SetAction(
+			[scene]() {
+				scene->GetCamera().MoveLeft(Time::dt_sec * 1000.0f);
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(moveLeft);
+
+		auto* moveRight = Allocator::New<ButtonKeyAction>();
+		moveRight->Init(GLFW_KEY_D, ButtonKeyAction::TriggerType::triggerContinuosly);
+		moveRight->SetAction(
+			[scene]() {
+				scene->GetCamera().MoveRight(Time::dt_sec * 1000.0f);
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(moveRight);
+
+		auto* moveUp = Allocator::New<ButtonKeyAction>();
+		moveUp->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerContinuosly);
+		moveUp->SetAction(
+			[scene]() {
+				scene->GetCamera().MoveUp(Time::dt_sec * 100.0f);
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(moveUp);
+
+		auto* moveDown = Allocator::New<ButtonKeyAction>();
+		moveDown->Init(GLFW_KEY_C, ButtonKeyAction::TriggerType::triggerContinuosly);
+		moveDown->SetAction(
+			[scene]() {
+				scene->GetCamera().MoveDown(Time::dt_sec * 100.0f);
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(moveDown);
+
+
+		auto* debugMode = Allocator::New<ButtonKeyAction>();
+		debugMode->Init(GLFW_KEY_I, ButtonKeyAction::TriggerType::triggerOnPress);
+		debugMode->SetAction(
+			[scene]() {
+				scene->setDrawDebug(!scene->getDrawDebug());
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(debugMode);
+		
+		bool* isMouseDown = new bool;
+		*isMouseDown = false;
+
+		auto* moveCam = Allocator::New<AxisMoveAction>();
+		moveCam->SetAction(
+			[scene, isMouseDown](const glm::vec2& delta, const glm::vec2& pos) {
+				if (*isMouseDown) {
+					scene->GetCamera().Rotate(delta * 0.001f);
+				}
+			}
+		);
+		ControlActionManager::getInstance()->RegisterMouseMoveAction(moveCam);
+
+		auto* grab = Allocator::New<ButtonKeyAction>();
+		grab->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnPress);
+		grab->SetAction(
+			[isMouseDown]() {
+				*isMouseDown = true;
+			}
+		);
+		ControlActionManager::getInstance()->RegisterMouseButtonAction(grab);
+
+		auto* release = Allocator::New<ButtonKeyAction>();
+		release->Init(GLFW_MOUSE_BUTTON_LEFT, ButtonKeyAction::TriggerType::triggerOnRelease);
+		release->SetAction(
+			[isMouseDown]() {
+				*isMouseDown = false;
+			}
+		);
+		ControlActionManager::getInstance()->RegisterMouseButtonAction(release);
 
 		return scene;
 	}

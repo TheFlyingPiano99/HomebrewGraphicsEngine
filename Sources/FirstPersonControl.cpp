@@ -90,13 +90,13 @@ Hogra::FirstPersonControl::~FirstPersonControl()
 {
 }
 
-void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
+void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt_sec)
 {
 	if (jumpCollider != nullptr) {
 		isGrounded = jumpCollider->PopCollided();
 	}
 	if (jumpCoolDown > 0.0f) {
-		jumpCoolDown -= dt;
+		jumpCoolDown -= dt_sec;
 		if (jumpCoolDown < 0.0f) {
 			jumpCoolDown = 0.0f;
 		}
@@ -105,7 +105,7 @@ void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
 		return;
 	}
 	
-	camera->Rotate(headRotationDelta * dt);
+	camera->Rotate(headRotationDelta * dt_sec);
 	if (tSinceLastInput > 0.5f) {
 		auto* a = camera->getAnimation();
 		HeadBob* pointer = (HeadBob*) & a;
@@ -113,14 +113,14 @@ void Hogra::FirstPersonControl::EarlyPhysicsUpdate(float dt)
 		camera->setAnimation(nullptr);
 	}
 	else {
-		tSinceLastInput += dt;
+		tSinceLastInput += dt_sec;
 	}
 	if (physics != nullptr) {
 		physics->ApplyTransientForce(walkForce);
 	}
 }
 
-void Hogra::FirstPersonControl::LatePhysicsUpdate(float dt)
+void Hogra::FirstPersonControl::LatePhysicsUpdate(float dt_sec)
 {
 	if (camera == nullptr) {
 		return;

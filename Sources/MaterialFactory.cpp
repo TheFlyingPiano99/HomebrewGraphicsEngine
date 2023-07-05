@@ -243,6 +243,26 @@ namespace Hogra {
 		return volumeMaterial;
 	}
 
+	Material* MaterialFactory::getCellShadedMaterial(std::filesystem::path& albedoPath)
+	{
+		auto program = ShaderProgramFactory::GetInstance()->GetForwardCellShadingProgramWithMapping();
+		auto material = Allocator::New<Material>();
+		material->Init(program);
+		auto albedoMap = Allocator::New<Texture2D>();
+		albedoMap->Init(albedoPath, 0, GL_RGB, GL_UNSIGNED_BYTE);
+		material->AddTexture(albedoMap);
+		return material;
+	}
+
+	Material* MaterialFactory::getHomogenousCellShadedMaterial(const glm::vec3& albedo)
+	{
+		auto program = ShaderProgramFactory::GetInstance()->GetForwardCellShadingProgramForHomogenousMaterial();
+		Material* material = Allocator::New<Material>();
+		material->Init(program);
+		material->setAlbedo(albedo);
+		return material;
+	}
+
 	void MaterialFactory::ForgetPointers()
 	{
 		loadedPBRMaterials.clear();

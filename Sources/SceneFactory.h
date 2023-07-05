@@ -49,6 +49,8 @@ namespace Hogra {
 
 		Scene* CreateWaveFunctionScene(unsigned int contextWidth, unsigned int contextHeight);
 
+		Scene* CreateShadingHomeWorkScene(unsigned int contextWidth, unsigned int contextHeight);
+
 	private:
 		static SceneFactory* instance;
 	};

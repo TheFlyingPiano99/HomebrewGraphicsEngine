@@ -12,9 +12,9 @@ namespace Hogra {
 		for (int i = 0; i < MAX_LIGHT_COUNT; i++) {
 			subDataSizes.push_back(sizeof(glm::vec4));		// position
 			subDataSizes.push_back(sizeof(glm::vec3));		// powerDensity
-			subDataSizes.push_back(sizeof(int));		// shadowCasterIdx
+			subDataSizes.push_back(sizeof(glm::vec4));		// shadowCasterIdx [-1 if no shadow caster]
 		}
-		ubo.Init(subDataSizes, LIGHTS_UBO_BINDING);
+		lightsUBO.Init(subDataSizes, LIGHTS_UBO_BINDING);
 
 		brdfLUT.Init(glm::ivec2(512, 512), BRDF_LUT_UNIT, GL_RG16F, GL_RG, GL_FLOAT);
 
@@ -46,13 +46,17 @@ namespace Hogra {
 		deferredLightingSystem.ExportShadowMaps(omniDirShadowCasters);
 
 		int count = pointLights.size();
-		ubo.Bind();
+		count += dirLights.size();
+		lightsUBO.Bind();
 		unsigned int idx = 0;
-		ubo.UploadSubData((void*)&count, idx++);
+		lightsUBO.UploadSubData((void*)&count, idx++);
 		for (auto* light : pointLights) {
-			light->ExportData(ubo, idx);
+			light->ExportData(lightsUBO, idx);
 		}
-		ubo.Unbind();
+		for (auto* light : dirLights) {
+			light->ExportData(lightsUBO, idx);
+		}
+		lightsUBO.Unbind();
 	}
 
 	void Renderer::SetSkybox(TextureCube* envMap) {

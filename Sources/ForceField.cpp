@@ -2,7 +2,7 @@
 
 namespace Hogra {
 
-	void HomogeneForceField::EarlyPhysicsUpdate(float dt)
+	void HomogeneForceField::EarlyPhysicsUpdate(float dt_sec)
 	{
 		for (auto& listener : listeners) {
 			float m = listener->GetMass();
@@ -13,16 +13,16 @@ namespace Hogra {
 		}
 	}
 
-	void HomogeneForceField::LatePhysicsUpdate(float dt)
+	void HomogeneForceField::LatePhysicsUpdate(float dt_sec)
 	{
 	}
 
 
-	void CentralForceField::EarlyPhysicsUpdate(float dt)
+	void CentralForceField::EarlyPhysicsUpdate(float dt_sec)
 	{
 	}
 
-	void CentralForceField::LatePhysicsUpdate(float dt)
+	void CentralForceField::LatePhysicsUpdate(float dt_sec)
 	{
 	}
 }

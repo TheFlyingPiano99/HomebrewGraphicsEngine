@@ -1,0 +1,4 @@
+﻿Profiling of 'HomebrewGraphicsEngine' started.
+HomebrewGraphicsEngine has exited.
+Profiling of 'HomebrewGraphicsEngine' stopped.
+Symbols loaded for homebrewgraphicsengine.exe from C:\Users\simon\AppData\Local\Temp\SymbolCache\HomebrewGraphicsEngine.pdb\5C620A680DF642FDB0972EA6761B38E610d\HomebrewGraphicsEngine.pdb

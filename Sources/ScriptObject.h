@@ -8,8 +8,8 @@ namespace Hogra {
 	public:
 
 		void BeforePhysicsLoopUpdate() override { beforePhysicsLoopUpdateFunc(); }
-		void EarlyPhysicsUpdate(float dt) override { earlyPhysicsUpdateFunc(dt); };
-		void LatePhysicsUpdate(float dt) override { latePhysicsUpdateFunc(dt); };
+		void EarlyPhysicsUpdate(float dt_sec) override { earlyPhysicsUpdateFunc(dt_sec); };
+		void LatePhysicsUpdate(float dt_sec) override { latePhysicsUpdateFunc(dt_sec); };
 		void AfterPhysicsLoopUpdate() override { afterPhysicsLoopUpdateFunc(); }
 
 		void SetBeforePhysicsLoopUpdateFunc(std::function<void()> func) { beforePhysicsLoopUpdateFunc = func; }

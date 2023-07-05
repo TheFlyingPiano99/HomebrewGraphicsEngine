@@ -67,12 +67,12 @@ const std::wstring& Hogra::Caption::GetText() {
 	return text;
 }
 
-void Hogra::Caption::EarlyPhysicsUpdate(float dt)
+void Hogra::Caption::EarlyPhysicsUpdate(float dt_sec)
 {
 	;
 }
 
-void Hogra::Caption::LatePhysicsUpdate(float dt)
+void Hogra::Caption::LatePhysicsUpdate(float dt_sec)
 {
 	;
 }

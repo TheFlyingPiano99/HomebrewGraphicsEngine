@@ -46,9 +46,9 @@ namespace Hogra {
 		ColliderType type = ColliderType::undefinedColliderType;
 
 		// Inherited via Component
-		virtual void EarlyPhysicsUpdate(float dt) override;
+		virtual void EarlyPhysicsUpdate(float dt_sec) override;
 
-		virtual void LatePhysicsUpdate(float dt) override;
+		virtual void LatePhysicsUpdate(float dt_sec) override;
 
 		const glm::vec3& GetPosition() const {
 			return position;

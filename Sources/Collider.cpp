@@ -89,11 +89,11 @@ namespace Hogra {
         return isCollision;
     }
 
-    void Collider::EarlyPhysicsUpdate(float dt)
+    void Collider::EarlyPhysicsUpdate(float dt_sec)
     {
     }
 
-    void Collider::LatePhysicsUpdate(float dt)
+    void Collider::LatePhysicsUpdate(float dt_sec)
     {
         if (nullptr != positionProvider) {
             position = positionProvider->GetPosition();
