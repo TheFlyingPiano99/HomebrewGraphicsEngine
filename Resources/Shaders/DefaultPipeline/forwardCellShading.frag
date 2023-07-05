@@ -23,23 +23,22 @@ layout (std140, binding = 0) uniform Camera {	// base alignment	aligned offset
 									// 16				208				(column 3)
 } camera;
 
-struct Light {
+layout (std140) struct Light {
 	vec4 position;		
 	vec3 powerDensity;
-	int shadowMapIdx;	// -1 if no shadow map
+	vec4 shadowMapIdx;	// -1 if no shadow map
 };
 
 layout (std140, binding = 1) uniform Lights {			// aligned size: 32 bytes
 	int lightCount;
-	Light lights[64];
+	Light lights[2048];
 };
-
 
 void main()
 {
 	vec3 kd = texture(albedoMap, fs_in.texCoords).rgb / 3.14159265359;
 	vec3 ks = vec3(0.1, 0.1, 0.1);
-	vec3 ambient = vec3(3.0);
+	vec3 ambient = vec3(0.5);
 	float shininess = 100.0;
 
 	vec3 sumL = vec3(0);

@@ -1414,6 +1414,25 @@ namespace Hogra {
 			scene->AddSceneObject(blasterObj, "blaster", "ForwardLayer");
 		}
 
+		{
+			// Borderlands:
+			auto obj = Allocator::New<SceneObject>();
+			auto geom = GeometryFactory::GetInstance()->Load(
+				AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("Borderlands cosplay-obj.obj")
+			);
+			auto mat = MaterialFactory::GetInstance()->getCellShadedMaterial(
+				AssetFolderPathManager::getInstance()->getTextureFolderPath().append("Borderlands cosplay-obj_0.jpg")
+			);
+			auto mesh = Allocator::New<Mesh>();
+			mesh->Init(geom, mat);
+			obj->Init(mesh);
+			obj->SetPosition({-10, 1.0, 10});
+			obj->SetScale(glm::vec3(0.002f));
+			obj->SetUseEulerAngles(true);
+			obj->SetEulerAngles({ -90, 0, 0});
+			scene->AddSceneObject(obj, "borderlands", "ForwardLayer");
+		}
+
 
 		// ----------------------------------------------------
 		// Lights:

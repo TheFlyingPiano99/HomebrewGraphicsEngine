@@ -249,7 +249,7 @@ namespace Hogra {
 		auto material = Allocator::New<Material>();
 		material->Init(program);
 		auto albedoMap = Allocator::New<Texture2D>();
-		albedoMap->Init(albedoPath, 0, GL_RGB, GL_UNSIGNED_BYTE);
+		albedoMap->Init(albedoPath, ALBEDO_MAP_UNIT, GL_RGB, GL_UNSIGNED_BYTE, false, true);
 		material->AddTexture(albedoMap);
 		return material;
 	}
