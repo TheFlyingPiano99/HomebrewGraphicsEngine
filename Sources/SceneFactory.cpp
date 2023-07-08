@@ -158,7 +158,7 @@ namespace Hogra {
 			scene->AddLight(light);
 		}
 
-		auto* logoSpriteObj = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
+		auto* logoSpriteObj = SceneObjectFactory::GetInstance()->CreateTwoAndHalfDimensionalSpriteObject(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/HoGraEngineLogo.png"),
 			&scene->GetCamera()
 		);
@@ -1335,6 +1335,7 @@ namespace Hogra {
 
 	Scene* SceneFactory::CreateShadingHomeWorkScene(unsigned int contextWidth, unsigned int contextHeight)
 	{
+
 		auto scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
 
@@ -1379,7 +1380,7 @@ namespace Hogra {
 			scene->AddSceneObject(treeObj, "tree", "DeferredLayer");
 
 			for (int i = 0; i < 20; i++) {
-				auto* leafObj = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
+				auto* leafObj = SceneObjectFactory::GetInstance()->CreateTwoAndHalfDimensionalSpriteObject(
 					AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/leaf.png"),
 					&(scene->GetCamera())
 				);
@@ -1391,7 +1392,7 @@ namespace Hogra {
 					});
 				leafObj->AddComponent(fallingLeafScript);
 				leafObj->SetPosition(glm::vec3(5.0f, 5.0f, 5.0f));
-				scene->AddSceneObject(leafObj, "logo_sprite", "ForwardLayer");
+				scene->AddSceneObject(leafObj, "leaf_obj", "ForwardLayer");
 			}
 		}
 		
@@ -1434,6 +1435,7 @@ namespace Hogra {
 			obj->SetEulerAngles({ -90, 0, 0});
 			scene->AddSceneObject(obj, "borderlands", "ForwardLayer");
 		}
+
 
 		// ----------------------------------------------------
 		// Captions:
@@ -1478,7 +1480,7 @@ namespace Hogra {
 		);
 		forwardLayer->AddPostProcessStage(silhouette);
 
-		
+
 		auto bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
 		deferredLayer->AddPostProcessStage(bloom);
@@ -1491,8 +1493,6 @@ namespace Hogra {
 		);
 		deferredLayer->AddPostProcessStage(hdr);
 		
-		
-
 
 
 
@@ -1591,6 +1591,40 @@ namespace Hogra {
 			}
 		);
 		ControlActionManager::getInstance()->RegisterMouseButtonAction(release);
+
+		return scene;
+	}
+
+	Scene* SceneFactory::CreateSplashScene(unsigned int contextWidth, unsigned int contextHeight)
+	{
+		Scene* scene = Allocator::New<Scene>();
+		scene->Init(contextWidth, contextHeight);
+		scene->SetBackgroundColor(glm::vec3(5, 200, 141) / 255.0f);
+		// Camera:
+		scene->GetCamera().SetPosition(glm::vec3(0, 5, 0));
+		scene->GetCamera().SetLookDir(glm::normalize(glm::vec3(0, -0.1, -1)));
+
+		// Layers:
+
+		auto forwardLayer = Allocator::New<RenderLayer>();
+		forwardLayer->SetName("ForwardLayer");
+		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
+		scene->AddRenderLayer(forwardLayer);
+		auto logo = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
+			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/HoGraEngineLogo.png"),
+			{ 0.0,0,0 }, 0.25f
+		);
+		scene->AddSceneObject(logo, "logo", "ForwardLayer");
+
+		
+		auto silhouette = Allocator::New<PostProcessStage>();
+		silhouette->Init(
+			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/silhouettePostProcess.frag"),
+			contextWidth,
+			contextHeight
+		);
+		forwardLayer->AddPostProcessStage(silhouette);
+		
 
 		return scene;
 	}

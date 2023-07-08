@@ -22,7 +22,9 @@ namespace Hogra {
 
 		ShaderProgram* GetDeferredEmissiveMaterialProgram();
 
-		ShaderProgram* GetForwardSpriteProgram();
+		ShaderProgram* GetForwardTwoAndHalfDimensionalSpriteProgram();
+
+		ShaderProgram* GetForward2DSpriteProgram();
 
 		ShaderProgram* GetForwardCellShadingProgramWithMapping();
 
@@ -37,7 +39,8 @@ namespace Hogra {
 		ShaderProgram* emissiveMaterial = nullptr;
 		ShaderProgram* glyphProgram = nullptr;
 		ShaderProgram* captionProgram = nullptr;
-		ShaderProgram* spriteProgram = nullptr;
+		ShaderProgram* twoAndHaldDimSpriteProgram = nullptr;
+		ShaderProgram* twoDimSpriteProgram = nullptr;
 		ShaderProgram* forwardCellShadingProgram = nullptr;
 		ShaderProgram* forwardHomogenousCellShadingProgram = nullptr;
 

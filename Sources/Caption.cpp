@@ -53,7 +53,7 @@ void Hogra::Caption::Draw() {
 	
 	glm::mat4 transform = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight)
 		* glm::translate(glm::vec3(pos, 0.0f)) * glm::scale(scale * glm::vec3(texture->GetDimensions(), 1.0f) * 0.5f);
-	program->SetUniform("transform", transform);
+	program->SetUniform("sceneObject.modelMatrix", transform);
 	program->SetUniform("textColor", color);
 	glEnable(GL_BLEND);
 	glDisable(GL_CULL_FACE);

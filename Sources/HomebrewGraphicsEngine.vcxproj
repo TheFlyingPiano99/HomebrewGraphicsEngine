@@ -183,6 +183,7 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DualNumber.cpp" />
     <ClCompile Include="EBO.cpp" />
+    <ClCompile Include="Factories.cpp" />
     <ClCompile Include="FBO.cpp" />
     <ClCompile Include="FFT.cpp" />
     <ClCompile Include="FirstPersonControl.cpp" />
@@ -284,6 +285,7 @@
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DualNumber.h" />
     <ClInclude Include="EBO.h" />
+    <ClInclude Include="Factories.h" />
     <ClInclude Include="FBO.h" />
     <ClInclude Include="FFT.h" />
     <ClInclude Include="FirstPersonControl.h" />
@@ -391,10 +393,11 @@
     <None Include="..\Resources\Shaders\DefaultPipeline\deferredPBRDirectionalLightingPass.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\deferredPBRLightVolumePass.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\deferredSprite.frag" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\forward2DSprite.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\forwardCellShading.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\forwardHomogenousCellShading.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\forwardSkybox.frag" />
-    <None Include="..\Resources\Shaders\DefaultPipeline\forwardSprite.frag" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\forward25DSprite.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\fullScreenQuad.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\fullScreenQuadWithRayDir.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\instanced2D.vert" />
@@ -407,6 +410,7 @@
     <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\silhouette.geom" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\single2DNoViewProj.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single2D.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single3D.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single3DWithTBN.vert" />

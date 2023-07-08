@@ -4,6 +4,8 @@
 #include "GlobalInclude.h"
 #include "ControlActionManager.h"
 #include "nlohmann/json.hpp"
+#include "SceneObjectFactory.h"
+#include "Factories.h"
 
 
 struct SceneIDToFilenameMapping {
@@ -26,11 +28,23 @@ namespace Hogra {
 		return instance;
 	}
 
+	void SceneManager::InitSplash(int contextWidth, int contextHeight)
+	{
+		if (Allocator::IsValid(currentScene)) {
+			Allocator::Delete(currentScene);
+			Factories::ClearCash();
+		}
+		currentScene = SceneFactory::getInstance()->CreateSplashScene(contextWidth, contextHeight);
+	}
+
 	void SceneManager::Init(int contextWidth, int contextHeight)
 	{
-		if (nullptr != currentScene) {
-			return;
+		if (Allocator::IsValid(currentScene)) {
+			Allocator::Delete(currentScene);
+			Factories::ClearCash();
 		}
+
+
 #if 0 == INIT_MODE
 #elif 1 == INIT_MODE
 		currentScene = SceneFactory::getInstance()->CreatePixelPhysicsDemoScene(contextWidth, contextHeight);
@@ -44,6 +58,7 @@ namespace Hogra {
 		currentScene = SceneFactory::getInstance()->CreateShadingHomeWorkScene(contextWidth, contextHeight); // Home Work
 #endif
 
+		//Allocator::Delete(logo);
 	}
 
 	void SceneManager::RestartScene()

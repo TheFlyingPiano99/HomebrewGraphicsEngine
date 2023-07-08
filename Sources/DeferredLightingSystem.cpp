@@ -18,7 +18,7 @@ namespace Hogra {
 			"",
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredPBRDirectionalLightingPass.frag"));
 		
-		fullScreenSkyboxProgram.Init(
+		fullScreenAmbientProgram.Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/deferredAmbientPass.frag"));
@@ -116,8 +116,10 @@ namespace Hogra {
 		TextureCube* prefilterMap,
 		Texture2D* brdfLUT
 	) {
+
+
 		meshFullScreen->Bind();
-		fullScreenSkyboxProgram.Activate();
+		fullScreenAmbientProgram.Activate();
 		if (nullptr != environmentMap) {
 			environmentMap->Bind();
 		}

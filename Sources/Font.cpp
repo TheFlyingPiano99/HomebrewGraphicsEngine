@@ -82,7 +82,7 @@ namespace Hogra {
         glyphProgram->Activate();
         glyphProgram->SetUniform("textColor", color);
         glm::mat4 projection = glm::ortho(0.0f, (float)GlobalVariables::windowWidth, (float)GlobalVariables::windowHeight, 0.0f);
-        glyphProgram->SetUniform("transform", projection);
+        glyphProgram->SetUniform("sceneObject.modelMatrix", projection);
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(vao);
         glEnable(GL_BLEND);
@@ -153,7 +153,7 @@ namespace Hogra {
             float xpos = x + ch.bearing.x + ch.size.x * 0.5f;
             float ypos = y - (ch.size.y - ch.bearing.y) + ch.size.y * 0.5f;
             auto transform = projection * glm::translate(glm::vec3(xpos, ypos, 0.0f)) * glm::scale(glm::vec3(ch.size.x, -ch.size.y, 2.0f) * 0.5f);
-            glyphProgram->SetUniform("transform", transform);
+            glyphProgram->SetUniform("sceneObject.modelMatrix", transform);
             ch.texture->Bind();
             quad->Draw();
             x += (ch.advance >> 6); // bitshift by 6 to get value in pixels (2^6 = 64)

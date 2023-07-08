@@ -170,6 +170,7 @@ namespace Hogra {
 		void DeleteSceneObject(SceneObject* object);
 
 		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
+		//glm::vec4 backgroundColor = glm::vec4(0.07f, 0.0f, 0.17f, 1.0f);
 
 		Camera camera;
 		Renderer renderer;

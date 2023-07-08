@@ -37,7 +37,7 @@ namespace Hogra {
 		captureFBO.Unbind();
 
 		finalImageFBO.Init();
-		finalImage.Init({GlobalVariables::windowWidth, GlobalVariables::windowHeight}, 0, GL_RGBA16, GL_RGBA, GL_UNSIGNED_SHORT, false);
+		finalImage.Init({ GlobalVariables::windowWidth, GlobalVariables::windowHeight }, 0, GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, false);
 		finalImageFBO.LinkTexture(GL_COLOR_ATTACHMENT0, finalImage, 0);
 		finalImageFBO.LinkTexture(GL_DEPTH_ATTACHMENT, deferredLightingSystem.GetDepthTexture(), 0);
 		finalImageFBO.Unbind();
@@ -119,7 +119,7 @@ namespace Hogra {
 		finalImage.Delete();
 		finalImageFBO.Delete();
 		finalImageFBO.Init();
-		finalImage.Init({ GlobalVariables::windowWidth, GlobalVariables::windowHeight }, 0, GL_RGBA16, GL_RGBA, GL_UNSIGNED_SHORT, false);
+		finalImage.Init({ GlobalVariables::windowWidth, GlobalVariables::windowHeight }, 0, GL_RGB8, GL_RGB, GL_UNSIGNED_BYTE, false);
 		finalImageFBO.LinkTexture(GL_COLOR_ATTACHMENT0, finalImage, 0);
 		finalImageFBO.LinkTexture(GL_DEPTH_ATTACHMENT, deferredLightingSystem.GetDepthTexture(), 0);
 		finalImageFBO.Unbind();
@@ -182,6 +182,18 @@ namespace Hogra {
 
 	void Renderer::PrepareFirstFBOForRendering(FBO* fbo, const glm::vec4 &backgroundColor)
 	{
+		if (fbo != &finalImageFBO) {
+			finalImageFBO.Bind();
+			glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
+			glEnable(GL_DEPTH_TEST);
+			glDepthMask(GL_TRUE);
+			glDepthFunc(GL_LESS);
+			glClearDepth(1);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+			glStencilMask(GL_FALSE);
+		}
+
 		fbo->Bind();
 		if (0 != fbo->glID) {
 			fbo->LinkTexture(GL_DEPTH_ATTACHMENT, deferredLightingSystem.GetDepthTexture(), 0);

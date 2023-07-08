@@ -43,7 +43,7 @@ namespace Hogra {
 			glyphProgram
 				= Allocator::New<ShaderProgram>();
 			glyphProgram->Init(
-					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2D.vert"),
+					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DNoViewProj.vert"),
 					"",
 					AssetFolderPathManager::getInstance()->getShaderFolderPath().append("UI/glyph.frag")
 				);
@@ -56,7 +56,7 @@ namespace Hogra {
 		if (nullptr == captionProgram) {
 			captionProgram = Allocator::New<ShaderProgram>();
 			captionProgram->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2D.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DNoViewProj.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("UI/caption.frag")
 			);
@@ -77,16 +77,29 @@ namespace Hogra {
 		return emissiveMaterial;
 	}
 
-	ShaderProgram* ShaderProgramFactory::GetForwardSpriteProgram() {
-		if (nullptr == spriteProgram) {
-			spriteProgram = Allocator::New<ShaderProgram>();
-			spriteProgram->Init(
+	ShaderProgram* ShaderProgramFactory::GetForwardTwoAndHalfDimensionalSpriteProgram() {
+		if (nullptr == twoAndHaldDimSpriteProgram) {
+			twoAndHaldDimSpriteProgram = Allocator::New<ShaderProgram>();
+			twoAndHaldDimSpriteProgram->Init(
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single3DWithTBN.vert"),
 				"",
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forwardSprite.frag")
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forward25DSprite.frag")
 			);
 		}
-		return spriteProgram;
+		return twoAndHaldDimSpriteProgram;
+	}
+
+	ShaderProgram* ShaderProgramFactory::GetForward2DSpriteProgram()
+	{
+		if (nullptr == twoDimSpriteProgram) {
+			twoDimSpriteProgram = Allocator::New<ShaderProgram>();
+			twoDimSpriteProgram->Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DNoViewProj.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forward2DSprite.frag")
+			);
+		}
+		return twoDimSpriteProgram;
 	}
 
 	ShaderProgram* ShaderProgramFactory::GetForwardCellShadingProgramWithMapping()
@@ -121,6 +134,10 @@ namespace Hogra {
 		emissiveMaterial = nullptr;
 		glyphProgram = nullptr;
 		captionProgram = nullptr;
+		twoAndHaldDimSpriteProgram = nullptr;
+		twoDimSpriteProgram = nullptr;
+		forwardCellShadingProgram = nullptr;
+		forwardHomogenousCellShadingProgram = nullptr;
 	}
 
 }

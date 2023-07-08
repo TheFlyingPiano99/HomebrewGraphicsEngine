@@ -51,6 +51,8 @@ namespace Hogra {
 
 		Scene* CreateShadingHomeWorkScene(unsigned int contextWidth, unsigned int contextHeight);
 
+		Scene* CreateSplashScene(unsigned int contextWidth, unsigned int contextHeight);
+
 	private:
 		static SceneFactory* instance;
 	};

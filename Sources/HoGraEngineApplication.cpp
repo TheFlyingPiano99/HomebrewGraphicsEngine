@@ -117,7 +117,6 @@ namespace Hogra {
 		glfwGetWindowSize(window, &GlobalVariables::windowWidth, &GlobalVariables::windowHeight);
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
-		SceneManager::getInstance()->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
 		GUI::getInstance()->InitGUI(window);
 
 		return 0;
@@ -137,10 +136,21 @@ namespace Hogra {
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 
 		unsigned int iterationCount = 0;
+		int iteration = 0;
 
 		// Main while loop
 		while (!glfwWindowShouldClose(window))
 		{
+			if (1000 == iteration) {
+				SceneManager::getInstance()->InitSplash(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
+			}
+			if (2000 == iteration) {
+				SceneManager::getInstance()->Init(GlobalVariables::windowWidth, GlobalVariables::windowHeight);
+			}
+			if (iteration < 2001) {
+				iteration++;
+			}
+
 			// Updates counter and times
 			crntTime = glfwGetTime();
 			timeDiff = crntTime - prevTime;

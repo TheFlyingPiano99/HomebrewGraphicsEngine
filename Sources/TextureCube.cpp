@@ -147,7 +147,10 @@ namespace Hogra {
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, this->glID, 0);
 			
-			glClearColor(0.5, 0, 1, 1);
+			glClearColor(0, 0, 0, 1);
+			glDepthMask(GL_TRUE);
+			glDepthFunc(GL_LESS);
+			glClearDepth(1);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
 			cubeGeometry->Draw(); // renders a 1x1 cube
@@ -202,18 +205,19 @@ namespace Hogra {
 
 		FBO captureFBO;
 		captureFBO.Init();
-		RBO depthRBP;
-		depthRBP.Init(GL_DEPTH_COMPONENT, resolution, resolution);
-		captureFBO.LinkRBO(GL_DEPTH_ATTACHMENT, depthRBP);
+		captureFBO.SetViewport(0, 0, resolution, resolution);
+		//RBO depthRBP;
+		//depthRBP.Init(GL_DEPTH_COMPONENT, resolution, resolution);
+		//captureFBO.LinkRBO(GL_DEPTH_ATTACHMENT, depthRBP);
 		
 		// convert HDR equirectangular environment map to cubemap equivalent
 		conversionShader.Activate();
 		conversionShader.SetUniform("projection", captureProjection);
 		cubemap.Bind();
 		captureFBO.Bind();
-		glDisable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST);
 		for (unsigned int mip = 0; mip < maxMipLevels; mip++) {
-			for (int i = -1; i < 6; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				int side = (0 > i)? 0 : i;
 				// reisze framebuffer according to mip-level size.
@@ -224,14 +228,19 @@ namespace Hogra {
 				float roughness = (float)mip / (float)(maxMipLevels - 1);
 				conversionShader.SetUniform("roughness", roughness);
 
+				captureFBO.Bind();
+
 				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
 					GL_TEXTURE_CUBE_MAP_POSITIVE_X + side, this->glID, mip);
 
-				glClearColor(0.5, 0, 1, 1);
+				glClearColor(0, 0, 0, 1);
+				glDepthMask(GL_TRUE);
+				glDepthFunc(GL_LESS);
+				glClearDepth(1);
+				glDisable(GL_BLEND);
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 				cubeGeometry->Draw(); // renders a 1x1 cube
-				captureFBO.Bind();
 			}
 		}
 

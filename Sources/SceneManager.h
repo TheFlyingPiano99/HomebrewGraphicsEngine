@@ -24,6 +24,8 @@ namespace Hogra {
 			}
 		}
 
+		void InitSplash(int contextWidth, int contextHeight);
+
 		void Init(int contextWidth, int contextHeight);
 
 		void RestartScene();
