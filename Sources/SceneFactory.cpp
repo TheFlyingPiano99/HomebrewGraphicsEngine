@@ -1443,7 +1443,7 @@ namespace Hogra {
 		font->Init("arial.ttf");
 
 		auto caption = Allocator::New<Caption>();
-		caption->Init(L"Hello World!", font, { 100, 100 }, 1.0, {1, 1, 1, 0.5});
+		caption->Init(L"Demo application", font, { GlobalVariables::windowWidth / 2.0f, 50 }, 1.0, {1, 1, 1, 0.5});
 		scene->AddCaption(caption);
 
 
@@ -1599,7 +1599,7 @@ namespace Hogra {
 	{
 		Scene* scene = Allocator::New<Scene>();
 		scene->Init(contextWidth, contextHeight);
-		scene->SetBackgroundColor(glm::vec3(5, 200, 141) / 255.0f);
+		//scene->SetBackgroundColor(glm::vec3(5, 50, 141) / 255.0f);
 		// Camera:
 		scene->GetCamera().SetPosition(glm::vec3(0, 5, 0));
 		scene->GetCamera().SetLookDir(glm::normalize(glm::vec3(0, -0.1, -1)));
@@ -1612,19 +1612,23 @@ namespace Hogra {
 		scene->AddRenderLayer(forwardLayer);
 		auto logo = SceneObjectFactory::GetInstance()->Create2DSpriteObject(
 			AssetFolderPathManager::getInstance()->getTextureFolderPath().append("sprites/HoGraEngineLogo.png"),
-			{ 0.0,0,0 }, 0.25f
+			{ GlobalVariables::windowWidth / 2.0f, GlobalVariables::windowHeight / 2.0f, 0.0f }, 0.2f
 		);
 		scene->AddSceneObject(logo, "logo", "ForwardLayer");
-
 		
-		auto silhouette = Allocator::New<PostProcessStage>();
-		silhouette->Init(
-			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/silhouettePostProcess.frag"),
-			contextWidth,
-			contextHeight
-		);
-		forwardLayer->AddPostProcessStage(silhouette);
+		auto* font = Allocator::New<Font>();
+		font->Init("arial.ttf");
 		
+		{
+			auto caption = Allocator::New<Caption>();
+			caption->Init(L"Homebrew Graphics Engine", font, { GlobalVariables::windowWidth / 2.0f, GlobalVariables::windowHeight * 0.9f }, 0.8, { 1, 1, 1, 0.9 });
+			scene->AddCaption(caption);
+		}
+		{
+			auto caption = Allocator::New<Caption>();
+			caption->Init(L"Zoltán Simon (2023)", font, { GlobalVariables::windowWidth / 2.0f, GlobalVariables::windowHeight * 0.95f }, 0.5, { 1, 1, 1, 0.9 });
+			scene->AddCaption(caption);
+		}
 
 		return scene;
 	}

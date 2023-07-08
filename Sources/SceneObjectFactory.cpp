@@ -34,7 +34,7 @@ namespace Hogra {
 		return obj;
 	}
 
-	SceneObject* SceneObjectFactory::Create2DSpriteObject(const std::filesystem::path& texturePath, const glm::vec3& pos, float scale)
+	SceneObject* SceneObjectFactory::Create2DSpriteObject(const std::filesystem::path& texturePath, const glm::vec3& scPos, float scale)
 	{
 		auto geometry = GeometryFactory::GetInstance()->GetSimpleQuad();
 		auto program = ShaderProgramFactory::GetInstance()->GetForward2DSpriteProgram();
@@ -51,10 +51,8 @@ namespace Hogra {
 		SceneObject* obj = Allocator::New<SceneObject>();
 		obj->Init(mesh);
 		obj->SetIsCastingShadow(false);
-		obj->SetPosition(pos);
-		float screenAspectRatio = (float)GlobalVariables::windowWidth / (float)GlobalVariables::windowHeight;
-		float spriteAspectRatio = (float)texture->GetDimensions().x / (float)texture->GetDimensions().y;
-		obj->SetScale({ spriteAspectRatio / screenAspectRatio * scale, 1.0f * scale, 1.0f });
+		obj->SetPosition(scPos);
+		obj->SetScale({ texture->GetDimensions().x / 2.0f * scale, texture->GetDimensions().y / 2.0f * scale, 1.0f });
 		return obj;
 	}
 

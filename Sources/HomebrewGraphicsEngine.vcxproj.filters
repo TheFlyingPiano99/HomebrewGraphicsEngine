@@ -825,9 +825,6 @@
     <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.vert">
       <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
     </None>
-    <None Include="..\Resources\Shaders\DefaultPipeline\single2D.vert">
-      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
-    </None>
     <None Include="..\Resources\Shaders\DefaultPipeline\single3D.vert">
       <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
     </None>
@@ -934,6 +931,12 @@
       <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
     </None>
     <None Include="..\Resources\Shaders\DefaultPipeline\single2DNoViewProj.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\single2DMVP.vert">
+      <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\DefaultPipeline\single2DOrthographic.vert">
       <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
     </None>
   </ItemGroup>

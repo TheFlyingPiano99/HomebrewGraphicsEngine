@@ -16,13 +16,30 @@ namespace Hogra {
 		}
 		lightsUBO.Init(subDataSizes, LIGHTS_UBO_BINDING);
 
+		subDataSizes.clear();
+		// OrthoProj matrix:
+		subDataSizes.push_back(sizeof(glm::vec4));
+		subDataSizes.push_back(sizeof(glm::vec4));
+		subDataSizes.push_back(sizeof(glm::vec4));
+		subDataSizes.push_back(sizeof(glm::vec4));
+		//placeHolder: (For testing)
+		subDataSizes.push_back(sizeof(glm::vec4));
+		subDataSizes.push_back(sizeof(glm::vec4));
+		subDataSizes.push_back(sizeof(glm::vec4));
+		subDataSizes.push_back(sizeof(glm::vec4));
+		contextUBO.Init(subDataSizes, CONTEXT_UBO_BINDING);
+
 		brdfLUT.Init(glm::ivec2(512, 512), BRDF_LUT_UNIT, GL_RG16F, GL_RG, GL_FLOAT);
 
 		FBO captureFBO;
 		captureFBO.Init();
 		captureFBO.LinkTexture(GL_COLOR_ATTACHMENT0, brdfLUT);
 		captureFBO.Bind();
+		glClearColor(0, 0, 0, 1);
+		glClearDepth(1);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glDisable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND);
 
 		auto shader = ShaderProgram();
 		shader.Init(
@@ -63,6 +80,15 @@ namespace Hogra {
 			light->ExportData(lightsUBO, idx);
 		}
 		lightsUBO.Unbind();
+
+		glm::mat4 orthographicProjection 
+			= glm::ortho(0.0f, (float)GlobalVariables::windowWidth, 0.0f, (float)GlobalVariables::windowHeight, -1.0f, 1.0f);
+		contextUBO.Bind();
+		contextUBO.UploadSubData((void*)glm::value_ptr(orthographicProjection[0]), 0);
+		contextUBO.UploadSubData((void*)glm::value_ptr(orthographicProjection[1]), 1);
+		contextUBO.UploadSubData((void*)glm::value_ptr(orthographicProjection[2]), 2);
+		contextUBO.UploadSubData((void*)glm::value_ptr(orthographicProjection[3]), 3);
+		contextUBO.Unbind();
 	}
 
 	void Renderer::SetSkybox(TextureCube* envMap) {

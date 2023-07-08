@@ -95,7 +95,7 @@ void main()
 	vec3 F = fresnelSchlickRoughness(max(dot(n, viewDir), 0.0), F0, roughnessMetallicAO.x);
 	vec3 kS = F;
 	vec3 kD = 1.0 - kS;
-	kD *= 1.0 - roughnessMetallicAO.y; 
+	kD *= 1.0 - roughnessMetallicAO.y;
 
 	vec3 irradiance = texture(irradianceMap, n).rgb;
 	vec3 diffuse    = irradiance * albedo4.rgb;

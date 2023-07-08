@@ -232,6 +232,7 @@ namespace Hogra {
 			renderLayers[i]->Render(*outFBO, camera, renderer);
 		}
 
+		outFBO->Bind();
 		// Text pass:
 		for (auto* caption : captions) {
 			caption->Draw();

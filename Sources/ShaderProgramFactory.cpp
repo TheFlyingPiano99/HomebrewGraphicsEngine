@@ -1,4 +1,6 @@
 #include "ShaderProgramFactory.h"
+#include "GlobalInclude.h"
+#include "UniformVariableImpl.h"
 
 namespace Hogra {
 
@@ -56,7 +58,7 @@ namespace Hogra {
 		if (nullptr == captionProgram) {
 			captionProgram = Allocator::New<ShaderProgram>();
 			captionProgram->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DNoViewProj.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DOrthographic.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("UI/caption.frag")
 			);
@@ -94,7 +96,7 @@ namespace Hogra {
 		if (nullptr == twoDimSpriteProgram) {
 			twoDimSpriteProgram = Allocator::New<ShaderProgram>();
 			twoDimSpriteProgram->Init(
-				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DNoViewProj.vert"),
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DOrthographic.vert"),
 				"",
 				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/forward2DSprite.frag")
 			);

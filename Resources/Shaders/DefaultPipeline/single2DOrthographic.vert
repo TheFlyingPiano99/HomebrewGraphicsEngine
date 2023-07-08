@@ -10,11 +10,16 @@ layout (location = 1) in vec2 inTex;
 out vec2 texCoords;
 
 uniform struct SceneObject {
-	mat4 modelMatrix;
+	mat4 modelMatrix;	
 } sceneObject;
+
+layout(std140, binding = 3) uniform Context {
+    mat4 orthographicProj;
+    mat4 placeHolder;
+} context;
 
 void main()
 {
     texCoords = inTex;
-    gl_Position = sceneObject.modelMatrix * vec4(inPos.xy, 0.0, 1.0);
+    gl_Position = context.orthographicProj * sceneObject.modelMatrix * vec4(inPos.xy, 0.0, 1.0);
 }

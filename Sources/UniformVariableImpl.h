@@ -16,7 +16,7 @@ namespace Hogra {
 			value = _val;
 		}
 
-		void Bind(unsigned int id) override;
+		void Bind(unsigned int programID) override;
 
 		void Set(const T val);
 

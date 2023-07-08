@@ -5,7 +5,7 @@
 
 
 namespace Hogra {
-	
+
 	void UniformVariable<float>::Bind(unsigned int id) {
 		glUniform1f(glGetUniformLocation(id, key.c_str()), value);
 	}

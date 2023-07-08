@@ -410,8 +410,9 @@
     <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.frag" />
     <None Include="..\Resources\Shaders\DefaultPipeline\shadowCast.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\silhouette.geom" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\single2DMVP.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single2DNoViewProj.vert" />
-    <None Include="..\Resources\Shaders\DefaultPipeline\single2D.vert" />
+    <None Include="..\Resources\Shaders\DefaultPipeline\single2DOrthographic.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single3D.vert" />
     <None Include="..\Resources\Shaders\DefaultPipeline\single3DWithTBN.vert" />
     <None Include="..\Resources\Shaders\PostProcess\atmosphere.frag" />

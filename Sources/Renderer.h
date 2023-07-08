@@ -68,6 +68,7 @@ namespace Hogra {
 		TextureCube* irradianceMap = nullptr;
 		TextureCube* prefilterMap = nullptr;
 		UniformBufferObject lightsUBO;
+		UniformBufferObject contextUBO;
 		DeferredLightingSystem deferredLightingSystem;
 		Mesh* debugLightVolumeMesh = nullptr;
 		ShaderProgram glyphProgram;

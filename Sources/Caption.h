@@ -55,6 +55,10 @@ namespace Hogra {
 			verticalPlacing = style;
 		}
 
+		void SetPositionProvider(PositionConnector* connector) {
+			positionConnector = connector;
+		}
+
 	private:
 		Geometry* quad;
 		std::wstring text;
@@ -68,6 +72,7 @@ namespace Hogra {
 		Texture2D* texture = nullptr;
 		bool isVisible = true;
 		CaptionAlignment alignment = CaptionAlignment::centeredText;
+		PositionConnector* positionConnector = nullptr;
 
 	};
 
