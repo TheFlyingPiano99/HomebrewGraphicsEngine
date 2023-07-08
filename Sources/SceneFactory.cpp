@@ -1358,7 +1358,7 @@ namespace Hogra {
 		// ----------------------------------------------------
 		// Objects:
 		auto gravitation = InitGravitation(scene);
-		//InitSkyBox(scene);
+		InitSkyBox(scene);
 		InitGround(scene);
 		InitSphere(scene, glm::vec3(0,3, -10), gravitation, "TexturesCom_Wood_Planks1_2x2_1K");
 		InitSphere(scene, glm::vec3(3, 3, -10), gravitation, "lumpy-wet-concrete");
