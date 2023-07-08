@@ -285,7 +285,7 @@
     <ClCompile Include="UniformBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LightManager.cpp">
+    <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShaderProgramFactory.cpp">
@@ -377,9 +377,6 @@
     </ClCompile>
     <ClCompile Include="DirectionalLight.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="LagrangianMechanics.cpp">
       <Filter>Source Files</Filter>
@@ -542,7 +539,7 @@
     <ClInclude Include="PointLight.h">
       <Filter>Header Files\Lighting</Filter>
     </ClInclude>
-    <ClInclude Include="LightManager.h">
+    <ClInclude Include="Renderer.h">
       <Filter>Header Files\Lighting</Filter>
     </ClInclude>
     <ClInclude Include="DeferredLightingSystem.h">
@@ -606,9 +603,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UniformVariableImpl.h">

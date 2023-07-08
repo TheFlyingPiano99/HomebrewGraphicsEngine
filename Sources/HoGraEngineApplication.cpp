@@ -171,6 +171,7 @@ namespace Hogra {
 				realDelta = 0.0;
 			}
 			int retVal = 0;
+			Time::frameTime_sec = (float)realDelta;
 			while (realDelta > 0.0) {
 				if (realDelta > dtLimit) {
 					dt_sec = dtLimit;

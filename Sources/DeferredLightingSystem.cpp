@@ -13,7 +13,6 @@ namespace Hogra {
 	}
 
 	void DeferredLightingSystem::Init(unsigned int _contextWidth, unsigned int _contextHeight) {
-		gBuffer.Init();
 		dirLightProgram.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuad.vert"),
 			"",
@@ -47,9 +46,11 @@ namespace Hogra {
 		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
 
+		gBuffer.Init();
 		gBuffer.Bind();
 		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 		glDrawBuffers(4, attachments);
+		gBuffer.Unbind();
 
 		emptyCubeMap.Init(8, SHADOW_MAP_UNIT, GL_DEPTH_COMPONENT16, GL_DEPTH_COMPONENT, GL_FLOAT);
 
@@ -58,6 +59,7 @@ namespace Hogra {
 
 	void DeferredLightingSystem::OnContextResize(unsigned int _contextWidth, unsigned int _contextHeight)
 	{
+
 		gPosition.Delete();
 		gNormal.Delete();
 		gAlbedo.Delete();
@@ -69,6 +71,12 @@ namespace Hogra {
 		gNormal.Init(glm::ivec2(_contextWidth, _contextHeight), NORMAL_MAP_UNIT, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 		gRoughnessMetallicAO.Init(glm::ivec2(_contextWidth, _contextHeight), ROUGHNESS_METALLIC_AO_MAP_UNIT, GL_RGBA8, GL_RGBA, GL_UNSIGNED_BYTE);
 		depthTexture.Init(glm::ivec2(_contextWidth, _contextHeight), DEPTH_MAP_UNIT, GL_DEPTH_COMPONENT24, GL_DEPTH_COMPONENT, GL_FLOAT);
+
+		gBuffer.Delete();
+		gBuffer.Init();
+		gBuffer.Bind();
+		unsigned int attachments[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+		glDrawBuffers(4, attachments);
 
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + POSITION_MAP_UNIT, gPosition, 0);
 		gBuffer.LinkTexture(GL_COLOR_ATTACHMENT0 + ALBEDO_MAP_UNIT, gAlbedo, 0);
@@ -98,6 +106,7 @@ namespace Hogra {
 		glFrontFace(GL_CCW);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glClear(GL_COLOR_BUFFER_BIT);
+
 	}
 	
 	void DeferredLightingSystem::Draw(

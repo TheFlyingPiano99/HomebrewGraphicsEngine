@@ -3,8 +3,6 @@
 namespace Hogra {
 
 	void PostProcessStage::Init(const std::filesystem::path& fragmentShaderPath, int contextWidth, int contextHeight) {
-		fbo.Init();
-		fbo.Bind();
 		program.Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/fullScreenQuadWithRayDir.vert"),
 			"",
@@ -14,10 +12,12 @@ namespace Hogra {
 		volumeMaterial = Allocator::New<Material>();
 		volumeMaterial->Init(&program);
 		volumeMaterial->AddTexture(&colorTexture);
+		volumeMaterial->SetAlphaBlend(false);
 		mesh = Allocator::New<Mesh>();
 		mesh->Init(volumeMaterial, GeometryFactory::GetInstance()->GetSimpleQuad());
 		mesh->SetDepthTest(false);
 		mesh->setStencilTest(false);
+		fbo.Init();
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);
 		fbo.Unbind();
 		//RBO stencilRBO(GL_STENCIL_COMPONENTS, contextWidth, contextHeight);
@@ -33,8 +33,6 @@ namespace Hogra {
 	{
 		outFBO.Bind();
 		mesh->Bind();
-		glDisable(GL_BLEND);
-		glDisable(GL_DEPTH_TEST);
 		depthTexture.Bind();
 		mesh->Draw();
 		outFBO.Unbind();
@@ -52,6 +50,8 @@ namespace Hogra {
 		
 		colorTexture.Init(glm::ivec2(contextWidth, contextHeight), 0, GL_RGBA16F, GL_RGBA, GL_FLOAT);
 		volumeMaterial->AddTexture(&colorTexture);
+		fbo.Delete();
+		fbo.Init();
 		fbo.LinkTexture(GL_COLOR_ATTACHMENT0, colorTexture, 0);
 		fbo.Unbind();
 	}

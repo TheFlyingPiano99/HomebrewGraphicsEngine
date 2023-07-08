@@ -13,7 +13,7 @@
 #include "ShadowCaster.h"
 #include "UserControl.h"
 #include "TextureCube.h"
-#include "LightManager.h"
+#include "Renderer.h"
 #include "InstanceGroup.h"
 #include "CollisionManager.h"
 #include "PointLight.h"
@@ -191,7 +191,6 @@ namespace Hogra {
 		std::vector<OmniDirectionalShadowCaster*> omniDirShadowCasters;
 		std::map<std::string, RenderLayer*> renderLayersMap;
 		std::vector<RenderLayer*> renderLayers;
-		std::vector<PostProcessStage*> postProcessStages;
 
 		std::vector<SceneObject*> toDelete;
 

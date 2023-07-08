@@ -4,7 +4,7 @@
 #include "InstanceGroup.h"
 #include "PostProcessStage.h"
 #include "DeferredLightingSystem.h"
-#include "LightManager.h"
+#include "Renderer.h"
 #include "Identifiable.h"
 #include "DebugUtils.h"
 #include "MemoryManager.h"
@@ -19,6 +19,12 @@ namespace Hogra {
 			defaultFBO = FBO::GetDefault();
 		}
 
+		~RenderLayer() {
+			for (auto pps : postProcessStages) {
+				Allocator::Delete(pps);
+			}
+		}
+
 		enum class RenderMode {
 			forwardRenderMode = 0,
 			forwardInstancedRenderMode = 1,
@@ -26,7 +32,7 @@ namespace Hogra {
 			deferredInstancedRenderMode = 3
 		};
 
-		void Render(FBO& outFbo, const Texture2D& depthTexture, const Camera& camera, Renderer& renderer);
+		void Render(FBO& outFbo, const Camera& camera, Renderer& renderer);
 
 		FBO* GetInFBO() {
 			return (postProcessStages.empty()) ? nullptr : &postProcessStages.front()->GetFBO();
@@ -76,6 +82,8 @@ namespace Hogra {
 			return renderMode == RenderMode::forwardInstancedRenderMode 
 				|| renderMode == RenderMode::deferredInstancedRenderMode;
 		}
+
+		void OnContextResize(unsigned int w, unsigned int h);
 
 	private:
 		RenderMode renderMode;

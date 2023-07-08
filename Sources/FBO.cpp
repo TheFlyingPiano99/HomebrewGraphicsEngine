@@ -9,6 +9,7 @@ namespace Hogra {
 	void FBO::Init()
 	{
 		glGenFramebuffers(1, &glID);
+		viewport = {0, 0, GlobalVariables::windowWidth, GlobalVariables::windowHeight};
 	}
 
 	FBO::~FBO()
@@ -53,7 +54,12 @@ namespace Hogra {
 
 	void FBO::LinkTexture(GLenum attachment, const Texture2D& texture, GLint level)
 	{
+		if (0 == texture.glID) {
+			DebugUtils::PrintWarning("Frame Buffer Object", "Linking 0 glID texture to FBO!");
+			return;
+		}
 		if (0 == glID) {
+			DebugUtils::PrintWarning("Frame Buffer Object", "Linking texture to default FBO is not allowed!");
 			return;
 		}
 		glm::ivec2 dim = texture.GetDimensions() / (level + 1);
@@ -64,7 +70,12 @@ namespace Hogra {
 
 	void FBO::LinkTexture(GLenum attachment, const TextureCube& texture)
 	{
+		if (0 == texture.glID) {
+			DebugUtils::PrintWarning("Frame Buffer Object", "Linking 0 glID texture to FBO!");
+			return;
+		}
 		if (0 == glID) {
+			DebugUtils::PrintWarning("Frame Buffer Object", "Linking texture to default FBO is not allowed!");
 			return;
 		}
 		const glm::ivec2& dim = texture.GetDimensions();

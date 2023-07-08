@@ -104,7 +104,6 @@ namespace Hogra {
 		GlobalVariables::windowWidth = width;
 		GlobalVariables::windowHeight = height;
 		SceneManager::getInstance()->OnWindowResize(width, height);
-		std::cout << "W: " << width << " H: " << height << std::endl;
 	}
 
 	void Callbacks::ToggleFullScreen()

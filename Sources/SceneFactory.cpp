@@ -1343,10 +1343,12 @@ namespace Hogra {
 		scene->GetCamera().SetLookDir(glm::normalize(glm::vec3(0, -0.1, -1)));
 
 		// Layers:
+		
 		auto forwardLayer = Allocator::New<RenderLayer>();
 		forwardLayer->SetName("ForwardLayer");
 		forwardLayer->SetRenderMode(RenderLayer::RenderMode::forwardRenderMode);
 		scene->AddRenderLayer(forwardLayer);
+		
 
 		auto deferredLayer = Allocator::New<RenderLayer>();
 		deferredLayer->SetName("DeferredLayer");
@@ -1356,7 +1358,7 @@ namespace Hogra {
 		// ----------------------------------------------------
 		// Objects:
 		auto gravitation = InitGravitation(scene);
-		InitSkyBox(scene);
+		//InitSkyBox(scene);
 		InitGround(scene);
 		InitSphere(scene, glm::vec3(0,3, -10), gravitation, "TexturesCom_Wood_Planks1_2x2_1K");
 		InitSphere(scene, glm::vec3(3, 3, -10), gravitation, "lumpy-wet-concrete");
@@ -1433,6 +1435,15 @@ namespace Hogra {
 			scene->AddSceneObject(obj, "borderlands", "ForwardLayer");
 		}
 
+		// ----------------------------------------------------
+		// Captions:
+		auto* font = Allocator::New<Font>();
+		font->Init("arial.ttf");
+
+		auto caption = Allocator::New<Caption>();
+		caption->Init(L"Hello World!", font, { 100, 100 }, 1.0, {1, 1, 1, 0.5});
+		scene->AddCaption(caption);
+
 
 		// ----------------------------------------------------
 		// Lights:
@@ -1467,17 +1478,22 @@ namespace Hogra {
 		);
 		forwardLayer->AddPostProcessStage(silhouette);
 
+		
 		auto bloom = Allocator::New<Bloom>();
 		bloom->Init(contextWidth, contextHeight);
 		deferredLayer->AddPostProcessStage(bloom);
-		
+
 		auto hdr = Allocator::New<PostProcessStage>();
 		hdr->Init(
 			AssetFolderPathManager::getInstance()->getShaderFolderPath().append("PostProcess/hdr.frag"),
-			contextWidth, 
+			contextWidth,
 			contextHeight
 		);
 		deferredLayer->AddPostProcessStage(hdr);
+		
+		
+
+
 
 
 		// ----------------------------------------------------
@@ -1486,7 +1502,7 @@ namespace Hogra {
 		moveForward->Init(GLFW_KEY_W, ButtonKeyAction::TriggerType::triggerContinuosly);
 		moveForward->SetAction(
 			[scene]() {
-				scene->GetCamera().MoveForward(Time::dt_sec * 1000.0f);
+				scene->GetCamera().MoveForward(Time::frameTime_sec * 100.0f);
 			}
 		);
 		ControlActionManager::getInstance()->RegisterKeyAction(moveForward);
@@ -1495,7 +1511,7 @@ namespace Hogra {
 		moveBack->Init(GLFW_KEY_S, ButtonKeyAction::TriggerType::triggerContinuosly);
 		moveBack->SetAction(
 			[scene]() {
-				scene->GetCamera().MoveBackward(Time::dt_sec * 1000.0f);
+				scene->GetCamera().MoveBackward(Time::frameTime_sec * 100.0f);
 			}
 		);
 		ControlActionManager::getInstance()->RegisterKeyAction(moveBack);
@@ -1503,7 +1519,7 @@ namespace Hogra {
 		moveLeft->Init(GLFW_KEY_A, ButtonKeyAction::TriggerType::triggerContinuosly);
 		moveLeft->SetAction(
 			[scene]() {
-				scene->GetCamera().MoveLeft(Time::dt_sec * 1000.0f);
+				scene->GetCamera().MoveLeft(Time::frameTime_sec * 100.0f);
 			}
 		);
 		ControlActionManager::getInstance()->RegisterKeyAction(moveLeft);
@@ -1512,7 +1528,7 @@ namespace Hogra {
 		moveRight->Init(GLFW_KEY_D, ButtonKeyAction::TriggerType::triggerContinuosly);
 		moveRight->SetAction(
 			[scene]() {
-				scene->GetCamera().MoveRight(Time::dt_sec * 1000.0f);
+				scene->GetCamera().MoveRight(Time::frameTime_sec * 100.0f);
 			}
 		);
 		ControlActionManager::getInstance()->RegisterKeyAction(moveRight);
@@ -1521,7 +1537,7 @@ namespace Hogra {
 		moveUp->Init(GLFW_KEY_SPACE, ButtonKeyAction::TriggerType::triggerContinuosly);
 		moveUp->SetAction(
 			[scene]() {
-				scene->GetCamera().MoveUp(Time::dt_sec * 100.0f);
+				scene->GetCamera().MoveUp(Time::frameTime_sec * 100.0f);
 			}
 		);
 		ControlActionManager::getInstance()->RegisterKeyAction(moveUp);
@@ -1530,7 +1546,7 @@ namespace Hogra {
 		moveDown->Init(GLFW_KEY_C, ButtonKeyAction::TriggerType::triggerContinuosly);
 		moveDown->SetAction(
 			[scene]() {
-				scene->GetCamera().MoveDown(Time::dt_sec * 100.0f);
+				scene->GetCamera().MoveDown(Time::frameTime_sec * 100.0f);
 			}
 		);
 		ControlActionManager::getInstance()->RegisterKeyAction(moveDown);

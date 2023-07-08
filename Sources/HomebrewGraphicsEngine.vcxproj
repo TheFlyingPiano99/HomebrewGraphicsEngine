@@ -207,7 +207,7 @@
     <ClCompile Include="InstanceGroup.cpp" />
     <ClCompile Include="LagrangianMechanics.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="AudioListener.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MaterialFactory.cpp" />
@@ -221,7 +221,6 @@
     <ClCompile Include="PostProcessStage.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RBO.cpp" />
-    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderLayer.cpp" />
     <ClCompile Include="ScaleProvider.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -310,7 +309,7 @@
     <ClInclude Include="jsonParseUtils.h" />
     <ClInclude Include="LagrangianMechanics.h" />
     <ClInclude Include="PointLight.h" />
-    <ClInclude Include="LightManager.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="AudioListener.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialFactory.h" />
@@ -327,7 +326,6 @@
     <ClInclude Include="PostProcessStage.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RBO.h" />
-    <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderLayer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScaleProvider.h" />

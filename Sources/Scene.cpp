@@ -104,11 +104,6 @@ namespace Hogra {
 		}
 		omniDirShadowCasters.clear();
 
-		for (auto& postProcStage : postProcessStages) {
-			Allocator::Delete(postProcStage);
-		}
-		postProcessStages.clear();
-
 		for (auto& sceneObject : sceneObjects) {
 			Allocator::Delete(sceneObject);
 		}
@@ -216,9 +211,6 @@ namespace Hogra {
 			}
 		}
 
-		const Texture2D& depth = renderer.GetDepthTexture();
-		FBO defaultFBO = FBO::GetDefault();
-
 		// Get first FBO in pipeline to use for state clearing and initialisation:
 		// |layer0| -> |layer1| -> |layer2|
 		// | null |    | fbo0 |    | fbo2 |
@@ -226,27 +218,18 @@ namespace Hogra {
 
 		auto* outFBO = findNextFBO(-1);
 		if (nullptr == outFBO) {
-			outFBO = &defaultFBO;
+			outFBO = &renderer.GetFinalImageFBO();
 		}
-		outFBO->LinkTexture(GL_DEPTH_ATTACHMENT, depth, 0);
-		outFBO->Bind();
 
-		glClearColor(backgroundColor.x, backgroundColor.y, backgroundColor.z, backgroundColor.w);
-		glEnable(GL_DEPTH_TEST);
-		glDepthMask(GL_TRUE);
-		glDepthFunc(GL_LESS);
-		glClearDepth(1);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-		glStencilMask(GL_FALSE);
+		renderer.PrepareFirstFBOForRendering(outFBO, backgroundColor);
 
 
 		for (int i = 0; i < renderLayers.size(); i++) {
 			outFBO = findNextFBO(i);
 			if (nullptr == outFBO) {
-				outFBO = &defaultFBO;
+				outFBO = &renderer.GetFinalImageFBO();
 			}
-			renderLayers[i]->Render(*outFBO, depth, camera, renderer);
+			renderLayers[i]->Render(*outFBO, camera, renderer);
 		}
 
 		// Text pass:
@@ -258,6 +241,10 @@ namespace Hogra {
 			collisionManager.DrawDebug();
 			renderer.DrawDebug();
 		}
+
+		renderer.BlitOnScreen();
+
+		outFBO->Unbind();
 
 		// Reset camera state:
 		camera.SetIsMoved(false);
@@ -359,20 +346,17 @@ namespace Hogra {
 
 	void Scene::AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName) {
 		if (renderLayerName.empty()) {	// No layer specified
-			stage->AddUniformVariable(&timeSpent);
-			(*renderLayers.cend())->AddPostProcessStage(stage);
-			postProcessStages.push_back(stage);		// Main PPS container in Scene
+			DebugUtils::PrintWarning("Scene", "Trying to add post process stage to unspecified render layer!");
 			return;
 		}
 
 		auto layer = renderLayersMap.find(renderLayerName);
 		if (layer == renderLayersMap.end()) {
-			std::cerr << "Trying to add post process effect to unknown render layer!" << std::endl;
+			DebugUtils::PrintWarning("Scene", "Trying to add post process stage to unknown render layer!");
 			return;
 		}
 		stage->AddUniformVariable(&timeSpent);
 		layer->second->AddPostProcessStage(stage);
-		postProcessStages.push_back(stage);		// Main PPS container in Scene
 	}
 
 	void Scene::AddLight(PointLight* light)
@@ -452,13 +436,17 @@ namespace Hogra {
 
 	void Scene::OnContextResize(int _contextWidth, int _contextHeight)
 	{
-		DebugUtils::PrintMsg("Scene", "Context resize");
-
+		DebugUtils::PrintMsg("Scene",
+			std::string("Context resize. New size: {").append(std::to_string(_contextWidth)).append(", ").append(std::to_string(_contextHeight)
+			.append("}, New aspect ratio: "))
+			.append(std::to_string((float)_contextWidth / (float)_contextHeight))
+		);
 		camera.SetAspectRatio((float)_contextWidth / (float)_contextHeight);
-		for (auto& stage : postProcessStages) {
-			stage->OnContextResize(_contextWidth, _contextHeight);
-		}
 		camera.SetChanged(true);
+
+		for (auto& renderLayer : renderLayers) {
+			renderLayer->OnContextResize(_contextWidth, _contextHeight);
+		}
 
 		renderer.OnContextResize(_contextWidth, _contextHeight);
 	}
@@ -469,10 +457,9 @@ namespace Hogra {
 			obj->Serialize();
 		}
 	}
-
+	
 	void Scene::UpdateGUI() {
-
-		for (auto* obj : sceneObjects) {
+		for (auto obj : sceneObjects) {
 			obj->UpdateGui();
 		}
 	}
