@@ -1,4 +1,4 @@
-#include "Caption.h"
+#include "UI/Caption.h"
 #include "GeometryFactory.h"
 #include "DebugUtils.h"
 #include "glm/gtx/transform.hpp"
@@ -11,7 +11,7 @@ void Hogra::Caption::Init(const std::wstring& _text, Font* _font, glm::vec2 _scr
 	this->font = _font;
 	this->color = _color;
 	this->screenPosition = _screenPos;
-	this->program = ShaderProgramFactory::GetInstance()->GetForwardCaptionProgram();
+	this->shaderProgram = ShaderProgramFactory::GetInstance()->GetForwardCaptionProgram();
 	this->texture = font->RenderTextIntoTexture(text);
 	this->quad = GeometryFactory::GetInstance()->GetSimpleQuad();
 }
@@ -23,11 +23,11 @@ void Hogra::Caption::UpdateText(const std::wstring& _text)
 	texture = font->RenderTextIntoTexture(text);
 }
 
-void Hogra::Caption::Draw() {
+void Hogra::Caption::Draw() const {
 	if (!isVisible) {
 		return;
 	}
-	program->Activate();
+	shaderProgram->Activate();
 	texture->Bind();
 	glm::vec2 pos;
 	if (PlacingStyle::absolute == horizontalPlacing) {
@@ -52,9 +52,9 @@ void Hogra::Caption::Draw() {
 	}
 	
 	glm::mat4 transform = glm::translate(glm::vec3(pos, 0.0)) * glm::scale(scale * glm::vec3(texture->GetDimensions(), 1.0f) * 0.5f);
-	program->SetUniform("sceneObject.modelMatrix", transform);
+	shaderProgram->SetUniform("sceneObject.modelMatrix", transform);
 
-	program->SetUniform("textColor", color);
+	shaderProgram->SetUniform("textColor", color);
 	glEnable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -65,26 +65,4 @@ void Hogra::Caption::Draw() {
 
 const std::wstring& Hogra::Caption::GetText() {
 	return text;
-}
-
-void Hogra::Caption::EarlyPhysicsUpdate(float dt_sec)
-{
-	;
-}
-
-void Hogra::Caption::LatePhysicsUpdate(float dt_sec)
-{
-	;
-}
-
-Hogra::ShaderProgram* Hogra::Caption::GetShaderProgram() const {
-	return program;
-}
-
-bool Hogra::Caption::IsVisible() const {
-	return isVisible;
-}
-
-void Hogra::Caption::SetIsVisible(bool b) {
-	isVisible = b;
 }

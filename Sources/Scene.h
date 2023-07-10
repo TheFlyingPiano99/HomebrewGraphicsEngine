@@ -19,7 +19,7 @@
 #include "PointLight.h"
 #include "DirectionalLight.h"
 #include "Font.h"
-#include "Caption.h"
+#include "UI/Caption.h"
 #include "Bloom.h"
 #include "SceneChange.h"
 #include "AudioManager.h"
@@ -73,7 +73,7 @@ namespace Hogra {
 
 		void AddLight(DirectionalLight* light);
 
-		void AddCaption(Caption* caption);
+		void AddUIElement(UIElement* caption);
 
 		void AddSceneAudioSource(SceneAudioSource* source);
 
@@ -186,7 +186,7 @@ namespace Hogra {
 		std::vector<Mesh*> meshes;
 		std::vector<SceneObject*> sceneObjects;
 		std::map<std::string, InstanceGroup*> instanceGroups;
-		std::vector<Caption*> captions;
+		std::vector<UIElement*> uiRootElements;
 		UserControl* userControl = nullptr;
 		std::vector<DirectionalShadowCaster*> dirShadowCasters;
 		std::vector<OmniDirectionalShadowCaster*> omniDirShadowCasters;

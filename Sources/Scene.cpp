@@ -234,8 +234,8 @@ namespace Hogra {
 
 		outFBO->Bind();
 		// Text pass:
-		for (auto* caption : captions) {
-			caption->Draw();
+		for (auto* uiElement : uiRootElements) {
+			uiElement->Draw();
 		}
 
 		if (debugMode) {
@@ -400,17 +400,17 @@ namespace Hogra {
 		dirLights.push_back(light);
 	}
 
-	void Scene::AddCaption(Caption* caption)
+	void Scene::AddUIElement(UIElement* uiElement)
 	{
-		if (!captions.empty() && std::find(captions.begin(), captions.end(), caption) != captions.end()) {
+		if (!uiRootElements.empty() && std::find(uiRootElements.begin(), uiRootElements.end(), uiElement) != uiRootElements.end()) {
 			return;
 		}
-		auto* shader = caption->GetShaderProgram();
+		auto* shader = uiElement->GetShaderProgram();
 		auto shaderIter = std::find(shaders.begin(), shaders.end(), shader);
 		if (shader != nullptr && shaderIter == shaders.end()) {
 			shaders.push_back(shader);
 		}
-		captions.push_back(caption);
+		uiRootElements.push_back(uiElement);
 	}
 
 	void Scene::AddSceneAudioSource(SceneAudioSource* source)
@@ -450,6 +450,10 @@ namespace Hogra {
 		}
 
 		renderer.OnContextResize(_contextWidth, _contextHeight);
+
+		for (auto rootElement : uiRootElements) {
+			rootElement->CalculatePlacement();
+		}
 	}
 
 	void Scene::Serialize()

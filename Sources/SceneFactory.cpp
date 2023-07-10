@@ -557,7 +557,7 @@ namespace Hogra {
 			glm::vec2(0.5f, 0.05f), 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
 		caption1->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
 		caption1->SetVerticalPlacingStyle(Caption::PlacingStyle::relative);
-		scene->AddCaption(caption1);
+		scene->AddUIElement(caption1);
 	}
 
 	void SceneFactory::InitVoxelCaption(Scene* scene, const wchar_t* dataSetName) {
@@ -566,22 +566,22 @@ namespace Hogra {
 		auto* caption1 = Allocator::New<Caption>();
 		caption1->Init(L"Volume rendering", font,
 			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.96), 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddCaption(caption1);
+		scene->AddUIElement(caption1);
 
 		auto* caption2 = Allocator::New<Caption>();
 		caption2->Init(std::wstring(L"Dataset: ").append(dataSetName), font,
 			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.93), 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddCaption(caption2);
+		scene->AddUIElement(caption2);
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::wstring(L"Toggle transfer function [H]"), font,
 			glm::vec2(GlobalVariables::windowWidth * 0.9f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddCaption(caption2);
+		scene->AddUIElement(caption2);
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::wstring(L"Toggle options [O]"), font,
 			glm::vec2(GlobalVariables::windowWidth * 0.1f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddCaption(caption2);
+		scene->AddUIElement(caption2);
 	}
 	
 	void SceneFactory::InitGround(Scene* scene)
@@ -1177,7 +1177,7 @@ namespace Hogra {
 					else if ("relative" == hPlacingStr) {
 						caption->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
 					}
-					scene->AddCaption(caption);
+					scene->AddUIElement(caption);
 				}
 
 				// Scene objects:
@@ -1444,7 +1444,7 @@ namespace Hogra {
 
 		auto caption = Allocator::New<Caption>();
 		caption->Init(L"Demo application", font, { GlobalVariables::windowWidth / 2.0f, 50 }, 1.0, {1, 1, 1, 0.5});
-		scene->AddCaption(caption);
+		scene->AddUIElement(caption);
 
 
 		// ----------------------------------------------------
@@ -1622,12 +1622,12 @@ namespace Hogra {
 		{
 			auto caption = Allocator::New<Caption>();
 			caption->Init(L"Homebrew Graphics Engine", font, { GlobalVariables::windowWidth / 2.0f, GlobalVariables::windowHeight * 0.9f }, 0.8, { 1, 1, 1, 0.9 });
-			scene->AddCaption(caption);
+			scene->AddUIElement(caption);
 		}
 		{
 			auto caption = Allocator::New<Caption>();
 			caption->Init(L"Zoltán Simon (2023)", font, { GlobalVariables::windowWidth / 2.0f, GlobalVariables::windowHeight * 0.95f }, 0.5, { 1, 1, 1, 0.9 });
-			scene->AddCaption(caption);
+			scene->AddUIElement(caption);
 		}
 
 		return scene;
