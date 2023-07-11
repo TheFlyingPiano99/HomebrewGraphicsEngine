@@ -452,7 +452,7 @@ namespace Hogra {
 		renderer.OnContextResize(_contextWidth, _contextHeight);
 
 		for (auto rootElement : uiRootElements) {
-			rootElement->CalculatePlacement();
+			rootElement->UpdateFromRoot();
 		}
 	}
 

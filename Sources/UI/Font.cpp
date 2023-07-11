@@ -1,8 +1,8 @@
 #include "Font.h"
-#include "FBO.h"
-#include "GeometryFactory.h"
+#include "../FBO.h"
+#include "../GeometryFactory.h"
+#include "../DebugUtils.h"
 #include "glm/gtx/transform.hpp"
-#include "DebugUtils.h"
 
 namespace Hogra {
 

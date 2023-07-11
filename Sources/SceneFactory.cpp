@@ -553,34 +553,27 @@ namespace Hogra {
 		font->Init("arial.ttf");
 
 		Caption* caption1 = Allocator::New<Caption>();
-		caption1->Init(L"Homebrew Graphics Engine Demo - Vannak ékezetes betűk is!", font,
-			glm::vec2(0.5f, 0.05f), 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
-		caption1->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
-		caption1->SetVerticalPlacingStyle(Caption::PlacingStyle::relative);
+		caption1->Init(L"Homebrew Graphics Engine Demo - Vannak ékezetes betűk is!", font, 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
 		scene->AddUIElement(caption1);
 	}
 
 	void SceneFactory::InitVoxelCaption(Scene* scene, const wchar_t* dataSetName) {
 		auto* font = Allocator::New<Font>();
 		font->Init("arial.ttf");
-		auto* caption1 = Allocator::New<Caption>();
-		caption1->Init(L"Volume rendering", font,
-			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.96), 1.0f, glm::vec4(1, 1, 1, 1));
+		Caption* caption1 = Allocator::New<Caption>();
+		caption1->Init(L"Volume rendering", font, 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddUIElement(caption1);
 
-		auto* caption2 = Allocator::New<Caption>();
-		caption2->Init(std::wstring(L"Dataset: ").append(dataSetName), font,
-			glm::vec2(GlobalVariables::windowWidth / 2, GlobalVariables::windowHeight * 0.93), 1.0f, glm::vec4(1, 1, 1, 1));
+		Caption* caption2 = Allocator::New<Caption>();
+		caption2->Init(std::wstring(L"Dataset: ").append(dataSetName), font, 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddUIElement(caption2);
 
 		caption2 = Allocator::New<Caption>();
-		caption2->Init(std::wstring(L"Toggle transfer function [H]"), font,
-			glm::vec2(GlobalVariables::windowWidth * 0.9f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
+		caption2->Init(std::wstring(L"Toggle transfer function [H]"), font, 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddUIElement(caption2);
 
 		caption2 = Allocator::New<Caption>();
-		caption2->Init(std::wstring(L"Toggle options [O]"), font,
-			glm::vec2(GlobalVariables::windowWidth * 0.1f, GlobalVariables::windowHeight * 0.03), 1.0f, glm::vec4(1, 1, 1, 1));
+		caption2->Init(std::wstring(L"Toggle options [O]"), font, 1.0f, glm::vec4(1, 1, 1, 1));
 		scene->AddUIElement(caption2);
 	}
 	
@@ -1144,7 +1137,7 @@ namespace Hogra {
 				// Captions:
 				std::map<std::string, Font*> fonts;
 				for (auto& captionData : jsonData["captions"]) {
-					auto* caption = Allocator::New<Caption>();
+					Caption* caption = Allocator::New<Caption>();
 					auto fontPair = fonts.find(captionData["fontSourceFileName"]);
 					Font* font = nullptr;
 					if (fonts.end() == fontPair) {
@@ -1161,8 +1154,9 @@ namespace Hogra {
 					MultiByteToWideChar(CP_UTF8, 0, multiByteStr.c_str(), -1, wstr, wchars_num);
 					std::wstring text(wstr);
 					delete[] wstr;
-					caption->Init(text, font, parseVec2(captionData["screenPosition"]), captionData["scale"], parseVec4(captionData["color"]));
+					caption->Init(text, font, captionData["scale"], parseVec4(captionData["color"]));
 
+					/*
 					std::string vPlacingStr = captionData["verticalPlacing"];
 					if ("absolute" == vPlacingStr) {
 						caption->SetVerticalPlacingStyle(Caption::PlacingStyle::absolute);
@@ -1177,6 +1171,7 @@ namespace Hogra {
 					else if ("relative" == hPlacingStr) {
 						caption->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
 					}
+					*/
 					scene->AddUIElement(caption);
 				}
 
@@ -1442,8 +1437,8 @@ namespace Hogra {
 		auto* font = Allocator::New<Font>();
 		font->Init("arial.ttf");
 
-		auto caption = Allocator::New<Caption>();
-		caption->Init(L"Demo application", font, { GlobalVariables::windowWidth / 2.0f, 50 }, 1.0, {1, 1, 1, 0.5});
+		Caption* caption = Allocator::New<Caption>();
+		caption->Init(L"Demo application", font, 1.0, {1, 1, 1, 0.5});
 		scene->AddUIElement(caption);
 
 
@@ -1620,13 +1615,13 @@ namespace Hogra {
 		font->Init("arial.ttf");
 		
 		{
-			auto caption = Allocator::New<Caption>();
-			caption->Init(L"Homebrew Graphics Engine", font, { GlobalVariables::windowWidth / 2.0f, GlobalVariables::windowHeight * 0.9f }, 0.8, { 1, 1, 1, 0.9 });
+			Caption* caption = Allocator::New<Caption>();
+			caption->Init(L"Homebrew Graphics Engine", font, 0.8, { 1, 1, 1, 0.9 });
 			scene->AddUIElement(caption);
 		}
 		{
-			auto caption = Allocator::New<Caption>();
-			caption->Init(L"Zoltán Simon (2023)", font, { GlobalVariables::windowWidth / 2.0f, GlobalVariables::windowHeight * 0.95f }, 0.5, { 1, 1, 1, 0.9 });
+			Caption* caption = Allocator::New<Caption>();
+			caption->Init(L"Zoltán Simon (2023)", font, 0.5, { 1, 1, 1, 0.9 });
 			scene->AddUIElement(caption);
 		}
 

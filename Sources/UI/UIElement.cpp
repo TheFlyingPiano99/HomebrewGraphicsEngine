@@ -1,4 +1,5 @@
 #include "UIElement.h"
+#include "glm/gtx/transform.hpp"
 
 namespace Hogra {
 
@@ -22,15 +23,17 @@ namespace Hogra {
 
 	void UIElement::UpdateMatrix(const glm::ivec2& parentTopLeftScPos)
 	{
+		// Calculate absolute position:
 		topLeftScreenPos = parentTopLeftScPos + topLeftPosRelativeToParent;
 		bottomRightScreenPos = parentTopLeftScPos + topLeftPosRelativeToParent + widthHeight;
 
 		// Matrix:
-		glm::vec3 pos = { topLeftScreenPos + widthHeight * 0.5f, 0.0 };
-		pos.y = GlobalVariables.y - pos.y;
-		glm::vec3 scale = { widthHeight * 0.5f, 1.0f };		
+		glm::vec3 pos = { glm::vec2(topLeftScreenPos) + glm::vec2(widthHeight) * 0.5f, 0.0 };
+		pos.y = GlobalVariables::windowHeight - pos.y;
+		glm::vec3 scale = { glm::vec2(widthHeight) * 0.5f, 1.0f };
 		modelMatrix = /* rotation * */ glm::translate(pos) * glm::scale(scale);
 
+		// Recursion:
 		for (auto child : children) {
 			UpdateMatrix(topLeftScreenPos);
 		}
@@ -38,6 +41,10 @@ namespace Hogra {
 
 	glm::ivec2& UIElement::CalculateWidthHeight()
 	{
+		if (isFixedSizeLeafElement) {
+			return widthHeight;
+		}
+
 		int maxWidth = 0;
 		int maxHeight = 0;
 
@@ -45,11 +52,11 @@ namespace Hogra {
 		for (auto child : children) {
 			auto wh = CalculateWidthHeight();
 			auto childMargin = child->GetMarginLeftRightTopBottom();
-			w = wh.x + std::max(border.x, childMargin.x) + std::max(border.y, childMargin.y);
+			float w = wh.x + std::max(borderLeftRightTopBottom.x, childMargin.x) + std::max(borderLeftRightTopBottom.y, childMargin.y);
 			if (maxWidth < w) {
 				maxWidth = w;
 			}
-			h = wh.y + std::max(border.z, childMargin.z) + std::max(border.w, childMargin.w);
+			float h = wh.y + std::max(borderLeftRightTopBottom.z, childMargin.z) + std::max(borderLeftRightTopBottom.w, childMargin.w);
 			if (maxHeight < h) {
 				maxHeight = h;
 			}
@@ -63,10 +70,10 @@ namespace Hogra {
 			int w = 0;
 			for (int i = 0; i < children.size(); i++) {
 				if (0 == i) {
-					w += std::max(children[i]->GetMarginLeftRightTopBottom().x, border.x));
+					w += std::max(children[i]->GetMarginLeftRightTopBottom().x, borderLeftRightTopBottom.x);
 				}
 				auto childWH = children[i]->GetWidthHeight();
-				switch (horizontalAlignment)
+				switch (verticalAlignment)
 				{
 				case VerticalAlignment::centered:
 				{
@@ -91,12 +98,12 @@ namespace Hogra {
 					break;
 				}
 
-				w += .x;
+				w += childWH.x;
 				if (children.size() - 1 == i) {
-					w += std::max(children[i]->GetMarginLeftRightTopBottom().y, border.y) );
+					w += std::max(children[i]->GetMarginLeftRightTopBottom().y, borderLeftRightTopBottom.y);
 				}
 				if (children.size() - 1 > i) {
-					w += std::max(children[i]->GetMarginLeftRightTopBottom().y, children[i + 1]->GetMarginLeftRightTopBottom().x));
+					w += std::max(children[i]->GetMarginLeftRightTopBottom().y, children[i + 1]->GetMarginLeftRightTopBottom().x);
 				}
 			}
 			widthHeight.x = w;
@@ -108,7 +115,7 @@ namespace Hogra {
 			int h = 0;
 			for (int i = 0; i < children.size(); i++) {
 				if (0 == i) {
-					h += std::max(children[i]->GetMarginLeftRightTopBottom().z, border.z));
+					h += std::max(children[i]->GetMarginLeftRightTopBottom().z, borderLeftRightTopBottom.z);
 				}
 				auto childWH = children[i]->GetWidthHeight();
 				switch (horizontalAlignment)
@@ -136,10 +143,10 @@ namespace Hogra {
 
 				h += childWH.y;
 				if (children.size() - 1 == i) {
-					h += std::max(children[i]->GetMarginLeftRightTopBottom().w, border.w) );
+					h += std::max(children[i]->GetMarginLeftRightTopBottom().w, borderLeftRightTopBottom.w);
 				}
 				if (children.size() - 1 > i) {
-					h += std::max(children[i]->GetMarginLeftRightTopBottom().w, children[i + 1]->GetMarginLeftRightTopBottom().z));
+					h += std::max(children[i]->GetMarginLeftRightTopBottom().w, children[i + 1]->GetMarginLeftRightTopBottom().z);
 				}
 			}
 			widthHeight.y = h;

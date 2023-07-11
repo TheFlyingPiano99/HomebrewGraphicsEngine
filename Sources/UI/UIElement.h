@@ -1,10 +1,18 @@
 #include "../GlobalInclude.h"
 #include "../ShaderProgram.h"
+#include "../Geometry.h"
 
 namespace Hogra {
 
 	class UIElement {
+		ALLOCATOR_CONSTRUCTIBLE
 	public:
+		
+		~UIElement() {
+			for (auto child : children) {
+				Allocator::Delete(child);
+			}
+		}
 
 		ShaderProgram* GetShaderProgram() {
 			return shaderProgram;
@@ -15,7 +23,6 @@ namespace Hogra {
 		bool IsVisible() const;
 
 		void SetIsVisible(bool b);
-
 
 		enum class Floating {
 			leftToRight,
@@ -46,7 +53,7 @@ namespace Hogra {
 
 		void UpdateMatrix(const glm::ivec2& parentTopLeftScPos);
 
-		void CalculateWidthHeight();
+		glm::ivec2& CalculateWidthHeight();
 
 		void SetParent(UIElement* parent);
 
@@ -112,6 +119,6 @@ namespace Hogra {
 		glm::ivec4 marginLeftRightTopBottom = glm::ivec4(10, 10, 10, 10);
 		
 		glm::ivec2 topLeftPosRelativeToParent;
-		bool isFixedWidthHeightElement = false;
+		bool isFixedSizeLeafElement = false;
 	};
 }

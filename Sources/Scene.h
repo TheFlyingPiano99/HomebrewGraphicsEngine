@@ -18,7 +18,7 @@
 #include "CollisionManager.h"
 #include "PointLight.h"
 #include "DirectionalLight.h"
-#include "Font.h"
+#include "UI/Font.h"
 #include "UI/Caption.h"
 #include "Bloom.h"
 #include "SceneChange.h"

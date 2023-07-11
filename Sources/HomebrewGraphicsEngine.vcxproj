@@ -167,7 +167,6 @@
     <ClCompile Include="Callbacks.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraAnimation.cpp" />
-    <ClCompile Include="Caption.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="ColliderGroup.cpp" />
     <ClCompile Include="CollisionEventListener.cpp" />
@@ -187,7 +186,6 @@
     <ClCompile Include="FBO.cpp" />
     <ClCompile Include="FFT.cpp" />
     <ClCompile Include="FirstPersonControl.cpp" />
-    <ClCompile Include="Font.cpp" />
     <ClCompile Include="ForceField.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GeometryFactory.cpp" />
@@ -249,6 +247,9 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TextureCube.cpp" />
+    <ClCompile Include="UI\Caption.cpp" />
+    <ClCompile Include="UI\Font.cpp" />
+    <ClCompile Include="UI\UIElement.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
     <ClCompile Include="UniformVariable.cpp" />
     <ClCompile Include="UserControl.cpp" />
@@ -269,7 +270,6 @@
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraAnimation.h" />
-    <ClInclude Include="Caption.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderGroup.h" />
     <ClInclude Include="CollisionEventListener.h" />
@@ -289,7 +289,6 @@
     <ClInclude Include="FBO.h" />
     <ClInclude Include="FFT.h" />
     <ClInclude Include="FirstPersonControl.h" />
-    <ClInclude Include="Font.h" />
     <ClInclude Include="ForceField.h" />
     <ClInclude Include="GeometryFactory.h" />
     <ClInclude Include="Geometry.h" />
@@ -355,6 +354,9 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
+    <ClInclude Include="UI\Caption.h" />
+    <ClInclude Include="UI\Font.h" />
+    <ClInclude Include="UI\UIElement.h" />
     <ClInclude Include="UniformBuffer.h" />
     <ClInclude Include="UniformVariable.h" />
     <ClInclude Include="UniformVariableImpl.h" />

@@ -5,12 +5,12 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <filesystem>
-#include "ShaderProgram.h"
-#include "GlobalInclude.h"
 #include <glm/gtc/type_ptr.hpp>
-#include "ShaderProgramFactory.h"
-#include "AssetFolderPathManager.h"
-#include "Texture2D.h"
+#include "../ShaderProgram.h"
+#include "../GlobalInclude.h"
+#include "../ShaderProgramFactory.h"
+#include "../AssetFolderPathManager.h"
+#include "../Texture2D.h"
 
 namespace Hogra {
 #define DEFAULT_FONT_HEIGHT 32

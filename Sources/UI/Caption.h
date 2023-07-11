@@ -16,10 +16,8 @@ namespace Hogra {
 	{
 	public:
 
-		void Init(const std::wstring& text, Font* font, glm::vec2 sPos, float scale, const glm::vec4& color);
+		void Init(const std::wstring& text, Font* font, float scale, const glm::vec4& color);
 		
-		~Caption() override = default;
-
 		void Draw() const override;
 
 		void UpdateText(const std::wstring& str);
@@ -31,6 +29,7 @@ namespace Hogra {
 		Font* font = nullptr;
 		glm::vec4 color;
 		Texture2D* texture = nullptr;
+		float scale = 1.0f;
 	};
 }
 
