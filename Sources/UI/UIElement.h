@@ -1,3 +1,4 @@
+#pragma once
 #include "../GlobalInclude.h"
 #include "../ShaderProgram.h"
 #include "../Geometry.h"
@@ -49,7 +50,7 @@ namespace Hogra {
 			verticalAlignment = alignment;
 		}
 
-		void UpdateFromRoot();
+		void CalculateLayoutFromRoot();
 
 		void UpdateMatrix(const glm::ivec2& parentTopLeftScPos);
 
@@ -101,6 +102,14 @@ namespace Hogra {
 			topLeftPosRelativeToParent = pos;
 		}
 
+		void SetContentFloating(Floating floating) {
+			contentFloating = floating;
+		}
+
+		bool OnHover(const glm::ivec2& screenMousePos);
+
+		bool OnClick(const glm::ivec2& screenMousePos);
+
 	protected:
 		UIElement* parent = nullptr;
 		std::vector<UIElement*> children;
@@ -114,11 +123,11 @@ namespace Hogra {
 
 		VerticalAlignment verticalAlignment = VerticalAlignment::top;
 		HorizontalAlignment horizontalAlignment = HorizontalAlignment::left;
-		Floating floating = Floating::topToBottom;
+		Floating contentFloating = Floating::topToBottom;
 		glm::ivec4 borderLeftRightTopBottom = glm::ivec4(0,0,0,0);
 		glm::ivec4 marginLeftRightTopBottom = glm::ivec4(10, 10, 10, 10);
 		
 		glm::ivec2 topLeftPosRelativeToParent;
-		bool isFixedSizeLeafElement = false;
+		bool isFixedSize = false;
 	};
 }

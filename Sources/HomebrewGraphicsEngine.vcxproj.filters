@@ -396,6 +396,9 @@
     <ClCompile Include="UI\UIElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Container.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -716,6 +719,9 @@
     <ClInclude Include="UI\UIElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UI\Container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />
@@ -944,6 +950,12 @@
     </None>
     <None Include="..\Resources\Shaders\DefaultPipeline\single2DOrthographic.vert">
       <Filter>Resource Files\Shaders\DefaultPipeline</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\UI\flatContainer.frag">
+      <Filter>Resource Files\Shaders\UI</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\UI\texturedContainer.frag">
+      <Filter>Resource Files\Shaders\UI</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

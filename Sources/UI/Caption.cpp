@@ -3,15 +3,17 @@
 #include "../DebugUtils.h"
 
 
-void Hogra::Caption::Init(const std::wstring& _text, Font* _font, float _scale, const glm::vec4& _color)
+void Hogra::Caption::Init(const std::wstring& _text, Font* _font, float _scale, const glm::vec4& _textColor, const glm::vec4& _highlightColor)
 {
-	this->text = _text;
 	this->scale = _scale;
 	this->font = _font;
-	this->color = _color;
+	this->textColor = _textColor;
+	this->highlightColor = _highlightColor;
 	this->shaderProgram = ShaderProgramFactory::GetInstance()->GetForwardCaptionProgram();
-	this->texture = font->RenderTextIntoTexture(text);
 	this->quad = GeometryFactory::GetInstance()->GetSimpleQuad();
+	this->isFixedSize = true;
+	this->marginLeftRightTopBottom = { 20, 20, 10, 10 };
+	UpdateText(_text);
 }
 
 void Hogra::Caption::UpdateText(const std::wstring& _text)
@@ -19,6 +21,17 @@ void Hogra::Caption::UpdateText(const std::wstring& _text)
 	text = _text;
 	Allocator::Delete(texture);
 	texture = font->RenderTextIntoTexture(text);
+	widthHeight = glm::vec2(texture->GetDimensions()) * scale;
+}
+
+void Hogra::Caption::SetTextColor(const glm::vec4& color)
+{
+	textColor = color;
+}
+
+void Hogra::Caption::SetHighlightColor(const glm::vec4& color)
+{
+	highlightColor = color;
 }
 
 void Hogra::Caption::Draw() const {
@@ -28,7 +41,8 @@ void Hogra::Caption::Draw() const {
 	shaderProgram->Activate();
 	texture->Bind();
 	shaderProgram->SetUniform("sceneObject.modelMatrix", modelMatrix);
-	shaderProgram->SetUniform("textColor", color);
+	shaderProgram->SetUniform("textColor", textColor);
+	shaderProgram->SetUniform("highlightColor", highlightColor);
 	glEnable(GL_BLEND);
 	glDisable(GL_CULL_FACE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

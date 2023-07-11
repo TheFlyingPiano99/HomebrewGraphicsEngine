@@ -12,7 +12,7 @@ namespace Hogra {
 		ALLOCATOR_CONSTRUCTIBLE
 	public:
 
-		ControlActionManager() = default;
+		ControlActionManager();
 
 		~ControlActionManager() {
 			UnregisterControls();
@@ -56,6 +56,12 @@ namespace Hogra {
 
 		void UnregisterMouseScrollAction(AxisMoveAction* toDeregister);
 
+		void OnCursorHover(const glm::ivec2& screenMousePos);
+
+		void OnCursorClick(const glm::ivec2& screenMousePos);
+
+		void OnCursorRelease(const glm::ivec2& screenMousePos);
+
 		/*
 		* Remove all queued actions
 		*/
@@ -70,10 +76,10 @@ namespace Hogra {
 		/*
 		* Execute queued actions
 		*/
-		void ExecuteQueue(Scene& scene) {
+		void ExecuteQueue(Scene* scene) {
 			auto* action = PopNextQueuedAction();
 			while (nullptr != action) {
-				action->Execute();
+				action->Execute(scene);
 				action = PopNextQueuedAction();
 			}
 		}

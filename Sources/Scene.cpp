@@ -71,7 +71,7 @@ namespace Hogra {
 		for (auto& obj : sceneObjects) {
 			obj->BeforePhysicsLoopUpdate();
 		}
-		ControlActionManager::getInstance()->ExecuteQueue(*this);
+		ControlActionManager::getInstance()->ExecuteQueue(this);
 	}
 
 	void Scene::Destroy()
@@ -400,17 +400,28 @@ namespace Hogra {
 		dirLights.push_back(light);
 	}
 
-	void Scene::AddUIElement(UIElement* uiElement)
+	void Scene::AddRootUIElement(UIElement* uiElement)
 	{
 		if (!uiRootElements.empty() && std::find(uiRootElements.begin(), uiRootElements.end(), uiElement) != uiRootElements.end()) {
+			DebugUtils::PrintWarning("Scene", "Trying to add already added UI root element!");
 			return;
 		}
-		auto* shader = uiElement->GetShaderProgram();
-		auto shaderIter = std::find(shaders.begin(), shaders.end(), shader);
-		if (shader != nullptr && shaderIter == shaders.end()) {
-			shaders.push_back(shader);
-		}
+		uiElement->CalculateLayoutFromRoot();
 		uiRootElements.push_back(uiElement);
+	}
+
+	void Scene::RemoveRootUIElement(UIElement* uiElement)
+	{
+		if (
+			auto iter = std::find(uiRootElements.begin(), uiRootElements.end(), uiElement); 
+			uiRootElements.end() != iter
+		) {
+			uiRootElements.erase(iter);
+		}
+		else {
+			DebugUtils::PrintWarning("Scene", "Trying to remove unknown UI root element!");
+		}
+
 	}
 
 	void Scene::AddSceneAudioSource(SceneAudioSource* source)
@@ -452,7 +463,7 @@ namespace Hogra {
 		renderer.OnContextResize(_contextWidth, _contextHeight);
 
 		for (auto rootElement : uiRootElements) {
-			rootElement->UpdateFromRoot();
+			rootElement->CalculateLayoutFromRoot();
 		}
 	}
 
@@ -460,6 +471,27 @@ namespace Hogra {
 	{
 		for (auto& obj : sceneObjects) {
 			obj->Serialize();
+		}
+	}
+
+	void Scene::RecalculateUILayout()
+	{
+		for (auto root : uiRootElements) {
+			root->CalculateLayoutFromRoot();
+		}
+	}
+
+	void Scene::OnCursorHover(const glm::ivec2& screenMousePos)
+	{
+		for (auto rootElement : uiRootElements) {
+			rootElement->OnHover(screenMousePos);
+		}
+	}
+
+	void Scene::OnCursorClick(const glm::ivec2& screenMousePos)
+	{
+		for (auto rootElement : uiRootElements) {
+			rootElement->OnClick(screenMousePos);
 		}
 	}
 	

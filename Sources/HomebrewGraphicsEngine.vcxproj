@@ -248,6 +248,7 @@
     <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TextureCube.cpp" />
     <ClCompile Include="UI\Caption.cpp" />
+    <ClCompile Include="UI\Container.cpp" />
     <ClCompile Include="UI\Font.cpp" />
     <ClCompile Include="UI\UIElement.cpp" />
     <ClCompile Include="UniformBuffer.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
     <ClInclude Include="UI\Caption.h" />
+    <ClInclude Include="UI\Container.h" />
     <ClInclude Include="UI\Font.h" />
     <ClInclude Include="UI\UIElement.h" />
     <ClInclude Include="UniformBuffer.h" />
@@ -430,7 +432,9 @@
     <None Include="..\Resources\Shaders\PostProcess\tapeEffect.frag" />
     <None Include="..\Resources\Shaders\Raytrace\simpleRaytrace.frag" />
     <None Include="..\Resources\Shaders\UI\caption.frag" />
+    <None Include="..\Resources\Shaders\UI\flatContainer.frag" />
     <None Include="..\Resources\Shaders\UI\glyph.frag" />
+    <None Include="..\Resources\Shaders\UI\texturedContainer.frag" />
     <None Include="..\Resources\Shaders\Utility\bypass.frag" />
     <None Include="..\Resources\Shaders\Utility\EnvironmentMap\environmentPrefilter.frag" />
     <None Include="..\Resources\Shaders\Utility\EnvironmentMap\environmentToIrradiance.frag" />

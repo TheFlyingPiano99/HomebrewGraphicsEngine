@@ -1,5 +1,6 @@
 #include "UIElement.h"
 #include "glm/gtx/transform.hpp"
+#include "../DebugUtils.h"
 
 namespace Hogra {
 
@@ -11,11 +12,39 @@ namespace Hogra {
 		isVisible = b;
 	}
 
-	void UIElement::UpdateFromRoot()
+	void UIElement::CalculateLayoutFromRoot()
 	{
 		// Recursion (Calculate children position and sizes):
-		for (UIElement* child : children) {
-			child->CalculateWidthHeight();
+		CalculateWidthHeight();
+
+		// For the whole window:
+		switch (horizontalAlignment)
+		{
+		case Hogra::UIElement::HorizontalAlignment::centered:
+			topLeftPosRelativeToParent.x = (GlobalVariables::windowWidth - widthHeight.x) * 0.5f;
+			break;
+		case Hogra::UIElement::HorizontalAlignment::left:
+			topLeftPosRelativeToParent.x = marginLeftRightTopBottom.x;
+			break;
+		case Hogra::UIElement::HorizontalAlignment::right:
+			topLeftPosRelativeToParent.x = GlobalVariables::windowWidth - widthHeight.x - marginLeftRightTopBottom.y;
+			break;
+		default:
+			break;
+		}
+		switch (verticalAlignment)
+		{
+		case Hogra::UIElement::VerticalAlignment::centered:
+			topLeftPosRelativeToParent.y = (GlobalVariables::windowHeight - widthHeight.y) * 0.5f;
+			break;
+		case Hogra::UIElement::VerticalAlignment::top:
+			topLeftPosRelativeToParent.y = marginLeftRightTopBottom.z;
+			break;
+		case Hogra::UIElement::VerticalAlignment::bottom:
+			topLeftPosRelativeToParent.y = GlobalVariables::windowHeight - widthHeight.y - marginLeftRightTopBottom.w;
+			break;
+		default:
+			break;
 		}
 
 		UpdateMatrix({0, 0});
@@ -35,13 +64,16 @@ namespace Hogra {
 
 		// Recursion:
 		for (auto child : children) {
-			UpdateMatrix(topLeftScreenPos);
+			child->UpdateMatrix(topLeftScreenPos);
 		}
 	}
 
 	glm::ivec2& UIElement::CalculateWidthHeight()
 	{
-		if (isFixedSizeLeafElement) {
+		if (isFixedSize) {
+			for (auto child : children) {
+				child->CalculateWidthHeight();
+			}
 			return widthHeight;
 		}
 
@@ -50,7 +82,7 @@ namespace Hogra {
 
 		// Recursion:
 		for (auto child : children) {
-			auto wh = CalculateWidthHeight();
+			auto wh = child->CalculateWidthHeight();
 			auto childMargin = child->GetMarginLeftRightTopBottom();
 			float w = wh.x + std::max(borderLeftRightTopBottom.x, childMargin.x) + std::max(borderLeftRightTopBottom.y, childMargin.y);
 			if (maxWidth < w) {
@@ -61,19 +93,20 @@ namespace Hogra {
 				maxHeight = h;
 			}
 		}
-		switch (floating)
-		{
 
-		case Hogra::UIElement::Floating::leftToRight:
-		{
-			widthHeight.y = maxHeight;
-			int w = 0;
-			for (int i = 0; i < children.size(); i++) {
+		for (int i = 0; i < children.size(); i++) {
+			switch (contentFloating)
+			{
+
+			case Hogra::UIElement::Floating::leftToRight:
+			{
+				widthHeight.y = maxHeight;
+				int w = 0;
 				if (0 == i) {
 					w += std::max(children[i]->GetMarginLeftRightTopBottom().x, borderLeftRightTopBottom.x);
 				}
 				auto childWH = children[i]->GetWidthHeight();
-				switch (verticalAlignment)
+				switch (children[i]->verticalAlignment)
 				{
 				case VerticalAlignment::centered:
 				{
@@ -105,57 +138,56 @@ namespace Hogra {
 				if (children.size() - 1 > i) {
 					w += std::max(children[i]->GetMarginLeftRightTopBottom().y, children[i + 1]->GetMarginLeftRightTopBottom().x);
 				}
+				widthHeight.x = w;
+				break;
 			}
-			widthHeight.x = w;
-			break;
-		}
-		case Hogra::UIElement::Floating::topToBottom:
-		{
-			widthHeight.x = maxWidth;
-			int h = 0;
-			for (int i = 0; i < children.size(); i++) {
-				if (0 == i) {
-					h += std::max(children[i]->GetMarginLeftRightTopBottom().z, borderLeftRightTopBottom.z);
-				}
-				auto childWH = children[i]->GetWidthHeight();
-				switch (horizontalAlignment)
-				{
-				case HorizontalAlignment::centered:
-				{
-					children[i]->SetTopLeftPosRelativeToParent({ (maxWidth - childWH.x) * 0.5f, h});
-					break;
-				}
-				case HorizontalAlignment::left:
-				{
-					children[i]->SetTopLeftPosRelativeToParent({ std::max(children[i]->GetMarginLeftRightTopBottom().x, borderLeftRightTopBottom.x), h});
-					break;
-				}
-				case HorizontalAlignment::right:
-				{
-					children[i]->SetTopLeftPosRelativeToParent(
-						{ maxWidth - childWH.x - std::max(children[i]->GetMarginLeftRightTopBottom().y, borderLeftRightTopBottom.y), h}
-					);
-					break;
-				}
-				default:
-					break;
-				}
+			case Hogra::UIElement::Floating::topToBottom:
+			{
+				widthHeight.x = maxWidth;
+				int h = 0;
+				for (int i = 0; i < children.size(); i++) {
+					if (0 == i) {
+						h += std::max(children[i]->GetMarginLeftRightTopBottom().z, borderLeftRightTopBottom.z);
+					}
+					auto childWH = children[i]->GetWidthHeight();
+					switch (children[i]->horizontalAlignment)
+					{
+					case HorizontalAlignment::centered:
+					{
+						children[i]->SetTopLeftPosRelativeToParent({ (maxWidth - childWH.x) * 0.5f, h});
+						break;
+					}
+					case HorizontalAlignment::left:
+					{
+						children[i]->SetTopLeftPosRelativeToParent({ std::max(children[i]->GetMarginLeftRightTopBottom().x, borderLeftRightTopBottom.x), h});
+						break;
+					}
+					case HorizontalAlignment::right:
+					{
+						children[i]->SetTopLeftPosRelativeToParent(
+							{ maxWidth - childWH.x - std::max(children[i]->GetMarginLeftRightTopBottom().y, borderLeftRightTopBottom.y), h}
+						);
+						break;
+					}
+					default:
+						break;
+					}
 
-				h += childWH.y;
-				if (children.size() - 1 == i) {
-					h += std::max(children[i]->GetMarginLeftRightTopBottom().w, borderLeftRightTopBottom.w);
+					h += childWH.y;
+					if (children.size() - 1 == i) {
+						h += std::max(children[i]->GetMarginLeftRightTopBottom().w, borderLeftRightTopBottom.w);
+					}
+					if (children.size() - 1 > i) {
+						h += std::max(children[i]->GetMarginLeftRightTopBottom().w, children[i + 1]->GetMarginLeftRightTopBottom().z);
+					}
 				}
-				if (children.size() - 1 > i) {
-					h += std::max(children[i]->GetMarginLeftRightTopBottom().w, children[i + 1]->GetMarginLeftRightTopBottom().z);
-				}
+				widthHeight.y = h;
+				break;
 			}
-			widthHeight.y = h;
-			break;
+			default:
+				break;
+			}
 		}
-		default:
-			break;
-		}
-
 		return widthHeight;
 	}
 
@@ -167,6 +199,7 @@ namespace Hogra {
 	void UIElement::AddChild(UIElement* child)
 	{
 		if (auto iter = std::find(children.begin(), children.end(), child); children.end() == iter) {
+			child->SetParent(this);
 			children.push_back(child);
 		}
 	}
@@ -174,8 +207,54 @@ namespace Hogra {
 	void UIElement::RemoveChild(UIElement* child)
 	{
 		if (auto iter = std::find(children.begin(), children.end(), child); children.end() != iter) {
+			child->SetParent(nullptr);
 			children.erase(iter);
 		}
+	}
+
+	bool UIElement::OnHover(const glm::ivec2& screenMousePos)
+	{
+		if (
+			screenMousePos.x >= topLeftPosRelativeToParent.x
+			&& screenMousePos.x <= bottomRightScreenPos.x
+			&& screenMousePos.y >= topLeftPosRelativeToParent.y
+			&& screenMousePos.y <= bottomRightScreenPos.y
+			) {
+			// Cursor is inside element
+			if (!isVisible) {
+				return true;
+			}
+			for (auto child : children) {
+				if (child->OnHover(screenMousePos)) {
+					break;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
+	bool UIElement::OnClick(const glm::ivec2& screenMousePos)
+	{
+		if (
+			screenMousePos.x >= topLeftPosRelativeToParent.x
+			&& screenMousePos.x <= bottomRightScreenPos.x
+			&& screenMousePos.y >= topLeftPosRelativeToParent.y
+			&& screenMousePos.y <= bottomRightScreenPos.y
+			) {
+			// Cursor is inside element
+			if (!isVisible) {
+				return true;
+			}
+			DebugUtils::PrintMsg("UIElement", "Clicked UI element.");
+			for (auto child : children) {
+				if (child->OnClick(screenMousePos)) {
+					break;
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 }

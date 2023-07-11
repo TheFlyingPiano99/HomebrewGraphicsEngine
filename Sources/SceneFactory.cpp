@@ -37,6 +37,9 @@
 #include "nlohmann/json.hpp"
 #include "jsonParseUtils.h"
 #include "MathUtil.h"
+#include "UI/UIElement.h"
+#include "UI/Caption.h"
+#include "UI/Container.h"
 
 #include <Windows.h>
 
@@ -554,7 +557,7 @@ namespace Hogra {
 
 		Caption* caption1 = Allocator::New<Caption>();
 		caption1->Init(L"Homebrew Graphics Engine Demo - Vannak ékezetes betűk is!", font, 1.0f, glm::vec4(0.95f, 0.98f, 1.0f, 1.0f));
-		scene->AddUIElement(caption1);
+		scene->AddRootUIElement(caption1);
 	}
 
 	void SceneFactory::InitVoxelCaption(Scene* scene, const wchar_t* dataSetName) {
@@ -562,19 +565,19 @@ namespace Hogra {
 		font->Init("arial.ttf");
 		Caption* caption1 = Allocator::New<Caption>();
 		caption1->Init(L"Volume rendering", font, 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddUIElement(caption1);
+		scene->AddRootUIElement(caption1);
 
 		Caption* caption2 = Allocator::New<Caption>();
 		caption2->Init(std::wstring(L"Dataset: ").append(dataSetName), font, 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddUIElement(caption2);
+		scene->AddRootUIElement(caption2);
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::wstring(L"Toggle transfer function [H]"), font, 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddUIElement(caption2);
+		scene->AddRootUIElement(caption2);
 
 		caption2 = Allocator::New<Caption>();
 		caption2->Init(std::wstring(L"Toggle options [O]"), font, 1.0f, glm::vec4(1, 1, 1, 1));
-		scene->AddUIElement(caption2);
+		scene->AddRootUIElement(caption2);
 	}
 	
 	void SceneFactory::InitGround(Scene* scene)
@@ -1172,7 +1175,7 @@ namespace Hogra {
 						caption->SetHorizontalPlacingStyle(Caption::PlacingStyle::relative);
 					}
 					*/
-					scene->AddUIElement(caption);
+					scene->AddRootUIElement(caption);
 				}
 
 				// Scene objects:
@@ -1351,6 +1354,47 @@ namespace Hogra {
 		deferredLayer->SetRenderMode(RenderLayer::RenderMode::deferredInstancedRenderMode);
 		scene->AddRenderLayer(deferredLayer);
 
+
+		// ----------------------------------------------------
+
+		// Captions:
+		auto* font = Allocator::New<Font>();
+		font->Init("arial.ttf");
+
+		Container* root = Allocator::New<Container>();
+		root->Init(UIElement::Floating::topToBottom, UIElement::VerticalAlignment::centered,
+			UIElement::HorizontalAlignment::centered);
+
+		for (int i = 0; i < 5; i++)
+		{
+			Container* container = Allocator::New<Container>();
+			container->Init(UIElement::Floating::topToBottom, UIElement::VerticalAlignment::centered,
+				UIElement::HorizontalAlignment::centered);
+
+			Caption* caption = Allocator::New<Caption>();
+			caption->Init(L"Demo application", font, 1.0, { 1, 1, 1, 0.5 });
+			container->AddChild(caption);
+			root->AddChild(container);
+
+			if (i == 1) {
+				auto margin = container->GetMarginLeftRightTopBottom();
+				container->SetMarginLeftRightTopBottom({ margin.x + 20, margin.y + 30, margin.z ,margin.w });
+				caption->UpdateText(L"This is a longer text with highlighting. ");
+				caption->SetHighlightColor({ 1, 1, 0, 1 });
+			}
+			if (i == 3) {
+				container->SetHorizontalAlignment(UIElement::HorizontalAlignment::right);
+				caption->UpdateText(L"Right aligned.");
+			}
+			if (i == 4) {
+				container->SetHorizontalAlignment(UIElement::HorizontalAlignment::left);
+				caption->UpdateText(L"Left aligned.");
+			}
+
+		}
+		scene->AddRootUIElement(root);
+
+
 		// ----------------------------------------------------
 		// Objects:
 		auto gravitation = InitGravitation(scene);
@@ -1431,15 +1475,6 @@ namespace Hogra {
 			scene->AddSceneObject(obj, "borderlands", "ForwardLayer");
 		}
 
-
-		// ----------------------------------------------------
-		// Captions:
-		auto* font = Allocator::New<Font>();
-		font->Init("arial.ttf");
-
-		Caption* caption = Allocator::New<Caption>();
-		caption->Init(L"Demo application", font, 1.0, {1, 1, 1, 0.5});
-		scene->AddUIElement(caption);
 
 
 		// ----------------------------------------------------
@@ -1614,16 +1649,21 @@ namespace Hogra {
 		auto* font = Allocator::New<Font>();
 		font->Init("arial.ttf");
 		
+		auto rootContainer = Allocator::New<Container>();
+		rootContainer->Init(UIElement::Floating::topToBottom, UIElement::VerticalAlignment::bottom, UIElement::HorizontalAlignment::centered);
+
 		{
 			Caption* caption = Allocator::New<Caption>();
 			caption->Init(L"Homebrew Graphics Engine", font, 0.8, { 1, 1, 1, 0.9 });
-			scene->AddUIElement(caption);
+			rootContainer->AddChild(caption);
 		}
 		{
 			Caption* caption = Allocator::New<Caption>();
 			caption->Init(L"Zoltán Simon (2023)", font, 0.5, { 1, 1, 1, 0.9 });
-			scene->AddUIElement(caption);
+			caption->SetHorizontalAlignment(UIElement::HorizontalAlignment::right);
+			rootContainer->AddChild(caption);
 		}
+		scene->AddRootUIElement(rootContainer);
 
 		return scene;
 	}

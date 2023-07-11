@@ -164,5 +164,4 @@ namespace Hogra {
 		}
 		currentScene->OnContextResize(w, h);
 	}
-
 }

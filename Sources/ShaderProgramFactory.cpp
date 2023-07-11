@@ -130,6 +130,32 @@ namespace Hogra {
 		return forwardHomogenousCellShadingProgram;
 	}
 
+	ShaderProgram* ShaderProgramFactory::GetFlatContainerProgram()
+	{
+		if (!Allocator::IsValid(flatContainerProgram)) {
+			flatContainerProgram = Allocator::New<ShaderProgram>();
+			flatContainerProgram->Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DOrthographic.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("UI/flatContainer.frag")
+			);
+		}
+		return flatContainerProgram;
+	}
+
+	ShaderProgram* ShaderProgramFactory::GetTexturedContainerProgram()
+	{
+		if (!Allocator::IsValid(texturedContainerProgram)) {
+			texturedContainerProgram = Allocator::New<ShaderProgram>();
+			texturedContainerProgram->Init(
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("DefaultPipeline/single2DOrthographic.vert"),
+				"",
+				AssetFolderPathManager::getInstance()->getShaderFolderPath().append("UI/texturedContainer.frag")
+			);
+		}
+		return texturedContainerProgram;
+	}
+
 	void ShaderProgramFactory::ForgetPointers()
 	{
 		defaultBPRProgramWithMapping = nullptr;
@@ -140,6 +166,8 @@ namespace Hogra {
 		twoDimSpriteProgram = nullptr;
 		forwardCellShadingProgram = nullptr;
 		forwardHomogenousCellShadingProgram = nullptr;
+		flatContainerProgram = nullptr;
+		texturedContainerProgram = nullptr;
 	}
 
 }

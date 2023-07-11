@@ -61,6 +61,10 @@ namespace Hogra {
 		else {
 			glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			prevCentered = false;
+			auto scene = SceneManager::getInstance()->getScene();
+			if (nullptr != scene) {
+				scene->OnCursorHover({ xpos, ypos });
+			}
 		}
 		double pixMouseX;
 		double pixMouseY;
@@ -79,13 +83,23 @@ namespace Hogra {
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
 		glm::vec2 pixPos(xpos, ypos);
+		static bool isLeftPressed = false;
+
 		if (button == GLFW_MOUSE_BUTTON_LEFT)
 		{
 			if (GLFW_PRESS == action) {
 				ControlActionManager::getInstance()->OnMouseButtonPress(GLFW_MOUSE_BUTTON_LEFT, pixPos);
+				if (!GlobalVariables::hideCursor && !isLeftPressed) {
+					isLeftPressed = true;
+					auto scene = SceneManager::getInstance()->getScene();
+					if (nullptr != scene) {
+						scene->OnCursorClick({ xpos, ypos });
+					}
+				}
 			}
 			else if (GLFW_RELEASE == action) {
 				ControlActionManager::getInstance()->OnMouseButtonRelease(GLFW_MOUSE_BUTTON_LEFT, pixPos);
+				isLeftPressed = false;
 			}
 		}
 		if (button == GLFW_MOUSE_BUTTON_RIGHT)

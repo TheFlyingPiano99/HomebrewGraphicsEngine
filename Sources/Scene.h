@@ -19,7 +19,6 @@
 #include "PointLight.h"
 #include "DirectionalLight.h"
 #include "UI/Font.h"
-#include "UI/Caption.h"
 #include "Bloom.h"
 #include "SceneChange.h"
 #include "AudioManager.h"
@@ -28,6 +27,7 @@
 #include "RenderLayer.h"
 #include "UniformVariableImpl.h"
 #include "Identifiable.h"
+#include "UI/UIElement.h"
 
 namespace Hogra {
 
@@ -73,10 +73,12 @@ namespace Hogra {
 
 		void AddLight(DirectionalLight* light);
 
-		void AddUIElement(UIElement* caption);
+		void AddRootUIElement(UIElement* uiElement);
+
+		void RemoveRootUIElement(UIElement* uiElement);
 
 		void AddSceneAudioSource(SceneAudioSource* source);
-
+		
 		void SetUserControl(UserControl* uc);
 
 		const glm::vec3& getPreferedUp() const;
@@ -89,9 +91,15 @@ namespace Hogra {
 
 		void Serialize();
 
+		void RecalculateUILayout();
+
 		void SetBackgroundColor(const glm::vec3 color) {
 			backgroundColor = glm::vec4(color, 1.0);
 		}
+
+		void OnCursorHover(const glm::ivec2& screenMousePos);
+
+		void OnCursorClick(const glm::ivec2& screenMousePos);
 
 		~Scene() {
 			Destroy();

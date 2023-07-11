@@ -1,5 +1,7 @@
 #include "ControlActionManager.h"
 #include "MemoryManager.h"
+#include "SceneManager.h"
+
 
 namespace Hogra {
 
@@ -152,6 +154,21 @@ namespace Hogra {
 		mouseScrollAction.erase(iter);
 	}
 
+	void ControlActionManager::OnCursorHover(const glm::ivec2& screenMousePos)
+	{
+
+	}
+
+	void ControlActionManager::OnCursorClick(const glm::ivec2& screenMousePos)
+	{
+
+	}
+
+	void ControlActionManager::OnCursorRelease(const glm::ivec2& screenMousePos)
+	{
+		// TODO
+	}
+
 	AbstractControlAction* ControlActionManager::PopNextQueuedAction()
 	{
 		if (!queuedActions.empty()) {
@@ -160,6 +177,11 @@ namespace Hogra {
 			return toReturn;
 		}
 		return nullptr;
+	}
+
+	ControlActionManager::ControlActionManager()
+	{
+
 	}
 
 	ControlActionManager* ControlActionManager::getInstance() {
