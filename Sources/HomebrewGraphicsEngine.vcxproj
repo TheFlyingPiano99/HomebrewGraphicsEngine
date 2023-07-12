@@ -247,6 +247,7 @@
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Texture3D.cpp" />
     <ClCompile Include="TextureCube.cpp" />
+    <ClCompile Include="UI\MenuButton.cpp" />
     <ClCompile Include="UI\Caption.cpp" />
     <ClCompile Include="UI\Container.cpp" />
     <ClCompile Include="UI\Font.cpp" />
@@ -355,6 +356,7 @@
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Texture3D.h" />
     <ClInclude Include="TextureCube.h" />
+    <ClInclude Include="UI\MenuButton.h" />
     <ClInclude Include="UI\Caption.h" />
     <ClInclude Include="UI\Container.h" />
     <ClInclude Include="UI\Font.h" />

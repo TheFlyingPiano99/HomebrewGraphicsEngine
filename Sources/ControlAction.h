@@ -82,4 +82,28 @@ namespace Hogra {
 		std::function<void(const glm::vec2& pixDelta, const glm::vec2& pixPos)> action = [](const glm::vec2& pixDelta, const glm::vec2& pixPos) {};
 	};
 
+	class CursorClickAction : public AbstractControlAction
+	{
+		ALLOCATOR_CONSTRUCTIBLE
+	public:
+
+		void OnPress(const glm::ivec2& screenCursorPos);
+
+		void OnRelease(const glm::ivec2& screenCursorPos);
+
+		bool PopIsTriggering() override;
+
+		void Execute(Scene* scene) override {
+			scene->OnCursorClick(screenCursorPos);
+		}
+
+	private:
+		bool pressed = false;
+		bool pressedPreviously = false;
+		glm::ivec2 screenCursorPos;
+	};
+
 }
+
+
+

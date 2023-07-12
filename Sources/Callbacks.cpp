@@ -48,6 +48,11 @@ namespace Hogra {
 	{
 		static bool prevCentered = false;
 		bool isFirst = false;
+		double pixMouseX;
+		double pixMouseY;
+		// Fetches the coordinates of the cursor
+		glfwGetCursorPos(window, &pixMouseX, &pixMouseY);
+
 		// Check if this is the first call with centered camera:
 		if (GlobalVariables::hideCursor && !prevCentered) {
 			isFirst = true;
@@ -63,13 +68,9 @@ namespace Hogra {
 			prevCentered = false;
 			auto scene = SceneManager::getInstance()->getScene();
 			if (nullptr != scene) {
-				scene->OnCursorHover({ xpos, ypos });
+				scene->OnCursorHover({ pixMouseX, pixMouseY });
 			}
 		}
-		double pixMouseX;
-		double pixMouseY;
-		// Fetches the coordinates of the cursor
-		glfwGetCursorPos(window, &pixMouseX, &pixMouseY);
 		ControlActionManager::getInstance()->OnMouseMove(glm::vec2(pixMouseX, pixMouseY), isFirst);
 	}
 

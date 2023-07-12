@@ -52,10 +52,6 @@ namespace Hogra {
 
 		void CalculateLayoutFromRoot();
 
-		void UpdateMatrix(const glm::ivec2& parentTopLeftScPos);
-
-		glm::ivec2& CalculateWidthHeight();
-
 		void SetParent(UIElement* parent);
 
 		void AddChild(UIElement* child);
@@ -110,12 +106,22 @@ namespace Hogra {
 
 		bool OnClick(const glm::ivec2& screenMousePos);
 
+		void ResetHoverFlag();
+
 	protected:
+
+		void UpdateMatrix(const glm::ivec2& parentTopLeftScPos);
+
+		glm::ivec2& CalculateWidthHeight();
+
+		virtual void ExecuteClickAction(const glm::ivec2& screenCursorPos) {}
+
 		UIElement* parent = nullptr;
 		std::vector<UIElement*> children;
 		Geometry* quad = nullptr;
 		ShaderProgram* shaderProgram = nullptr;
 		bool isVisible = true;
+		bool isHovered = false;
 		glm::ivec2 topLeftScreenPos = glm::ivec2(400, 300);
 		glm::ivec2 bottomRightScreenPos = glm::ivec2(600, 500);
 		glm::ivec2 widthHeight = glm::ivec2(200, 200);

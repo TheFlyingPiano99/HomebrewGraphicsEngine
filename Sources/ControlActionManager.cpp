@@ -82,6 +82,11 @@ namespace Hogra {
 				queuedActions.push(action);
 			}
 		}
+
+		if (cursorClickAction.PopIsTriggering()) {
+			queuedActions.push(&cursorClickAction);
+		}
+		
 	}
 
 	void ControlActionManager::UnregisterControls() {
@@ -159,14 +164,14 @@ namespace Hogra {
 
 	}
 
-	void ControlActionManager::OnCursorClick(const glm::ivec2& screenMousePos)
+	void ControlActionManager::OnCursorPress(const glm::ivec2& screenMousePos)
 	{
-
+		cursorClickAction.OnPress(screenMousePos);
 	}
 
 	void ControlActionManager::OnCursorRelease(const glm::ivec2& screenMousePos)
 	{
-		// TODO
+		cursorClickAction.OnRelease(screenMousePos);
 	}
 
 	AbstractControlAction* ControlActionManager::PopNextQueuedAction()
@@ -178,12 +183,10 @@ namespace Hogra {
 		}
 		return nullptr;
 	}
-
 	ControlActionManager::ControlActionManager()
 	{
 
 	}
-
 	ControlActionManager* ControlActionManager::getInstance() {
 		if (nullptr == instance) {
 			instance = Allocator::New<ControlActionManager>();

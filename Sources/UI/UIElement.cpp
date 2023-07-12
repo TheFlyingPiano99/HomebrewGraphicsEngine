@@ -1,6 +1,7 @@
 #include "UIElement.h"
 #include "glm/gtx/transform.hpp"
 #include "../DebugUtils.h"
+#include "../SceneEventManager.h"
 
 namespace Hogra {
 
@@ -215,12 +216,13 @@ namespace Hogra {
 	bool UIElement::OnHover(const glm::ivec2& screenMousePos)
 	{
 		if (
-			screenMousePos.x >= topLeftPosRelativeToParent.x
+			screenMousePos.x >= topLeftScreenPos.x
 			&& screenMousePos.x <= bottomRightScreenPos.x
-			&& screenMousePos.y >= topLeftPosRelativeToParent.y
+			&& screenMousePos.y >= topLeftScreenPos.y
 			&& screenMousePos.y <= bottomRightScreenPos.y
 			) {
 			// Cursor is inside element
+			isHovered = true;
 			if (!isVisible) {
 				return true;
 			}
@@ -237,16 +239,16 @@ namespace Hogra {
 	bool UIElement::OnClick(const glm::ivec2& screenMousePos)
 	{
 		if (
-			screenMousePos.x >= topLeftPosRelativeToParent.x
+			screenMousePos.x >= topLeftScreenPos.x
 			&& screenMousePos.x <= bottomRightScreenPos.x
-			&& screenMousePos.y >= topLeftPosRelativeToParent.y
+			&& screenMousePos.y >= topLeftScreenPos.y
 			&& screenMousePos.y <= bottomRightScreenPos.y
 			) {
 			// Cursor is inside element
 			if (!isVisible) {
 				return true;
 			}
-			DebugUtils::PrintMsg("UIElement", "Clicked UI element.");
+			ExecuteClickAction(screenMousePos);
 			for (auto child : children) {
 				if (child->OnClick(screenMousePos)) {
 					break;
@@ -255,6 +257,14 @@ namespace Hogra {
 			return true;
 		}
 		return false;
+	}
+
+	void UIElement::ResetHoverFlag()
+	{
+		isHovered = false;
+		for (auto child : children) {
+			child->ResetHoverFlag();
+		}
 	}
 
 }

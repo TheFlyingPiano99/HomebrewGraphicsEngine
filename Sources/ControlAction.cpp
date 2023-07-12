@@ -62,4 +62,25 @@ namespace Hogra {
 		movedInThisFrame = true;
 	}
 
+	void CursorClickAction::OnPress(const glm::ivec2& _screenCursorPos)
+	{
+		pressed = true;
+		screenCursorPos = _screenCursorPos;
+
+	}
+
+	void CursorClickAction::OnRelease(const glm::ivec2& _screenCursorPos)
+	{
+		pressed = false;
+		screenCursorPos = _screenCursorPos;
+	}
+
+	bool CursorClickAction::PopIsTriggering()
+	{
+		bool trigger;
+		trigger = pressed && !pressedPreviously;
+		pressedPreviously = pressed;
+		return trigger;
+	}
+
 }

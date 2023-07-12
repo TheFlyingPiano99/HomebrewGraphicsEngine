@@ -40,7 +40,7 @@
 #include "UI/UIElement.h"
 #include "UI/Caption.h"
 #include "UI/Container.h"
-
+#include "UI/MenuButton.h"
 #include <Windows.h>
 
 
@@ -1357,7 +1357,7 @@ namespace Hogra {
 
 		// ----------------------------------------------------
 
-		// Captions:
+		// UI:
 		auto* font = Allocator::New<Font>();
 		font->Init("arial.ttf");
 
@@ -1390,8 +1390,11 @@ namespace Hogra {
 				container->SetHorizontalAlignment(UIElement::HorizontalAlignment::left);
 				caption->UpdateText(L"Left aligned.");
 			}
-
 		}
+
+		MenuButton* button = Allocator::New<MenuButton>();
+		button->Init(L"Click me!", font);
+		root->AddChild(button);
 		scene->AddRootUIElement(root);
 
 
@@ -1522,8 +1525,6 @@ namespace Hogra {
 			contextHeight
 		);
 		deferredLayer->AddPostProcessStage(hdr);
-		
-
 
 
 		// ----------------------------------------------------

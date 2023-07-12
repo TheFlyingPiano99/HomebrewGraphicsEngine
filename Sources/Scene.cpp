@@ -484,6 +484,7 @@ namespace Hogra {
 	void Scene::OnCursorHover(const glm::ivec2& screenMousePos)
 	{
 		for (auto rootElement : uiRootElements) {
+			rootElement->ResetHoverFlag();
 			rootElement->OnHover(screenMousePos);
 		}
 	}

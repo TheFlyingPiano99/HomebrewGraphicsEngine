@@ -58,7 +58,7 @@ namespace Hogra {
 
 		void OnCursorHover(const glm::ivec2& screenMousePos);
 
-		void OnCursorClick(const glm::ivec2& screenMousePos);
+		void OnCursorPress(const glm::ivec2& screenMousePos);
 
 		void OnCursorRelease(const glm::ivec2& screenMousePos);
 
@@ -92,6 +92,8 @@ namespace Hogra {
 		std::multimap<const int, ButtonKeyAction*> registeredMouseButtonActions;
 		std::vector<AxisMoveAction*> mouseMoveAction;
 		std::vector<AxisMoveAction*> mouseScrollAction;
+
+		CursorClickAction cursorClickAction;
 
 		std::queue<AbstractControlAction*> queuedActions;
 
