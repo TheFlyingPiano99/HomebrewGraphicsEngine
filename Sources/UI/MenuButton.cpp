@@ -13,8 +13,6 @@ void Hogra::MenuButton::Init(const std::wstring& text, Font* font)
 	this->isFixedSize = false;
 	this->shaderProgram = ShaderProgramFactory::GetInstance()->GetFlatContainerProgram();
 	this->quad = GeometryFactory::GetInstance()->GetSimpleQuad();
-	this->fillColor = glm::vec4(0.02f, 0.02f, 0.02f, 0.6f);
-	this->borderColor = glm::vec4(0.1f, 0.1f, 0.1f, 0.6f);
 	this->marginLeftRightTopBottom = { 20, 20, 20, 20 };
 	this->borderLeftRightTopBottom = { 3, 3, 3, 3 };
 
@@ -29,7 +27,7 @@ void Hogra::MenuButton::Draw() const
 	shaderProgram->Activate();
 	shaderProgram->SetUniform("sceneObject.modelMatrix", modelMatrix);
 	if (nullptr == backgroundTexture) {
-		shaderProgram->SetUniform("fillColor", (isHovered)? hoverFillColor : fillColor);
+		shaderProgram->SetUniform("fillColor", (isHovered) ? hoverFillColor : fillColor);
 		shaderProgram->SetUniform("borderColor", (isHovered)? hoverBorderColor : borderColor);
 		shaderProgram->SetUniform("widthHeight", widthHeight);
 		shaderProgram->SetUniform("borderLeftRightTopBottom", borderLeftRightTopBottom);
