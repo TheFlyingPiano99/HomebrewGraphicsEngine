@@ -9,50 +9,50 @@
 #include "DirectionalLight.h"
 
 namespace Hogra {
-	class DeferredLightingSystem
-	{
-	public:
-		DeferredLightingSystem() = default;
-			
-		~DeferredLightingSystem();
+    class DeferredLightingSystem
+    {
+    public:
+        DeferredLightingSystem() = default;
 
-		void Init(unsigned int _contextWidth, unsigned int _contextHeight);
+        ~DeferredLightingSystem();
 
-		void OnContextResize(unsigned int _contextWidth, unsigned int _contextHeight);
+        void Init(unsigned int _contextWidth, unsigned int _contextHeight);
 
-		void BindGBuffer();
+        void OnContextResize(unsigned int _contextWidth, unsigned int _contextHeight);
 
-		void Draw(
-			const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights,
-			TextureCube* environmentMap,
-			TextureCube* irradianceMap, 
-			TextureCube* prefilterMap,
-			Texture2D* brdfLUT
-		);
+        void BindGBuffer();
 
-		const Texture2D& GetDepthTexture();
+        void Draw(
+            const std::vector<PointLight*>& pointLights, const std::vector<DirectionalLight*>& dirLights,
+            TextureCube* environmentMap,
+            TextureCube* irradianceMap,
+            TextureCube* prefilterMap,
+            Texture2D* brdfLUT
+        );
 
-		FBO& GetGBuffer() {
-			return gBuffer;
-		}
+        const Texture2D& GetDepthTexture();
 
-		void ExportShadowMaps(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters);
+        FBO& GetGBuffer() {
+            return gBuffer;
+        }
 
-	private:
-		FBO gBuffer;
-		ShaderProgram dirLightProgram;
-		ShaderProgram fullScreenAmbientProgram;
-		ShaderProgram lightVolumeProgram;
-		Texture2D gPosition;
-		Texture2D gNormal;
-		Texture2D gAlbedo;
-		Texture2D gRoughnessMetallicAO;
-		Texture2D depthTexture;
-		Material* materialFullScreen = nullptr;
-		Mesh* meshFullScreen = nullptr;
-		Material* volumeMaterial = nullptr;
-		Mesh* mesh = nullptr;
-		std::vector<Geometry::LightInstancedData> instanceData;
-	};
+        void ExportShadowMaps(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters);
+
+    private:
+        FBO gBuffer;
+        ShaderProgram dirLightProgram;
+        ShaderProgram fullScreenAmbientProgram;
+        ShaderProgram lightVolumeProgram;
+        Texture2D gPosition;
+        Texture2D gNormal;
+        Texture2D gAlbedo;
+        Texture2D gRoughnessMetallicAO;
+        Texture2D depthTexture;
+        Material* materialFullScreen = nullptr;
+        Mesh* meshFullScreen = nullptr;
+        Material* volumeMaterial = nullptr;
+        Mesh* mesh = nullptr;
+        std::vector<Geometry::LightInstancedData> instanceData;
+    };
 }
 

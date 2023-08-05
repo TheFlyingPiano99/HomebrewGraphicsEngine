@@ -5,21 +5,21 @@
 
 namespace Hogra {
 
-	class AudioDevice
-	{
-	public:
+    class AudioDevice
+    {
+    public:
 
-		void Init();
+        void Init();
 
-		~AudioDevice();
+        ~AudioDevice();
 
-		void Destroy();
-			
-		ALCdevice* Get() const;
+        void Destroy();
+
+        ALCdevice* Get() const;
 
 
-	private:
-		ALCdevice* device = nullptr;
-	};
+    private:
+        ALCdevice* device = nullptr;
+    };
 }
 

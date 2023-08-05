@@ -13,58 +13,58 @@
 
 namespace Hogra {
 
-	class AudioBuffer
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class AudioBuffer
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		void Init(const std::filesystem::path& path);
+        void Init(const std::filesystem::path& path);
 
-		~AudioBuffer();
+        ~AudioBuffer();
 
-		/*
-		* Return OpenAL buffer id
-		*/
-		ALuint Get() const;
+        /*
+        * Return OpenAL buffer id
+        */
+        ALuint Get() const;
 
-		void AddSource(ALuint source) {
-			sourcesUsingThisBuffer.insert(source);
-		}
+        void AddSource(ALuint source) {
+            sourcesUsingThisBuffer.insert(source);
+        }
 
-		void RemoveSource(ALuint source) {
-			auto iter = std::find(sourcesUsingThisBuffer.begin(), sourcesUsingThisBuffer.end(), source);
-			if (sourcesUsingThisBuffer.end() != iter) {
-				sourcesUsingThisBuffer.erase(iter);
-			}
-		}
+        void RemoveSource(ALuint source) {
+            auto iter = std::find(sourcesUsingThisBuffer.begin(), sourcesUsingThisBuffer.end(), source);
+            if (sourcesUsingThisBuffer.end() != iter) {
+                sourcesUsingThisBuffer.erase(iter);
+            }
+        }
 
-	private:
-		ALuint alID;
-		std::set<ALuint> sourcesUsingThisBuffer;
-		/*
-		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
-		* Published on the website indiegamedev.net
-		* URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
-		*/
-		std::int32_t ConvertToInt(char const* buffer, std::size_t len);
+    private:
+        ALuint alID;
+        std::set<ALuint> sourcesUsingThisBuffer;
+        /*
+        * The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
+        * Published on the website indiegamedev.net
+        * URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
+        */
+        std::int32_t ConvertToInt(char const* buffer, std::size_t len);
 
-		/*
-		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
-		* Published on the website indiegamedev.net
-		* URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
-		*/
-		bool LoadWavFileHeader(std::ifstream& file,
+        /*
+        * The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
+        * Published on the website indiegamedev.net
+        * URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
+        */
+        bool LoadWavFileHeader(std::ifstream& file,
             std::uint8_t& channels,
             std::int32_t& sampleRate,
             std::uint8_t& bitsPerSample,
             ALsizei& size);
 
-		/*
-		* The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
-		* Published on the website indiegamedev.net
-		* URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
-		*/
-		bool LoadWav(const std::filesystem::path& path,
+        /*
+        * The implementation of this function is from the article "The Complete Guide to OpenAL with C++ – Part 1: Playing a Sound"
+        * Published on the website indiegamedev.net
+        * URL: https://indiegamedev.net/2020/02/15/the-complete-guide-to-openal-with-c-part-1-playing-a-sound/
+        */
+        bool LoadWav(const std::filesystem::path& path,
             std::uint8_t& channels,
             std::int32_t& sampleRate,
             std::uint8_t& bitsPerSample,

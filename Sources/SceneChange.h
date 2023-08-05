@@ -2,20 +2,20 @@
 
 namespace Hogra {
 
-	struct SceneChange
-	{
-	public:
+    struct SceneChange
+    {
+    public:
 
-		enum class ChangeType {
-			noChange,
-			restartScene,
-			nextScene,
-			quit
-		};
+        enum class ChangeType {
+            noChange,
+            restartScene,
+            nextScene,
+            quit
+        };
 
-		ChangeType changeType = ChangeType::noChange;
+        ChangeType changeType = ChangeType::noChange;
 
-		int nextSceneId = -1;
+        int nextSceneId = -1;
 
-	};
+    };
 }

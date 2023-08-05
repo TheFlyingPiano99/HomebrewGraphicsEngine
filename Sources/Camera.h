@@ -12,167 +12,167 @@
 
 namespace Hogra {
 
-	class Camera : public PositionProvider, public OrientationProvider
-	{
-		friend class SceneFactory;
-	public:
+    class Camera : public PositionProvider, public OrientationProvider
+    {
+        friend class SceneFactory;
+    public:
 
-		void Init(float aspectRatio, const glm::vec3& eye, const glm::vec3& lookAt);
-			
-		// Updates the camera matrix to the Vertex Shader
-		void Update();
+        void Init(float aspectRatio, const glm::vec3& eye, const glm::vec3& lookAt);
 
-		// Updates the camera matrix to the Vertex Shader
-		void LatePhysicsUpdate(float dt_sec);
+        // Updates the camera matrix to the Vertex Shader
+        void Update();
 
-		void UpdatePreferedUp(glm::vec3 prefUp);
+        // Updates the camera matrix to the Vertex Shader
+        void LatePhysicsUpdate(float dt_sec);
 
-		/*
-		* Load data on GPU.
-		*/
-		void ExportData();
+        void UpdatePreferedUp(glm::vec3 prefUp);
 
-		void MoveForward(float dt_sec);
-		void MoveBackward(float dt_sec);
-		void MoveLeft(float dt_sec);
-		void MoveRight(float dt_sec);
-		void MoveUp(float dt_sec);
-		void MoveDown(float dt_sec);
+        /*
+        * Load data on GPU.
+        */
+        void ExportData();
 
-		void Rotate(const glm::vec2& deltaAngle);
-		
-		void RotateAroundPoint(const glm::vec2& deltaAngle, const glm::vec3& rotationCenter = glm::vec3(0.0f));
+        void MoveForward(float dt_sec);
+        void MoveBackward(float dt_sec);
+        void MoveLeft(float dt_sec);
+        void MoveRight(float dt_sec);
+        void MoveUp(float dt_sec);
+        void MoveDown(float dt_sec);
 
-		void ApproachCenter(float delta, const glm::vec3& center = glm::vec3(0.0f));
+        void Rotate(const glm::vec2& deltaAngle);
 
-		void SetAspectRatio(float ratio) {
-			aspectRatio = ratio;
-		}
+        void RotateAroundPoint(const glm::vec2& deltaAngle, const glm::vec3& rotationCenter = glm::vec3(0.0f));
 
-		float GetAspectRatio() const {
-			return aspectRatio;
-		}
+        void ApproachCenter(float delta, const glm::vec3& center = glm::vec3(0.0f));
 
-		float GetFOV() const {
-			return FOVdeg;
-		}
+        void SetAspectRatio(float ratio) {
+            aspectRatio = ratio;
+        }
 
-		void SetChanged(bool val) {
-			changed = val;
-		}
+        float GetAspectRatio() const {
+            return aspectRatio;
+        }
 
-		const glm::mat4& GetProjectionMatrix() const {
-			return projection;
-		}
+        float GetFOV() const {
+            return FOVdeg;
+        }
 
-		const glm::mat4& GetViewProjMatrix() const {
-			return viewProjMatrix;
-		}
+        void SetChanged(bool val) {
+            changed = val;
+        }
 
-		const glm::mat4& GetInvViewProjMatrix() const {
-			return invViewProjMatrix;
-		}
+        const glm::mat4& GetProjectionMatrix() const {
+            return projection;
+        }
 
-		const glm::mat4& GetRayDirMatrix() const {
-			return rayDirMatrix;
-		}
+        const glm::mat4& GetViewProjMatrix() const {
+            return viewProjMatrix;
+        }
 
-		const glm::vec3& GetLookDir() const {
-			return lookDir;
-		}
+        const glm::mat4& GetInvViewProjMatrix() const {
+            return invViewProjMatrix;
+        }
 
-		const glm::vec3& GetPosition() const override {
-			return eye;
-		}
+        const glm::mat4& GetRayDirMatrix() const {
+            return rayDirMatrix;
+        }
 
-		void SetPositionConnetor(PositionConnector* provider) {
-			positionConnector = provider;
-		}
+        const glm::vec3& GetLookDir() const {
+            return lookDir;
+        }
 
-		void SetOrientationConnector(OrientationConnector* provider) {
-			orientationConnector = provider;
-		}
+        const glm::vec3& GetPosition() const override {
+            return eye;
+        }
 
-		const glm::vec3& getRight() const {
-			return right;
-		}
+        void SetPositionConnetor(PositionConnector* provider) {
+            positionConnector = provider;
+        }
 
-		const glm::vec3& getUp() const {
-			return up;
-		}
+        void SetOrientationConnector(OrientationConnector* provider) {
+            orientationConnector = provider;
+        }
 
-		const glm::vec3& getPreferedUp() const {
-			return prefUp;
-		}
+        const glm::vec3& getRight() const {
+            return right;
+        }
 
-		const glm::quat& GetOrientation() const override {
-			return orientation;
-		}
+        const glm::vec3& getUp() const {
+            return up;
+        }
 
-		Animation* getAnimation() const {
-			return animation;
-		}
+        const glm::vec3& getPreferedUp() const {
+            return prefUp;
+        }
 
-		void setAnimation(Animation* _animation) {
-			animation = _animation;
-		}
+        const glm::quat& GetOrientation() const override {
+            return orientation;
+        }
 
-		void setAnimationOffset(const glm::vec3& offset) {
-			animationOffset = offset;
-		}
+        Animation* getAnimation() const {
+            return animation;
+        }
 
-		bool IsMoved() const {
-			return changed;
-		}
+        void setAnimation(Animation* _animation) {
+            animation = _animation;
+        }
 
-		void SetIsMoved(bool b) {
-			changed = b;
-		}
+        void setAnimationOffset(const glm::vec3& offset) {
+            animationOffset = offset;
+        }
 
-		void SetPosition(const glm::vec3& pos) {
-			auto dirToLookAt = lookAt - eye;
-			eye = pos;
-			lookAt = pos + dirToLookAt;
-			changed = true;
-		}
+        bool IsMoved() const {
+            return changed;
+        }
 
-		void SetLookDir(const glm::vec3& dir) {
-			lookAt = eye + dir;
-			changed = true;
-		}
+        void SetIsMoved(bool b) {
+            changed = b;
+        }
 
-	private:
-		UniformBufferObject ubo;
-		// Stores the main vectors of the camera
-		glm::vec3 eye;										// The position of the virtual viewers eye
-		glm::vec3 lookAt = glm::vec3(0.0f, 0.0f, 0.0f);		// A point in world-space that the camera is looking at
-		glm::vec3 prefUp = glm::vec3(0.0f, 1.0f, 0.0f);		// A unit vector pointing in the prefered "up" direction
-		glm::vec3 lookDir = glm::vec3(0.0f, 0.0f, -1.0f);
-		glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
-		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::mat4 view = glm::mat4(1.0f);
-		glm::mat4 projection = glm::mat4(1.0f);
-		glm::mat4 viewProjMatrix = glm::mat4(1.0f);
-		glm::mat4 invViewProjMatrix = glm::mat4(1.0f);
-		glm::mat4 rayDirMatrix = glm::mat4(1.0f);
-		glm::quat orientation;
-		float FOVdeg = 45.0f;
-		float nearPlane = 0.1f;
-		float farPlane = 2000.0f;
+        void SetPosition(const glm::vec3& pos) {
+            auto dirToLookAt = lookAt - eye;
+            eye = pos;
+            lookAt = pos + dirToLookAt;
+            changed = true;
+        }
 
-		// Prevents the camera from jumping around when first clicking left click
-		bool firstClick = true;
+        void SetLookDir(const glm::vec3& dir) {
+            lookAt = eye + dir;
+            changed = true;
+        }
 
-		bool changed = false;
-		PositionConnector* positionConnector = nullptr;
-		OrientationConnector* orientationConnector = nullptr;
+    private:
+        UniformBufferObject ubo;
+        // Stores the main vectors of the camera
+        glm::vec3 eye;										// The position of the virtual viewers eye
+        glm::vec3 lookAt = glm::vec3(0.0f, 0.0f, 0.0f);		// A point in world-space that the camera is looking at
+        glm::vec3 prefUp = glm::vec3(0.0f, 1.0f, 0.0f);		// A unit vector pointing in the prefered "up" direction
+        glm::vec3 lookDir = glm::vec3(0.0f, 0.0f, -1.0f);
+        glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f);
+        glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+        glm::mat4 viewProjMatrix = glm::mat4(1.0f);
+        glm::mat4 invViewProjMatrix = glm::mat4(1.0f);
+        glm::mat4 rayDirMatrix = glm::mat4(1.0f);
+        glm::quat orientation;
+        float FOVdeg = 45.0f;
+        float nearPlane = 0.1f;
+        float farPlane = 2000.0f;
 
-		Animation* animation = nullptr;
-		glm::vec3 animationOffset = glm::vec3(0.0f);
+        // Prevents the camera from jumping around when first clicking left click
+        bool firstClick = true;
 
-		// Adjust the speed of the camera and it's sensitivity when looking around
-		float speed = 0.1f;
-		float sensitivity = 100.0f;
-		float aspectRatio;
-	};
+        bool changed = false;
+        PositionConnector* positionConnector = nullptr;
+        OrientationConnector* orientationConnector = nullptr;
+
+        Animation* animation = nullptr;
+        glm::vec3 animationOffset = glm::vec3(0.0f);
+
+        // Adjust the speed of the camera and it's sensitivity when looking around
+        float speed = 0.1f;
+        float sensitivity = 100.0f;
+        float aspectRatio;
+    };
 }

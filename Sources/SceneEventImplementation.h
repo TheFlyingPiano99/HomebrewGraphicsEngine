@@ -4,34 +4,34 @@
 #include "Collider.h"
 namespace Hogra {
 
-	class CollisionEvent : public SceneEvent
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
-		CollisionEvent() = default;
+    class CollisionEvent : public SceneEvent
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
+        CollisionEvent() = default;
 
-		void Init(const Collider* _collider1, const Collider* _collider2) {
-			collider1 = _collider1;
-			collider2 = _collider2;
-		}
+        void Init(const Collider* _collider1, const Collider* _collider2) {
+            collider1 = _collider1;
+            collider2 = _collider2;
+        }
 
-		~CollisionEvent() override = default;
+        ~CollisionEvent() override = default;
 
-		void Execute(Scene& scene) override;
+        void Execute(Scene& scene) override;
 
-	private:
+    private:
 
-		const Collider* collider1;
-		const Collider* collider2;
-	};
+        const Collider* collider1;
+        const Collider* collider2;
+    };
 
-	class RestartSceneEvent : public SceneEvent
-	{
-	public:
+    class RestartSceneEvent : public SceneEvent
+    {
+    public:
 
-		void Execute(Scene& scene) override;
+        void Execute(Scene& scene) override;
 
-	private:
-	};
+    private:
+    };
 
 }

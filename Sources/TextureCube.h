@@ -11,61 +11,61 @@
 
 namespace Hogra {
 
-	class TextureCube : public Texture
-	{
-	ALLOCATOR_CONSTRUCTIBLE
-	public:
-		friend class FBO;
+    class TextureCube : public Texture
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
+        friend class FBO;
 
-		const char* type;
+        const char* type;
 
-		void Init(std::vector<std::filesystem::path>& images, GLuint unit, GLuint clientDataType);
+        void Init(std::vector<std::filesystem::path>& images, GLuint unit, GLuint clientDataType);
 
-		void Init(unsigned int resolution, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType, bool useLinearFiltering = false);
+        void Init(unsigned int resolution, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType, bool useLinearFiltering = false);
 
-		void InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
+        void InitFromEquirectangular(const Texture2D& equirectangularMap, unsigned int unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
-		void InitFromCubeMap(
-			const TextureCube& cubemap,
-			ShaderProgram& conversionShader,
-			unsigned int resolution,
-			unsigned int unit,
-			GLuint clientDataFormat,
-			GLuint clientDataType,
-			unsigned int maxMipLevels = 1
-		);
+        void InitFromCubeMap(
+            const TextureCube& cubemap,
+            ShaderProgram& conversionShader,
+            unsigned int resolution,
+            unsigned int unit,
+            GLuint clientDataFormat,
+            GLuint clientDataType,
+            unsigned int maxMipLevels = 1
+        );
 
-		~TextureCube() override {
-			this->Delete();
-		}
+        ~TextureCube() override {
+            this->Delete();
+        }
 
-		// Binds a texture
-		void Bind();
-		// Unbinds a texture
-		void Unbind();
-		// Deletes a texture
-		void Delete();
+        // Binds a texture
+        void Bind();
+        // Unbinds a texture
+        void Unbind();
+        // Deletes a texture
+        void Delete();
 
-		const glm::ivec2& GetDimensions() const {
-			return dimensions;
-		}
+        const glm::ivec2& GetDimensions() const {
+            return dimensions;
+        }
 
-		// Inherited via Texture
-		virtual void Bind() const override;
+        // Inherited via Texture
+        virtual void Bind() const override;
 
-		virtual void Unbind() const override;
+        virtual void Unbind() const override;
 
-		void SetFiltering(GLenum filtering) const override;
+        void SetFiltering(GLenum filtering) const override;
 
-		Texture2D GetFace(unsigned int face);
+        Texture2D GetFace(unsigned int face);
 
-		void WriteData(void* dataPtr) override;
+        void WriteData(void* dataPtr) override;
 
-		void ReadData(void* dataPtr) const override;
+        void ReadData(void* dataPtr) const override;
 
-	private:
-		glm::ivec2 dimensions;
-		glm::vec4 nullVector;
+    private:
+        glm::ivec2 dimensions;
+        glm::vec4 nullVector;
 
-	};
+    };
 }

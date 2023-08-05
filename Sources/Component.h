@@ -8,28 +8,28 @@
 
 namespace Hogra {
 
-	class Component : public Identifiable
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class Component : public Identifiable
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		virtual ~Component() = default;
+        virtual ~Component() = default;
 
-		virtual void BeforePhysicsLoopUpdate() {}
+        virtual void BeforePhysicsLoopUpdate() {}
 
-		virtual void EarlyPhysicsUpdate(float dt_sec) {};
+        virtual void EarlyPhysicsUpdate(float dt_sec) {};
 
-		virtual void LatePhysicsUpdate(float dt_sec) {};
+        virtual void LatePhysicsUpdate(float dt_sec) {};
 
-		virtual void AfterPhysicsLoopUpdate() {}
+        virtual void AfterPhysicsLoopUpdate() {}
 
-		virtual void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) {}
+        virtual void Draw(FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) {}
 
-		virtual void Serialize() {}
+        virtual void Serialize() {}
 
-		virtual void UpdateGui() {}
+        virtual void UpdateGui() {}
 
-	protected:
-	};
+    protected:
+    };
 
 }

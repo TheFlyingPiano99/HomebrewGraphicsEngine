@@ -6,62 +6,62 @@
 
 namespace Hogra {
 
-	class SceneEventManager
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class SceneEventManager
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		~SceneEventManager() {
-			while (!events.empty()) {
-				auto* e = popNextEvent();
-				Allocator::Delete(e);
-			}
-		}
+        ~SceneEventManager() {
+            while (!events.empty()) {
+                auto* e = popNextEvent();
+                Allocator::Delete(e);
+            }
+        }
 
-		static SceneEventManager* getInstance() {
-			if (nullptr == instance) {
-				instance = Allocator::New<SceneEventManager>();
-			}
-			return instance;
-		}
+        static SceneEventManager* getInstance() {
+            if (nullptr == instance) {
+                instance = Allocator::New<SceneEventManager>();
+            }
+            return instance;
+        }
 
-		static void DestroyInstance() {
-			Allocator::Delete(instance);
-		}
+        static void DestroyInstance() {
+            Allocator::Delete(instance);
+        }
 
 
-		void pushEvent(SceneEvent* event) {
-			events.push(event);
-		}
+        void pushEvent(SceneEvent* event) {
+            events.push(event);
+        }
 
-		bool empty() const {
-			return events.empty();
-		}
+        bool empty() const {
+            return events.empty();
+        }
 
-		SceneEvent* popNextEvent() {
-			auto* e = events.front();
-			events.pop();
-			return e;
-		}
+        SceneEvent* popNextEvent() {
+            auto* e = events.front();
+            events.pop();
+            return e;
+        }
 
-		void ClearQueue() {
-			while (!events.empty()) {
-				Allocator::Delete(events.front());
-				events.pop();
-			}
-		}
+        void ClearQueue() {
+            while (!events.empty()) {
+                Allocator::Delete(events.front());
+                events.pop();
+            }
+        }
 
-		void ExecuteQueue(Scene& scene) {
-			while (!empty()) {
-				SceneEvent* event = popNextEvent();
-				event->Execute(scene);
-				Allocator::Delete(event);
-			}
-		}
+        void ExecuteQueue(Scene& scene) {
+            while (!empty()) {
+                SceneEvent* event = popNextEvent();
+                event->Execute(scene);
+                Allocator::Delete(event);
+            }
+        }
 
-	private:
-		static SceneEventManager* instance;
-		std::queue<SceneEvent*> events;
-	};
+    private:
+        static SceneEventManager* instance;
+        std::queue<SceneEvent*> events;
+    };
 
 }

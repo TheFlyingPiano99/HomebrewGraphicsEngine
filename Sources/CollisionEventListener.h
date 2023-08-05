@@ -2,11 +2,11 @@
 
 namespace Hogra {
 
-	class CollisionEventListener
-	{
-	public:
-		CollisionEventListener() = default;
+    class CollisionEventListener
+    {
+    public:
+        CollisionEventListener() = default;
 
-	};
+    };
 }
 

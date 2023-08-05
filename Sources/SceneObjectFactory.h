@@ -6,20 +6,20 @@
 
 namespace Hogra {
 
-	class SceneObjectFactory
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class SceneObjectFactory
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		static SceneObjectFactory* GetInstance();
+        static SceneObjectFactory* GetInstance();
 
-		SceneObject* CreateTwoAndHalfDimensionalSpriteObject(const std::filesystem::path& texturePath, OrientationProvider* orientationProvider = nullptr);
+        SceneObject* CreateTwoAndHalfDimensionalSpriteObject(const std::filesystem::path& texturePath, OrientationProvider* orientationProvider = nullptr);
 
-		SceneObject* Create2DSpriteObject(const std::filesystem::path& texturePath, const glm::vec3& screenPos, float scale);
+        SceneObject* Create2DSpriteObject(const std::filesystem::path& texturePath, const glm::vec3& screenPos, float scale);
 
-	private:
-		static SceneObjectFactory* instance;
-	};
+    private:
+        static SceneObjectFactory* instance;
+    };
 
 }
 

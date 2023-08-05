@@ -3,13 +3,13 @@
 
 namespace Hogra {
 
-	class SceneEvent
-	{
-	public:
-		virtual ~SceneEvent() = default;
+    class SceneEvent
+    {
+    public:
+        virtual ~SceneEvent() = default;
 
-		virtual void Execute(Scene& scene) = 0;
+        virtual void Execute(Scene& scene) = 0;
 
-	};
+    };
 }
 

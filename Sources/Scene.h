@@ -31,202 +31,202 @@
 
 namespace Hogra {
 
-	class Scene : public Identifiable
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-		friend class SceneFactory;
-	public:
+    class Scene : public Identifiable
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+            friend class SceneFactory;
+    public:
 
-		void Init(unsigned int _contextWidth, unsigned int _contextHeight);
+        void Init(unsigned int _contextWidth, unsigned int _contextHeight);
 
-		/*
-		* Calls SceneObject::BeforePhysicsLoopUpdate()
-		* and executes control actions
-		*/
-		void BeforePhysicsLoopUpdate();
+        /*
+        * Calls SceneObject::BeforePhysicsLoopUpdate()
+        * and executes control actions
+        */
+        void BeforePhysicsLoopUpdate();
 
-		/*
-		* Performs collisions
-		* Calls SceneObject::EarlyPhysicsUpdate(float dt)
-		* Performs scene events
-		* Calls SceneObject::LatePhysicsUpdate(float dt)
-		* Calls SceneObject::Update()
-		*/
-		void PhysicsUpdate(float dt_sec);
+        /*
+        * Performs collisions
+        * Calls SceneObject::EarlyPhysicsUpdate(float dt)
+        * Performs scene events
+        * Calls SceneObject::LatePhysicsUpdate(float dt)
+        * Calls SceneObject::Update()
+        */
+        void PhysicsUpdate(float dt_sec);
 
-		/*
-		* Calls SceneObject::AfterPhysicsLoopUpdate()
-		*/
-		void AfterPhysicsLoopUpdate();
+        /*
+        * Calls SceneObject::AfterPhysicsLoopUpdate()
+        */
+        void AfterPhysicsLoopUpdate();
 
-		void Draw();
+        void Draw();
 
-		void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "", const std::string& renderLayerName = "layer0");
+        void AddSceneObject(SceneObject* object, const std::string& instanceGroupName = "", const std::string& renderLayerName = "layer0");
 
-		void RegisterObjectToDelete(SceneObject* object);
+        void RegisterObjectToDelete(SceneObject* object);
 
-		void AddCollider(Collider* collider, const std::string& colliderGroupName = "");
+        void AddCollider(Collider* collider, const std::string& colliderGroupName = "");
 
-		void AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName = "");
+        void AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName = "");
 
-		void AddLight(PointLight* light);
+        void AddLight(PointLight* light);
 
-		void AddLight(DirectionalLight* light);
+        void AddLight(DirectionalLight* light);
 
-		void AddRootUIElement(UIElement* uiElement);
+        void AddRootUIElement(UIElement* uiElement);
 
-		void RemoveRootUIElement(UIElement* uiElement);
+        void RemoveRootUIElement(UIElement* uiElement);
 
-		void AddSceneAudioSource(SceneAudioSource* source);
-		
-		void SetUserControl(UserControl* uc);
+        void AddSceneAudioSource(SceneAudioSource* source);
 
-		const glm::vec3& getPreferedUp() const;
+        void SetUserControl(UserControl* uc);
 
-		void TogglePause();
+        const glm::vec3& getPreferedUp() const;
 
-		Camera& GetCamera();
+        void TogglePause();
 
-		void OnContextResize(int _contextWidth, int _contextHeight);
+        Camera& GetCamera();
 
-		void Serialize();
+        void OnContextResize(int _contextWidth, int _contextHeight);
 
-		void RecalculateUILayout();
+        void Serialize();
 
-		void SetBackgroundColor(const glm::vec3 color) {
-			backgroundColor = glm::vec4(color, 1.0);
-		}
+        void RecalculateUILayout();
 
-		void OnCursorHover(const glm::ivec2& screenMousePos);
+        void SetBackgroundColor(const glm::vec3 color) {
+            backgroundColor = glm::vec4(color, 1.0);
+        }
 
-		void OnCursorClick(const glm::ivec2& screenMousePos);
+        void OnCursorHover(const glm::ivec2& screenMousePos);
 
-		~Scene() {
-			Destroy();
-		}
+        void OnCursorClick(const glm::ivec2& screenMousePos);
 
-		UserControl* GetUserControl() {
-			return userControl;
-		}
+        ~Scene() {
+            Destroy();
+        }
 
-		bool getDrawDebug() const {
-			return debugMode;
-		}
+        UserControl* GetUserControl() {
+            return userControl;
+        }
 
-		void setDrawDebug(bool b) {
-			debugMode = b;
-		}
+        bool getDrawDebug() const {
+            return debugMode;
+        }
 
-		const SceneChange& GetSceneChange();
+        void setDrawDebug(bool b) {
+            debugMode = b;
+        }
 
-		void SetSceneChange(const SceneChange& change) {
-			this->sceneChange = change;
-		}
+        const SceneChange& GetSceneChange();
 
-		Collider* IntersectRay(const Ray& ray, glm::vec3& intersectionPoint, glm::vec3& intersectionNormal);
+        void SetSceneChange(const SceneChange& change) {
+            this->sceneChange = change;
+        }
 
-		void UpdateGUI();
+        Collider* IntersectRay(const Ray& ray, glm::vec3& intersectionPoint, glm::vec3& intersectionNormal);
 
-		void AddRenderLayer(RenderLayer* renderLayer, int place = -1) {
-			// To map:
-			auto name = renderLayer->GetName();
-			if (name.empty()) {	// Prevent unnamed layers
-				name = "layer" + std::to_string(renderLayers.size());
-				renderLayer->SetName(name);
-			}
-			renderLayersMap.emplace(name, renderLayer);
+        void UpdateGUI();
 
-			// To vector:
-			if (-1 < place) {
-				auto iter = renderLayers.begin();
-				for (int i = 0; i < place; i++) {
-					std::next(iter);
-				}
-				renderLayers.emplace(iter, renderLayer);
-			}
-			else {
-				renderLayers.push_back(renderLayer);
-			}
-		}
+        void AddRenderLayer(RenderLayer* renderLayer, int place = -1) {
+            // To map:
+            auto name = renderLayer->GetName();
+            if (name.empty()) {	// Prevent unnamed layers
+                name = "layer" + std::to_string(renderLayers.size());
+                renderLayer->SetName(name);
+            }
+            renderLayersMap.emplace(name, renderLayer);
 
-		RenderLayer* GetRenderLayer(const std::string& name) const {
-			auto val = renderLayersMap.find(name);
-			if (renderLayersMap.end() == val) {
-				return nullptr;
-			}
-			return val->second;
-		}
+            // To vector:
+            if (-1 < place) {
+                auto iter = renderLayers.begin();
+                for (int i = 0; i < place; i++) {
+                    std::next(iter);
+                }
+                renderLayers.emplace(iter, renderLayer);
+            }
+            else {
+                renderLayers.push_back(renderLayer);
+            }
+        }
 
-		void AddPhysicsScript(std::function<void(float dt_sec, float totalTime_sec)> script) {
-			physicsScripts.push_back(script);
-		}
+        RenderLayer* GetRenderLayer(const std::string& name) const {
+            auto val = renderLayersMap.find(name);
+            if (renderLayersMap.end() == val) {
+                return nullptr;
+            }
+            return val->second;
+        }
 
-		void AddBeforePhysicsScript(std::function<void()> script) {
-			beforePhysicsScripts.push_back(script);
-		}
+        void AddPhysicsScript(std::function<void(float dt_sec, float totalTime_sec)> script) {
+            physicsScripts.push_back(script);
+        }
 
-		void AddAfterPhysicsScript(std::function<void()> script) {
-			afterPhysicsScripts.push_back(script);
-		}
+        void AddBeforePhysicsScript(std::function<void()> script) {
+            beforePhysicsScripts.push_back(script);
+        }
 
-		void SetSkybox(TextureCube* skybox) {
-			renderer.SetSkybox(skybox);
-		}
+        void AddAfterPhysicsScript(std::function<void()> script) {
+            afterPhysicsScripts.push_back(script);
+        }
 
-	private:
+        void SetSkybox(TextureCube* skybox) {
+            renderer.SetSkybox(skybox);
+        }
 
-		void DeleteSceneObject(SceneObject* object);
+    private:
 
-		glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
-		//glm::vec4 backgroundColor = glm::vec4(0.07f, 0.0f, 0.17f, 1.0f);
+        void DeleteSceneObject(SceneObject* object);
 
-		Camera camera;
-		Renderer renderer;
-		AudioManager audioManager;
-		
-		//To deallocate:
-		std::vector<PointLight*> pointLights;
-		std::vector<DirectionalLight*> dirLights;
-		std::vector<ShaderProgram*> shaders;
-		std::vector<Texture*> textures;
-		std::vector<Material*> materials;
-		std::vector<Geometry*> geometries;
-		std::vector<Mesh*> meshes;
-		std::vector<SceneObject*> sceneObjects;
-		std::map<std::string, InstanceGroup*> instanceGroups;
-		std::vector<UIElement*> uiRootElements;
-		UserControl* userControl = nullptr;
-		std::vector<DirectionalShadowCaster*> dirShadowCasters;
-		std::vector<OmniDirectionalShadowCaster*> omniDirShadowCasters;
-		std::map<std::string, RenderLayer*> renderLayersMap;
-		std::vector<RenderLayer*> renderLayers;
+        glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
+        //glm::vec4 backgroundColor = glm::vec4(0.07f, 0.0f, 0.17f, 1.0f);
 
-		std::vector<SceneObject*> toDelete;
+        Camera camera;
+        Renderer renderer;
+        AudioManager audioManager;
 
-		std::vector<std::function<void(float dt_sec, float totalTime_sec)>> physicsScripts;
-		std::vector<std::function<void()>> beforePhysicsScripts;
-		std::vector<std::function<void()>> afterPhysicsScripts;
+        //To deallocate:
+        std::vector<PointLight*> pointLights;
+        std::vector<DirectionalLight*> dirLights;
+        std::vector<ShaderProgram*> shaders;
+        std::vector<Texture*> textures;
+        std::vector<Material*> materials;
+        std::vector<Geometry*> geometries;
+        std::vector<Mesh*> meshes;
+        std::vector<SceneObject*> sceneObjects;
+        std::map<std::string, InstanceGroup*> instanceGroups;
+        std::vector<UIElement*> uiRootElements;
+        UserControl* userControl = nullptr;
+        std::vector<DirectionalShadowCaster*> dirShadowCasters;
+        std::vector<OmniDirectionalShadowCaster*> omniDirShadowCasters;
+        std::map<std::string, RenderLayer*> renderLayersMap;
+        std::vector<RenderLayer*> renderLayers;
 
-		CollisionManager collisionManager;
-		UniformVariable<float> timeSpent;
+        std::vector<SceneObject*> toDelete;
 
-		bool pause = true;
-		bool debugMode = false;
-		SceneChange sceneChange;
+        std::vector<std::function<void(float dt_sec, float totalTime_sec)>> physicsScripts;
+        std::vector<std::function<void()>> beforePhysicsScripts;
+        std::vector<std::function<void()>> afterPhysicsScripts;
 
-		glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
+        CollisionManager collisionManager;
+        UniformVariable<float> timeSpent;
 
-		void Destroy();
+        bool pause = true;
+        bool debugMode = false;
+        SceneChange sceneChange;
 
-		/*
-		* Returns the next FBO from the renderLayer pipeline from a layer after the currentLayer.
-		* If no more FBO-s in layers than returns nullptr.
-		*/
-		FBO* findNextFBO(int currentLayer);
+        glm::vec3 preferedUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		class SceneNotInstanciatedException : public std::exception {
+        void Destroy();
 
-		};
-	};
+        /*
+        * Returns the next FBO from the renderLayer pipeline from a layer after the currentLayer.
+        * If no more FBO-s in layers than returns nullptr.
+        */
+        FBO* findNextFBO(int currentLayer);
+
+        class SceneNotInstanciatedException : public std::exception {
+
+        };
+    };
 }
 

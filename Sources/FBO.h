@@ -9,63 +9,63 @@
 
 namespace Hogra {
 
-	class FBO
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-			
-		static std::vector<FBO*> fbos;
-		
-	public:
-		GLuint glID = 0;
-		glm::ivec4 viewport;
+    class FBO
+    {
+        ALLOCATOR_CONSTRUCTIBLE
 
-		void Init();
+            static std::vector<FBO*> fbos;
 
-		~FBO();
+    public:
+        GLuint glID = 0;
+        glm::ivec4 viewport;
 
-		FBO() {
-			fbos.push_back(this);
-		};
-		
-		FBO(const FBO& fbo);
+        void Init();
 
-		FBO& operator=(const FBO& fbo);
+        ~FBO();
 
-		void Bind() const;
+        FBO() {
+            fbos.push_back(this);
+        };
 
-		void Unbind() const;
+        FBO(const FBO& fbo);
 
-		void Delete();
+        FBO& operator=(const FBO& fbo);
 
-		void LinkTexture(GLenum attachment, const Texture2D& texture, GLint level = 0);
+        void Bind() const;
 
-		void LinkTexture(GLenum attachment, const TextureCube& texture);
+        void Unbind() const;
 
-		void LinkRBO(GLenum attachment, RBO& rbo);
+        void Delete();
 
-		void DisableDrawBuffer() const;
+        void LinkTexture(GLenum attachment, const Texture2D& texture, GLint level = 0);
 
-		void DisableReadBuffer() const;
+        void LinkTexture(GLenum attachment, const TextureCube& texture);
 
-		/*
-		* NO BINDING!!!
-		*/
-		void SelectDrawBuffers(std::vector<GLenum> bufs);
+        void LinkRBO(GLenum attachment, RBO& rbo);
 
-		inline static void BindDefault();
+        void DisableDrawBuffer() const;
 
-		static FBO&& GetDefault();
+        void DisableReadBuffer() const;
 
-		static void SaveToFileAll();
+        /*
+        * NO BINDING!!!
+        */
+        void SelectDrawBuffers(std::vector<GLenum> bufs);
 
-		void SetViewport(int x0, int y0, int x1, int y1);
+        inline static void BindDefault();
 
-		/*
-		* Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
-		* Accessed: 2023-03-25
-		*/
-		void SaveToPPM(const std::filesystem::path& savePath);
+        static FBO&& GetDefault();
 
-	};
+        static void SaveToFileAll();
+
+        void SetViewport(int x0, int y0, int x1, int y1);
+
+        /*
+        * Source code from: https://stackoverflow.com/questions/31254444/how-to-save-a-texture-as-an-image-file-using-libraries-related-to-opengl
+        * Accessed: 2023-03-25
+        */
+        void SaveToPPM(const std::filesystem::path& savePath);
+
+    };
 
 }

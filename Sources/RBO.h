@@ -3,17 +3,17 @@
 #include <vector>
 namespace Hogra {
 
-	class RBO
-	{
-	public:
-		friend class FBO;
-		GLuint glID;
+    class RBO
+    {
+    public:
+        friend class FBO;
+        GLuint glID;
 
-		void Init(GLenum internalformat, GLsizei width, GLsizei height);
+        void Init(GLenum internalformat, GLsizei width, GLsizei height);
 
-		void Bind();
+        void Bind();
 
-		void Delete();
-	};
+        void Delete();
+    };
 
 }

@@ -5,135 +5,135 @@
 
 namespace Hogra {
 
-	class UIElement {
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
-		
-		~UIElement() {
-			for (auto child : children) {
-				Allocator::Delete(child);
-			}
-		}
+    class UIElement {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		ShaderProgram* GetShaderProgram() {
-			return shaderProgram;
-		}
+        ~UIElement() {
+            for (auto child : children) {
+                Allocator::Delete(child);
+            }
+        }
 
-		virtual void Draw() const = 0;
+        ShaderProgram* GetShaderProgram() {
+            return shaderProgram;
+        }
 
-		bool IsVisible() const;
+        virtual void Draw() const = 0;
 
-		void SetIsVisible(bool b);
+        bool IsVisible() const;
 
-		enum class Floating {
-			leftToRight,
-			topToBottom
-		};
+        void SetIsVisible(bool b);
 
-		enum class HorizontalAlignment {
-			centered,
-			left,
-			right
-		};
+        enum class Floating {
+            leftToRight,
+            topToBottom
+        };
 
-		enum class VerticalAlignment {
-			centered,
-			top,
-			bottom
-		};
+        enum class HorizontalAlignment {
+            centered,
+            left,
+            right
+        };
 
-		void SetHorizontalAlignment(HorizontalAlignment alignment) {
-			horizontalAlignment = alignment;
-		}
+        enum class VerticalAlignment {
+            centered,
+            top,
+            bottom
+        };
 
-		void SetVerticalAlignment(VerticalAlignment alignment) {
-			verticalAlignment = alignment;
-		}
+        void SetHorizontalAlignment(HorizontalAlignment alignment) {
+            horizontalAlignment = alignment;
+        }
 
-		void CalculateLayoutFromRoot();
+        void SetVerticalAlignment(VerticalAlignment alignment) {
+            verticalAlignment = alignment;
+        }
 
-		void SetParent(UIElement* parent);
+        void CalculateLayoutFromRoot();
 
-		void AddChild(UIElement* child);
+        void SetParent(UIElement* parent);
 
-		void RemoveChild(UIElement* child);
+        void AddChild(UIElement* child);
 
-		const glm::ivec2& GetTopLeftScreenPos() const {
-			return topLeftScreenPos;
-		}
+        void RemoveChild(UIElement* child);
 
-		const glm::ivec2& GetBottomRightScreenPos() const {
-			return bottomRightScreenPos;
-		}
+        const glm::ivec2& GetTopLeftScreenPos() const {
+            return topLeftScreenPos;
+        }
 
-		void SetTopLeftScreenPos(const glm::ivec2& pos) {
-			topLeftScreenPos = pos;
-		}
+        const glm::ivec2& GetBottomRightScreenPos() const {
+            return bottomRightScreenPos;
+        }
 
-		void SetBottomRightScreenPos(const glm::ivec2& pos) {
-			bottomRightScreenPos = pos;
-		}
+        void SetTopLeftScreenPos(const glm::ivec2& pos) {
+            topLeftScreenPos = pos;
+        }
 
-		const glm::ivec4& GetBorderLeftRightTopBottom() const {
-			return borderLeftRightTopBottom;
-		}
+        void SetBottomRightScreenPos(const glm::ivec2& pos) {
+            bottomRightScreenPos = pos;
+        }
 
-		const glm::ivec4& GetMarginLeftRightTopBottom() const {
-			return marginLeftRightTopBottom;
-		}
+        const glm::ivec4& GetBorderLeftRightTopBottom() const {
+            return borderLeftRightTopBottom;
+        }
 
-		void SetBorderLeftRightTopBottom(const glm::ivec4& border) {
-			borderLeftRightTopBottom = border;
-		}
+        const glm::ivec4& GetMarginLeftRightTopBottom() const {
+            return marginLeftRightTopBottom;
+        }
 
-		void SetMarginLeftRightTopBottom(const glm::ivec4& margin) {
-			marginLeftRightTopBottom = margin;
-		}
+        void SetBorderLeftRightTopBottom(const glm::ivec4& border) {
+            borderLeftRightTopBottom = border;
+        }
 
-		const glm::ivec2& GetWidthHeight() const {
-			return widthHeight;
-		}
+        void SetMarginLeftRightTopBottom(const glm::ivec4& margin) {
+            marginLeftRightTopBottom = margin;
+        }
 
-		void SetTopLeftPosRelativeToParent(const glm::ivec2& pos) {
-			topLeftPosRelativeToParent = pos;
-		}
+        const glm::ivec2& GetWidthHeight() const {
+            return widthHeight;
+        }
 
-		void SetContentFloating(Floating floating) {
-			contentFloating = floating;
-		}
+        void SetTopLeftPosRelativeToParent(const glm::ivec2& pos) {
+            topLeftPosRelativeToParent = pos;
+        }
 
-		bool OnHover(const glm::ivec2& screenMousePos);
+        void SetContentFloating(Floating floating) {
+            contentFloating = floating;
+        }
 
-		bool OnClick(const glm::ivec2& screenMousePos);
+        bool OnHover(const glm::ivec2& screenMousePos);
 
-		void ResetHoverFlag();
+        bool OnClick(const glm::ivec2& screenMousePos);
 
-	protected:
+        void ResetHoverFlag();
 
-		void UpdateMatrix(const glm::ivec2& parentTopLeftScPos);
+    protected:
 
-		glm::ivec2& CalculateWidthHeight();
+        void UpdateMatrix(const glm::ivec2& parentTopLeftScPos);
 
-		virtual void ExecuteClickAction(const glm::ivec2& screenCursorPos) {}
+        glm::ivec2& CalculateWidthHeight();
 
-		UIElement* parent = nullptr;
-		std::vector<UIElement*> children;
-		Geometry* quad = nullptr;
-		ShaderProgram* shaderProgram = nullptr;
-		bool isVisible = true;
-		bool isHovered = false;
-		glm::ivec2 topLeftScreenPos = glm::ivec2(400, 300);
-		glm::ivec2 bottomRightScreenPos = glm::ivec2(600, 500);
-		glm::ivec2 widthHeight = glm::ivec2(200, 200);
-		glm::mat4 modelMatrix = glm::mat4(1.0f);
+        virtual void ExecuteClickAction(const glm::ivec2& screenCursorPos) {}
 
-		VerticalAlignment verticalAlignment = VerticalAlignment::top;
-		HorizontalAlignment horizontalAlignment = HorizontalAlignment::left;
-		Floating contentFloating = Floating::topToBottom;
-		glm::ivec4 borderLeftRightTopBottom = glm::ivec4(0,0,0,0);
-		glm::ivec4 marginLeftRightTopBottom = glm::ivec4(10, 10, 10, 10);
-		
-		glm::ivec2 topLeftPosRelativeToParent;
-		bool isFixedSize = false;
-	};
+        UIElement* parent = nullptr;
+        std::vector<UIElement*> children;
+        Geometry* quad = nullptr;
+        ShaderProgram* shaderProgram = nullptr;
+        bool isVisible = true;
+        bool isHovered = false;
+        glm::ivec2 topLeftScreenPos = glm::ivec2(400, 300);
+        glm::ivec2 bottomRightScreenPos = glm::ivec2(600, 500);
+        glm::ivec2 widthHeight = glm::ivec2(200, 200);
+        glm::mat4 modelMatrix = glm::mat4(1.0f);
+
+        VerticalAlignment verticalAlignment = VerticalAlignment::top;
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment::left;
+        Floating contentFloating = Floating::topToBottom;
+        glm::ivec4 borderLeftRightTopBottom = glm::ivec4(0, 0, 0, 0);
+        glm::ivec4 marginLeftRightTopBottom = glm::ivec4(10, 10, 10, 10);
+
+        glm::ivec2 topLeftPosRelativeToParent;
+        bool isFixedSize = false;
+    };
 }

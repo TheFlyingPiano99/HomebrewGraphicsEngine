@@ -12,29 +12,29 @@
 
 namespace Hogra {
 
-	class Caption : public UIElement
-	{
-	public:
+    class Caption : public UIElement
+    {
+    public:
 
-		void Init(const std::wstring& text, Font* font, float scale, const glm::vec4& textColor = { 0.0f, 0.0f, 0.0f, 1.0f }, const glm::vec4& highlightColor = {0.0f, 0.0f, 0.0f, 0.0f });
-		
-		void Draw() const override;
+        void Init(const std::wstring& text, Font* font, float scale, const glm::vec4& textColor = { 0.0f, 0.0f, 0.0f, 1.0f }, const glm::vec4& highlightColor = { 0.0f, 0.0f, 0.0f, 0.0f });
 
-		void UpdateText(const std::wstring& str);
+        void Draw() const override;
 
-		void SetTextColor(const glm::vec4& color);
+        void UpdateText(const std::wstring& str);
 
-		void SetHighlightColor(const glm::vec4& color);
+        void SetTextColor(const glm::vec4& color);
 
-		const std::wstring& GetText();
+        void SetHighlightColor(const glm::vec4& color);
 
-	private:
-		std::wstring text;
-		Font* font = nullptr;
-		glm::vec4 textColor = { 0, 0, 0, 1 };
-		glm::vec4 highlightColor = { 0, 0, 0, 0 };
-		Texture2D* texture = nullptr;
-		float scale = 1.0f;
-	};
+        const std::wstring& GetText();
+
+    private:
+        std::wstring text;
+        Font* font = nullptr;
+        glm::vec4 textColor = { 0, 0, 0, 1 };
+        glm::vec4 highlightColor = { 0, 0, 0, 0 };
+        Texture2D* texture = nullptr;
+        float scale = 1.0f;
+    };
 }
 

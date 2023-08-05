@@ -4,47 +4,47 @@
 #include "Scene.h"
 namespace Hogra {
 
-	/*
-	* Singleton object
-	*/
-	class GUI
-	{
-		ALLOCATOR_CONSTRUCTIBLE
+    /*
+    * Singleton object
+    */
+    class GUI
+    {
+        ALLOCATOR_CONSTRUCTIBLE
 
-		static GUI* instance;
-		ImGuiIO io;
+            static GUI* instance;
+        ImGuiIO io;
 
-		bool visible = false;
+        bool visible = false;
 
-	public:
+    public:
 
-		static GUI* getInstance() {
-			if (instance == nullptr) {
-				instance = Allocator::New<GUI>();
-			}
-			return instance;
-		}
+        static GUI* getInstance() {
+            if (instance == nullptr) {
+                instance = Allocator::New<GUI>();
+            }
+            return instance;
+        }
 
-		static void DestroyInstance() {
-			Allocator::Delete(instance);
-		}
+        static void DestroyInstance() {
+            Allocator::Delete(instance);
+        }
 
-		void InitGUI(GLFWwindow* window);
+        void InitGUI(GLFWwindow* window);
 
-		void DestroyGUI();
+        void DestroyGUI();
 
-		void preDrawInit();
+        void preDrawInit();
 
-		void Draw();
+        void Draw();
 
-		void setVisible(bool b) {
-			visible = b;
-		}
+        void setVisible(bool b) {
+            visible = b;
+        }
 
-		bool IsVisible() {
-			return visible;
-		}
+        bool IsVisible() {
+            return visible;
+        }
 
-	};
+    };
 
 }

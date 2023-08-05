@@ -5,22 +5,22 @@
 #include "AudioDevice.h"
 
 namespace Hogra {
-	class AudioContext
-	{
-	public:
-		void Init();
+    class AudioContext
+    {
+    public:
+        void Init();
 
-		void Destroy();
+        void Destroy();
 
-		~AudioContext();
+        ~AudioContext();
 
-		void MakeCurrent();
+        void MakeCurrent();
 
-		static void MakeDefaultCurrent();
+        static void MakeDefaultCurrent();
 
-	private:
-		ALCcontext* context = nullptr;
-		AudioDevice device;
-	};
+    private:
+        ALCcontext* context = nullptr;
+        AudioDevice device;
+    };
 }
 

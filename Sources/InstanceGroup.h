@@ -2,44 +2,44 @@
 #include "SceneObject.h"
 #include "MemoryManager.h"
 
-namespace Hogra{
-	class InstanceGroup
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
-		InstanceGroup() = default;
+namespace Hogra {
+    class InstanceGroup
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
+        InstanceGroup() = default;
 
-		~InstanceGroup() {
-		}
+        ~InstanceGroup() {
+        }
 
-		void GatherInstanceData();
+        void GatherInstanceData();
 
-		void GatherInstanceDataForShadow();
+        void GatherInstanceDataForShadow();
 
-		void InjectInstanceData(const std::vector<Geometry::InstanceData>& data);
+        void InjectInstanceData(const std::vector<Geometry::InstanceData>& data);
 
-		void Draw();
+        void Draw();
 
-		void DrawShadow();
+        void DrawShadow();
 
-		void Optimalize(const Camera& camera);
+        void Optimalize(const Camera& camera);
 
-		void AddObject(SceneObject* object) {
-			objects.push_back(object);
-		}
+        void AddObject(SceneObject* object) {
+            objects.push_back(object);
+        }
 
-		void RemoveObject(SceneObject* object) {
-			auto iter = std::find(objects.begin(), objects.end(), object);
-			if (objects.end() != iter) {
-				objects.erase(iter);
-			}
-		}
+        void RemoveObject(SceneObject* object) {
+            auto iter = std::find(objects.begin(), objects.end(), object);
+            if (objects.end() != iter) {
+                objects.erase(iter);
+            }
+        }
 
-	private:
-		std::vector<SceneObject*> objects;
-		std::vector<Geometry::InstanceData> instanceData;
-		int optimalizationCounter = 0;
-		int visibleCount = 0;
-	};
+    private:
+        std::vector<SceneObject*> objects;
+        std::vector<Geometry::InstanceData> instanceData;
+        int optimalizationCounter = 0;
+        int visibleCount = 0;
+    };
 }
 

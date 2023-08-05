@@ -8,32 +8,32 @@
 
 namespace Hogra {
 
-	class Texture1D : public Texture
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
-		const char* type;
-		unsigned int width = 0;
+    class Texture1D : public Texture
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
+        const char* type;
+        unsigned int width = 0;
 
-		void Init(unsigned char* bytes, int width, GLuint unit, GLenum clientDataFormat, GLenum clientDataType);
+        void Init(unsigned char* bytes, int width, GLuint unit, GLenum clientDataFormat, GLenum clientDataType);
 
-		void Init(int width, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
+        void Init(int width, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
-		~Texture1D() override {
-			this->Delete();
-		}
+        ~Texture1D() override {
+            this->Delete();
+        }
 
-		const unsigned int getWidth() {
-			return width;
-		}
+        const unsigned int getWidth() {
+            return width;
+        }
 
-		// Inherited via Texture
-		void Bind() const override;
-		void Unbind() const override;
-		void SetFiltering(GLenum filtering) const override;
+        // Inherited via Texture
+        void Bind() const override;
+        void Unbind() const override;
+        void SetFiltering(GLenum filtering) const override;
 
-		void WriteData(void* dataPtr) override;
+        void WriteData(void* dataPtr) override;
 
-		void ReadData(void* dataPtr) const override;
-	};
+        void ReadData(void* dataPtr) const override;
+    };
 }

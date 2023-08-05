@@ -3,28 +3,28 @@
 
 namespace Hogra {
 
-	class Ray
-	{
-	public:
+    class Ray
+    {
+    public:
 
-		const glm::vec3& GetPosition() const {
-			return position;
-		}
+        const glm::vec3& GetPosition() const {
+            return position;
+        }
 
-		void SetPosition(const glm::vec3& pos) {
-			position = pos;
-		}
+        void SetPosition(const glm::vec3& pos) {
+            position = pos;
+        }
 
-		const glm::vec3& getDirection() const {
-			return direction;
-		}
+        const glm::vec3& getDirection() const {
+            return direction;
+        }
 
-		void setDirection(const glm::vec3& dir) {
-			direction = dir;
-		}
+        void setDirection(const glm::vec3& dir) {
+            direction = dir;
+        }
 
-	private:
-		glm::vec3 position;
-		glm::vec3 direction;
-	};
+    private:
+        glm::vec3 position;
+        glm::vec3 direction;
+    };
 }

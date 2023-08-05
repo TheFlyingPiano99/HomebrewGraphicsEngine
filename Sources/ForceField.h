@@ -5,70 +5,70 @@
 #include "Physics.h"
 namespace Hogra {
 
-	class ForceField : public Component
-	{
-	public:
-		ForceField() = default;
+    class ForceField : public Component
+    {
+    public:
+        ForceField() = default;
 
-		// Inherited via Component
-		virtual void EarlyPhysicsUpdate(float dt_sec) override = 0;
+        // Inherited via Component
+        virtual void EarlyPhysicsUpdate(float dt_sec) override = 0;
 
-		virtual void LatePhysicsUpdate(float dt_sec) override = 0;
+        virtual void LatePhysicsUpdate(float dt_sec) override = 0;
 
-		std::span<const Physics* const > getListeners() const {
-			return listeners;
-		}
+        std::span<const Physics* const > getListeners() const {
+            return listeners;
+        }
 
-		void AddAffectedPhysics(Physics* physics) {
-			listeners.push_back(physics);
-		}
+        void AddAffectedPhysics(Physics* physics) {
+            listeners.push_back(physics);
+        }
 
-		float GetStrength() const {
-			return strength;
-		}
+        float GetStrength() const {
+            return strength;
+        }
 
-		void SetStrength(float str) {
-			strength = str;
-		}
+        void SetStrength(float str) {
+            strength = str;
+        }
 
-	protected:
-		std::vector<Physics*> listeners;
-		float strength = 9.8f;
-	};
+    protected:
+        std::vector<Physics*> listeners;
+        float strength = 9.8f;
+    };
 
-	class CentralForceField : public ForceField
-	{
-	public:
+    class CentralForceField : public ForceField
+    {
+    public:
 
-		CentralForceField() = default;
+        CentralForceField() = default;
 
-		// Inherited via Component
-		void EarlyPhysicsUpdate(float dt_sec) override;
+        // Inherited via Component
+        void EarlyPhysicsUpdate(float dt_sec) override;
 
-		void LatePhysicsUpdate(float dt_sec) override;
+        void LatePhysicsUpdate(float dt_sec) override;
 
-	};
+    };
 
-	class HomogeneForceField : public ForceField
-	{
-	public:
+    class HomogeneForceField : public ForceField
+    {
+    public:
 
-		HomogeneForceField() = default;
+        HomogeneForceField() = default;
 
-		// Inherited via Component
-		void EarlyPhysicsUpdate(float dt_sec) override;
+        // Inherited via Component
+        void EarlyPhysicsUpdate(float dt_sec) override;
 
-		void LatePhysicsUpdate(float dt_sec) override;
+        void LatePhysicsUpdate(float dt_sec) override;
 
-		const glm::vec3& getDirection() const {
-			return direction;
-		}
+        const glm::vec3& getDirection() const {
+            return direction;
+        }
 
-		void setDirection(const glm::vec3& dir) {
-			direction = dir;
-		}
+        void setDirection(const glm::vec3& dir) {
+            direction = dir;
+        }
 
-	private:
-		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);
-	};
+    private:
+        glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);
+    };
 }

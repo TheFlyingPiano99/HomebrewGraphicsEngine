@@ -9,75 +9,75 @@
 
 namespace Hogra {
 
-	class Material : public Identifiable
-	{
-		ALLOCATOR_CONSTRUCTIBLE
+    class Material : public Identifiable
+    {
+        ALLOCATOR_CONSTRUCTIBLE
 
-	public:
+    public:
 
-		void Init(ShaderProgram* program);
+        void Init(ShaderProgram* program);
 
-		void Bind() const;
+        void Bind() const;
 
-		void AddTexture(Texture* texture);
-		
-		void ClearTextures();
+        void AddTexture(Texture* texture);
 
-		ShaderProgram* GetShaderProgram() const;
+        void ClearTextures();
 
-		std::span<Texture*> GetTextures();
+        ShaderProgram* GetShaderProgram() const;
 
-		glm::vec3 getAlbedo() const {
-			return albedo;
-		}
+        std::span<Texture*> GetTextures();
 
-		void setAlbedo(const glm::vec3& c) {
-			albedo = c;
-		}
+        glm::vec3 getAlbedo() const {
+            return albedo;
+        }
 
-		float getRoughness() const {
-			return roughness;
-		}
+        void setAlbedo(const glm::vec3& c) {
+            albedo = c;
+        }
 
-		void setRoughness(float a) {
-			roughness = a;
-		}
+        float getRoughness() const {
+            return roughness;
+        }
 
-		float getMetallic() const {
-			return metallic;
-		}
+        void setRoughness(float a) {
+            roughness = a;
+        }
 
-		void setMetallic(float m) {
-			metallic = m;
-		}
+        float getMetallic() const {
+            return metallic;
+        }
 
-		float getAO() const {
-			return ao;
-		}
+        void setMetallic(float m) {
+            metallic = m;
+        }
 
-		void setAO(float _ao) {
-			ao = _ao;
-		}
+        float getAO() const {
+            return ao;
+        }
+
+        void setAO(float _ao) {
+            ao = _ao;
+        }
 
 
-		void SetAlphaBlend(bool blend);
+        void SetAlphaBlend(bool blend);
 
-		void SetBlendFunc(int src, int dest);
+        void SetBlendFunc(int src, int dest);
 
-	private:
-		ShaderProgram* program;
-		std::vector<Texture*> textures;
-		glm::vec3 albedo = glm::vec3(0.95f, 0.95f, 0.95f);
-		float roughness = 0.3f;
-		float metallic = 0.0f;
-		float ao = 0.2f;
+    private:
+        ShaderProgram* program;
+        std::vector<Texture*> textures;
+        glm::vec3 albedo = glm::vec3(0.95f, 0.95f, 0.95f);
+        float roughness = 0.3f;
+        float metallic = 0.0f;
+        float ao = 0.2f;
 
-		bool alphaBlend = false;
-		int srcBlendFunc = GL_SRC_ALPHA;
-		int destBlendFunc = GL_ONE_MINUS_SRC_ALPHA;
+        bool alphaBlend = false;
+        int srcBlendFunc = GL_SRC_ALPHA;
+        int destBlendFunc = GL_ONE_MINUS_SRC_ALPHA;
 
-		class ShaderProgramIsNullptr : public std::exception {};
+        class ShaderProgramIsNullptr : public std::exception {};
 
-	};
+    };
 
 }

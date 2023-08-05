@@ -10,87 +10,87 @@
 #include "MemoryManager.h"
 
 namespace Hogra {
-	
-	class RenderLayer : public Identifiable {
-		ALLOCATOR_CONSTRUCTIBLE
 
-	public:
-		RenderLayer() {
-			defaultFBO = FBO::GetDefault();
-		}
+    class RenderLayer : public Identifiable {
+        ALLOCATOR_CONSTRUCTIBLE
 
-		~RenderLayer() {
-			for (auto pps : postProcessStages) {
-				Allocator::Delete(pps);
-			}
-		}
+    public:
+        RenderLayer() {
+            defaultFBO = FBO::GetDefault();
+        }
 
-		enum class RenderMode {
-			forwardRenderMode = 0,
-			forwardInstancedRenderMode = 1,
-			deferredRenderMode = 2,
-			deferredInstancedRenderMode = 3
-		};
+        ~RenderLayer() {
+            for (auto pps : postProcessStages) {
+                Allocator::Delete(pps);
+            }
+        }
 
-		void Render(FBO& outFbo, const Camera& camera, Renderer& renderer);
+        enum class RenderMode {
+            forwardRenderMode = 0,
+            forwardInstancedRenderMode = 1,
+            deferredRenderMode = 2,
+            deferredInstancedRenderMode = 3
+        };
 
-		FBO* GetInFBO() {
-			return (postProcessStages.empty()) ? nullptr : &postProcessStages.front()->GetFBO();
-		}
+        void Render(FBO& outFbo, const Camera& camera, Renderer& renderer);
 
-		void AddObject(SceneObject* obj) {
-			objects.push_back(obj);
-		}
+        FBO* GetInFBO() {
+            return (postProcessStages.empty()) ? nullptr : &postProcessStages.front()->GetFBO();
+        }
 
-		void AddInstanceGroup(InstanceGroup* group) {
-			instanceGroups.push_back(group);
-		}
+        void AddObject(SceneObject* obj) {
+            objects.push_back(obj);
+        }
 
-		void RemoveSceneObject(SceneObject* obj) {
-			for (auto group : instanceGroups) {
-				group->RemoveObject(obj);
-			}
-			auto objIter = std::ranges::find(objects.begin(), objects.end(), obj);
-			if (objects.end() != objIter) {
-				objects.erase(objIter);
-			}
-		}
+        void AddInstanceGroup(InstanceGroup* group) {
+            instanceGroups.push_back(group);
+        }
 
-		void AddPostProcessStage(PostProcessStage* stage) {
-			postProcessStages.push_back(stage);
-		}
+        void RemoveSceneObject(SceneObject* obj) {
+            for (auto group : instanceGroups) {
+                group->RemoveObject(obj);
+            }
+            auto objIter = std::ranges::find(objects.begin(), objects.end(), obj);
+            if (objects.end() != objIter) {
+                objects.erase(objIter);
+            }
+        }
 
-		void SetRenderMode(RenderMode mode) {
-			renderMode = mode;
-			switch (renderMode)
-			{
-			case Hogra::RenderLayer::RenderMode::forwardRenderMode:
-				break;
-			case Hogra::RenderLayer::RenderMode::forwardInstancedRenderMode:
-				break;
-			case Hogra::RenderLayer::RenderMode::deferredRenderMode:
-				break;
-			case Hogra::RenderLayer::RenderMode::deferredInstancedRenderMode:
-				break;
-			default:
-				break;
-			}
-		}
+        void AddPostProcessStage(PostProcessStage* stage) {
+            postProcessStages.push_back(stage);
+        }
+
+        void SetRenderMode(RenderMode mode) {
+            renderMode = mode;
+            switch (renderMode)
+            {
+            case Hogra::RenderLayer::RenderMode::forwardRenderMode:
+                break;
+            case Hogra::RenderLayer::RenderMode::forwardInstancedRenderMode:
+                break;
+            case Hogra::RenderLayer::RenderMode::deferredRenderMode:
+                break;
+            case Hogra::RenderLayer::RenderMode::deferredInstancedRenderMode:
+                break;
+            default:
+                break;
+            }
+        }
 
 
-		bool IsInstanced() {
-			return renderMode == RenderMode::forwardInstancedRenderMode 
-				|| renderMode == RenderMode::deferredInstancedRenderMode;
-		}
+        bool IsInstanced() {
+            return renderMode == RenderMode::forwardInstancedRenderMode
+                || renderMode == RenderMode::deferredInstancedRenderMode;
+        }
 
-		void OnContextResize(unsigned int w, unsigned int h);
+        void OnContextResize(unsigned int w, unsigned int h);
 
-	private:
-		RenderMode renderMode;
-		std::vector<SceneObject*> objects;
-		std::vector<InstanceGroup*> instanceGroups;
-		std::vector<PostProcessStage*> postProcessStages;
-		FBO deferredFBO;	// Not always used!
-		FBO defaultFBO;
-	};
+    private:
+        RenderMode renderMode;
+        std::vector<SceneObject*> objects;
+        std::vector<InstanceGroup*> instanceGroups;
+        std::vector<PostProcessStage*> postProcessStages;
+        FBO deferredFBO;	// Not always used!
+        FBO defaultFBO;
+    };
 }

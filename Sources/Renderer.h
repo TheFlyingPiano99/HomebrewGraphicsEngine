@@ -6,77 +6,77 @@
 #include "DeferredLightingSystem.h" 
 
 namespace Hogra {
-	class Renderer
-	{
-	public:
-		Renderer();
+    class Renderer
+    {
+    public:
+        Renderer();
 
-		~Renderer();
+        ~Renderer();
 
-		void ExportData(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters);
-		
-		void AddLight(PointLight* _light) {
-			pointLights.push_back(_light);
-		}
+        void ExportData(const std::vector<OmniDirectionalShadowCaster*>& omniDirShadowCasters);
 
-		void AddLight(DirectionalLight* _light) {
-			dirLights.push_back(_light);
-		}
+        void AddLight(PointLight* _light) {
+            pointLights.push_back(_light);
+        }
 
-		void SetSkybox(TextureCube* map);
+        void AddLight(DirectionalLight* _light) {
+            dirLights.push_back(_light);
+        }
 
-		void InitDefferedSystem(unsigned int _contextWidth, unsigned int _contextHeight) {
-			deferredLightingSystem.Init(_contextWidth, _contextHeight);
-		}
+        void SetSkybox(TextureCube* map);
 
-		void OnContextResize(unsigned int contextWidth, unsigned int contextHeight);
+        void InitDefferedSystem(unsigned int _contextWidth, unsigned int _contextHeight) {
+            deferredLightingSystem.Init(_contextWidth, _contextHeight);
+        }
 
-		void RenderDeferredLighting();
+        void OnContextResize(unsigned int contextWidth, unsigned int contextHeight);
 
-		void BindGBuffer() {
-			deferredLightingSystem.BindGBuffer();
-		}
+        void RenderDeferredLighting();
 
-		void InitDebug();
+        void BindGBuffer() {
+            deferredLightingSystem.BindGBuffer();
+        }
 
-		void DrawDebug();
+        void InitDebug();
 
-		void Clear();
-		
-		void Update();
+        void DrawDebug();
 
-		void PrepareFirstFBOForRendering(FBO* fbo, const glm::vec4& backgroundColor);
+        void Clear();
 
-		FBO& GetGBuffer() {
-			return deferredLightingSystem.GetGBuffer();
-		}
+        void Update();
 
-		const Texture2D& GetDepthTexture();
+        void PrepareFirstFBOForRendering(FBO* fbo, const glm::vec4& backgroundColor);
 
-		void RenderOnScreen() const;
+        FBO& GetGBuffer() {
+            return deferredLightingSystem.GetGBuffer();
+        }
 
-		FBO& GetFinalImageFBO() {
-			return finalImageFBO;
-		}
+        const Texture2D& GetDepthTexture();
 
-		void BlitOnScreen();
+        void RenderOnScreen() const;
 
-	private:
-		std::vector<PointLight*> pointLights;
-		std::vector<DirectionalLight*> dirLights;
-		TextureCube* environmentMap = nullptr;
-		TextureCube* irradianceMap = nullptr;
-		TextureCube* prefilterMap = nullptr;
-		UniformBufferObject lightsUBO;
-		UniformBufferObject contextUBO;
-		DeferredLightingSystem deferredLightingSystem;
-		Mesh* debugLightVolumeMesh = nullptr;
-		ShaderProgram glyphProgram;
-		Material debugMaterial;
-		Texture2D brdfLUT;
-		Geometry* debugGeometry = nullptr;
-		FBO finalImageFBO;
-		Texture2D finalImage;
-	};
+        FBO& GetFinalImageFBO() {
+            return finalImageFBO;
+        }
+
+        void BlitOnScreen();
+
+    private:
+        std::vector<PointLight*> pointLights;
+        std::vector<DirectionalLight*> dirLights;
+        TextureCube* environmentMap = nullptr;
+        TextureCube* irradianceMap = nullptr;
+        TextureCube* prefilterMap = nullptr;
+        UniformBufferObject lightsUBO;
+        UniformBufferObject contextUBO;
+        DeferredLightingSystem deferredLightingSystem;
+        Mesh* debugLightVolumeMesh = nullptr;
+        ShaderProgram glyphProgram;
+        Material debugMaterial;
+        Texture2D brdfLUT;
+        Geometry* debugGeometry = nullptr;
+        FBO finalImageFBO;
+        Texture2D finalImage;
+    };
 }
 

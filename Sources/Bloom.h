@@ -11,39 +11,39 @@
 
 
 namespace Hogra {
-	class Bloom : public PostProcessStage
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
-		Bloom();
+    class Bloom : public PostProcessStage
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
+        Bloom();
 
-		void Init(unsigned int width, unsigned int height);
+        void Init(unsigned int width, unsigned int height);
 
-		void Draw(const FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) override;
+        void Draw(const FBO& outFBO, const Texture2D& depthTexture, const Camera& camera) override;
 
-		float getTreshold() const {
-			return treshold;
-		}
+        float getTreshold() const {
+            return treshold;
+        }
 
-		void setTreshold(float _treshold) {
-			treshold = _treshold;
-		}
-		
-		void OnContextResize(unsigned int width, unsigned int height) override;
+        void setTreshold(float _treshold) {
+            treshold = _treshold;
+        }
 
-		void Bind() override;
+        void OnContextResize(unsigned int width, unsigned int height) override;
 
-	private:
-		ShaderProgram prefilterProgram;
-		ShaderProgram downSampleProgram;
-		ShaderProgram upSampleProgram;
-		ShaderProgram recombineProgram;
-		Texture2D hdrTexture;
-		Texture2D downScaledTextures[BLOOM_MIP_LEVELS];
-		Geometry* quad;
-		float treshold;
-		float falloff;
-		float mixBloom;
-	};
+        void Bind() override;
+
+    private:
+        ShaderProgram prefilterProgram;
+        ShaderProgram downSampleProgram;
+        ShaderProgram upSampleProgram;
+        ShaderProgram recombineProgram;
+        Texture2D hdrTexture;
+        Texture2D downScaledTextures[BLOOM_MIP_LEVELS];
+        Geometry* quad;
+        float treshold;
+        float falloff;
+        float mixBloom;
+    };
 }
 

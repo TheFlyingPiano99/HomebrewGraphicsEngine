@@ -50,14 +50,14 @@
 #define MAX_SHADOW_MAP_COUNT 16
 
 namespace Hogra {
-	struct GlobalVariables {
-		static GLFWwindow* window;
-		static int windowWidth;
-		static int windowHeight;
-		static bool fullScreenMode;
-		static bool hideConsoleWindow;
-		static bool hideCursor;
+    struct GlobalVariables {
+        static GLFWwindow* window;
+        static int windowWidth;
+        static int windowHeight;
+        static bool fullScreenMode;
+        static bool hideConsoleWindow;
+        static bool hideCursor;
 
-		static std::string windowIcon;
-	};
+        static std::string windowIcon;
+    };
 }

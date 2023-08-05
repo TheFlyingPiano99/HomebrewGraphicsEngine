@@ -4,32 +4,32 @@
 #include <vector>
 
 namespace Hogra {
-	class UniformBufferObject
-	{
-	public:
-		void Init(const std::vector<int>& subDataSizes, int binding);
+    class UniformBufferObject
+    {
+    public:
+        void Init(const std::vector<int>& subDataSizes, int binding);
 
-		~UniformBufferObject();
+        ~UniformBufferObject();
 
-		void Bind() const;
+        void Bind() const;
 
-		void Unbind();
+        void Unbind();
 
-		void Delete();
+        void Delete();
 
-		void UploadSubData(const void* subDataPtr, int index);
+        void UploadSubData(const void* subDataPtr, int index);
 
-		struct MemoryAlignment {
-			int baseAlignment;
-			int alignedOffset;
-		};
+        struct MemoryAlignment {
+            int baseAlignment;
+            int alignedOffset;
+        };
 
-	private:
-		GLuint glID;
-		int binding;
-		int memorySize;
-		std::vector<MemoryAlignment> memoryAlignments;
-		void CalculateAlignment(const std::vector<int>& subDataSizes);
-	};
+    private:
+        GLuint glID;
+        int binding;
+        int memorySize;
+        std::vector<MemoryAlignment> memoryAlignments;
+        void CalculateAlignment(const std::vector<int>& subDataSizes);
+    };
 }
 

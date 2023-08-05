@@ -4,28 +4,28 @@
 #include "AudioContext.h"
 
 namespace Hogra {
-	class HoGraEngineApplication
-	{
-	public:
-		HoGraEngineApplication() = default;
+    class HoGraEngineApplication
+    {
+    public:
+        HoGraEngineApplication() = default;
 
-		int Init(const char* windowName, int argc = 0, char* argv[] = {});
+        int Init(const char* windowName, int argc = 0, char* argv[] = {});
 
-		void Loop();
+        void Loop();
 
-		void Destroy();
+        void Destroy();
 
-	private:
+    private:
 
-		void SetFullScreenMode(GLFWwindow*& window, bool isFullScreenMode);
+        void SetFullScreenMode(GLFWwindow*& window, bool isFullScreenMode);
 
-		void SetIcon();
+        void SetIcon();
 
-		void PrintWelcomeConsoleText();
+        void PrintWelcomeConsoleText();
 
-		GLFWwindow* window = nullptr;
-		AudioContext audioContext;
-		std::string windowName;
-	};
+        GLFWwindow* window = nullptr;
+        AudioContext audioContext;
+        std::string windowName;
+    };
 }
 

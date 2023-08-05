@@ -10,51 +10,51 @@
 
 namespace Hogra {
 
-	struct Dimensions {
-		int width, height, depth, bytesPerVoxel;
-	};
+    struct Dimensions {
+        int width, height, depth, bytesPerVoxel;
+    };
 
-	class Texture3D : public Texture
-	{
-		friend class Allocator;
-	public:
-		Texture3D();
+    class Texture3D : public Texture
+    {
+        friend class Allocator;
+    public:
+        Texture3D();
 
-		std::vector<char> bytes;
-		
-		void Init(const std::string& directory, GLuint slot, GLenum clientDataFormat);
+        std::vector<char> bytes;
 
-		/*
-		* func sholud receive normalized coordinates and outputs normalized intensity
-		*/
-		void Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum clientDataFormat);
-		
-		void Init(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
+        void Init(const std::string& directory, GLuint slot, GLenum clientDataFormat);
 
-		void InitForCompute(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
+        /*
+        * func sholud receive normalized coordinates and outputs normalized intensity
+        */
+        void Init(glm::ivec3 resolution, std::function<float(float, float, float)> func, GLuint slot, GLenum clientDataFormat);
 
-		void WriteData(void* dataPtr);
+        void Init(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
-		void ReadData(void* dataPtr) const override;
+        void InitForCompute(glm::uvec3 dimensions, GLuint unit, GLenum internalFormat, GLenum clientDataFormat, GLenum clientDataType);
 
-		~Texture3D() override;
+        void WriteData(void* dataPtr);
 
-		// Inherited via Texture
-		void Bind() const override;
+        void ReadData(void* dataPtr) const override;
 
-		void Unbind() const override;
+        ~Texture3D() override;
 
-		const Dimensions& GetDimensions() const;
+        // Inherited via Texture
+        void Bind() const override;
 
-		const glm::vec4 ResampleGradientAndDensity(glm::ivec3 position) const;
+        void Unbind() const override;
 
-		float operator()(glm::ivec3 position) const;
+        const Dimensions& GetDimensions() const;
 
-		void SetFiltering(GLenum filtering) const override;
+        const glm::vec4 ResampleGradientAndDensity(glm::ivec3 position) const;
 
-	private:
-		bool ReadDimensions(const char* path, std::string& name, Dimensions& dimensions);
-		Dimensions dimensions;
-		int maxValue = 255;
-	};
+        float operator()(glm::ivec3 position) const;
+
+        void SetFiltering(GLenum filtering) const override;
+
+    private:
+        bool ReadDimensions(const char* path, std::string& name, Dimensions& dimensions);
+        Dimensions dimensions;
+        int maxValue = 255;
+    };
 }

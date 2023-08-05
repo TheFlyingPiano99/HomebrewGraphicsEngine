@@ -4,55 +4,55 @@
 
 namespace Hogra {
 
-	class SceneManager
-	{
-		ALLOCATOR_CONSTRUCTIBLE
+    class SceneManager
+    {
+        ALLOCATOR_CONSTRUCTIBLE
 
-	public:
-		SceneManager() = default;
+    public:
+        SceneManager() = default;
 
-		~SceneManager() {
-			UnloadCurrentScene();
-		}
+        ~SceneManager() {
+            UnloadCurrentScene();
+        }
 
-		static SceneManager* getInstance();
+        static SceneManager* getInstance();
 
-		static void DestroyInstance() {
-			if (nullptr != instance) {
-				Allocator::Delete(instance);
-				instance = nullptr;
-			}
-		}
+        static void DestroyInstance() {
+            if (nullptr != instance) {
+                Allocator::Delete(instance);
+                instance = nullptr;
+            }
+        }
 
-		void InitSplash(int contextWidth, int contextHeight);
+        void InitSplash(int contextWidth, int contextHeight);
 
-		void Init(int contextWidth, int contextHeight);
+        void Init(int contextWidth, int contextHeight);
 
-		void RestartScene();
+        void RestartScene();
 
-		void LoadScene(int sceneId);
+        void LoadScene(int sceneId);
 
-		void UnloadCurrentScene();
+        void UnloadCurrentScene();
 
-		void Draw();
+        void Draw();
 
-		Scene* getScene() {
-			return currentScene;
-		}
+        Scene* getScene() {
+            return currentScene;
+        }
 
-		void BeforePhysicsLoopUpdate();
+        void BeforePhysicsLoopUpdate();
 
-		int PhysicsUpdate(float dt_sec);
+        int PhysicsUpdate(float dt_sec);
 
-		void AfterPhysicsLoopUpdate();
+        void AfterPhysicsLoopUpdate();
 
-		void OnWindowResize(unsigned int w, unsigned int h);
+        void OnWindowResize(unsigned int w, unsigned int h);
 
-	private:
+    private:
 
-		static SceneManager* instance;
+        static SceneManager* instance;
 
-		Scene* currentScene;
-	};
+        Scene* currentScene;
+    };
 }
 

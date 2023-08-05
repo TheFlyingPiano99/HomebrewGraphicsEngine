@@ -5,50 +5,50 @@
 #include "PositionProvider.h"
 
 namespace Hogra {
-	class SceneAudioSource : public Component
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class SceneAudioSource : public Component
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		void Init(AudioSource* _source);
+        void Init(AudioSource* _source);
 
-		void Play();
+        void Play();
 
-		void Stop();
+        void Stop();
 
-		void SetPositionProvider(PositionProvider* provider);
+        void SetPositionProvider(PositionProvider* provider);
 
-		void SetGain(float g);
-		
-		void SetPitch(float p);
+        void SetGain(float g);
 
-		void SetPosition(const glm::vec3& _position);
+        void SetPitch(float p);
 
-		void SetVelocity(const glm::vec3& _velocity);
+        void SetPosition(const glm::vec3& _position);
 
-		void SetLoop(bool _loop);
+        void SetVelocity(const glm::vec3& _velocity);
 
-	
-		// Inherited via Component
-		void EarlyPhysicsUpdate(float dt_sec) override;
+        void SetLoop(bool _loop);
 
-		void LatePhysicsUpdate(float dt_sec) override;
 
-		bool IsPlaying() const {
-			return isPlaying;
-		}
+        // Inherited via Component
+        void EarlyPhysicsUpdate(float dt_sec) override;
 
-	private:
-		AudioSource* audioSource;
+        void LatePhysicsUpdate(float dt_sec) override;
 
-		PositionProvider* positionProvider = nullptr;
+        bool IsPlaying() const {
+            return isPlaying;
+        }
 
-		float gain = 1.0f;
-		float pitch = 1.0f;
-		glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
-		glm::vec3 velocity = glm::vec3(0.0f, 0.0f, 0.0f);
-		bool loop = false;
-		bool isPlaying = false;
-	};
+    private:
+        AudioSource* audioSource;
+
+        PositionProvider* positionProvider = nullptr;
+
+        float gain = 1.0f;
+        float pitch = 1.0f;
+        glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 velocity = glm::vec3(0.0f, 0.0f, 0.0f);
+        bool loop = false;
+        bool isPlaying = false;
+    };
 }
 

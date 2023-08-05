@@ -28,478 +28,478 @@
 
 namespace Hogra {
 
-	FBO* Scene::findNextFBO(int currentLayer)
-	{
-		FBO* outFBO = nullptr;
-		for (auto i = currentLayer + 1; i < renderLayers.size(); i++) {
-			auto fbo = renderLayers[i]->GetInFBO();
-			if (nullptr != fbo) {
-				outFBO = fbo;
-				break;
-			}
-		}
-		return outFBO;
-	}
-	
-
-	const SceneChange& Scene::GetSceneChange()
-	{
-		return sceneChange;
-	}
-
-	Collider* Scene::IntersectRay(const Ray& ray, glm::vec3& w_intersectionPoint, glm::vec3& w_intersectionNormal)
-	{
-		return collisionManager.IntersectRay(ray, w_intersectionPoint, w_intersectionNormal);
-	}
-
-	void Scene::Init(unsigned int _contextWidth, unsigned int _contextHeight)
-	{
-		audioManager.Init();
-		camera.Init((float)_contextWidth / (float)_contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		renderer.InitDefferedSystem(_contextWidth, _contextHeight);
-		renderer.InitDebug();
-		collisionManager.InitDebug();
-		timeSpent.Init("time", 0.0f);
-		OnContextResize(_contextWidth, _contextHeight);
-	}
-
-	void Scene::BeforePhysicsLoopUpdate() {
-		for (auto& script : beforePhysicsScripts) {
-			script();
-		}
-
-		for (auto& obj : sceneObjects) {
-			obj->BeforePhysicsLoopUpdate();
-		}
-		ControlActionManager::getInstance()->ExecuteQueue(this);
-	}
-
-	void Scene::Destroy()
-	{
-
-		renderer.Clear();
-
-		for (auto& light : dirLights) {
-			Allocator::Delete(light);
-		}
-		dirLights.clear();
-
-		for (auto& light : pointLights) {
-			Allocator::Delete(light);
-		}
-		pointLights.clear();
-
-		for (auto& instanceGroup : instanceGroups) {
-			Allocator::Delete(instanceGroup.second);
-		}
-		instanceGroups.clear();
-
-		for (auto& dirCaster : dirShadowCasters) {
-			Allocator::Delete(dirCaster);
-		}
-		dirShadowCasters.clear();
-
-		for (auto& omniCaster : omniDirShadowCasters) {
-			Allocator::Delete(omniCaster);
-		}
-		omniDirShadowCasters.clear();
-
-		for (auto& sceneObject : sceneObjects) {
-			Allocator::Delete(sceneObject);
-		}
-
-		for (auto renderLayer : renderLayers) {
-			Allocator::Delete(renderLayer);
-		}
-
-		for (auto shader : shaders) {
-			Allocator::Delete(shader);
-		}
-
-		for (auto volumeMaterial : materials) {
-			Allocator::Delete(volumeMaterial);
-		}
-
-		for (auto geometry : geometries) {
-			Allocator::Delete(geometry);
-		}
-
-		for (auto mesh : meshes) {
-			Allocator::Delete(mesh);
-		}
-
-		if (nullptr != userControl) {
-			Allocator::Delete(userControl);
-		}
-	}
-
-	void Scene::PhysicsUpdate(float dt_sec)
-	{
-		collisionManager.Collide();
-		timeSpent.Set(Time::totalTime_sec);
-		for (auto& obj : sceneObjects) {
-			obj->EarlyPhysicsUpdate(dt_sec);
-		}
-
-		for (auto& script : physicsScripts) {
-			script(dt_sec, Time::totalTime_sec);
-		}
-
-		SceneEventManager::getInstance()->ExecuteQueue(*this);
-
-		for (auto& obj : sceneObjects) {
-			obj->LatePhysicsUpdate(dt_sec);
-		}
-
-		camera.LatePhysicsUpdate(dt_sec);
-		collisionManager.Update();
-	}
-
-	void Scene::AfterPhysicsLoopUpdate()
-	{
-		camera.Update();
-		for (auto& script : afterPhysicsScripts) {
-			script();
-		}
-
-		for (auto& obj : sceneObjects) {
-			obj->AfterPhysicsLoopUpdate();
-		}
-
-		// Delete objects:
-		for (auto obj : toDelete) {
-			DeleteSceneObject(obj);
-		}
-		toDelete.clear();
-
-		for (auto& dirCaster : dirShadowCasters) {
-			dirCaster->Update();
-		}
-		for (auto& omniCaster : omniDirShadowCasters) {
-			omniCaster->Update();
-		}
-
-		for (auto& group : instanceGroups) {
-			group.second->Optimalize(camera);
-		}
-		renderer.Update();
-		audioManager.Update();
-	}
-
-	void Scene::Draw()
-	{
-		UpdateGUI();
-
-		// Init and export data:
-		camera.ExportData();
-		renderer.ExportData(omniDirShadowCasters);
-
-		// Shadow pass:
-		for (auto& group : instanceGroups) {
-			group.second->GatherInstanceDataForShadow();
-		}
-		for (auto& dirCaster : dirShadowCasters) {
-			dirCaster->Bind();
-			for (auto& group : instanceGroups) {
-				group.second->DrawShadow();
-			}
-		}
-		for (auto& omniCaster : omniDirShadowCasters) {
-			omniCaster->Bind();
-			for (auto& group : instanceGroups) {
-				group.second->DrawShadow();
-			}
-		}
-
-		// Get first FBO in pipeline to use for state clearing and initialisation:
-		// |layer0| -> |layer1| -> |layer2|
-		// | null |    | fbo0 |    | fbo2 |
-		//				>this<
-
-		auto* outFBO = findNextFBO(-1);
-		if (nullptr == outFBO) {
-			outFBO = &renderer.GetFinalImageFBO();
-		}
-
-		renderer.PrepareFirstFBOForRendering(outFBO, backgroundColor);
-
-
-		for (int i = 0; i < renderLayers.size(); i++) {
-			outFBO = findNextFBO(i);
-			if (nullptr == outFBO) {
-				outFBO = &renderer.GetFinalImageFBO();
-			}
-			renderLayers[i]->Render(*outFBO, camera, renderer);
-		}
-
-		outFBO->Bind();
-		// Text pass:
-		for (auto* uiElement : uiRootElements) {
-			uiElement->Draw();
-		}
-
-		if (debugMode) {
-			collisionManager.DrawDebug();
-			renderer.DrawDebug();
-		}
-
-		renderer.BlitOnScreen();
-
-		outFBO->Unbind();
-
-		// Reset camera state:
-		camera.SetIsMoved(false);
-	}
-
-	void Scene::AddSceneObject(SceneObject* object, const std::string& instanceGroupName, const std::string& renderLayerName)
-	{
-		// If already contains:
-		if (auto objectIter = std::find(sceneObjects.begin(), sceneObjects.end(), object); objectIter != sceneObjects.end()) {		
-			return;
-		}
-
-		sceneObjects.push_back(object);		// Add to main collection in Scene
-
-		//TODO don't add resource to collection if already there
-
-		{	// Add mesh to collection
-			auto mesh = object->GetMesh();
-			if (nullptr != mesh) {
-				meshes.push_back(mesh);
-				auto geom = mesh->getGeometry();
-				if (nullptr != geom) {
-					geometries.push_back(geom);
-				}
-				auto mat = mesh->getMaterial();
-				if (nullptr != mat) {
-					materials.push_back(mat);
-					auto shader = mat->GetShaderProgram();
-					if (nullptr != shader) {
-						shaders.push_back(shader);
-					}
-					auto ts = mat->GetTextures();
-					for (auto texture : ts) {
-						textures.push_back(texture);
-					}
-				}
-			}
-		}
-
-		// Add to instance group:
-		static int defaultName = 0;
-		if (object->GetMesh() != nullptr) {
-			auto* layer = GetRenderLayer(renderLayerName);
-			if (nullptr == layer) {
-				DebugUtils::PrintError("Scene", 
-					std::string("Trying to add scene object to unknown render layer named \"").append(renderLayerName).append("\"").c_str()
-				);
-				return;
-			}
-			if (instanceGroupName.length() > 0) {
-				const auto& iter = instanceGroups.find(instanceGroupName);
-				if (iter != instanceGroups.end()) {
-					iter->second->AddObject(object);
-				}
-				else {
-					auto* group = Allocator::New<InstanceGroup>();
-					group->AddObject(object);
-					instanceGroups.emplace(instanceGroupName, group);
-					if (layer->IsInstanced()) {	// Add to layer
-						layer->AddInstanceGroup(group);
-					}
-				}
-			}
-			else {
-				auto* group = Allocator::New<InstanceGroup>();
-				group->AddObject(object);
-				instanceGroups.emplace(std::to_string(defaultName++), group);
-				if (layer->IsInstanced()) {	// Add to layer
-					layer->AddInstanceGroup(group);
-				}
-			}
-			// Add to layer if the layer is not using instanced rendering:
-			if (!layer->IsInstanced()) {
-				layer->AddObject(object);
-			}
-		}
-	}
-
-	void Scene::RegisterObjectToDelete(SceneObject* object) {
-		toDelete.push_back(object);
-	}
-
-	void Scene::DeleteSceneObject(SceneObject* object)
-	{
-		auto objIter = std::ranges::find(sceneObjects.begin(), sceneObjects.end(), object);
-		if (sceneObjects.end() != objIter) {
-			sceneObjects.erase(objIter);
-			for (auto layer : renderLayers) {
-				layer->RemoveSceneObject(object);
-			}
-			Allocator::Delete(object);
-		}
-	}
-
-	void Scene::AddCollider(Collider* collider, const std::string& colliderGroupName)
-	{
-		collisionManager.AddCollider(collider, colliderGroupName);
-	}
-
-	void Scene::AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName) {
-		if (renderLayerName.empty()) {	// No layer specified
-			DebugUtils::PrintWarning("Scene", "Trying to add post process stage to unspecified render layer!");
-			return;
-		}
-
-		auto layer = renderLayersMap.find(renderLayerName);
-		if (layer == renderLayersMap.end()) {
-			DebugUtils::PrintWarning("Scene", "Trying to add post process stage to unknown render layer!");
-			return;
-		}
-		stage->AddUniformVariable(&timeSpent);
-		layer->second->AddPostProcessStage(stage);
-	}
-
-	void Scene::AddLight(PointLight* light)
-	{	
-		renderer.AddLight(light);
-		if (light->IsCastingShadow()) {
-			if (MAX_SHADOW_MAP_COUNT - 1 <= omniDirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
-				auto* p = light->GetShadowCaster();
-				Allocator::Delete(p);
-				light->SetShadowCaster(nullptr);
-				DebugUtils::PrintError("Scene", "Trying to add too many omniDir shadow casters to scene!");
-			}
-			else {
-				light->GetShadowCaster()->SetIdx(omniDirShadowCasters.size() + 1);	// +1 because first in shader is the empty map
-				omniDirShadowCasters.push_back(light->GetShadowCaster());
-				light->GetShadowCaster()->SetPositionProvider(light);
-			}
-		}
-		pointLights.push_back(light);
-	}
-
-	void Scene::AddLight(DirectionalLight* light)
-	{
-		renderer.AddLight(light);
-		if (light->IsCastingShadow()) {
-			if (MAX_SHADOW_MAP_COUNT - 1 <= dirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
-				auto* p = light->GetShadowCaster();
-				Allocator::Delete(p);
-				light->SetShadowCaster(nullptr);
-				DebugUtils::PrintError("Scene", "Trying to add too many directional shadow casters to scene!");
-			}
-			else {
-				light->GetShadowCaster()->SetIdx(dirShadowCasters.size() + 1);	// +1 because first in shader is the empty map
-				dirShadowCasters.push_back(light->GetShadowCaster());
-				light->GetShadowCaster()->SetPositionProvider(&camera);
-				light->GetShadowCaster()->SetPositionOffsetToProvider(20.0f * light->GetDirection());
-				light->GetShadowCaster()->SetDirection(-1.0f * light->GetDirection());
-			}
-		}
-		dirLights.push_back(light);
-	}
-
-	void Scene::AddRootUIElement(UIElement* uiElement)
-	{
-		if (!uiRootElements.empty() && std::find(uiRootElements.begin(), uiRootElements.end(), uiElement) != uiRootElements.end()) {
-			DebugUtils::PrintWarning("Scene", "Trying to add already added UI root element!");
-			return;
-		}
-		uiElement->CalculateLayoutFromRoot();
-		uiRootElements.push_back(uiElement);
-	}
-
-	void Scene::RemoveRootUIElement(UIElement* uiElement)
-	{
-		if (
-			auto iter = std::find(uiRootElements.begin(), uiRootElements.end(), uiElement); 
-			uiRootElements.end() != iter
-		) {
-			uiRootElements.erase(iter);
-		}
-		else {
-			DebugUtils::PrintWarning("Scene", "Trying to remove unknown UI root element!");
-		}
-
-	}
-
-	void Scene::AddSceneAudioSource(SceneAudioSource* source)
-	{
-		audioManager.AddSource(source);
-	}
-
-	void Scene::SetUserControl(UserControl* uc) {
-		userControl = uc;
-	}
-
-	const glm::vec3& Scene::getPreferedUp() const {
-		return preferedUp;
-	}
-
-	void Scene::TogglePause()
-	{
-		pause = !pause;
-	}
-
-	Camera& Scene::GetCamera() {
-		return camera;
-	}
-
-	void Scene::OnContextResize(int _contextWidth, int _contextHeight)
-	{
-		DebugUtils::PrintMsg("Scene",
-			std::string("Context resize. New size: {").append(std::to_string(_contextWidth)).append(", ").append(std::to_string(_contextHeight)
-			.append("}, New aspect ratio: "))
-			.append(std::to_string((float)_contextWidth / (float)_contextHeight))
-		);
-		camera.SetAspectRatio((float)_contextWidth / (float)_contextHeight);
-		camera.SetChanged(true);
-
-		for (auto& renderLayer : renderLayers) {
-			renderLayer->OnContextResize(_contextWidth, _contextHeight);
-		}
-
-		renderer.OnContextResize(_contextWidth, _contextHeight);
-
-		for (auto rootElement : uiRootElements) {
-			rootElement->CalculateLayoutFromRoot();
-		}
-	}
-
-	void Scene::Serialize()
-	{
-		for (auto& obj : sceneObjects) {
-			obj->Serialize();
-		}
-	}
-
-	void Scene::RecalculateUILayout()
-	{
-		for (auto root : uiRootElements) {
-			root->CalculateLayoutFromRoot();
-		}
-	}
-
-	void Scene::OnCursorHover(const glm::ivec2& screenMousePos)
-	{
-		for (auto rootElement : uiRootElements) {
-			rootElement->ResetHoverFlag();
-			rootElement->OnHover(screenMousePos);
-		}
-	}
-
-	void Scene::OnCursorClick(const glm::ivec2& screenMousePos)
-	{
-		for (auto rootElement : uiRootElements) {
-			rootElement->OnClick(screenMousePos);
-		}
-	}
-	
-	void Scene::UpdateGUI() {
-		for (auto obj : sceneObjects) {
-			obj->UpdateGui();
-		}
-	}
+    FBO* Scene::findNextFBO(int currentLayer)
+    {
+        FBO* outFBO = nullptr;
+        for (auto i = currentLayer + 1; i < renderLayers.size(); i++) {
+            auto fbo = renderLayers[i]->GetInFBO();
+            if (nullptr != fbo) {
+                outFBO = fbo;
+                break;
+            }
+        }
+        return outFBO;
+    }
+
+
+    const SceneChange& Scene::GetSceneChange()
+    {
+        return sceneChange;
+    }
+
+    Collider* Scene::IntersectRay(const Ray& ray, glm::vec3& w_intersectionPoint, glm::vec3& w_intersectionNormal)
+    {
+        return collisionManager.IntersectRay(ray, w_intersectionPoint, w_intersectionNormal);
+    }
+
+    void Scene::Init(unsigned int _contextWidth, unsigned int _contextHeight)
+    {
+        audioManager.Init();
+        camera.Init((float)_contextWidth / (float)_contextHeight, glm::vec3(-10.0f, 10.0f, -10.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        renderer.InitDefferedSystem(_contextWidth, _contextHeight);
+        renderer.InitDebug();
+        collisionManager.InitDebug();
+        timeSpent.Init("time", 0.0f);
+        OnContextResize(_contextWidth, _contextHeight);
+    }
+
+    void Scene::BeforePhysicsLoopUpdate() {
+        for (auto& script : beforePhysicsScripts) {
+            script();
+        }
+
+        for (auto& obj : sceneObjects) {
+            obj->BeforePhysicsLoopUpdate();
+        }
+        ControlActionManager::getInstance()->ExecuteQueue(this);
+    }
+
+    void Scene::Destroy()
+    {
+
+        renderer.Clear();
+
+        for (auto& light : dirLights) {
+            Allocator::Delete(light);
+        }
+        dirLights.clear();
+
+        for (auto& light : pointLights) {
+            Allocator::Delete(light);
+        }
+        pointLights.clear();
+
+        for (auto& instanceGroup : instanceGroups) {
+            Allocator::Delete(instanceGroup.second);
+        }
+        instanceGroups.clear();
+
+        for (auto& dirCaster : dirShadowCasters) {
+            Allocator::Delete(dirCaster);
+        }
+        dirShadowCasters.clear();
+
+        for (auto& omniCaster : omniDirShadowCasters) {
+            Allocator::Delete(omniCaster);
+        }
+        omniDirShadowCasters.clear();
+
+        for (auto& sceneObject : sceneObjects) {
+            Allocator::Delete(sceneObject);
+        }
+
+        for (auto renderLayer : renderLayers) {
+            Allocator::Delete(renderLayer);
+        }
+
+        for (auto shader : shaders) {
+            Allocator::Delete(shader);
+        }
+
+        for (auto volumeMaterial : materials) {
+            Allocator::Delete(volumeMaterial);
+        }
+
+        for (auto geometry : geometries) {
+            Allocator::Delete(geometry);
+        }
+
+        for (auto mesh : meshes) {
+            Allocator::Delete(mesh);
+        }
+
+        if (nullptr != userControl) {
+            Allocator::Delete(userControl);
+        }
+    }
+
+    void Scene::PhysicsUpdate(float dt_sec)
+    {
+        collisionManager.Collide();
+        timeSpent.Set(Time::totalTime_sec);
+        for (auto& obj : sceneObjects) {
+            obj->EarlyPhysicsUpdate(dt_sec);
+        }
+
+        for (auto& script : physicsScripts) {
+            script(dt_sec, Time::totalTime_sec);
+        }
+
+        SceneEventManager::getInstance()->ExecuteQueue(*this);
+
+        for (auto& obj : sceneObjects) {
+            obj->LatePhysicsUpdate(dt_sec);
+        }
+
+        camera.LatePhysicsUpdate(dt_sec);
+        collisionManager.Update();
+    }
+
+    void Scene::AfterPhysicsLoopUpdate()
+    {
+        camera.Update();
+        for (auto& script : afterPhysicsScripts) {
+            script();
+        }
+
+        for (auto& obj : sceneObjects) {
+            obj->AfterPhysicsLoopUpdate();
+        }
+
+        // Delete objects:
+        for (auto obj : toDelete) {
+            DeleteSceneObject(obj);
+        }
+        toDelete.clear();
+
+        for (auto& dirCaster : dirShadowCasters) {
+            dirCaster->Update();
+        }
+        for (auto& omniCaster : omniDirShadowCasters) {
+            omniCaster->Update();
+        }
+
+        for (auto& group : instanceGroups) {
+            group.second->Optimalize(camera);
+        }
+        renderer.Update();
+        audioManager.Update();
+    }
+
+    void Scene::Draw()
+    {
+        UpdateGUI();
+
+        // Init and export data:
+        camera.ExportData();
+        renderer.ExportData(omniDirShadowCasters);
+
+        // Shadow pass:
+        for (auto& group : instanceGroups) {
+            group.second->GatherInstanceDataForShadow();
+        }
+        for (auto& dirCaster : dirShadowCasters) {
+            dirCaster->Bind();
+            for (auto& group : instanceGroups) {
+                group.second->DrawShadow();
+            }
+        }
+        for (auto& omniCaster : omniDirShadowCasters) {
+            omniCaster->Bind();
+            for (auto& group : instanceGroups) {
+                group.second->DrawShadow();
+            }
+        }
+
+        // Get first FBO in pipeline to use for state clearing and initialisation:
+        // |layer0| -> |layer1| -> |layer2|
+        // | null |    | fbo0 |    | fbo2 |
+        //				>this<
+
+        auto* outFBO = findNextFBO(-1);
+        if (nullptr == outFBO) {
+            outFBO = &renderer.GetFinalImageFBO();
+        }
+
+        renderer.PrepareFirstFBOForRendering(outFBO, backgroundColor);
+
+
+        for (int i = 0; i < renderLayers.size(); i++) {
+            outFBO = findNextFBO(i);
+            if (nullptr == outFBO) {
+                outFBO = &renderer.GetFinalImageFBO();
+            }
+            renderLayers[i]->Render(*outFBO, camera, renderer);
+        }
+
+        outFBO->Bind();
+        // Text pass:
+        for (auto* uiElement : uiRootElements) {
+            uiElement->Draw();
+        }
+
+        if (debugMode) {
+            collisionManager.DrawDebug();
+            renderer.DrawDebug();
+        }
+
+        renderer.BlitOnScreen();
+
+        outFBO->Unbind();
+
+        // Reset camera state:
+        camera.SetIsMoved(false);
+    }
+
+    void Scene::AddSceneObject(SceneObject* object, const std::string& instanceGroupName, const std::string& renderLayerName)
+    {
+        // If already contains:
+        if (auto objectIter = std::find(sceneObjects.begin(), sceneObjects.end(), object); objectIter != sceneObjects.end()) {
+            return;
+        }
+
+        sceneObjects.push_back(object);		// Add to main collection in Scene
+
+        //TODO don't add resource to collection if already there
+
+        {	// Add mesh to collection
+            auto mesh = object->GetMesh();
+            if (nullptr != mesh) {
+                meshes.push_back(mesh);
+                auto geom = mesh->getGeometry();
+                if (nullptr != geom) {
+                    geometries.push_back(geom);
+                }
+                auto mat = mesh->getMaterial();
+                if (nullptr != mat) {
+                    materials.push_back(mat);
+                    auto shader = mat->GetShaderProgram();
+                    if (nullptr != shader) {
+                        shaders.push_back(shader);
+                    }
+                    auto ts = mat->GetTextures();
+                    for (auto texture : ts) {
+                        textures.push_back(texture);
+                    }
+                }
+            }
+        }
+
+        // Add to instance group:
+        static int defaultName = 0;
+        if (object->GetMesh() != nullptr) {
+            auto* layer = GetRenderLayer(renderLayerName);
+            if (nullptr == layer) {
+                DebugUtils::PrintError("Scene",
+                    std::string("Trying to add scene object to unknown render layer named \"").append(renderLayerName).append("\"").c_str()
+                );
+                return;
+            }
+            if (instanceGroupName.length() > 0) {
+                const auto& iter = instanceGroups.find(instanceGroupName);
+                if (iter != instanceGroups.end()) {
+                    iter->second->AddObject(object);
+                }
+                else {
+                    auto* group = Allocator::New<InstanceGroup>();
+                    group->AddObject(object);
+                    instanceGroups.emplace(instanceGroupName, group);
+                    if (layer->IsInstanced()) {	// Add to layer
+                        layer->AddInstanceGroup(group);
+                    }
+                }
+            }
+            else {
+                auto* group = Allocator::New<InstanceGroup>();
+                group->AddObject(object);
+                instanceGroups.emplace(std::to_string(defaultName++), group);
+                if (layer->IsInstanced()) {	// Add to layer
+                    layer->AddInstanceGroup(group);
+                }
+            }
+            // Add to layer if the layer is not using instanced rendering:
+            if (!layer->IsInstanced()) {
+                layer->AddObject(object);
+            }
+        }
+    }
+
+    void Scene::RegisterObjectToDelete(SceneObject* object) {
+        toDelete.push_back(object);
+    }
+
+    void Scene::DeleteSceneObject(SceneObject* object)
+    {
+        auto objIter = std::ranges::find(sceneObjects.begin(), sceneObjects.end(), object);
+        if (sceneObjects.end() != objIter) {
+            sceneObjects.erase(objIter);
+            for (auto layer : renderLayers) {
+                layer->RemoveSceneObject(object);
+            }
+            Allocator::Delete(object);
+        }
+    }
+
+    void Scene::AddCollider(Collider* collider, const std::string& colliderGroupName)
+    {
+        collisionManager.AddCollider(collider, colliderGroupName);
+    }
+
+    void Scene::AddPostProcessStage(PostProcessStage* stage, const std::string& renderLayerName) {
+        if (renderLayerName.empty()) {	// No layer specified
+            DebugUtils::PrintWarning("Scene", "Trying to add post process stage to unspecified render layer!");
+            return;
+        }
+
+        auto layer = renderLayersMap.find(renderLayerName);
+        if (layer == renderLayersMap.end()) {
+            DebugUtils::PrintWarning("Scene", "Trying to add post process stage to unknown render layer!");
+            return;
+        }
+        stage->AddUniformVariable(&timeSpent);
+        layer->second->AddPostProcessStage(stage);
+    }
+
+    void Scene::AddLight(PointLight* light)
+    {
+        renderer.AddLight(light);
+        if (light->IsCastingShadow()) {
+            if (MAX_SHADOW_MAP_COUNT - 1 <= omniDirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
+                auto* p = light->GetShadowCaster();
+                Allocator::Delete(p);
+                light->SetShadowCaster(nullptr);
+                DebugUtils::PrintError("Scene", "Trying to add too many omniDir shadow casters to scene!");
+            }
+            else {
+                light->GetShadowCaster()->SetIdx(omniDirShadowCasters.size() + 1);	// +1 because first in shader is the empty map
+                omniDirShadowCasters.push_back(light->GetShadowCaster());
+                light->GetShadowCaster()->SetPositionProvider(light);
+            }
+        }
+        pointLights.push_back(light);
+    }
+
+    void Scene::AddLight(DirectionalLight* light)
+    {
+        renderer.AddLight(light);
+        if (light->IsCastingShadow()) {
+            if (MAX_SHADOW_MAP_COUNT - 1 <= dirShadowCasters.size()) {	// -1 for the first empty map that is not in this vector
+                auto* p = light->GetShadowCaster();
+                Allocator::Delete(p);
+                light->SetShadowCaster(nullptr);
+                DebugUtils::PrintError("Scene", "Trying to add too many directional shadow casters to scene!");
+            }
+            else {
+                light->GetShadowCaster()->SetIdx(dirShadowCasters.size() + 1);	// +1 because first in shader is the empty map
+                dirShadowCasters.push_back(light->GetShadowCaster());
+                light->GetShadowCaster()->SetPositionProvider(&camera);
+                light->GetShadowCaster()->SetPositionOffsetToProvider(20.0f * light->GetDirection());
+                light->GetShadowCaster()->SetDirection(-1.0f * light->GetDirection());
+            }
+        }
+        dirLights.push_back(light);
+    }
+
+    void Scene::AddRootUIElement(UIElement* uiElement)
+    {
+        if (!uiRootElements.empty() && std::find(uiRootElements.begin(), uiRootElements.end(), uiElement) != uiRootElements.end()) {
+            DebugUtils::PrintWarning("Scene", "Trying to add already added UI root element!");
+            return;
+        }
+        uiElement->CalculateLayoutFromRoot();
+        uiRootElements.push_back(uiElement);
+    }
+
+    void Scene::RemoveRootUIElement(UIElement* uiElement)
+    {
+        if (
+            auto iter = std::find(uiRootElements.begin(), uiRootElements.end(), uiElement);
+            uiRootElements.end() != iter
+            ) {
+            uiRootElements.erase(iter);
+        }
+        else {
+            DebugUtils::PrintWarning("Scene", "Trying to remove unknown UI root element!");
+        }
+
+    }
+
+    void Scene::AddSceneAudioSource(SceneAudioSource* source)
+    {
+        audioManager.AddSource(source);
+    }
+
+    void Scene::SetUserControl(UserControl* uc) {
+        userControl = uc;
+    }
+
+    const glm::vec3& Scene::getPreferedUp() const {
+        return preferedUp;
+    }
+
+    void Scene::TogglePause()
+    {
+        pause = !pause;
+    }
+
+    Camera& Scene::GetCamera() {
+        return camera;
+    }
+
+    void Scene::OnContextResize(int _contextWidth, int _contextHeight)
+    {
+        DebugUtils::PrintMsg("Scene",
+            std::string("Context resize. New size: {").append(std::to_string(_contextWidth)).append(", ").append(std::to_string(_contextHeight)
+                .append("}, New aspect ratio: "))
+            .append(std::to_string((float)_contextWidth / (float)_contextHeight))
+        );
+        camera.SetAspectRatio((float)_contextWidth / (float)_contextHeight);
+        camera.SetChanged(true);
+
+        for (auto& renderLayer : renderLayers) {
+            renderLayer->OnContextResize(_contextWidth, _contextHeight);
+        }
+
+        renderer.OnContextResize(_contextWidth, _contextHeight);
+
+        for (auto rootElement : uiRootElements) {
+            rootElement->CalculateLayoutFromRoot();
+        }
+    }
+
+    void Scene::Serialize()
+    {
+        for (auto& obj : sceneObjects) {
+            obj->Serialize();
+        }
+    }
+
+    void Scene::RecalculateUILayout()
+    {
+        for (auto root : uiRootElements) {
+            root->CalculateLayoutFromRoot();
+        }
+    }
+
+    void Scene::OnCursorHover(const glm::ivec2& screenMousePos)
+    {
+        for (auto rootElement : uiRootElements) {
+            rootElement->ResetHoverFlag();
+            rootElement->OnHover(screenMousePos);
+        }
+    }
+
+    void Scene::OnCursorClick(const glm::ivec2& screenMousePos)
+    {
+        for (auto rootElement : uiRootElements) {
+            rootElement->OnClick(screenMousePos);
+        }
+    }
+
+    void Scene::UpdateGUI() {
+        for (auto obj : sceneObjects) {
+            obj->UpdateGui();
+        }
+    }
 
 }

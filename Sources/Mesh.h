@@ -10,43 +10,43 @@
 
 namespace Hogra {
 
-	class Mesh : public Identifiable
-	{
-		ALLOCATOR_CONSTRUCTIBLE
+    class Mesh : public Identifiable
+    {
+        ALLOCATOR_CONSTRUCTIBLE
 
-	public:
-		enum DepthTestFunc {
-			less_func,
-			greater_func
-		};
+    public:
+        enum DepthTestFunc {
+            less_func,
+            greater_func
+        };
 
-		void Init(Material* material, Geometry* geometry);
+        void Init(Material* material, Geometry* geometry);
 
-		void Init(Geometry* geometry, Material* material);
+        void Init(Geometry* geometry, Material* material);
 
-		// Draws the mesh
-		void Bind() const;
-		void Draw() const;
+        // Draws the mesh
+        void Bind() const;
+        void Draw() const;
 
-		void DrawInstanced(const std::vector<Geometry::InstanceData>& data, int visibleCount) const;
+        void DrawInstanced(const std::vector<Geometry::InstanceData>& data, int visibleCount) const;
 
-		void DrawInstanced(const std::vector<Geometry::LightInstancedData>& data) const;
+        void DrawInstanced(const std::vector<Geometry::LightInstancedData>& data) const;
 
-		Material* getMaterial() const;
-		Geometry* getGeometry() const;
+        Material* getMaterial() const;
+        Geometry* getGeometry() const;
 
-		void SetDepthTest(bool test);
+        void SetDepthTest(bool test);
 
-		void setStencilTest(bool test);
+        void setStencilTest(bool test);
 
-		void setDepthFunc(const DepthTestFunc func);
+        void setDepthFunc(const DepthTestFunc func);
 
-	private:
-		Material* volumeMaterial;
-		Geometry* geometry;
-		bool depthTest = true;
-		bool stencilTest = false;
-		DepthTestFunc depthTestFunc = DepthTestFunc::less_func;
+    private:
+        Material* volumeMaterial;
+        Geometry* geometry;
+        bool depthTest = true;
+        bool stencilTest = false;
+        DepthTestFunc depthTestFunc = DepthTestFunc::less_func;
 
-	};
+    };
 }

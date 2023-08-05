@@ -37,7 +37,7 @@ namespace Hogra {
         void RenderText(const std::wstring& text, float x, float y, float scale, const glm::vec3& color);
 
         Texture2D* RenderTextIntoTexture(const std::wstring& text);
-            
+
         ShaderProgram* GetShaderProgram() const;
 
 

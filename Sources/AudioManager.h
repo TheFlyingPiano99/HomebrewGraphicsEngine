@@ -4,22 +4,22 @@
 #include "AudioContext.h"
 
 namespace Hogra {
-	class AudioManager
-	{
-	public:
+    class AudioManager
+    {
+    public:
 
-		void Init();
+        void Init();
 
-		~AudioManager();
+        ~AudioManager();
 
-		void StopAll();
+        void StopAll();
 
-		void AddSource(SceneAudioSource* source);
+        void AddSource(SceneAudioSource* source);
 
-		void Update();
+        void Update();
 
-	private:
-		std::vector<SceneAudioSource*> sceneAudioSources;
-	};
+    private:
+        std::vector<SceneAudioSource*> sceneAudioSources;
+    };
 }
 

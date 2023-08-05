@@ -9,33 +9,33 @@
 
 namespace Hogra {
 
-	class AudioSource
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class AudioSource
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		void Init(AudioBuffer* _buffer);
+        void Init(AudioBuffer* _buffer);
 
-		~AudioSource();
+        ~AudioSource();
 
-		void Play();
+        void Play();
 
-		void Stop();
+        void Stop();
 
-		void SetGain(float gain);
+        void SetGain(float gain);
 
-		void SetPitch(float gain);
+        void SetPitch(float gain);
 
-		void SetPosition(const glm::vec3& position);
+        void SetPosition(const glm::vec3& position);
 
-		void SetVelocity(const glm::vec3& velocity);
+        void SetVelocity(const glm::vec3& velocity);
 
-		void SetLoop(bool loop);
+        void SetLoop(bool loop);
 
-		bool IsPlaying();
+        bool IsPlaying();
 
-	private:
-		ALuint alID;
-		AudioBuffer* buffer = nullptr;
-	};
+    private:
+        ALuint alID;
+        AudioBuffer* buffer = nullptr;
+    };
 }

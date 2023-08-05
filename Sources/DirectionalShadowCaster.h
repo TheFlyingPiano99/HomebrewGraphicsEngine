@@ -11,57 +11,57 @@
 #include "ShadowCaster.h"
 
 namespace Hogra {
-	class DirectionalShadowCaster : public ShadowCaster
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class DirectionalShadowCaster : public ShadowCaster
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		DirectionalShadowCaster();
+        DirectionalShadowCaster();
 
-		void Init(glm::vec3 _position = glm::vec3(), glm::vec3 _direction = glm::vec3());
+        void Init(glm::vec3 _position = glm::vec3(), glm::vec3 _direction = glm::vec3());
 
-		~DirectionalShadowCaster() {
-		}
+        ~DirectionalShadowCaster() {
+        }
 
-		Texture2D& GetShadowMap() {
-			return shadowMap;
-		}
+        Texture2D& GetShadowMap() {
+            return shadowMap;
+        }
 
-		void Bind();
+        void Bind();
 
-		void BindMap();
+        void BindMap();
 
-		void Update() override;
+        void Update() override;
 
-		const ShaderProgram& GetProgram() const {
-			return program;
-		}
+        const ShaderProgram& GetProgram() const {
+            return program;
+        }
 
-		void SetPositionProvider(PositionProvider* provider) {
-			positionProvider = provider;
-		}
+        void SetPositionProvider(PositionProvider* provider) {
+            positionProvider = provider;
+        }
 
-		void SetPositionOffsetToProvider(const glm::vec3& offset) {
-			positionOffsetToProvider = offset;
-		}
+        void SetPositionOffsetToProvider(const glm::vec3& offset) {
+            positionOffsetToProvider = offset;
+        }
 
-		const glm::mat4& GetLightSpaceMatrix() {
-			return lightSpaceMatrix;
-		}
+        const glm::mat4& GetLightSpaceMatrix() {
+            return lightSpaceMatrix;
+        }
 
-		void SetDirection(const glm::vec3& dir) {
-			direction = dir;
-		}
+        void SetDirection(const glm::vec3& dir) {
+            direction = dir;
+        }
 
-	private:
-		glm::vec3 position;
-		glm::vec3 direction;
+    private:
+        glm::vec3 position;
+        glm::vec3 direction;
 
-		FBO fbo;
-		Texture2D shadowMap;
-		ShaderProgram program;
-		glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
-		PositionProvider* positionProvider = nullptr;
-		glm::vec3 positionOffsetToProvider = glm::vec3(0.0f);
-	};
+        FBO fbo;
+        Texture2D shadowMap;
+        ShaderProgram program;
+        glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
+        PositionProvider* positionProvider = nullptr;
+        glm::vec3 positionOffsetToProvider = glm::vec3(0.0f);
+    };
 }

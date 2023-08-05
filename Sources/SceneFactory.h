@@ -6,54 +6,54 @@
 #include<glm/glm.hpp>
 
 namespace Hogra {
-	class SceneFactory
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class SceneFactory
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		static SceneFactory* getInstance();
+        static SceneFactory* getInstance();
 
-		static void DestroyInstance();
+        static void DestroyInstance();
 
-		Scene* CreateDemoScene(unsigned int contextWidth, unsigned int contextHeight);
+        Scene* CreateDemoScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		Scene* CreateEasyScene(unsigned int contextWidth, unsigned int contextHeight);
+        Scene* CreateEasyScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		ForceField* InitGravitation(Scene* scene);
+        ForceField* InitGravitation(Scene* scene);
 
-		CompositeCollider* InitCompositeCollider();
+        CompositeCollider* InitCompositeCollider();
 
-		void InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field);
+        void InitCube(Scene* scene, glm::vec3 pos, Collider* collider, ForceField* field);
 
-		SceneObject* InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName, const glm::vec3& color = glm::vec3(0,0,1));
+        SceneObject* InitSphere(Scene* scene, const glm::vec3& pos, ForceField* field, const char* materialName, const glm::vec3& color = glm::vec3(0, 0, 1));
 
-		void InitCaptions(Scene* scene);
+        void InitCaptions(Scene* scene);
 
-		void InitVoxelCaption(Scene* scene, const wchar_t* dataSetName);
+        void InitVoxelCaption(Scene* scene, const wchar_t* dataSetName);
 
-		void InitGround(Scene* scene);
+        void InitGround(Scene* scene);
 
-		void InitSkyBox(Scene* scene);
+        void InitSkyBox(Scene* scene);
 
-		void InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field);
+        void InitLoadedGeometry(Scene* scene, const glm::vec3& pos, ForceField* field);
 
-		void InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control);
+        void InitAvatar(Scene* scene, ForceField* gravitation, FirstPersonControl*& control);
 
-		void InitLaserBeam(Scene* scene, FirstPersonControl* control);
+        void InitLaserBeam(Scene* scene, FirstPersonControl* control);
 
-		void InitAudio(Scene* scene, FirstPersonControl* control);
+        void InitAudio(Scene* scene, FirstPersonControl* control);
 
-		SceneAudioSource* buildAudioSource(const std::string& fileName);
+        SceneAudioSource* buildAudioSource(const std::string& fileName);
 
-		Scene* LoadSceneFromFile(const std::filesystem::path& path);
+        Scene* LoadSceneFromFile(const std::filesystem::path& path);
 
-		Scene* CreateWaveFunctionScene(unsigned int contextWidth, unsigned int contextHeight);
+        Scene* CreateWaveFunctionScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		Scene* CreateShadingHomeWorkScene(unsigned int contextWidth, unsigned int contextHeight);
+        Scene* CreateShadingHomeWorkScene(unsigned int contextWidth, unsigned int contextHeight);
 
-		Scene* CreateSplashScene(unsigned int contextWidth, unsigned int contextHeight);
+        Scene* CreateSplashScene(unsigned int contextWidth, unsigned int contextHeight);
 
-	private:
-		static SceneFactory* instance;
-	};
+    private:
+        static SceneFactory* instance;
+    };
 }

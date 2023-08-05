@@ -9,9 +9,9 @@
 #define alcCall(function, device, ...) alcCallImpl(__FILE__, __LINE__, function, device, __VA_ARGS__)
 
 namespace Hogra {
-	class AudioUtils
-	{
-	public:
+    class AudioUtils
+    {
+    public:
 
         // Al:
 
@@ -20,14 +20,14 @@ namespace Hogra {
             const std::uint_fast32_t line,
             alFunction function,
             Params... params)
-            ->typename std::enable_if_t<!std::is_same_v<void, decltype(function(params...))>, decltype(function(params...))>;
+            -> typename std::enable_if_t<!std::is_same_v<void, decltype(function(params...))>, decltype(function(params...))>;
 
         template<typename alFunction, typename... Params>
         static auto alCallImpl(const char* filename,
             const std::uint_fast32_t line,
             alFunction function,
             Params... params)
-            ->typename std::enable_if_t<std::is_same_v<void, decltype(function(params...))>, bool>;
+            -> typename std::enable_if_t<std::is_same_v<void, decltype(function(params...))>, bool>;
 
         // Alc:
 
@@ -38,7 +38,7 @@ namespace Hogra {
             alcFunction function,
             ALCdevice* device,
             Params... params)
-            ->typename std::enable_if_t<std::is_same_v<void, decltype(function(params...))>, bool>;
+            -> typename std::enable_if_t<std::is_same_v<void, decltype(function(params...))>, bool>;
 
         template<typename alcFunction, typename ReturnType, typename... Params>
         static auto alcCallImpl(const char* filename,
@@ -47,7 +47,7 @@ namespace Hogra {
             ReturnType& returnValue,
             ALCdevice* device,
             Params... params)
-            ->typename std::enable_if_t<!std::is_same_v<void, decltype(function(params...))>, bool>;
+            -> typename std::enable_if_t<!std::is_same_v<void, decltype(function(params...))>, bool>;
 
     private:
         static bool CheckALErrors(const std::string& filename, const std::uint_fast32_t line);

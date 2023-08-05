@@ -5,112 +5,112 @@
 #include "SceneAudioSource.h"
 
 namespace Hogra {
-	class FirstPersonControl : public UserControl
-	{
-	public:
+    class FirstPersonControl : public UserControl
+    {
+    public:
 
-		FirstPersonControl() {
-			allowRotate = true;
-			GlobalVariables::hideCursor = true;
-		}
+        FirstPersonControl() {
+            allowRotate = true;
+            GlobalVariables::hideCursor = true;
+        }
 
-		~FirstPersonControl() override;
+        ~FirstPersonControl() override;
 
-		void BeforePhysicsLoopUpdate() override;
+        void BeforePhysicsLoopUpdate() override;
 
-		void EarlyPhysicsUpdate(float dt_sec) override;
+        void EarlyPhysicsUpdate(float dt_sec) override;
 
-		void LatePhysicsUpdate(float dt_sec) override;
+        void LatePhysicsUpdate(float dt_sec) override;
 
-		void AfterPhysicsLoopUpdate() override;
+        void AfterPhysicsLoopUpdate() override;
 
-		void MoveForward();
-		void MoveBackward();
-		void MoveLeft();
-		void MoveRight();
-		void Rotate(const glm::vec2& delta) override;
-		
-		void Jump();
+        void MoveForward();
+        void MoveBackward();
+        void MoveLeft();
+        void MoveRight();
+        void Rotate(const glm::vec2& delta) override;
 
-		void primaryAction();
+        void Jump();
 
-		void secondaryAction();
+        void primaryAction();
 
-		void setCamera(Camera* cam) {
-			camera = cam;
-		}
+        void secondaryAction();
 
-		void setJumpImpulse(float j) {
-			jumpImpulse = j;
-		}
+        void setCamera(Camera* cam) {
+            camera = cam;
+        }
 
-		void setJumpCollider(Collider* collider) {
-			jumpCollider = collider;
-		}
+        void setJumpImpulse(float j) {
+            jumpImpulse = j;
+        }
 
-		void SetScene(Scene* scene) {
-			this->scene = scene;
-		}
+        void setJumpCollider(Collider* collider) {
+            jumpCollider = collider;
+        }
 
-		void SetLaserObject(SceneObject* object) {
-			laser = object;
-		}
+        void SetScene(Scene* scene) {
+            this->scene = scene;
+        }
 
-		void SetLaserInpactLight(PointLight* light) {
-			laserInpactLight = light;
-		}
+        void SetLaserObject(SceneObject* object) {
+            laser = object;
+        }
 
-		void SetJumpAudioSource(SceneAudioSource* source) {
-			jumpAudioSource = source;
-		}
+        void SetLaserInpactLight(PointLight* light) {
+            laserInpactLight = light;
+        }
 
-		void SetFootstepAudioSource(SceneAudioSource* source) {
-			footstepsAudioSource = source;
-		}
+        void SetJumpAudioSource(SceneAudioSource* source) {
+            jumpAudioSource = source;
+        }
 
-		void SetLaserAudioSource(SceneAudioSource* source) {
-			laserAudioSource = source;
-		}
+        void SetFootstepAudioSource(SceneAudioSource* source) {
+            footstepsAudioSource = source;
+        }
 
-		void SetLaserCooldownAudioSource(SceneAudioSource* source) {
-			laserCoolDownAudioSource = source;
-		}
+        void SetLaserAudioSource(SceneAudioSource* source) {
+            laserAudioSource = source;
+        }
 
-		void SetLaserChargeupAudioSource(SceneAudioSource* source) {
-			laserChargeupAudioSource = source;
-		}
+        void SetLaserCooldownAudioSource(SceneAudioSource* source) {
+            laserCoolDownAudioSource = source;
+        }
 
-		bool PokeObject(const glm::vec2& ndcCoords, glm::vec3& pokePoint);
+        void SetLaserChargeupAudioSource(SceneAudioSource* source) {
+            laserChargeupAudioSource = source;
+        }
 
-	private:
-		Scene* scene = nullptr;
-		Camera* camera = nullptr;
+        bool PokeObject(const glm::vec2& ndcCoords, glm::vec3& pokePoint);
 
-		// Laser gun:
-		SceneObject* laser = nullptr;
-		PointLight* laserInpactLight = nullptr;
-		SceneAudioSource* laserAudioSource = nullptr;
-		SceneAudioSource* laserCoolDownAudioSource = nullptr;
-		SceneAudioSource* laserChargeupAudioSource = nullptr;
-		bool wasFiringLaser = false;
-		bool isFiringLaser = false;
+    private:
+        Scene* scene = nullptr;
+        Camera* camera = nullptr;
 
-		//Jump and walk:
-		SceneAudioSource* jumpAudioSource = nullptr;
-		SceneAudioSource* footstepsAudioSource = nullptr;
-		bool isGrounded = false;
-		float jumpCoolDown = 0.0f;
-		Collider* jumpCollider = nullptr;
-		float jumpImpulse = 250.0f;
-		bool isWalking = false;
-		glm::vec3 walkForce;
+        // Laser gun:
+        SceneObject* laser = nullptr;
+        PointLight* laserInpactLight = nullptr;
+        SceneAudioSource* laserAudioSource = nullptr;
+        SceneAudioSource* laserCoolDownAudioSource = nullptr;
+        SceneAudioSource* laserChargeupAudioSource = nullptr;
+        bool wasFiringLaser = false;
+        bool isFiringLaser = false;
 
-		//Camera rotation:
-		glm::vec2 headRotationDelta;
-		float rotationSpeed = 0.25f;
-		float rotationSlowDown = 0.4f;
+        //Jump and walk:
+        SceneAudioSource* jumpAudioSource = nullptr;
+        SceneAudioSource* footstepsAudioSource = nullptr;
+        bool isGrounded = false;
+        float jumpCoolDown = 0.0f;
+        Collider* jumpCollider = nullptr;
+        float jumpImpulse = 250.0f;
+        bool isWalking = false;
+        glm::vec3 walkForce;
 
-		float tSinceLastInput = 0.0f;
-	};
+        //Camera rotation:
+        glm::vec2 headRotationDelta;
+        float rotationSpeed = 0.25f;
+        float rotationSlowDown = 0.4f;
+
+        float tSinceLastInput = 0.0f;
+    };
 }
 

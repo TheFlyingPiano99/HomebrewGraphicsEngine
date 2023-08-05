@@ -7,12 +7,12 @@
 
 namespace Hogra {
 
-	class AudioListener
-	{
-	public:
+    class AudioListener
+    {
+    public:
 
-		void Init();
+        void Init();
 
-	private:
-	};
+    private:
+    };
 }

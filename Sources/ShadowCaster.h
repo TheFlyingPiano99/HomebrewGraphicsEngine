@@ -3,22 +3,22 @@
 #include "MemoryManager.h"
 
 namespace Hogra {
-	class ShadowCaster
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
+    class ShadowCaster
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
 
-		virtual void Update() = 0;
+        virtual void Update() = 0;
 
-		void SetIdx(int i) {
-			idx = i;
-		}
+        void SetIdx(int i) {
+            idx = i;
+        }
 
-		const int& GetIdx() {
-			return idx;
-		}
+        const int& GetIdx() {
+            return idx;
+        }
 
-	protected:
-		int idx = 0;
-	};
+    protected:
+        int idx = 0;
+    };
 }

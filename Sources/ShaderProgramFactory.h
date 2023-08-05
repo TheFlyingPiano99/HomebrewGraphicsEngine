@@ -4,50 +4,50 @@
 #include "MemoryManager.h"
 
 namespace Hogra {
-	class ShaderProgramFactory
-	{
-		ALLOCATOR_CONSTRUCTIBLE
-	public:
-		static ShaderProgramFactory* GetInstance();
+    class ShaderProgramFactory
+    {
+        ALLOCATOR_CONSTRUCTIBLE
+    public:
+        static ShaderProgramFactory* GetInstance();
 
-		static void DestroyInstance();
+        static void DestroyInstance();
 
-		ShaderProgram* GetDeferredPBRProgramWithMapping();
+        ShaderProgram* GetDeferredPBRProgramWithMapping();
 
-		ShaderProgram* GetDeferredPBRProgramForHomogenousMaterial();
+        ShaderProgram* GetDeferredPBRProgramForHomogenousMaterial();
 
-		ShaderProgram* GetGlyphProgram();
+        ShaderProgram* GetGlyphProgram();
 
-		ShaderProgram* GetForwardCaptionProgram();
+        ShaderProgram* GetForwardCaptionProgram();
 
-		ShaderProgram* GetDeferredEmissiveMaterialProgram();
+        ShaderProgram* GetDeferredEmissiveMaterialProgram();
 
-		ShaderProgram* GetForwardTwoAndHalfDimensionalSpriteProgram();
+        ShaderProgram* GetForwardTwoAndHalfDimensionalSpriteProgram();
 
-		ShaderProgram* GetForward2DSpriteProgram();
+        ShaderProgram* GetForward2DSpriteProgram();
 
-		ShaderProgram* GetForwardCellShadingProgramWithMapping();
+        ShaderProgram* GetForwardCellShadingProgramWithMapping();
 
-		ShaderProgram* GetForwardCellShadingProgramForHomogenousMaterial();
+        ShaderProgram* GetForwardCellShadingProgramForHomogenousMaterial();
 
-		ShaderProgram* GetFlatContainerProgram();
+        ShaderProgram* GetFlatContainerProgram();
 
-		ShaderProgram* GetTexturedContainerProgram();
+        ShaderProgram* GetTexturedContainerProgram();
 
-		void ForgetPointers();
+        void ForgetPointers();
 
-	private:
-		static ShaderProgramFactory* instance;
+    private:
+        static ShaderProgramFactory* instance;
 
-		ShaderProgram* defaultBPRProgramWithMapping = nullptr;
-		ShaderProgram* emissiveMaterial = nullptr;
-		ShaderProgram* glyphProgram = nullptr;
-		ShaderProgram* captionProgram = nullptr;
-		ShaderProgram* twoAndHaldDimSpriteProgram = nullptr;
-		ShaderProgram* twoDimSpriteProgram = nullptr;
-		ShaderProgram* forwardCellShadingProgram = nullptr;
-		ShaderProgram* forwardHomogenousCellShadingProgram = nullptr;
-		ShaderProgram* flatContainerProgram = nullptr;
-		ShaderProgram* texturedContainerProgram = nullptr;
-	};
+        ShaderProgram* defaultBPRProgramWithMapping = nullptr;
+        ShaderProgram* emissiveMaterial = nullptr;
+        ShaderProgram* glyphProgram = nullptr;
+        ShaderProgram* captionProgram = nullptr;
+        ShaderProgram* twoAndHaldDimSpriteProgram = nullptr;
+        ShaderProgram* twoDimSpriteProgram = nullptr;
+        ShaderProgram* forwardCellShadingProgram = nullptr;
+        ShaderProgram* forwardHomogenousCellShadingProgram = nullptr;
+        ShaderProgram* flatContainerProgram = nullptr;
+        ShaderProgram* texturedContainerProgram = nullptr;
+    };
 }

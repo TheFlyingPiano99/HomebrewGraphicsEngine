@@ -5,22 +5,22 @@
 
 namespace Hogra {
 
-	class AbstractScript {
+    class AbstractScript {
 
-	};
+    };
 
-	std::map<int, AbstractScript*> scripts;	// <id, script*>
-		
-	template <int ID, typename T>
-	class Script : public AbstractScript, public std::function<T>
-	{
-	public:
+    std::map<int, AbstractScript*> scripts;	// <id, script*>
 
-		Script() : std::function<T>() {
-			
-		}
+    template <int ID, typename T>
+    class Script : public AbstractScript, public std::function<T>
+    {
+    public:
 
-	};
+        Script() : std::function<T>() {
+
+        }
+
+    };
 
 }
 
