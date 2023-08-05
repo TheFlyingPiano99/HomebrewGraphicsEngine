@@ -45,8 +45,8 @@ namespace Hogra {
 
 		glm::vec4 fillColor = glm::vec4(0.02f, 0.02f, 0.02f, 0.6f);
 		glm::vec4 borderColor = glm::vec4(0.1f, 0.1f, 0.1f, 0.6f);
-		glm::vec4 hoverFillColor = glm::vec4(0.04f, 0.04f, 0.04f, 0.6f);
-		glm::vec4 hoverBorderColor = glm::vec4(0.12f, 0.12f, 0.12f, 0.6f);
+		glm::vec4 hoverFillColor = glm::vec4(0.06f, 0.06f, 0.06f, 0.6f);
+		glm::vec4 hoverBorderColor = glm::vec4(0.2f, 0.2f, 0.2f, 0.6f);
 		Texture2D* backgroundTexture = nullptr;
 		std::function<void(const glm::ivec2& screenCursorPos)> action = [](const glm::ivec2& screenCursorPos) { DebugUtils::PrintWarning("MenuButton", "Pressed button with no action!"); };
 	};

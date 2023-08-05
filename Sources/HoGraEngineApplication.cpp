@@ -131,7 +131,7 @@ namespace Hogra {
 		// Keeps track of the amount of frames in timeDiff
 		unsigned int frameCounter = 0;
 
-		constexpr double dtLimit = 0.1;
+		constexpr double dtLimit = 0.016;
 
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
 

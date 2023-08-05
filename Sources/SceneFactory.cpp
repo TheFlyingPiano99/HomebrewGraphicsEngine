@@ -1379,7 +1379,7 @@ namespace Hogra {
 			if (i == 1) {
 				auto margin = container->GetMarginLeftRightTopBottom();
 				container->SetMarginLeftRightTopBottom({ margin.x + 20, margin.y + 30, margin.z ,margin.w });
-				caption->UpdateText(L"This is a longer text with highlighting. ");
+				caption->UpdateText(L"This is a longer line of text with highlighting. ");
 				caption->SetHighlightColor({ 1, 1, 0, 1 });
 			}
 			if (i == 3) {
@@ -1622,6 +1622,15 @@ namespace Hogra {
 			}
 		);
 		ControlActionManager::getInstance()->RegisterMouseButtonAction(release);
+
+		auto* toogleUIVisibility = Allocator::New<ButtonKeyAction>();
+		toogleUIVisibility->Init(GLFW_KEY_ESCAPE, ButtonKeyAction::TriggerType::triggerOnPress);
+		toogleUIVisibility->SetAction(
+			[root]() {
+				root->SetIsVisible(!(root->IsVisible()));
+			}
+		);
+		ControlActionManager::getInstance()->RegisterKeyAction(toogleUIVisibility);
 
 		return scene;
 	}
