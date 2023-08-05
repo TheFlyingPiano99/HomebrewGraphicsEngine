@@ -1,5 +1,4 @@
 #pragma once
-
 #include<glm/glm.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include "ShaderProgram.h"
@@ -9,6 +8,7 @@
 #include "GlobalInclude.h"
 #include "AssetFolderPathManager.h"
 #include "ShadowCaster.h"
+#include "Texture2D.h"
 
 namespace Hogra {
     class DirectionalShadowCaster : public ShadowCaster

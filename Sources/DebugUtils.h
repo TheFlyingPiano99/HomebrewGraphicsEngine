@@ -1,3 +1,11 @@
+/*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~
+* Homebrew Graphics Engine
+* Zoltan Simon 2023
+* Repository: https://github.com/TheFlyingPiano99/HomebrewGraphicsEngine
+* ~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
 #pragma once
 #include <iostream>
 #include <fstream>

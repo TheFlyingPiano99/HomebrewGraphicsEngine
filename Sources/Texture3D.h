@@ -1,3 +1,10 @@
+/*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~
+* Homebrew Graphics Engine
+* Zoltan Simon 2023
+* Repository: https://github.com/TheFlyingPiano99/HomebrewGraphicsEngine
+* ~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 #pragma once
 #include "Texture.h"
 
@@ -16,7 +23,7 @@ namespace Hogra {
 
     class Texture3D : public Texture
     {
-        friend class Allocator;
+        ALLOCATOR_CONSTRUCTIBLE
     public:
         Texture3D();
 

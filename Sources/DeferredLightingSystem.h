@@ -7,6 +7,7 @@
 #include "glm/gtx/transform.hpp"
 #include "PointLight.h"
 #include "DirectionalLight.h"
+#include "Texture2D.h"
 
 namespace Hogra {
     class DeferredLightingSystem

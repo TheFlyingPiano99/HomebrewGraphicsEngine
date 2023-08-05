@@ -1,3 +1,10 @@
+/*
+* ~~~~~~~~~~~~~~~~~~~~~~~~~
+* Homebrew Graphics Engine
+* Zoltan Simon 2023
+* Repository: https://github.com/TheFlyingPiano99/HomebrewGraphicsEngine
+* ~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by HomebrewGraphicsEngine.rc
