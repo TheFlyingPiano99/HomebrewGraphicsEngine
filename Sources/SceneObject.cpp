@@ -35,9 +35,9 @@ namespace Hogra {
 		translationMatrix = glm::translate(position);
 		if (useEulerAngles) {
 			rotationMatrix = glm::mat4(1.0f)
-				* glm::Rotate(eulerAnglesRad.x, glm::vec3(1.0f, 0.0f, 0.0f))
-				* glm::Rotate(eulerAnglesRad.z, glm::vec3(0.0f, 0.0f, 1.0f))
-				* glm::Rotate(eulerAnglesRad.y, glm::vec3(0.0f, 1.0f, 0.0f));
+				* glm::rotate(eulerAnglesRad.x, glm::vec3(1.0f, 0.0f, 0.0f))
+				* glm::rotate(eulerAnglesRad.z, glm::vec3(0.0f, 0.0f, 1.0f))
+				* glm::rotate(eulerAnglesRad.y, glm::vec3(0.0f, 1.0f, 0.0f));
 		}
 		else {
 			rotationMatrix = glm::toMat4(orientation);

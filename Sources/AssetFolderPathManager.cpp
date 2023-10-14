@@ -1,6 +1,8 @@
 #include "AssetFolderPathManager.h"
 #include <fstream>
 #include <filesystem>
+#include "DebugUtils.h"
+
 namespace Hogra {
 
 	AssetFolderPathManager* AssetFolderPathManager::instance = nullptr;
@@ -15,6 +17,7 @@ namespace Hogra {
 				std::string errorMessage = "Folder \"";
 				errorMessage.append(folderName);
 				errorMessage.append("\" not found!");
+				DebugUtils::PrintError("AssetFolderPathManager", path.c_str());
 				throw AssetFolderNotFound(errorMessage.c_str());
 			}
 			path.clear();

@@ -1410,7 +1410,7 @@ namespace Hogra {
 
         {
             auto geometry = GeometryFactory::GetInstance()->Load(
-                AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("yamaboushi_tan_6000_a_spr1.obj")
+                AssetFolderPathManager::getInstance()->getGeometryFolderPath().append("yamaboushi_tan_6000_a_aut1.obj")
             );
             auto material = MaterialFactory::GetInstance()->getEmissiveMaterial("magicTree", glm::vec3(0.5, 0.8, 0.9), 2);
             auto mesh = Allocator::New<Mesh>();

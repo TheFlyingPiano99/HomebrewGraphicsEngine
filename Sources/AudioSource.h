@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "openAL/al.h"
-#include "openAL/alc.h"
+#include <AL/al.h>
+#include <AL/alc.h>
 #include "AudioBuffer.h"
 #include "glm/glm.hpp"
 
