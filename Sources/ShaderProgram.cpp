@@ -134,15 +134,20 @@ namespace Hogra {
 		// Stores status of compilation
 		GLint hasCompiled;
 		// Character array to store error message in
-		char infoLog[1024];
+		constexpr int infoMaxLength = 1024 * 16;
+		char infoLog[infoMaxLength];
 		if (type != "PROGRAM")
 		{
 			glGetShaderiv(glID, GL_COMPILE_STATUS, &hasCompiled);
 			if (hasCompiled == GL_FALSE)
 			{
-				glGetShaderInfoLog(glID, 1024, nullptr, infoLog);
-				DebugUtils::PrintError("ShaderProgram", 
-					std::string("SHADER_COMPILATION_ERROR for: ").append(type).append("\n").append(paths).append("\n").append(infoLog).c_str()
+				GLint maxLength = 0;
+				glGetShaderiv(glID, GL_INFO_LOG_LENGTH, &maxLength);
+				std::vector<GLchar> errorLog(maxLength);
+				glGetShaderInfoLog(glID, maxLength, &maxLength, &errorLog[0]);				
+				std::string logStr(errorLog.begin(), errorLog.end());
+				DebugUtils::PrintError("ShaderProgram",
+					std::string("SHADER_COMPILATION_ERROR for: ").append(type).append("\n").append(paths).append("\n").append(logStr).c_str()
 				);
 			}
 		}
@@ -151,9 +156,13 @@ namespace Hogra {
 			glGetProgramiv(glID, GL_LINK_STATUS, &hasCompiled);
 			if (hasCompiled == GL_FALSE)
 			{
-				glGetProgramInfoLog(glID, 1024, nullptr, infoLog);
+				GLint maxLength = 0;
+				glGetProgramiv(glID, GL_INFO_LOG_LENGTH, &maxLength);
+				std::vector<GLchar> errorLog(maxLength);
+				glGetProgramInfoLog(glID, maxLength, &maxLength, &errorLog[0]);
+				std::string logStr(errorLog.begin(), errorLog.end());
 				DebugUtils::PrintError("ShaderProgram",
-					std::string("SHADER_LINKING_ERROR for: ").append(type).append("\n").append(paths).append("\n").append(infoLog).c_str()
+					std::string("SHADER_LINKING_ERROR for: ").append(type).append("\n").append(paths).append("\n").append(logStr).c_str()
 				);
 			}
 		}
