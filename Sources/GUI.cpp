@@ -15,7 +15,7 @@ namespace Hogra {
 		io = ImGui::GetIO();
 		ImGui::StyleColorsDark();
 		ImGui_ImplGlfw_InitForOpenGL(window, false);
-		ImGui_ImplOpenGL3_Init("#version 420");
+		ImGui_ImplOpenGL3_Init("#version 460");
 	}
 
 	void GUI::DestroyGUI() {

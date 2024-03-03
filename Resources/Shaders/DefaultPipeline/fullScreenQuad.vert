@@ -1,4 +1,4 @@
-#version 420 core
+#version 460
 
 /*
 Simple vertex shader for rendering fullscreen quads

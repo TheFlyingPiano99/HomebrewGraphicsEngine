@@ -1,4 +1,4 @@
-#version 420 core
+#version 460 core
 
 // This shader performs downsampling on a texture,
 // as taken from Call Of Duty method, presented at ACM Siggraph 2014.

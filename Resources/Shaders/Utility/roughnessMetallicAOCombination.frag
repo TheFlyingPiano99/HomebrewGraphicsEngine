@@ -1,4 +1,4 @@
-#version 420 core
+#version 460 core
 in vec2 texCoords;
 out vec4 roughnessMetallicAO;
 

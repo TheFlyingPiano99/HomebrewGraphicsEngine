@@ -1,4 +1,4 @@
-#version 420 core
+#version 460 core
 
 /*
 Vertex shader for fulscreen quads with additional rayDir output.

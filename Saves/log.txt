@@ -4677,3 +4677,2790 @@ ERROR: {
 }
 
 }
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:39.6404808
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 13:44:39.6832270
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:39.6908834
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:39.7198345
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:39.7567158
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:39.8039317
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:39.8123678
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 13:44:39.8175347
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:39.8948017
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:40.0574602
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:40.0890318
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:40.0989938
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:57.2270605
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 13:44:57.2344343
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:57.2358970
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:57.2537777
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:44:57.2605172
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:45:00.6281724
+	Msg: Generating irradiance map.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:03.7754138
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 13:53:03.7982700
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:03.7990816
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:03.8251986
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:03.8402948
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:03.8754643
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:03.8820168
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 13:53:03.8827581
+	Msg: Context resize. New size: {0, 0}, New aspect ratio: -nan(ind)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:03.8837198
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:04.0200709
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:04.0391441
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:04.0445573
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7224310
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 13:53:20.7238318
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7245605
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7257603
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7268991
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7280771
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7290887
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 13:53:20.7300207
+	Msg: Context resize. New size: {0, 0}, New aspect ratio: -nan(ind)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7311272
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7457191
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7471815
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:20.7581907
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardSkybox.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:23.9260685
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:23.9446078
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:53:23.9558792
+	Msg: Generating irradiance map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:53:23.9592028
+	Msg: Irradiance map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:23.9602195
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentPrefilter.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:53:23.9777263
+	Msg: Generating prefilter map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:53:24.0405519
+	Msg: Prefilter map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:24.5768977
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:24.5845874
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredMappedGeometryPass.frag"
+}
+
+}
+WARNING: {
+	Context: MaterialFactory
+	Time: 2024-03-03 13:53:24.6574269
+	Msg: Missing metallic map of material "TexturesCom_Wood_Planks1_2x2_1K"! (Using placeholder: m = 0)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:24.6686674
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:25.1285013
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:25.1530536
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:25.1555415
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:25.1600901
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+Fragment info
+-------------
+0(35) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:26.7863488
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredEmissiveGeometryPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:26.7978160
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward25DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.4047221
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.4093786
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+Fragment info
+-------------
+0(30) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.7881169
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/shadowCast.vert"
+""
+"../Resources/Shaders/DefaultPipeline/shadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.8329614
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.8428954
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/silhouettePostProcess.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.8534889
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomPrefilter.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.8602139
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomDownSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.8679054
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomUpSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.8766526
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomRecombine.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:53:31.8810545
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/hdr.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.7730726
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 13:55:25.7747434
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.7758989
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.7771084
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.7972983
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.8368742
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.8411797
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 13:55:25.8418756
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.8952867
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.9796386
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.9988522
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:25.9999850
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.6579346
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 13:55:42.6596352
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.6608667
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.6620538
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.6636995
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.6673824
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.6685742
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 13:55:42.6693475
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.7414619
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.7571509
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.7584453
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:42.7694744
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardSkybox.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:46.4197206
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:46.4229144
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:55:46.4237916
+	Msg: Generating irradiance map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:55:46.4252784
+	Msg: Irradiance map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:46.4260569
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentPrefilter.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:55:46.4269897
+	Msg: Generating prefilter map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 13:55:46.4980907
+	Msg: Prefilter map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:47.0277134
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:47.0292909
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredMappedGeometryPass.frag"
+}
+
+}
+WARNING: {
+	Context: MaterialFactory
+	Time: 2024-03-03 13:55:47.0830759
+	Msg: Missing metallic map of material "TexturesCom_Wood_Planks1_2x2_1K"! (Using placeholder: m = 0)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:47.0964852
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:47.5506983
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:47.5758719
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:47.5777645
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:47.5827876
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+Fragment info
+-------------
+0(35) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:49.2041944
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredEmissiveGeometryPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:49.2058542
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward25DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:53.6794423
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:53.6838212
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+Fragment info
+-------------
+0(30) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0493456
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/shadowCast.vert"
+""
+"../Resources/Shaders/DefaultPipeline/shadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0861891
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0874983
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/silhouettePostProcess.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0893656
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomPrefilter.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0903787
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomDownSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0911666
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomUpSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0920082
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomRecombine.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:55:54.0931962
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/hdr.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:55.8798937
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 13:59:55.8818184
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:55.8831813
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:55.8842602
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:55.8852732
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:55.8944367
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:55.9235435
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 13:59:55.9243146
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:55.9960506
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:56.0612820
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:56.0838952
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 13:59:56.0851313
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.7312930
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 14:00:12.7327015
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.7338654
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.7350656
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.7361156
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.7394817
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.7406043
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 14:00:12.7415199
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.8131370
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.8322722
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.8334207
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:12.8440326
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardSkybox.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:16.3225120
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:16.3252270
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:00:16.3261037
+	Msg: Generating irradiance map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:00:16.3273370
+	Msg: Irradiance map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:16.3279299
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentPrefilter.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:00:16.3288053
+	Msg: Generating prefilter map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:00:16.4008850
+	Msg: Prefilter map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:16.9346585
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:16.9361154
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredMappedGeometryPass.frag"
+}
+
+}
+WARNING: {
+	Context: MaterialFactory
+	Time: 2024-03-03 14:00:16.9916171
+	Msg: Missing metallic map of material "TexturesCom_Wood_Planks1_2x2_1K"! (Using placeholder: m = 0)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:17.0033135
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:17.4441654
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:17.4690007
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:17.4706251
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:17.4747525
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+Fragment info
+-------------
+0(35) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:19.1833613
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredEmissiveGeometryPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:19.1845642
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward25DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:23.9502009
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:23.9555548
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+Fragment info
+-------------
+0(30) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.3980929
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/shadowCast.vert"
+""
+"../Resources/Shaders/DefaultPipeline/shadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.4574379
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.4586849
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/silhouettePostProcess.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.4601602
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomPrefilter.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.4612309
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomDownSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.4620005
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomUpSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.4631751
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomRecombine.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:00:24.4645561
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/hdr.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.6048346
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 14:22:08.6379768
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.6505042
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.6691320
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.6853087
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.7081388
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.7092510
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 14:22:08.7100937
+	Msg: Context resize. New size: {0, 0}, New aspect ratio: -nan(ind)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.7204616
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.8620894
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.8935857
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:08.9064246
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5635374
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 14:22:25.5645362
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5652463
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5663540
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5671840
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5684394
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5693728
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 14:22:25.5702224
+	Msg: Context resize. New size: {0, 0}, New aspect ratio: -nan(ind)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5711033
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5860638
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.5873336
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:25.6227728
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardSkybox.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:28.6650649
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:28.6693675
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:22:28.6703432
+	Msg: Generating irradiance map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:22:28.6717492
+	Msg: Irradiance map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:28.6790675
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentPrefilter.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:22:28.6805670
+	Msg: Generating prefilter map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:22:28.7451417
+	Msg: Prefilter map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:29.3120213
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:29.3271193
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredMappedGeometryPass.frag"
+}
+
+}
+WARNING: {
+	Context: MaterialFactory
+	Time: 2024-03-03 14:22:29.3984816
+	Msg: Missing metallic map of material "TexturesCom_Wood_Planks1_2x2_1K"! (Using placeholder: m = 0)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:29.4149167
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:29.8931814
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:29.9436226
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:29.9463106
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:29.9515696
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+Fragment info
+-------------
+0(35) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:31.5103310
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredEmissiveGeometryPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:31.5192185
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward25DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:35.8128452
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:35.8187803
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+Fragment info
+-------------
+0(30) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.2362730
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/shadowCast.vert"
+""
+"../Resources/Shaders/DefaultPipeline/shadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.2684618
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.2728425
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+Geometry info
+-------------
+(0) : error C6022: No input primitive type
+(0) : error C6029: No output primitive type
+
+Fragment info
+-------------
+(0) : warning C7050: "gl_FragDepth" might be used before being initialized
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.2799596
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/silhouettePostProcess.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.2928071
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomPrefilter.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.3043654
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomDownSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.3161700
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomUpSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.3270148
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomRecombine.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:22:36.3386349
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/hdr.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.7833810
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 14:23:39.7858045
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.7870382
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.7881215
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.7891674
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.7927428
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.7938366
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 14:23:39.7946274
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.9009998
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:39.9934076
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:40.0089639
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:40.0146979
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.6676597
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2024-03-03 14:23:56.6689606
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.6700659
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.6711720
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.6721457
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.6748278
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.6758197
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2024-03-03 14:23:56.6764932
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.7577800
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.7727275
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.7739415
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:56.7841036
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardSkybox.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:59.7446267
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:59.7473420
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:23:59.7482544
+	Msg: Generating irradiance map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:23:59.7500030
+	Msg: Irradiance map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:23:59.7507439
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentPrefilter.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:23:59.7513774
+	Msg: Generating prefilter map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2024-03-03 14:23:59.8244536
+	Msg: Prefilter map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:00.3635593
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:00.3651356
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredMappedGeometryPass.frag"
+}
+
+}
+WARNING: {
+	Context: MaterialFactory
+	Time: 2024-03-03 14:24:00.4162498
+	Msg: Missing metallic map of material "TexturesCom_Wood_Planks1_2x2_1K"! (Using placeholder: m = 0)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:00.4272631
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:00.8704977
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:00.8944264
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:00.8961617
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:00.9034743
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+Fragment info
+-------------
+0(35) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:02.3482667
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredEmissiveGeometryPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:02.3502036
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward25DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:06.6092808
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:06.6138527
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+Fragment info
+-------------
+0(30) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:06.9955657
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/shadowCast.vert"
+""
+"../Resources/Shaders/DefaultPipeline/shadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0320900
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0360517
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+Geometry info
+-------------
+(0) : error C6022: No input primitive type
+(0) : error C6029: No output primitive type
+
+Fragment info
+-------------
+(0) : warning C7050: "gl_FragDepth" might be used before being initialized
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0369250
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/silhouettePostProcess.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0385087
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomPrefilter.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0395209
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomDownSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0404125
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomUpSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0412730
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomRecombine.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2024-03-03 14:24:07.0424479
+	Msg: SHADER_COMPILATION_ERROR for: VERTEX
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/hdr.frag"
+}
+
+}
