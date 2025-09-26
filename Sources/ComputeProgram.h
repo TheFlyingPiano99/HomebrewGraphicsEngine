@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#define GLM_ENABLE_EXPERIMENTAL
 #include<glm/glm.hpp>
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>

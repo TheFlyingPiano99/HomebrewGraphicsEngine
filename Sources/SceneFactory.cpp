@@ -3,6 +3,7 @@
 #include "SphericalCollider.h"
 #include "CompositeCollider.h"
 #include "ShaderProgramFactory.h"
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/ext/vector_float3.hpp>
 #include <glm/ext/vector_float4.hpp>
 #include "ShaderProgramFactory.h"

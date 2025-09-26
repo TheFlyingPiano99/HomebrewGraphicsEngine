@@ -7,6 +7,7 @@
 */
 #pragma once
 #include "Component.h"
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/ext/vector_float3.hpp>
 #include "Physics.h"
 

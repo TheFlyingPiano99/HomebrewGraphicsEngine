@@ -6,6 +6,7 @@
 * ~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 #pragma once
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/ext/quaternion_float.hpp>
 
 namespace Hogra {

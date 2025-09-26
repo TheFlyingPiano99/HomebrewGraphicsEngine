@@ -9,6 +9,7 @@
 #include <freetype/freetype.h>  
 #include <iostream>
 #include <glad/glad.h>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <map>
 #include <filesystem>

@@ -13,7 +13,7 @@
 #include "HograTime.h"
 #include "DebugUtils.h"
 
-#define HOGRA_ENGINE_LICENSE_YEAR 2023
+#define HOGRA_ENGINE_LICENSE_YEAR 2025
 
 namespace Hogra {
 	void HoGraEngineApplication::SetFullScreenMode(GLFWwindow*& window, bool isFullScreenMode) {

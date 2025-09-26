@@ -7464,3 +7464,3173 @@ ERROR: {
 }
 
 }
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:14.7480571
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2025-09-26 09:56:14.8006229
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:14.8156688
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:14.8552067
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:14.8887803
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:14.9527396
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:14.9608485
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:14.9626976
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:15.0496184
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:15.1316227
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:15.1816825
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:15.1941204
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:25.9388962
+	Msg: Context resize. New size: {1278, 720}, New aspect ratio: 1.775000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:25.9631738
+	Msg: Context resize. New size: {1266, 720}, New aspect ratio: 1.758333
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:25.9859449
+	Msg: Context resize. New size: {1241, 720}, New aspect ratio: 1.723611
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.0123118
+	Msg: Context resize. New size: {1209, 720}, New aspect ratio: 1.679167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.0351476
+	Msg: Context resize. New size: {1181, 720}, New aspect ratio: 1.640278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.0593303
+	Msg: Context resize. New size: {1155, 720}, New aspect ratio: 1.604167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.0826090
+	Msg: Context resize. New size: {1130, 720}, New aspect ratio: 1.569444
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.1094794
+	Msg: Context resize. New size: {1105, 720}, New aspect ratio: 1.534722
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.1323496
+	Msg: Context resize. New size: {1084, 720}, New aspect ratio: 1.505556
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.1538682
+	Msg: Context resize. New size: {1078, 720}, New aspect ratio: 1.497222
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.1763435
+	Msg: Context resize. New size: {1077, 720}, New aspect ratio: 1.495833
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.1955844
+	Msg: Context resize. New size: {1075, 720}, New aspect ratio: 1.493056
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.2160183
+	Msg: Context resize. New size: {1064, 720}, New aspect ratio: 1.477778
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.2290444
+	Msg: Context resize. New size: {1055, 720}, New aspect ratio: 1.465278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.2388586
+	Msg: Context resize. New size: {1049, 720}, New aspect ratio: 1.456944
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.2555597
+	Msg: Context resize. New size: {1043, 720}, New aspect ratio: 1.448611
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.2725110
+	Msg: Context resize. New size: {1039, 720}, New aspect ratio: 1.443056
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.2888569
+	Msg: Context resize. New size: {1034, 720}, New aspect ratio: 1.436111
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.3063053
+	Msg: Context resize. New size: {1030, 720}, New aspect ratio: 1.430556
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.3220225
+	Msg: Context resize. New size: {1026, 720}, New aspect ratio: 1.425000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.3384756
+	Msg: Context resize. New size: {1024, 720}, New aspect ratio: 1.422222
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.4132287
+	Msg: Context resize. New size: {1023, 720}, New aspect ratio: 1.420833
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.4236232
+	Msg: Context resize. New size: {1022, 720}, New aspect ratio: 1.419444
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.4386569
+	Msg: Context resize. New size: {1020, 720}, New aspect ratio: 1.416667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.4552538
+	Msg: Context resize. New size: {1013, 720}, New aspect ratio: 1.406944
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.4720282
+	Msg: Context resize. New size: {1001, 720}, New aspect ratio: 1.390278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.4893315
+	Msg: Context resize. New size: {984, 720}, New aspect ratio: 1.366667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.5054197
+	Msg: Context resize. New size: {959, 720}, New aspect ratio: 1.331944
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.5222547
+	Msg: Context resize. New size: {935, 720}, New aspect ratio: 1.298611
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.5400062
+	Msg: Context resize. New size: {915, 720}, New aspect ratio: 1.270833
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.5551380
+	Msg: Context resize. New size: {892, 720}, New aspect ratio: 1.238889
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.5718111
+	Msg: Context resize. New size: {867, 720}, New aspect ratio: 1.204167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.5884021
+	Msg: Context resize. New size: {843, 720}, New aspect ratio: 1.170833
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.6053186
+	Msg: Context resize. New size: {816, 720}, New aspect ratio: 1.133333
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.6218665
+	Msg: Context resize. New size: {793, 720}, New aspect ratio: 1.101389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.6385257
+	Msg: Context resize. New size: {766, 720}, New aspect ratio: 1.063889
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.6553807
+	Msg: Context resize. New size: {739, 720}, New aspect ratio: 1.026389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.6730306
+	Msg: Context resize. New size: {696, 720}, New aspect ratio: 0.966667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.6886158
+	Msg: Context resize. New size: {675, 720}, New aspect ratio: 0.937500
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.7054063
+	Msg: Context resize. New size: {643, 720}, New aspect ratio: 0.893056
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.7221988
+	Msg: Context resize. New size: {620, 720}, New aspect ratio: 0.861111
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.7388011
+	Msg: Context resize. New size: {605, 720}, New aspect ratio: 0.840278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.7554010
+	Msg: Context resize. New size: {592, 720}, New aspect ratio: 0.822222
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.7718536
+	Msg: Context resize. New size: {577, 720}, New aspect ratio: 0.801389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.7884266
+	Msg: Context resize. New size: {568, 720}, New aspect ratio: 0.788889
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.8051899
+	Msg: Context resize. New size: {567, 720}, New aspect ratio: 0.787500
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.8569529
+	Msg: Context resize. New size: {569, 720}, New aspect ratio: 0.790278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.8672296
+	Msg: Context resize. New size: {577, 720}, New aspect ratio: 0.801389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.8777846
+	Msg: Context resize. New size: {593, 720}, New aspect ratio: 0.823611
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.8905076
+	Msg: Context resize. New size: {627, 720}, New aspect ratio: 0.870833
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.9051705
+	Msg: Context resize. New size: {667, 720}, New aspect ratio: 0.926389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.9218399
+	Msg: Context resize. New size: {731, 720}, New aspect ratio: 1.015278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.9384479
+	Msg: Context resize. New size: {765, 720}, New aspect ratio: 1.062500
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.9551861
+	Msg: Context resize. New size: {811, 720}, New aspect ratio: 1.126389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.9719675
+	Msg: Context resize. New size: {886, 720}, New aspect ratio: 1.230556
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:26.9885284
+	Msg: Context resize. New size: {953, 720}, New aspect ratio: 1.323611
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:27.0057095
+	Msg: Context resize. New size: {1008, 720}, New aspect ratio: 1.400000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:27.0220687
+	Msg: Context resize. New size: {1064, 720}, New aspect ratio: 1.477778
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:27.0391429
+	Msg: Context resize. New size: {1092, 720}, New aspect ratio: 1.516667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:27.0556365
+	Msg: Context resize. New size: {1118, 720}, New aspect ratio: 1.552778
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:27.0719278
+	Msg: Context resize. New size: {1134, 720}, New aspect ratio: 1.575000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:27.0886330
+	Msg: Context resize. New size: {1142, 720}, New aspect ratio: 1.586111
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:27.2589204
+	Msg: Context resize. New size: {1144, 720}, New aspect ratio: 1.588889
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.8571210
+	Msg: Context resize. New size: {1145, 720}, New aspect ratio: 1.590278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.8756264
+	Msg: Context resize. New size: {1150, 720}, New aspect ratio: 1.597222
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.8887700
+	Msg: Context resize. New size: {1161, 720}, New aspect ratio: 1.612500
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.9056511
+	Msg: Context resize. New size: {1171, 720}, New aspect ratio: 1.626389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.9222017
+	Msg: Context resize. New size: {1188, 720}, New aspect ratio: 1.650000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.9390279
+	Msg: Context resize. New size: {1220, 720}, New aspect ratio: 1.694444
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.9554192
+	Msg: Context resize. New size: {1270, 720}, New aspect ratio: 1.763889
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.9728185
+	Msg: Context resize. New size: {1324, 720}, New aspect ratio: 1.838889
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:29.9923670
+	Msg: Context resize. New size: {1397, 720}, New aspect ratio: 1.940278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.0133560
+	Msg: Context resize. New size: {1447, 720}, New aspect ratio: 2.009722
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.0339552
+	Msg: Context resize. New size: {1473, 720}, New aspect ratio: 2.045833
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.0538473
+	Msg: Context resize. New size: {1482, 720}, New aspect ratio: 2.058333
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.1287813
+	Msg: Context resize. New size: {1481, 720}, New aspect ratio: 2.056944
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.1487517
+	Msg: Context resize. New size: {1469, 720}, New aspect ratio: 2.040278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.1740241
+	Msg: Context resize. New size: {1434, 720}, New aspect ratio: 1.991667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.1960495
+	Msg: Context resize. New size: {1376, 720}, New aspect ratio: 1.911111
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.2169264
+	Msg: Context resize. New size: {1290, 720}, New aspect ratio: 1.791667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.2372215
+	Msg: Context resize. New size: {1200, 720}, New aspect ratio: 1.666667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.2516427
+	Msg: Context resize. New size: {1137, 720}, New aspect ratio: 1.579167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.2667553
+	Msg: Context resize. New size: {1104, 720}, New aspect ratio: 1.533333
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.2847348
+	Msg: Context resize. New size: {1091, 720}, New aspect ratio: 1.515278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.3028578
+	Msg: Context resize. New size: {1090, 720}, New aspect ratio: 1.513889
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.3168720
+	Msg: Context resize. New size: {1092, 720}, New aspect ratio: 1.516667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.3303040
+	Msg: Context resize. New size: {1097, 720}, New aspect ratio: 1.523611
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.3473378
+	Msg: Context resize. New size: {1109, 720}, New aspect ratio: 1.540278
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.3637167
+	Msg: Context resize. New size: {1129, 720}, New aspect ratio: 1.568056
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.3770817
+	Msg: Context resize. New size: {1142, 720}, New aspect ratio: 1.586111
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.3910041
+	Msg: Context resize. New size: {1155, 720}, New aspect ratio: 1.604167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.4071607
+	Msg: Context resize. New size: {1173, 720}, New aspect ratio: 1.629167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.4221501
+	Msg: Context resize. New size: {1185, 720}, New aspect ratio: 1.645833
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.4389141
+	Msg: Context resize. New size: {1195, 720}, New aspect ratio: 1.659722
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.4551634
+	Msg: Context resize. New size: {1204, 720}, New aspect ratio: 1.672222
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.4791289
+	Msg: Context resize. New size: {1207, 720}, New aspect ratio: 1.676389
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.5027567
+	Msg: Context resize. New size: {1208, 720}, New aspect ratio: 1.677778
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:30.5292301
+	Msg: Context resize. New size: {1209, 720}, New aspect ratio: 1.679167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.6326457
+	Msg: Context resize. New size: {1210, 720}, New aspect ratio: 1.680556
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.6547079
+	Msg: Context resize. New size: {1213, 725}, New aspect ratio: 1.673103
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.6800271
+	Msg: Context resize. New size: {1219, 734}, New aspect ratio: 1.660763
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.6981039
+	Msg: Context resize. New size: {1227, 739}, New aspect ratio: 1.660352
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.7207690
+	Msg: Context resize. New size: {1239, 749}, New aspect ratio: 1.654206
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.7457193
+	Msg: Context resize. New size: {1271, 770}, New aspect ratio: 1.650649
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.7714709
+	Msg: Context resize. New size: {1304, 790}, New aspect ratio: 1.650633
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.8049152
+	Msg: Context resize. New size: {1342, 813}, New aspect ratio: 1.650676
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.8380574
+	Msg: Context resize. New size: {1352, 823}, New aspect ratio: 1.642770
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.8719122
+	Msg: Context resize. New size: {1356, 832}, New aspect ratio: 1.629808
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.9099888
+	Msg: Context resize. New size: {1360, 839}, New aspect ratio: 1.620977
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.9460701
+	Msg: Context resize. New size: {1361, 840}, New aspect ratio: 1.620238
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:32.9805029
+	Msg: Context resize. New size: {1362, 844}, New aspect ratio: 1.613744
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.0160409
+	Msg: Context resize. New size: {1364, 849}, New aspect ratio: 1.606596
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.0331825
+	Msg: Context resize. New size: {1366, 852}, New aspect ratio: 1.603286
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.0489555
+	Msg: Context resize. New size: {1367, 855}, New aspect ratio: 1.598830
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.0652089
+	Msg: Context resize. New size: {1367, 857}, New aspect ratio: 1.595099
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.1350363
+	Msg: Context resize. New size: {1366, 857}, New aspect ratio: 1.593932
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.1522411
+	Msg: Context resize. New size: {1361, 849}, New aspect ratio: 1.603062
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.1736746
+	Msg: Context resize. New size: {1345, 821}, New aspect ratio: 1.638246
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.1909566
+	Msg: Context resize. New size: {1326, 788}, New aspect ratio: 1.682741
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.2085049
+	Msg: Context resize. New size: {1308, 745}, New aspect ratio: 1.755705
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.2389126
+	Msg: Context resize. New size: {1297, 711}, New aspect ratio: 1.824191
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.2549047
+	Msg: Context resize. New size: {1285, 652}, New aspect ratio: 1.970859
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.2721316
+	Msg: Context resize. New size: {1281, 635}, New aspect ratio: 2.017323
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.2885777
+	Msg: Context resize. New size: {1279, 625}, New aspect ratio: 2.046400
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.3052464
+	Msg: Context resize. New size: {1278, 616}, New aspect ratio: 2.074675
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.3220530
+	Msg: Context resize. New size: {1278, 602}, New aspect ratio: 2.122924
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.3390134
+	Msg: Context resize. New size: {1275, 588}, New aspect ratio: 2.168367
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.3557198
+	Msg: Context resize. New size: {1273, 576}, New aspect ratio: 2.210069
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.3722900
+	Msg: Context resize. New size: {1273, 566}, New aspect ratio: 2.249117
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.3886805
+	Msg: Context resize. New size: {1274, 556}, New aspect ratio: 2.291367
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.4053569
+	Msg: Context resize. New size: {1277, 539}, New aspect ratio: 2.369202
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.4220039
+	Msg: Context resize. New size: {1284, 511}, New aspect ratio: 2.512720
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.4397428
+	Msg: Context resize. New size: {1287, 485}, New aspect ratio: 2.653608
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.4553473
+	Msg: Context resize. New size: {1291, 467}, New aspect ratio: 2.764454
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.4720583
+	Msg: Context resize. New size: {1297, 452}, New aspect ratio: 2.869469
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.4888125
+	Msg: Context resize. New size: {1303, 442}, New aspect ratio: 2.947964
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.5052094
+	Msg: Context resize. New size: {1312, 431}, New aspect ratio: 3.044084
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.5222460
+	Msg: Context resize. New size: {1321, 424}, New aspect ratio: 3.115566
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.5385610
+	Msg: Context resize. New size: {1331, 418}, New aspect ratio: 3.184211
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.5556467
+	Msg: Context resize. New size: {1339, 414}, New aspect ratio: 3.234299
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.5725744
+	Msg: Context resize. New size: {1346, 410}, New aspect ratio: 3.282927
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.5906572
+	Msg: Context resize. New size: {1350, 408}, New aspect ratio: 3.308824
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.6108706
+	Msg: Context resize. New size: {1351, 408}, New aspect ratio: 3.311275
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.6244809
+	Msg: Context resize. New size: {1352, 408}, New aspect ratio: 3.313725
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.6392460
+	Msg: Context resize. New size: {1353, 407}, New aspect ratio: 3.324324
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.6947856
+	Msg: Context resize. New size: {1354, 407}, New aspect ratio: 3.326781
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.7100925
+	Msg: Context resize. New size: {1357, 419}, New aspect ratio: 3.238663
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.7261760
+	Msg: Context resize. New size: {1360, 441}, New aspect ratio: 3.083900
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.7402566
+	Msg: Context resize. New size: {1359, 470}, New aspect ratio: 2.891489
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.7554142
+	Msg: Context resize. New size: {1353, 490}, New aspect ratio: 2.761225
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.7722098
+	Msg: Context resize. New size: {1341, 512}, New aspect ratio: 2.619141
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.7891508
+	Msg: Context resize. New size: {1330, 531}, New aspect ratio: 2.504708
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.8054899
+	Msg: Context resize. New size: {1306, 554}, New aspect ratio: 2.357401
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.8222628
+	Msg: Context resize. New size: {1284, 567}, New aspect ratio: 2.264550
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.8386811
+	Msg: Context resize. New size: {1249, 584}, New aspect ratio: 2.138699
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.8558768
+	Msg: Context resize. New size: {1224, 600}, New aspect ratio: 2.040000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.8727542
+	Msg: Context resize. New size: {1195, 626}, New aspect ratio: 1.908946
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.8889796
+	Msg: Context resize. New size: {1173, 653}, New aspect ratio: 1.796325
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.9056825
+	Msg: Context resize. New size: {1165, 663}, New aspect ratio: 1.757164
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.9220676
+	Msg: Context resize. New size: {1160, 668}, New aspect ratio: 1.736527
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.9407438
+	Msg: Context resize. New size: {1154, 669}, New aspect ratio: 1.724963
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.9553398
+	Msg: Context resize. New size: {1152, 669}, New aspect ratio: 1.721973
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.9721604
+	Msg: Context resize. New size: {1149, 669}, New aspect ratio: 1.717489
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:33.9885925
+	Msg: Context resize. New size: {1139, 665}, New aspect ratio: 1.712782
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.0060629
+	Msg: Context resize. New size: {1124, 659}, New aspect ratio: 1.705615
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.0225149
+	Msg: Context resize. New size: {1107, 652}, New aspect ratio: 1.697853
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.0389153
+	Msg: Context resize. New size: {1084, 637}, New aspect ratio: 1.701727
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.0558438
+	Msg: Context resize. New size: {1058, 620}, New aspect ratio: 1.706452
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.0730509
+	Msg: Context resize. New size: {1022, 600}, New aspect ratio: 1.703333
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.0888274
+	Msg: Context resize. New size: {1001, 592}, New aspect ratio: 1.690878
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.1054905
+	Msg: Context resize. New size: {982, 590}, New aspect ratio: 1.664407
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.1221321
+	Msg: Context resize. New size: {970, 587}, New aspect ratio: 1.652470
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.1386042
+	Msg: Context resize. New size: {959, 584}, New aspect ratio: 1.642123
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.1557864
+	Msg: Context resize. New size: {954, 582}, New aspect ratio: 1.639175
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.1723463
+	Msg: Context resize. New size: {951, 582}, New aspect ratio: 1.634021
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.2213600
+	Msg: Context resize. New size: {951, 583}, New aspect ratio: 1.631218
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.2342914
+	Msg: Context resize. New size: {956, 586}, New aspect ratio: 1.631399
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.2478419
+	Msg: Context resize. New size: {968, 595}, New aspect ratio: 1.626891
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.2627899
+	Msg: Context resize. New size: {981, 603}, New aspect ratio: 1.626866
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.2758687
+	Msg: Context resize. New size: {1003, 616}, New aspect ratio: 1.628247
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.2891837
+	Msg: Context resize. New size: {1027, 630}, New aspect ratio: 1.630159
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.3054820
+	Msg: Context resize. New size: {1062, 646}, New aspect ratio: 1.643963
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.3221759
+	Msg: Context resize. New size: {1119, 670}, New aspect ratio: 1.670149
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.3385149
+	Msg: Context resize. New size: {1174, 690}, New aspect ratio: 1.701449
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.3553116
+	Msg: Context resize. New size: {1209, 708}, New aspect ratio: 1.707627
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.3720981
+	Msg: Context resize. New size: {1226, 720}, New aspect ratio: 1.702778
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.3886741
+	Msg: Context resize. New size: {1234, 731}, New aspect ratio: 1.688099
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.4056034
+	Msg: Context resize. New size: {1235, 738}, New aspect ratio: 1.673442
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.4219351
+	Msg: Context resize. New size: {1235, 744}, New aspect ratio: 1.659946
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.4389994
+	Msg: Context resize. New size: {1233, 751}, New aspect ratio: 1.641811
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.4557916
+	Msg: Context resize. New size: {1233, 757}, New aspect ratio: 1.628798
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.4726531
+	Msg: Context resize. New size: {1233, 763}, New aspect ratio: 1.615990
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.4888806
+	Msg: Context resize. New size: {1232, 768}, New aspect ratio: 1.604167
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.5056085
+	Msg: Context resize. New size: {1230, 772}, New aspect ratio: 1.593264
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.5308799
+	Msg: Context resize. New size: {1228, 775}, New aspect ratio: 1.584516
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.5794322
+	Msg: Context resize. New size: {1229, 775}, New aspect ratio: 1.585806
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.5929308
+	Msg: Context resize. New size: {1232, 775}, New aspect ratio: 1.589677
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.6057600
+	Msg: Context resize. New size: {1237, 775}, New aspect ratio: 1.596129
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.6221768
+	Msg: Context resize. New size: {1245, 774}, New aspect ratio: 1.608527
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.6385090
+	Msg: Context resize. New size: {1257, 770}, New aspect ratio: 1.632468
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.6559210
+	Msg: Context resize. New size: {1267, 767}, New aspect ratio: 1.651891
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.6728082
+	Msg: Context resize. New size: {1270, 766}, New aspect ratio: 1.657963
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.6888598
+	Msg: Context resize. New size: {1270, 764}, New aspect ratio: 1.662304
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.7054052
+	Msg: Context resize. New size: {1270, 763}, New aspect ratio: 1.664482
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.7223887
+	Msg: Context resize. New size: {1270, 761}, New aspect ratio: 1.668857
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.7404074
+	Msg: Context resize. New size: {1270, 758}, New aspect ratio: 1.675462
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.7553476
+	Msg: Context resize. New size: {1270, 757}, New aspect ratio: 1.677675
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.7721323
+	Msg: Context resize. New size: {1269, 754}, New aspect ratio: 1.683024
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.7885510
+	Msg: Context resize. New size: {1265, 746}, New aspect ratio: 1.695710
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.8054171
+	Msg: Context resize. New size: {1258, 735}, New aspect ratio: 1.711565
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.8222942
+	Msg: Context resize. New size: {1246, 722}, New aspect ratio: 1.725762
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.8385344
+	Msg: Context resize. New size: {1236, 712}, New aspect ratio: 1.735955
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.8556478
+	Msg: Context resize. New size: {1227, 706}, New aspect ratio: 1.737960
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.8720202
+	Msg: Context resize. New size: {1221, 701}, New aspect ratio: 1.741797
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.8889224
+	Msg: Context resize. New size: {1212, 695}, New aspect ratio: 1.743885
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.9055805
+	Msg: Context resize. New size: {1204, 690}, New aspect ratio: 1.744928
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.9220904
+	Msg: Context resize. New size: {1198, 689}, New aspect ratio: 1.738752
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.9386856
+	Msg: Context resize. New size: {1193, 687}, New aspect ratio: 1.736536
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:34.9909121
+	Msg: Context resize. New size: {1194, 688}, New aspect ratio: 1.735465
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.0026058
+	Msg: Context resize. New size: {1196, 690}, New aspect ratio: 1.733333
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.0146100
+	Msg: Context resize. New size: {1199, 692}, New aspect ratio: 1.732659
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.0259223
+	Msg: Context resize. New size: {1202, 694}, New aspect ratio: 1.731988
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.0385439
+	Msg: Context resize. New size: {1207, 697}, New aspect ratio: 1.731707
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.0554385
+	Msg: Context resize. New size: {1212, 698}, New aspect ratio: 1.736390
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.0720330
+	Msg: Context resize. New size: {1220, 700}, New aspect ratio: 1.742857
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.0887139
+	Msg: Context resize. New size: {1228, 701}, New aspect ratio: 1.751783
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.1052329
+	Msg: Context resize. New size: {1233, 702}, New aspect ratio: 1.756410
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.1225266
+	Msg: Context resize. New size: {1236, 702}, New aspect ratio: 1.760684
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.1389163
+	Msg: Context resize. New size: {1240, 702}, New aspect ratio: 1.766382
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.2028852
+	Msg: Context resize. New size: {1239, 702}, New aspect ratio: 1.764957
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.2144769
+	Msg: Context resize. New size: {1233, 702}, New aspect ratio: 1.756410
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.2261642
+	Msg: Context resize. New size: {1224, 699}, New aspect ratio: 1.751073
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.2556277
+	Msg: Context resize. New size: {1215, 695}, New aspect ratio: 1.748201
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.2684007
+	Msg: Context resize. New size: {1186, 681}, New aspect ratio: 1.741557
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.2804654
+	Msg: Context resize. New size: {1176, 675}, New aspect ratio: 1.742222
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.2933566
+	Msg: Context resize. New size: {1168, 666}, New aspect ratio: 1.753754
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.3053547
+	Msg: Context resize. New size: {1160, 655}, New aspect ratio: 1.770992
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.3221802
+	Msg: Context resize. New size: {1153, 645}, New aspect ratio: 1.787597
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.3391319
+	Msg: Context resize. New size: {1142, 629}, New aspect ratio: 1.815580
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.3928314
+	Msg: Context resize. New size: {1135, 623}, New aspect ratio: 1.821830
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.4087491
+	Msg: Context resize. New size: {1137, 623}, New aspect ratio: 1.825040
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.4226189
+	Msg: Context resize. New size: {1140, 621}, New aspect ratio: 1.835749
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.4386790
+	Msg: Context resize. New size: {1145, 620}, New aspect ratio: 1.846774
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.4554359
+	Msg: Context resize. New size: {1154, 619}, New aspect ratio: 1.864297
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.4719458
+	Msg: Context resize. New size: {1165, 619}, New aspect ratio: 1.882068
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.4886162
+	Msg: Context resize. New size: {1182, 621}, New aspect ratio: 1.903382
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.5052839
+	Msg: Context resize. New size: {1201, 625}, New aspect ratio: 1.921600
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.5220443
+	Msg: Context resize. New size: {1208, 627}, New aspect ratio: 1.926635
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.5402138
+	Msg: Context resize. New size: {1214, 631}, New aspect ratio: 1.923930
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.5565899
+	Msg: Context resize. New size: {1216, 633}, New aspect ratio: 1.921011
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.5768402
+	Msg: Context resize. New size: {1217, 635}, New aspect ratio: 1.916535
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.6009188
+	Msg: Context resize. New size: {1217, 636}, New aspect ratio: 1.913522
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.6133166
+	Msg: Context resize. New size: {1216, 637}, New aspect ratio: 1.908948
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.6252402
+	Msg: Context resize. New size: {1214, 639}, New aspect ratio: 1.899843
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.6385603
+	Msg: Context resize. New size: {1211, 641}, New aspect ratio: 1.889236
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.6555982
+	Msg: Context resize. New size: {1201, 644}, New aspect ratio: 1.864907
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.6723245
+	Msg: Context resize. New size: {1193, 648}, New aspect ratio: 1.841049
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.6885771
+	Msg: Context resize. New size: {1182, 652}, New aspect ratio: 1.812883
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.7053411
+	Msg: Context resize. New size: {1178, 655}, New aspect ratio: 1.798473
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.7221247
+	Msg: Context resize. New size: {1178, 658}, New aspect ratio: 1.790274
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.7385387
+	Msg: Context resize. New size: {1177, 662}, New aspect ratio: 1.777946
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.7557009
+	Msg: Context resize. New size: {1176, 666}, New aspect ratio: 1.765766
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.7721175
+	Msg: Context resize. New size: {1176, 671}, New aspect ratio: 1.752608
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.7887717
+	Msg: Context resize. New size: {1178, 677}, New aspect ratio: 1.740030
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.8056421
+	Msg: Context resize. New size: {1181, 684}, New aspect ratio: 1.726608
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.8222270
+	Msg: Context resize. New size: {1185, 691}, New aspect ratio: 1.714906
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.8386276
+	Msg: Context resize. New size: {1190, 695}, New aspect ratio: 1.712230
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.8553104
+	Msg: Context resize. New size: {1195, 698}, New aspect ratio: 1.712034
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.8720989
+	Msg: Context resize. New size: {1199, 700}, New aspect ratio: 1.712857
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.8888249
+	Msg: Context resize. New size: {1205, 703}, New aspect ratio: 1.714082
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.9054993
+	Msg: Context resize. New size: {1211, 705}, New aspect ratio: 1.717731
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.9267106
+	Msg: Context resize. New size: {1213, 706}, New aspect ratio: 1.718130
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:35.9891964
+	Msg: Context resize. New size: {1212, 706}, New aspect ratio: 1.716714
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.0010001
+	Msg: Context resize. New size: {1209, 706}, New aspect ratio: 1.712465
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.0132890
+	Msg: Context resize. New size: {1205, 706}, New aspect ratio: 1.706799
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.0247522
+	Msg: Context resize. New size: {1200, 705}, New aspect ratio: 1.702128
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.0386006
+	Msg: Context resize. New size: {1195, 703}, New aspect ratio: 1.699858
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.0553301
+	Msg: Context resize. New size: {1186, 698}, New aspect ratio: 1.699140
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.0722237
+	Msg: Context resize. New size: {1175, 693}, New aspect ratio: 1.695527
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.0889092
+	Msg: Context resize. New size: {1167, 688}, New aspect ratio: 1.696221
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.1056083
+	Msg: Context resize. New size: {1164, 687}, New aspect ratio: 1.694323
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.1220847
+	Msg: Context resize. New size: {1164, 685}, New aspect ratio: 1.699270
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.1404014
+	Msg: Context resize. New size: {1164, 682}, New aspect ratio: 1.706745
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.1555102
+	Msg: Context resize. New size: {1165, 680}, New aspect ratio: 1.713235
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.1722652
+	Msg: Context resize. New size: {1167, 679}, New aspect ratio: 1.718704
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.1888179
+	Msg: Context resize. New size: {1170, 675}, New aspect ratio: 1.733333
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.2054493
+	Msg: Context resize. New size: {1173, 673}, New aspect ratio: 1.742942
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.2218790
+	Msg: Context resize. New size: {1176, 671}, New aspect ratio: 1.752608
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.2388829
+	Msg: Context resize. New size: {1182, 670}, New aspect ratio: 1.764179
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.2557636
+	Msg: Context resize. New size: {1191, 668}, New aspect ratio: 1.782934
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.2726267
+	Msg: Context resize. New size: {1202, 667}, New aspect ratio: 1.802099
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.2892245
+	Msg: Context resize. New size: {1209, 666}, New aspect ratio: 1.815315
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.4055653
+	Msg: Context resize. New size: {1210, 666}, New aspect ratio: 1.816817
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.4185467
+	Msg: Context resize. New size: {1210, 668}, New aspect ratio: 1.811377
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.4308628
+	Msg: Context resize. New size: {1210, 669}, New aspect ratio: 1.808670
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.4431780
+	Msg: Context resize. New size: {1209, 670}, New aspect ratio: 1.804478
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.4556953
+	Msg: Context resize. New size: {1209, 671}, New aspect ratio: 1.801788
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.4720892
+	Msg: Context resize. New size: {1209, 672}, New aspect ratio: 1.799107
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.4969413
+	Msg: Context resize. New size: {1209, 673}, New aspect ratio: 1.796434
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.5167693
+	Msg: Context resize. New size: {1209, 674}, New aspect ratio: 1.793769
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.5290705
+	Msg: Context resize. New size: {1210, 676}, New aspect ratio: 1.789941
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.5412735
+	Msg: Context resize. New size: {1213, 677}, New aspect ratio: 1.791728
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.5555252
+	Msg: Context resize. New size: {1215, 679}, New aspect ratio: 1.789396
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.5723205
+	Msg: Context resize. New size: {1220, 681}, New aspect ratio: 1.791483
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.5890862
+	Msg: Context resize. New size: {1225, 683}, New aspect ratio: 1.793558
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.6056376
+	Msg: Context resize. New size: {1236, 687}, New aspect ratio: 1.799127
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.6223794
+	Msg: Context resize. New size: {1254, 693}, New aspect ratio: 1.809524
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.6389756
+	Msg: Context resize. New size: {1273, 695}, New aspect ratio: 1.831655
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.6554847
+	Msg: Context resize. New size: {1285, 696}, New aspect ratio: 1.846264
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.6771750
+	Msg: Context resize. New size: {1289, 698}, New aspect ratio: 1.846705
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.6967781
+	Msg: Context resize. New size: {1290, 698}, New aspect ratio: 1.848137
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.7454277
+	Msg: Context resize. New size: {1290, 699}, New aspect ratio: 1.845494
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.7629554
+	Msg: Context resize. New size: {1286, 700}, New aspect ratio: 1.837143
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.7807563
+	Msg: Context resize. New size: {1274, 702}, New aspect ratio: 1.814815
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.7944593
+	Msg: Context resize. New size: {1263, 702}, New aspect ratio: 1.799145
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.8072131
+	Msg: Context resize. New size: {1255, 702}, New aspect ratio: 1.787749
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.8220149
+	Msg: Context resize. New size: {1247, 702}, New aspect ratio: 1.776353
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.8391333
+	Msg: Context resize. New size: {1239, 704}, New aspect ratio: 1.759943
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:36.8556621
+	Msg: Context resize. New size: {1232, 704}, New aspect ratio: 1.750000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.0692623
+	Msg: Context resize. New size: {1227, 705}, New aspect ratio: 1.740426
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.0813634
+	Msg: Context resize. New size: {1226, 705}, New aspect ratio: 1.739007
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.0986261
+	Msg: Context resize. New size: {1225, 705}, New aspect ratio: 1.737589
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.1147909
+	Msg: Context resize. New size: {1224, 705}, New aspect ratio: 1.736170
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.1268866
+	Msg: Context resize. New size: {1223, 705}, New aspect ratio: 1.734752
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.1393870
+	Msg: Context resize. New size: {1221, 705}, New aspect ratio: 1.731915
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.1556026
+	Msg: Context resize. New size: {1219, 704}, New aspect ratio: 1.731534
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.1751738
+	Msg: Context resize. New size: {1214, 703}, New aspect ratio: 1.726885
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.1890380
+	Msg: Context resize. New size: {1208, 702}, New aspect ratio: 1.720798
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.2057365
+	Msg: Context resize. New size: {1204, 702}, New aspect ratio: 1.715100
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.2224912
+	Msg: Context resize. New size: {1199, 701}, New aspect ratio: 1.710414
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.2388714
+	Msg: Context resize. New size: {1190, 700}, New aspect ratio: 1.700000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.2557440
+	Msg: Context resize. New size: {1181, 699}, New aspect ratio: 1.689556
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.2722818
+	Msg: Context resize. New size: {1170, 697}, New aspect ratio: 1.678623
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.2888408
+	Msg: Context resize. New size: {1161, 697}, New aspect ratio: 1.665710
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.3057032
+	Msg: Context resize. New size: {1156, 696}, New aspect ratio: 1.660920
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.3228699
+	Msg: Context resize. New size: {1153, 696}, New aspect ratio: 1.656609
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.3387530
+	Msg: Context resize. New size: {1150, 696}, New aspect ratio: 1.652299
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.3557758
+	Msg: Context resize. New size: {1144, 696}, New aspect ratio: 1.643678
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.3720303
+	Msg: Context resize. New size: {1133, 696}, New aspect ratio: 1.627874
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.3888640
+	Msg: Context resize. New size: {1121, 696}, New aspect ratio: 1.610632
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.4056519
+	Msg: Context resize. New size: {1108, 695}, New aspect ratio: 1.594245
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.4395509
+	Msg: Context resize. New size: {1096, 695}, New aspect ratio: 1.576978
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.4554855
+	Msg: Context resize. New size: {1074, 695}, New aspect ratio: 1.545324
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.4716330
+	Msg: Context resize. New size: {1069, 695}, New aspect ratio: 1.538129
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.4860840
+	Msg: Context resize. New size: {1068, 694}, New aspect ratio: 1.538905
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.5269907
+	Msg: Context resize. New size: {1069, 693}, New aspect ratio: 1.542569
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.5428086
+	Msg: Context resize. New size: {1075, 692}, New aspect ratio: 1.553468
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.5589881
+	Msg: Context resize. New size: {1080, 692}, New aspect ratio: 1.560694
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.5739727
+	Msg: Context resize. New size: {1090, 691}, New aspect ratio: 1.577424
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.5890947
+	Msg: Context resize. New size: {1101, 690}, New aspect ratio: 1.595652
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.6053951
+	Msg: Context resize. New size: {1117, 690}, New aspect ratio: 1.618841
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.6221194
+	Msg: Context resize. New size: {1134, 690}, New aspect ratio: 1.643478
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.6395191
+	Msg: Context resize. New size: {1150, 690}, New aspect ratio: 1.666667
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.6556771
+	Msg: Context resize. New size: {1159, 690}, New aspect ratio: 1.679710
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.6777057
+	Msg: Context resize. New size: {1163, 690}, New aspect ratio: 1.685507
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.6907293
+	Msg: Context resize. New size: {1168, 691}, New aspect ratio: 1.690304
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.7058393
+	Msg: Context resize. New size: {1170, 691}, New aspect ratio: 1.693198
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.7224353
+	Msg: Context resize. New size: {1175, 691}, New aspect ratio: 1.700434
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.7388461
+	Msg: Context resize. New size: {1179, 692}, New aspect ratio: 1.703757
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.7554899
+	Msg: Context resize. New size: {1183, 692}, New aspect ratio: 1.709538
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.7723749
+	Msg: Context resize. New size: {1187, 692}, New aspect ratio: 1.715318
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.7890096
+	Msg: Context resize. New size: {1192, 694}, New aspect ratio: 1.717579
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.8055017
+	Msg: Context resize. New size: {1197, 694}, New aspect ratio: 1.724784
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.8221142
+	Msg: Context resize. New size: {1201, 695}, New aspect ratio: 1.728058
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.8386295
+	Msg: Context resize. New size: {1205, 695}, New aspect ratio: 1.733813
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.8566284
+	Msg: Context resize. New size: {1211, 696}, New aspect ratio: 1.739943
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.8722400
+	Msg: Context resize. New size: {1223, 697}, New aspect ratio: 1.754663
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.8890090
+	Msg: Context resize. New size: {1233, 697}, New aspect ratio: 1.769010
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.9064520
+	Msg: Context resize. New size: {1242, 697}, New aspect ratio: 1.781923
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.9269792
+	Msg: Context resize. New size: {1247, 697}, New aspect ratio: 1.789096
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.9611489
+	Msg: Context resize. New size: {1249, 696}, New aspect ratio: 1.794540
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:37.9812118
+	Msg: Context resize. New size: {1250, 696}, New aspect ratio: 1.795977
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:38.1395993
+	Msg: Context resize. New size: {1249, 696}, New aspect ratio: 1.794540
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:38.1528871
+	Msg: Context resize. New size: {1247, 697}, New aspect ratio: 1.789096
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:38.1653538
+	Msg: Context resize. New size: {1244, 697}, New aspect ratio: 1.784792
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:38.1846534
+	Msg: Context resize. New size: {1240, 697}, New aspect ratio: 1.779053
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:41.9929763
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2025-09-26 09:56:41.9946801
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:41.9964706
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:41.9980754
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:41.9995283
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:42.0028719
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:42.0044668
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:56:42.0056337
+	Msg: Context resize. New size: {1240, 697}, New aspect ratio: 1.779053
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:42.0758674
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:42.0926336
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:42.0940759
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:42.1213950
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardSkybox.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:44.0837477
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:44.1152235
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:56:44.1249584
+	Msg: Generating irradiance map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:56:44.1292938
+	Msg: Irradiance map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:44.1398188
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentPrefilter.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:56:44.1534122
+	Msg: Generating prefilter map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:56:44.2208438
+	Msg: Prefilter map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:45.8225064
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:45.8459173
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredMappedGeometryPass.frag"
+}
+
+}
+WARNING: {
+	Context: MaterialFactory
+	Time: 2025-09-26 09:56:45.9683857
+	Msg: Missing metallic map of material "TexturesCom_Wood_Planks1_2x2_1K"! (Using placeholder: m = 0)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:45.9983446
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:46.5212176
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:46.5973565
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:46.6159844
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:46.6196559
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+Fragment info
+-------------
+0(35) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:48.2969820
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredEmissiveGeometryPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:48.3250699
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward25DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:53.1155285
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:53.1224106
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+Fragment info
+-------------
+0(30) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:53.5208873
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/shadowCast.vert"
+""
+"../Resources/Shaders/DefaultPipeline/shadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:53.5753427
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:53.5769172
+	Msg: SHADER_COMPILATION_ERROR for: GEOMETRY
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:53.5822178
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+Geometry info
+-------------
+(0) : error C6022: No input primitive type
+(0) : error C6029: No output primitive type
+
+Fragment info
+-------------
+(0) : warning C7050: "gl_FragDepth" might be used before being initialized
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:56:53.5962807
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/silhouettePostProcess.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.5237902
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2025-09-26 09:57:14.5387111
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.5413553
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.5432164
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.5449826
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.5497948
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.5516772
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:14.5528455
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.6268979
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward2DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.6984779
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.7254664
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:14.7275032
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.3912849
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/precalculateIndirectBRDF.frag"
+}
+
+}
+WARNING: {
+	Context: Frame Buffer Object
+	Time: 2025-09-26 09:57:31.3959236
+	Msg: Linking 0 glID texture to FBO!
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.3975532
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRDirectionalLightingPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.3991016
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredAmbientPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.4008556
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/lightVolume.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredPBRLightVolumePass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.4049238
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.4067996
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Debug/debug.vert"
+""
+"../Resources/Shaders/Debug/debug.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:31.4084987
+	Msg: Context resize. New size: {1280, 720}, New aspect ratio: 1.777778
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.4810697
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DNoViewProj.vert"
+""
+"../Resources/Shaders/UI/glyph.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.4977304
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/flatContainer.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.4993189
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single2DOrthographic.vert"
+""
+"../Resources/Shaders/UI/caption.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:31.5108215
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardSkybox.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:33.6107787
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/equirectangularToCubemap.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:33.6140974
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:57:33.6151022
+	Msg: Generating irradiance map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:57:33.6166245
+	Msg: Irradiance map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:33.6178607
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/Utility/EnvironmentMap/environmentToIrradiance.vert"
+""
+"../Resources/Shaders/Utility/EnvironmentMap/environmentPrefilter.frag"
+}
+
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:57:33.6188093
+	Msg: Generating prefilter map.
+}
+MESSAGE: {
+	Context: Renderer
+	Time: 2025-09-26 09:57:33.6854297
+	Msg: Prefilter map complete.
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:34.1778493
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:34.1797579
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredMappedGeometryPass.frag"
+}
+
+}
+WARNING: {
+	Context: MaterialFactory
+	Time: 2025-09-26 09:57:34.2337124
+	Msg: Missing metallic map of material "TexturesCom_Wood_Planks1_2x2_1K"! (Using placeholder: m = 0)
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:34.2466404
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:34.6638012
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:34.6911187
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/Utility/roughnessMetallicAOCombination.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:34.7083486
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:34.7251339
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardHomogenousCellShading.frag"
+}
+Fragment info
+-------------
+0(35) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:36.0584837
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/instanced3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/deferredEmissiveGeometryPass.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:36.0751212
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forward25DSprite.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.4054362
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.4116364
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/single3DWithTBN.vert"
+""
+"../Resources/Shaders/DefaultPipeline/forwardCellShading.frag"
+}
+Fragment info
+-------------
+0(30) : error C7600: no value specified for layout qualifier 'std140'
+(0) : error C2003: incompatible options for link
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.7617668
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/shadowCast.vert"
+""
+"../Resources/Shaders/DefaultPipeline/shadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8003401
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8017207
+	Msg: SHADER_COMPILATION_ERROR for: GEOMETRY
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8062464
+	Msg: SHADER_LINKING_ERROR for: PROGRAM
+{
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.vert"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.geom"
+"../Resources/Shaders/DefaultPipeline/omniDirShadowCast.frag"
+}
+Geometry info
+-------------
+(0) : error C6022: No input primitive type
+(0) : error C6029: No output primitive type
+
+Fragment info
+-------------
+(0) : warning C7050: "gl_FragDepth" might be used before being initialized
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8077681
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/silhouettePostProcess.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8114620
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomPrefilter.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8350312
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomDownSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8567686
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomUpSampling.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8757121
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuad.vert"
+""
+"../Resources/Shaders/PostProcess/Bloom/bloomRecombine.frag"
+}
+
+}
+ERROR: {
+	Context: ShaderProgram
+	Time: 2025-09-26 09:57:40.8977400
+	Msg: SHADER_COMPILATION_ERROR for: FRAGMENT
+{
+"../Resources/Shaders/DefaultPipeline/fullScreenQuadWithRayDir.vert"
+""
+"../Resources/Shaders/PostProcess/hdr.frag"
+}
+
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:44.0564573
+	Msg: Context resize. New size: {1280, 719}, New aspect ratio: 1.780250
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:44.0825915
+	Msg: Context resize. New size: {1280, 716}, New aspect ratio: 1.787709
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:44.1076291
+	Msg: Context resize. New size: {1280, 715}, New aspect ratio: 1.790210
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:44.1320305
+	Msg: Context resize. New size: {1280, 714}, New aspect ratio: 1.792717
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.7157734
+	Msg: Context resize. New size: {1280, 715}, New aspect ratio: 1.790210
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.7419473
+	Msg: Context resize. New size: {1280, 718}, New aspect ratio: 1.782730
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.7684679
+	Msg: Context resize. New size: {1280, 725}, New aspect ratio: 1.765517
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.7918235
+	Msg: Context resize. New size: {1280, 730}, New aspect ratio: 1.753425
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.8148364
+	Msg: Context resize. New size: {1280, 733}, New aspect ratio: 1.746248
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.8374833
+	Msg: Context resize. New size: {1280, 738}, New aspect ratio: 1.734417
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.8625102
+	Msg: Context resize. New size: {1280, 743}, New aspect ratio: 1.722746
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.8864647
+	Msg: Context resize. New size: {1280, 749}, New aspect ratio: 1.708945
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.9111098
+	Msg: Context resize. New size: {1280, 755}, New aspect ratio: 1.695364
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.9343786
+	Msg: Context resize. New size: {1280, 760}, New aspect ratio: 1.684211
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.9572970
+	Msg: Context resize. New size: {1280, 765}, New aspect ratio: 1.673203
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:45.9816084
+	Msg: Context resize. New size: {1280, 773}, New aspect ratio: 1.655886
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.0085726
+	Msg: Context resize. New size: {1280, 779}, New aspect ratio: 1.643132
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.0313772
+	Msg: Context resize. New size: {1280, 783}, New aspect ratio: 1.634738
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.0553887
+	Msg: Context resize. New size: {1280, 785}, New aspect ratio: 1.630573
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.0778739
+	Msg: Context resize. New size: {1280, 788}, New aspect ratio: 1.624365
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.1003480
+	Msg: Context resize. New size: {1280, 790}, New aspect ratio: 1.620253
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.1231344
+	Msg: Context resize. New size: {1280, 791}, New aspect ratio: 1.618205
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.1474758
+	Msg: Context resize. New size: {1280, 793}, New aspect ratio: 1.614124
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.1717463
+	Msg: Context resize. New size: {1280, 795}, New aspect ratio: 1.610063
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.1978680
+	Msg: Context resize. New size: {1280, 796}, New aspect ratio: 1.608040
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.2190141
+	Msg: Context resize. New size: {1280, 797}, New aspect ratio: 1.606023
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.2413186
+	Msg: Context resize. New size: {1280, 800}, New aspect ratio: 1.600000
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.2628380
+	Msg: Context resize. New size: {1280, 802}, New aspect ratio: 1.596010
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.2831560
+	Msg: Context resize. New size: {1280, 804}, New aspect ratio: 1.592040
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.3042812
+	Msg: Context resize. New size: {1280, 805}, New aspect ratio: 1.590062
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.3252180
+	Msg: Context resize. New size: {1280, 806}, New aspect ratio: 1.588089
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.6102739
+	Msg: Context resize. New size: {1280, 805}, New aspect ratio: 1.590062
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.6312777
+	Msg: Context resize. New size: {1280, 804}, New aspect ratio: 1.592040
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.6518968
+	Msg: Context resize. New size: {1280, 801}, New aspect ratio: 1.598003
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.6740901
+	Msg: Context resize. New size: {1280, 799}, New aspect ratio: 1.602003
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.6978513
+	Msg: Context resize. New size: {1280, 797}, New aspect ratio: 1.606023
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.7194691
+	Msg: Context resize. New size: {1280, 795}, New aspect ratio: 1.610063
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.7428127
+	Msg: Context resize. New size: {1280, 792}, New aspect ratio: 1.616162
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.7635008
+	Msg: Context resize. New size: {1280, 790}, New aspect ratio: 1.620253
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.7864037
+	Msg: Context resize. New size: {1280, 789}, New aspect ratio: 1.622307
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.8065233
+	Msg: Context resize. New size: {1280, 788}, New aspect ratio: 1.624365
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.8275169
+	Msg: Context resize. New size: {1280, 785}, New aspect ratio: 1.630573
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:57:46.8478274
+	Msg: Context resize. New size: {1280, 783}, New aspect ratio: 1.634738
+}
+WARNING: {
+	Context: MenuButton
+	Time: 2025-09-26 09:57:56.9561567
+	Msg: Pressed button with no action!
+}
+WARNING: {
+	Context: MenuButton
+	Time: 2025-09-26 09:57:57.8560152
+	Msg: Pressed button with no action!
+}
+WARNING: {
+	Context: MenuButton
+	Time: 2025-09-26 09:57:58.0227413
+	Msg: Pressed button with no action!
+}
+WARNING: {
+	Context: MenuButton
+	Time: 2025-09-26 09:57:58.2060925
+	Msg: Pressed button with no action!
+}
+WARNING: {
+	Context: MenuButton
+	Time: 2025-09-26 09:58:18.0896927
+	Msg: Pressed button with no action!
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:59:40.9034396
+	Msg: Context resize. New size: {1920, 1009}, New aspect ratio: 1.902874
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:59:57.8107077
+	Msg: Context resize. New size: {1280, 783}, New aspect ratio: 1.634738
+}
+MESSAGE: {
+	Context: Scene
+	Time: 2025-09-26 09:59:58.8101360
+	Msg: Context resize. New size: {1920, 1009}, New aspect ratio: 1.902874
+}

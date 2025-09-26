@@ -81,7 +81,7 @@ namespace Hogra {
 		ShaderStorageData dataObj;
 		dataObj.data = data;
 		dataObj.size = m_data_count;
-		dataObj.access = ShaderStorageDataAccess.READ_ONLY;
+		dataObj.access = ShaderStorageDataAccess::READ_ONLY;
 		dataObj.buffer = this;
 		return dataObj;
 	}

@@ -3,6 +3,7 @@
 #include <complex>
 #include "ComputeProgram.h"
 #include "Texture3D.h"
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 
 /*
