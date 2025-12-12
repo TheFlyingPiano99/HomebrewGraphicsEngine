@@ -3,7 +3,7 @@
 
 <img src="Resources/Icons/HoGraEngineLogo.png" alt="HoGraEngine logo" width="30%" style="float: right;"/>
 
-A grahics/videogame engine written in C++ using OpenGL.
+A graphics/video game engine written in C++ using OpenGL.
 
 
 ## Features
